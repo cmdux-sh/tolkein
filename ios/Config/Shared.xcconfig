@@ -1,0 +1,8 @@
+// Replace every PLACEHOLDER before you build.
+// DEVELOPMENT_TEAM is the 10-character Team ID from developer.apple.com/account.
+// Create the App Group in the developer portal (Xcode can do this once the team is real).
+// The app and the widget both read these values. Keep the three lines in sync with the README.
+
+DEVELOPMENT_TEAM = PLACEHOLDER
+TOLKEINS_APP_GROUP = group.PLACEHOLDER.tolkeins
+TOLKEINS_BUNDLE_IDENTIFIER = app.PLACEHOLDER.tolkeins

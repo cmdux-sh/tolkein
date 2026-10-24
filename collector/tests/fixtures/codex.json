@@ -1,0 +1,45 @@
+[
+  {
+    "source": "codex-cli",
+    "rateWindowLabels": { "secondary": "Weekly" },
+    "credits": {
+      "events": [],
+      "balanceReadSucceeded": true,
+      "remaining": 42789.424725,
+      "balanceIsWorkspace": false,
+      "updatedAt": "2026-10-24T05:18:48Z"
+    },
+    "provider": "codex",
+    "pace": {
+      "secondary": {
+        "stage": "farAhead",
+        "willLastToReset": false,
+        "etaSeconds": 53273,
+        "summary": "37% in deficit | Expected 7% used | Runs out in 14h 48m",
+        "deltaPercent": 37,
+        "expectedUsedPercent": 7
+      }
+    },
+    "usage": {
+      "updatedAt": "2026-10-24T05:18:48Z",
+      "secondary": {
+        "resetsAt": "2026-10-30T17:41:11Z",
+        "usedPercent": 44,
+        "resetDescription": "Oct 30 at 1:41 PM",
+        "windowMinutes": 10080
+      },
+      "accountEmail": "REDACTED",
+      "tertiary": null,
+      "providerCost": {
+        "balance": 42789.424725,
+        "period": "Extra usage",
+        "used": 0,
+        "limit": 0,
+        "currencyCode": "Credits"
+      },
+      "loginMethod": "prolite",
+      "primary": null
+    },
+    "version": "0.163.0"
+  }
+]
