@@ -2,6 +2,10 @@ import { cloudflareTest } from "@cloudflare/vitest-plugin"
 import { defineConfig } from "vitest/config"
 
 export default defineConfig({
+  test: {
+    // Daily rows are cleared in beforeEach. Serial files cannot delete each other's rows.
+    fileParallelism: false,
+  },
   plugins: [
     cloudflareTest({
       wrangler: { configPath: "./wrangler.jsonc" },
