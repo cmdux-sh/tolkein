@@ -4,7 +4,7 @@ import SwiftUI
 
 @MainActor
 final class UsageBoardPanelController {
-    private let session: UsageBoardSession
+    let session: UsageBoardSession
     private var panel: UsageBoardPanel?
     private var monitors: [Any] = []
     private var isClosing = false
@@ -117,20 +117,25 @@ final class UsageBoardPanelController {
     private func installMonitorsIfNeeded() {
         guard self.monitors.isEmpty else { return }
         let mouse = NSEvent.addLocalMonitorForEvents(matching: [.leftMouseDown, .rightMouseDown]) { [weak self] event in
-            MainActor.assumeIsolated {
-                guard let self, self.isVisible else { return event }
-                if self.eventIsInsidePanel(event) || self.eventIsInsideAnchor(event) {
-                    return event
-                }
-                self.dismiss()
-                return nil
+            // NSEvent is not Sendable. Copy the values the main actor needs, then hop.
+            let windowID = event.window.map(ObjectIdentifier.init)
+            let x = Double(event.locationInWindow.x)
+            let y = Double(event.locationInWindow.y)
+            let shouldClose = MainActor.assumeIsolated { () -> Bool in
+                guard let self else { return false }
+                return self.shouldCloseBoard(windowID: windowID, x: x, y: y)
             }
+            return shouldClose ? nil : event
         }
         let keys = NSEvent.addLocalMonitorForEvents(matching: [.keyDown]) { [weak self] event in
-            MainActor.assumeIsolated {
-                guard let self, self.isVisible, self.panel?.isKeyWindow == true else { return event }
-                return self.handleKey(event)
+            let keyCode = event.keyCode
+            let modifierBits = event.modifierFlags.rawValue
+            let characters = event.charactersIgnoringModifiers
+            let consumed = MainActor.assumeIsolated { () -> Bool in
+                guard let self else { return false }
+                return self.handleKey(keyCode: keyCode, modifierBits: modifierBits, characters: characters)
             }
+            return consumed ? nil : event
         }
         self.monitors = [mouse, keys].compactMap(\.self)
     }
@@ -142,46 +147,53 @@ final class UsageBoardPanelController {
         self.monitors.removeAll()
     }
 
-    private func handleKey(_ event: NSEvent) -> NSEvent? {
-        if event.keyCode == 53 {
+    private func shouldCloseBoard(windowID: ObjectIdentifier?, x: Double, y: Double) -> Bool {
+        guard self.isVisible else { return false }
+        if self.panel.map(ObjectIdentifier.init) == windowID { return false }
+        if self.anchorContains(windowID: windowID, x: x, y: y) { return false }
+        self.dismiss()
+        return true
+    }
+
+    private func anchorContains(windowID: ObjectIdentifier?, x: Double, y: Double) -> Bool {
+        guard let button = self.anchor?.button,
+              let window = button.window,
+              ObjectIdentifier(window) == windowID
+        else { return false }
+        let point = button.convert(NSPoint(x: x, y: y), from: nil)
+        return button.bounds.contains(point)
+    }
+
+    private func handleKey(keyCode: UInt16, modifierBits: UInt, characters: String?) -> Bool {
+        guard self.isVisible, self.panel?.isKeyWindow == true else { return false }
+        if keyCode == 53 {
             self.session.onCommand(.close)
-            return nil
+            return true
         }
-        if event.keyCode == 125 {
+        if keyCode == 125 {
             self.session.selectAdjacent(1)
-            return nil
+            return true
         }
-        if event.keyCode == 126 {
+        if keyCode == 126 {
             self.session.selectAdjacent(-1)
-            return nil
+            return true
         }
-        let modifiers = event.modifierFlags.intersection([.command, .option, .control, .shift])
-        guard modifiers == .command else { return event }
-        switch event.charactersIgnoringModifiers?.lowercased() {
+        let modifiers = NSEvent.ModifierFlags(rawValue: modifierBits)
+            .intersection([.command, .option, .control, .shift])
+        guard modifiers == .command else { return false }
+        switch characters?.lowercased() {
         case "r":
             self.session.onCommand(.refresh)
-            return nil
+            return true
         case ",":
             self.session.onCommand(.settings)
-            return nil
+            return true
         case "q":
             self.session.onCommand(.quit)
-            return nil
+            return true
         default:
-            return event
-        }
-    }
-
-    private func eventIsInsidePanel(_ event: NSEvent) -> Bool {
-        event.window === self.panel
-    }
-
-    private func eventIsInsideAnchor(_ event: NSEvent) -> Bool {
-        guard let button = self.anchor?.button, let window = button.window, event.window === window else {
             return false
         }
-        let point = button.convert(event.locationInWindow, from: nil)
-        return button.bounds.contains(point)
     }
 }
 

@@ -1,4 +1,5 @@
 import AppKit
+import CodexBarCore
 import SwiftUI
 
 // Layout, at the classic menu's 310pt column × 3 = 930pt:
@@ -237,7 +238,7 @@ private struct UsageBoardDetail: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 14) {
                     if let provider = self.session.selectedProvider {
-                        self.focused(provider, width: proxy.size.width)
+                        self.selectedProviderDetail(provider, width: proxy.size.width)
                     } else if self.session.providers.isEmpty {
                         Text(L("No usage configured."))
                             .font(UsageBoardTheme.bodyFont)
@@ -279,7 +280,7 @@ private struct UsageBoardDetail: View {
         }
     }
 
-    private func focused(_ provider: UsageBoardProvider, width: CGFloat) -> some View {
+    private func selectedProviderDetail(_ provider: UsageBoardProvider, width: CGFloat) -> some View {
         UsageBoardProviderCard(
             provider: provider,
             icon: self.session.icon(provider.id),
