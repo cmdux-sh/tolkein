@@ -232,6 +232,7 @@ final class StatusItemController: NSObject, NSMenuDelegate, StatusItemControllin
     }
 
     var creditsPurchaseWindow: OpenAICreditsPurchaseWindowController?
+    var usageBoard: UsageBoardPanelController?
 
     var activeLoginProvider: UsageProvider? {
         didSet {
@@ -539,6 +540,7 @@ final class StatusItemController: NSObject, NSMenuDelegate, StatusItemControllin
             deferOpenParentMenuRebuild: true,
             allowStaleContentDuringDataRefresh: true)
         self.completeParentMenuRebuildAfterHostedSubviewCloseIfNeeded()
+        self.reloadUsageBoardIfVisible()
     }
 
     private func observeStoreIconChanges() {
@@ -699,6 +701,7 @@ final class StatusItemController: NSObject, NSMenuDelegate, StatusItemControllin
             self.refreshOpenMenusAllowingParentRebuild(
                 deferParentRebuildDuringTracking: !localizationChanged)
         }
+        self.reloadUsageBoardIfVisible()
     }
 
     /// Updates the menu bar icons.
@@ -825,9 +828,7 @@ final class StatusItemController: NSObject, NSMenuDelegate, StatusItemControllin
         if self.mergedMenu == nil {
             self.mergedMenu = self.makeMenu()
         }
-        if self.statusItem.menu !== self.mergedMenu {
-            self.statusItem.menu = self.mergedMenu
-        }
+        self.bindPresentedInterface(for: self.statusItem, menu: self.mergedMenu)
         self.prepareAttachedClosedMenusIfNeeded()
     }
 
@@ -843,17 +844,12 @@ final class StatusItemController: NSObject, NSMenuDelegate, StatusItemControllin
                     if self.providerMenus[provider.instanceID] == nil {
                         self.providerMenus[provider.instanceID] = self.makeMenu(for: provider)
                     }
-                    let menu = self.providerMenus[provider.instanceID]
-                    if item.menu !== menu {
-                        item.menu = menu
-                    }
+                    self.bindPresentedInterface(for: item, menu: self.providerMenus[provider.instanceID])
                 } else if fallback == provider {
                     if self.fallbackMenu == nil {
                         self.fallbackMenu = self.makeMenu(for: nil)
                     }
-                    if item.menu !== self.fallbackMenu {
-                        item.menu = self.fallbackMenu
-                    }
+                    self.bindPresentedInterface(for: item, menu: self.fallbackMenu)
                 }
             } else if let item = self.statusItems[provider.instanceID] {
                 item.menu = nil

@@ -2765,3 +2765,12 @@
 "Show this Mac's recorded OpenCode usage in Codex history. Off by default; scoped or alternate CODEX_HOME locations always stay excluded." = "مصرف ثبت‌شدهٔ OpenCode در این Mac را در تاریخچهٔ Codex نمایش می‌دهد. به‌طور پیش‌فرض خاموش است؛ مسیرهای CODEX_HOME با دامنهٔ محدود یا جایگزین همیشه مستثنا هستند.";
 "Auto uses the active saved session, otherwise an API key or browser cookies." = "حالت خودکار از نشست ذخیره‌شدهٔ فعال استفاده می‌کند؛ در غیر این صورت از کلید API یا کوکی‌های مرورگر استفاده می‌کند.";
 "Store multiple Command Code subscription sessions." = "چندین نشست اشتراک Command Code را ذخیره کنید.";
+
+/* Wide usage board */
+"All providers" = "All providers";
+"Classic menu" = "Classic menu";
+"Needs sign-in" = "Needs sign-in";
+"Couldn't load usage" = "Couldn't load usage";
+"No windows reported yet." = "No windows reported yet.";
+"Charts, accounts, and history stay in the classic menu." = "Charts, accounts, and history stay in the classic menu.";
+"Up and down move between providers. Command-R refreshes. Escape closes." = "Up and down move between providers. Command-R refreshes. Escape closes.";
