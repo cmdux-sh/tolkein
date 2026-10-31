@@ -76,11 +76,11 @@ final class UsageBoardPanelController {
         let container = NSView(frame: panel.contentView?.bounds ?? .zero)
         container.wantsLayer = true
         container.layer?.backgroundColor = NSColor(
-            srgbRed: 16 / 255,
-            green: 18 / 255,
-            blue: 24 / 255,
+            srgbRed: 12 / 255,
+            green: 12 / 255,
+            blue: 12 / 255,
             alpha: 1).cgColor
-        container.layer?.cornerRadius = 16
+        container.layer?.cornerRadius = UsageBoardMetrics.radiusWindow
         container.layer?.masksToBounds = true
         container.addSubview(hosting)
         panel.contentView = container

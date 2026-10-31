@@ -39,12 +39,12 @@ struct UsageBoardView: View {
     }
 
     private var header: some View {
-        HStack(alignment: .firstTextBaseline, spacing: 12) {
-            VStack(alignment: .leading, spacing: 2) {
+        HStack(alignment: .firstTextBaseline, spacing: UsageBoardMetrics.gapComfortable) {
+            VStack(alignment: .leading, spacing: UsageBoardMetrics.gap) {
                 Text("CodexBar")
-                    .font(UsageBoardTheme.titleFont)
+                    .boardFont(.title)
                 Text(self.headerCaption)
-                    .font(UsageBoardTheme.captionFont)
+                    .boardFont(.caption)
                     .foregroundStyle(UsageBoardTheme.secondaryText)
             }
             Spacer(minLength: 12)
@@ -54,8 +54,8 @@ struct UsageBoardView: View {
                     .accessibilityLabel(L("Refreshing"))
             }
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 12)
+        .padding(.horizontal, UsageBoardMetrics.windowPad)
+        .padding(.vertical, UsageBoardMetrics.pad)
     }
 
     private var headerCaption: String {
@@ -72,12 +72,12 @@ struct UsageBoardView: View {
     }
 
     private var footer: some View {
-        HStack(alignment: .center, spacing: 8) {
+        HStack(alignment: .center, spacing: UsageBoardMetrics.gap) {
             Text(L("Up and down move between providers. Command-R refreshes. Escape closes."))
-                .font(UsageBoardTheme.captionFont)
+                .boardFont(.caption)
                 .foregroundStyle(UsageBoardTheme.secondaryText)
                 .fixedSize(horizontal: false, vertical: true)
-            Spacer(minLength: 12)
+            Spacer(minLength: UsageBoardMetrics.gapComfortable)
             UsageBoardCommandButton(
                 title: L("Classic menu"),
                 systemImage: "list.bullet.rectangle",
@@ -95,8 +95,8 @@ struct UsageBoardView: View {
                 systemImage: "xmark.rectangle",
                 action: { self.session.onCommand(.quit) })
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 10)
+        .padding(.horizontal, UsageBoardMetrics.windowPad)
+        .padding(.vertical, UsageBoardMetrics.pad)
     }
 
     private var separator: some View {
@@ -116,47 +116,93 @@ struct UsageBoardView: View {
 
 private struct UsageBoardSidebar: View {
     @Bindable var session: UsageBoardSession
+    @State private var hoveredID: String?
+    @State private var frames: [String: CGRect] = [:]
+    @State private var restingFrame: CGRect = .zero
+    @FocusState private var focusedID: String?
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         ScrollView {
-            LazyVStack(alignment: .leading, spacing: 2) {
-                UsageBoardSidebarRow(
-                    title: L("All providers"),
-                    caption: nil,
-                    percentText: nil,
-                    percent: nil,
-                    attention: .ready,
-                    monogram: "∗",
-                    icon: nil,
-                    isSelected: self.session.selectionID == nil,
-                    accessibilitySummary: L("All providers"))
-                {
-                    self.session.select(nil)
-                }
-                if self.session.isShowingSkeleton, self.session.providers.isEmpty {
-                    ForEach(0..<4, id: \.self) { _ in
-                        UsageBoardSkeletonRow()
+            ZStack(alignment: .topLeading) {
+                self.hoverHighlight
+                LazyVStack(alignment: .leading, spacing: 0) {
+                    self.allRow
+                    if self.session.isShowingSkeleton, self.session.providers.isEmpty {
+                        ForEach(0..<4, id: \.self) { _ in
+                            UsageBoardSkeletonRow()
+                        }
                     }
-                }
-                ForEach(self.session.providers) { provider in
-                    UsageBoardSidebarRow(
-                        title: provider.name,
-                        caption: provider.headlineCaption,
-                        percentText: provider.headlinePercentText,
-                        percent: provider.metrics.first(where: \.showsBar)?.percent,
-                        attention: provider.attention,
-                        monogram: provider.monogram,
-                        icon: self.session.icon(provider.id),
-                        isSelected: self.session.selectionID == provider.id,
-                        accessibilitySummary: self.accessibilitySummary(for: provider))
-                    {
-                        self.session.select(provider.id)
+                    ForEach(self.session.providers) { provider in
+                        self.providerRow(provider)
                     }
                 }
             }
-            .padding(8)
+            .coordinateSpace(name: "usageBoardSidebar")
+            .padding(UsageBoardMetrics.pad)
+            .onPreferenceChange(UsageBoardRowFramesKey.self) { frames in
+                self.frames = frames
+                if let hoveredID, let frame = frames[hoveredID] {
+                    self.restingFrame = frame
+                }
+            }
         }
-        .background(UsageBoardTheme.sidebar)
+        .background(UsageBoardTheme.surface)
+    }
+
+    private var hoverHighlight: some View {
+        let frame = self.frames[self.hoveredID ?? ""] ?? self.restingFrame
+        let visible = self.hoveredID != nil && frame != .zero
+        return RoundedRectangle(cornerRadius: UsageBoardMetrics.radiusItem, style: .continuous)
+            .fill(UsageBoardTheme.hover)
+            .frame(width: frame.width, height: frame.height)
+            .offset(x: frame.minX, y: frame.minY)
+            .opacity(visible ? 1 : 0)
+            .allowsHitTesting(false)
+            .animation(self.reduceMotion ? nil : UsageBoardMotion.fastSpring, value: frame)
+            .animation(UsageBoardMotion.fastExitTween, value: visible)
+    }
+
+    private var allRow: some View {
+        UsageBoardSidebarRow(
+            id: "all",
+            title: L("All providers"),
+            caption: nil,
+            percentText: nil,
+            attention: .ready,
+            monogram: "∗",
+            icon: nil,
+            isSelected: self.session.selectionID == nil,
+            isFocused: self.focusedID == "all",
+            accessibilitySummary: L("All providers"),
+            focus: self.$focusedID)
+        {
+            self.session.select(nil)
+        }
+        .onHover { inside in
+            self.hoveredID = inside ? "all" : (self.hoveredID == "all" ? nil : self.hoveredID)
+        }
+    }
+
+    private func providerRow(_ provider: UsageBoardProvider) -> some View {
+        UsageBoardSidebarRow(
+            id: provider.id,
+            title: provider.name,
+            caption: provider.headlineCaption,
+            percentText: provider.headlinePercentText,
+            attention: provider.attention,
+            monogram: provider.monogram,
+            icon: self.session.icon(provider.id),
+            isSelected: self.session.selectionID == provider.id,
+            isFocused: self.focusedID == provider.id,
+            accessibilitySummary: self.accessibilitySummary(for: provider),
+            focus: self.$focusedID)
+        {
+            self.session.select(provider.id)
+        }
+        .onHover { inside in
+            self.hoveredID = inside ? provider.id : (self.hoveredID == provider.id ? nil : self.hoveredID)
+        }
     }
 
     private func accessibilitySummary(for provider: UsageBoardProvider) -> String {
@@ -178,61 +224,68 @@ private struct UsageBoardSidebar: View {
 }
 
 private struct UsageBoardSidebarRow: View {
+    let id: String
     let title: String
     let caption: String?
     let percentText: String?
-    let percent: Double?
     let attention: UsageBoardAttention
     let monogram: String
     let icon: NSImage?
     let isSelected: Bool
+    let isFocused: Bool
     let accessibilitySummary: String
+    var focus: FocusState<String?>.Binding
     let action: () -> Void
 
     var body: some View {
         Button(action: self.action) {
-            HStack(alignment: .center, spacing: 8) {
+            HStack(alignment: .center, spacing: UsageBoardMetrics.gapComfortable) {
                 UsageBoardIconBadge(monogram: self.monogram, icon: self.icon)
-                VStack(alignment: .leading, spacing: 2) {
+                VStack(alignment: .leading, spacing: 0) {
                     Text(self.title)
-                        .font(UsageBoardTheme.bodyFont)
-                        .fontWeight(.semibold)
-                        .lineLimit(2)
+                        .boardFont(.subtitle, weight: self.isSelected ? .semibold : .regular)
+                        .lineLimit(1)
                         .multilineTextAlignment(.leading)
                     if let caption, !caption.isEmpty {
                         Text(caption)
-                            .font(UsageBoardTheme.captionFont)
+                            .boardFont(.micro)
                             .foregroundStyle(UsageBoardTheme.secondaryText)
-                            .fixedSize(horizontal: false, vertical: true)
+                            .lineLimit(1)
                     }
                     if let status = UsageBoardStatusText.label(for: self.attention) {
                         UsageBoardStatusBadge(text: status, attention: self.attention)
                     }
                 }
-                Spacer(minLength: 6)
+                Spacer(minLength: UsageBoardMetrics.gap)
                 if let percentText {
                     Text(percentText)
-                        .font(UsageBoardTheme.percentCompactFont)
-                        .foregroundStyle(UsageBoardTheme.percentColor(for: self.percent))
-                        .multilineTextAlignment(.trailing)
+                        .boardFont(.caption, weight: .semibold)
+                        .foregroundStyle(UsageBoardTheme.primaryText)
+                        .lineLimit(1)
                 }
             }
-            .padding(.horizontal, 8)
-            .padding(.vertical, 8)
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, UsageBoardMetrics.padComfortable)
+            .padding(.vertical, UsageBoardMetrics.pad)
+            .frame(maxWidth: .infinity, minHeight: UsageBoardMetrics.control, alignment: .leading)
             .background(
-                RoundedRectangle(cornerRadius: 8, style: .continuous)
-                    .fill(self.isSelected ? UsageBoardTheme.selectedRow : Color.clear))
-            .overlay(alignment: .leading) {
-                if self.isSelected {
-                    RoundedRectangle(cornerRadius: 2, style: .continuous)
-                        .fill(UsageBoardTheme.accent)
-                        .frame(width: 3)
-                        .padding(.vertical, 8)
+                RoundedRectangle(cornerRadius: UsageBoardMetrics.radiusItem, style: .continuous)
+                    .fill(self.isSelected ? UsageBoardTheme.selectionFill : Color.clear))
+            .overlay {
+                if self.isFocused {
+                    RoundedRectangle(cornerRadius: UsageBoardMetrics.radiusItem, style: .continuous)
+                        .strokeBorder(UsageBoardTheme.accent, lineWidth: UsageBoardMetrics.focusRing)
+                }
+            }
+            .background {
+                GeometryReader { proxy in
+                    Color.clear.preference(
+                        key: UsageBoardRowFramesKey.self,
+                        value: [self.id: proxy.frame(in: .named("usageBoardSidebar"))])
                 }
             }
         }
         .buttonStyle(.plain)
+        .focused(self.focus, equals: self.id)
         .accessibilityLabel(self.accessibilitySummary)
         .accessibilityAddTraits(self.isSelected ? AccessibilityTraits.isSelected : AccessibilityTraits())
     }
@@ -244,7 +297,7 @@ private struct UsageBoardDetail: View {
     var body: some View {
         GeometryReader { proxy in
             ScrollView {
-                VStack(alignment: .leading, spacing: 14) {
+                VStack(alignment: .leading, spacing: UsageBoardMetrics.gapComfortable) {
                     if let provider = self.session.selectedProvider {
                         self.selectedProviderDetail(provider, width: proxy.size.width)
                     } else if self.session.isShowingSkeleton, self.session.providers.isEmpty {
@@ -252,28 +305,30 @@ private struct UsageBoardDetail: View {
                             .accessibilityLabel(L("Refreshing"))
                     } else if self.session.providers.isEmpty {
                         Text(L("No usage configured."))
-                            .font(UsageBoardTheme.bodyFont)
+                            .boardFont(.body)
                             .foregroundStyle(UsageBoardTheme.secondaryText)
                     } else {
                         self.overview(width: proxy.size.width)
                     }
                 }
-                .padding(16)
+                .padding(UsageBoardMetrics.windowPad)
                 .frame(maxWidth: .infinity, alignment: .topLeading)
             }
         }
     }
 
     private func overview(width: CGFloat) -> some View {
-        let contentWidth = max(0, width - 32)
+        let inset = UsageBoardMetrics.windowPad
+        let contentWidth = max(0, width - inset * 2)
         let columnCount = UsageBoardLayout.metricColumnCount(
             detailWidth: Double(contentWidth),
             itemCount: self.session.providers.count)
-        let columnWidth = (contentWidth - 10 * CGFloat(max(0, columnCount - 1))) / CGFloat(columnCount)
+        let columnGap = UsageBoardMetrics.gap
+        let columnWidth = (contentWidth - columnGap * CGFloat(max(0, columnCount - 1))) / CGFloat(columnCount)
         let columns = Array(
-            repeating: GridItem(.flexible(minimum: 180), spacing: 10, alignment: .top),
+            repeating: GridItem(.flexible(minimum: 160), spacing: columnGap, alignment: .top),
             count: columnCount)
-        return LazyVGrid(columns: columns, alignment: .leading, spacing: 10) {
+        return LazyVGrid(columns: columns, alignment: .leading, spacing: columnGap) {
             ForEach(self.session.providers) { provider in
                 Button {
                     self.session.select(provider.id)
@@ -281,7 +336,7 @@ private struct UsageBoardDetail: View {
                     UsageBoardProviderCard(
                         provider: provider,
                         icon: self.session.icon(provider.id),
-                        metricWidth: max(0, columnWidth - 28),
+                        metricWidth: max(0, columnWidth - UsageBoardMetrics.pad * 2),
                         commands: [],
                         showsClassicHint: false,
                         onCommand: { _ in })
@@ -295,7 +350,7 @@ private struct UsageBoardDetail: View {
         UsageBoardProviderCard(
             provider: provider,
             icon: self.session.icon(provider.id),
-            metricWidth: max(0, width - 32 - 28),
+            metricWidth: max(0, width - UsageBoardMetrics.windowPad * 2 - UsageBoardMetrics.pad * 2),
             commands: self.session.providerCommands,
             showsClassicHint: true,
             onCommand: self.session.onCommand)
@@ -311,7 +366,7 @@ private struct UsageBoardProviderCard: View {
     let onCommand: (UsageBoardCommand.Action) -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: UsageBoardMetrics.gapComfortable) {
             self.header
             if let status = UsageBoardStatusText.label(for: self.provider.attention) {
                 UsageBoardStatusBanner(
@@ -320,7 +375,7 @@ private struct UsageBoardProviderCard: View {
                     attention: self.provider.attention)
             } else if !self.provider.subtitle.isEmpty {
                 Text(self.provider.subtitle)
-                    .font(UsageBoardTheme.captionFont)
+                    .boardFont(.caption)
                     .foregroundStyle(UsageBoardTheme.secondaryText)
                     .fixedSize(horizontal: false, vertical: true)
                     .textSelection(.enabled)
@@ -330,7 +385,7 @@ private struct UsageBoardProviderCard: View {
             }
             if self.provider.metrics.isEmpty {
                 Text(L("No windows reported yet."))
-                    .font(UsageBoardTheme.bodyFont)
+                    .boardFont(.body)
                     .foregroundStyle(UsageBoardTheme.secondaryText)
             } else {
                 UsageBoardMetricGrid(metrics: self.provider.metrics, width: self.metricWidth)
@@ -342,7 +397,7 @@ private struct UsageBoardProviderCard: View {
                 VStack(alignment: .leading, spacing: 4) {
                     ForEach(Array(self.provider.notes.enumerated()), id: \.offset) { _, note in
                         Text(note)
-                            .font(UsageBoardTheme.captionFont)
+                            .boardFont(.caption)
                             .foregroundStyle(UsageBoardTheme.secondaryText)
                             .fixedSize(horizontal: false, vertical: true)
                             .textSelection(.enabled)
@@ -351,35 +406,36 @@ private struct UsageBoardProviderCard: View {
             }
             if self.showsClassicHint {
                 Text(L("Charts, accounts, and history stay in the classic menu."))
-                    .font(UsageBoardTheme.captionFont)
+                    .boardFont(.caption)
                     .foregroundStyle(UsageBoardTheme.secondaryText)
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
-        .padding(14)
+        .padding(UsageBoardMetrics.pad)
         .frame(maxWidth: .infinity, alignment: .topLeading)
         .background(
-            RoundedRectangle(cornerRadius: UsageBoardTheme.cardRadius, style: .continuous)
+            RoundedRectangle(cornerRadius: UsageBoardMetrics.radiusCard, style: .continuous)
                 .fill(UsageBoardTheme.card))
+        .boardHairline(radius: UsageBoardMetrics.radiusCard)
         .accessibilityElement(children: .contain)
     }
 
     private var header: some View {
-        HStack(alignment: .top, spacing: 10) {
+        HStack(alignment: .top, spacing: UsageBoardMetrics.gapComfortable) {
             UsageBoardIconBadge(monogram: self.provider.monogram, icon: self.icon)
-            VStack(alignment: .leading, spacing: 2) {
-                HStack(alignment: .firstTextBaseline, spacing: 8) {
+            VStack(alignment: .leading, spacing: 0) {
+                HStack(alignment: .firstTextBaseline, spacing: UsageBoardMetrics.gapComfortable) {
                     Text(self.provider.name)
-                        .font(UsageBoardTheme.titleFont)
+                        .boardFont(.title)
                     if let plan = self.provider.planText {
                         Text(plan)
-                            .font(UsageBoardTheme.captionFont)
+                            .boardFont(.caption)
                             .foregroundStyle(UsageBoardTheme.secondaryText)
                     }
                 }
                 if !self.provider.email.isEmpty {
                     Text(self.provider.email)
-                        .font(UsageBoardTheme.captionFont)
+                        .boardFont(.caption)
                         .foregroundStyle(UsageBoardTheme.secondaryText)
                         .textSelection(.enabled)
                         .fixedSize(horizontal: false, vertical: true)
@@ -413,7 +469,7 @@ private struct UsageBoardMetricGrid: View {
 
     var body: some View {
         let columns = self.columns
-        LazyVGrid(columns: columns, alignment: .leading, spacing: 10) {
+        LazyVGrid(columns: columns, alignment: .leading, spacing: UsageBoardMetrics.gap) {
             ForEach(self.metrics) { metric in
                 UsageBoardMetricCard(metric: metric)
             }
@@ -425,7 +481,7 @@ private struct UsageBoardMetricGrid: View {
             detailWidth: Double(self.width),
             itemCount: self.metrics.count)
         return Array(
-            repeating: GridItem(.flexible(minimum: 150), spacing: 10, alignment: .top),
+            repeating: GridItem(.flexible(minimum: 150), spacing: UsageBoardMetrics.gap, alignment: .top),
             count: count)
     }
 }
@@ -434,36 +490,41 @@ private struct UsageBoardMetricCard: View {
     let metric: UsageBoardMetric
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .leading, spacing: UsageBoardMetrics.gap) {
             Text(self.metric.title)
-                .font(UsageBoardTheme.labelFont)
+                .boardFont(.micro)
                 .foregroundStyle(UsageBoardTheme.secondaryText)
                 .fixedSize(horizontal: false, vertical: true)
             Text(self.metric.percentText)
-                .font(UsageBoardTheme.percentFont)
-                .foregroundStyle(UsageBoardTheme.percentColor(for: self.metric.showsBar ? self.metric.percent : nil))
+                .boardFont(.percent)
+                .foregroundStyle(UsageBoardTheme.primaryText)
                 .fixedSize(horizontal: false, vertical: true)
             if self.metric.showsBar, let percent = self.metric.percent {
                 UsageBoardProgressBar(percent: percent, pacePercent: self.metric.pacePercent)
             }
             if let reset = self.metric.resetText {
                 Text(reset)
-                    .font(UsageBoardTheme.captionFont)
+                    .boardFont(.caption)
                     .foregroundStyle(UsageBoardTheme.secondaryText)
                     .fixedSize(horizontal: false, vertical: true)
             }
             if let detail = self.metric.detailText {
                 Text(detail)
-                    .font(UsageBoardTheme.captionFont)
+                    .boardFont(.micro)
                     .foregroundStyle(UsageBoardTheme.secondaryText)
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
-        .padding(12)
-        .frame(maxWidth: .infinity, minHeight: 108, alignment: .topLeading)
+        .padding(UsageBoardMetrics.pad)
+        .frame(maxWidth: .infinity, alignment: .topLeading)
         .background(
-            RoundedRectangle(cornerRadius: 10, style: .continuous)
+            RoundedRectangle(cornerRadius: UsageBoardMetrics.nestedRadius(
+                outer: UsageBoardMetrics.radiusCard,
+                pad: UsageBoardMetrics.pad), style: .continuous)
                 .fill(UsageBoardTheme.cardRaised))
+        .boardHairline(radius: UsageBoardMetrics.nestedRadius(
+            outer: UsageBoardMetrics.radiusCard,
+            pad: UsageBoardMetrics.pad))
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(self.metric.accessibilitySummary)
     }
@@ -480,18 +541,18 @@ private struct UsageBoardProgressBar: View {
             ZStack(alignment: .leading) {
                 Capsule().fill(UsageBoardTheme.track)
                 Capsule()
-                    .fill(UsageBoardTheme.fill(for: clamped))
+                    .fill(UsageBoardTheme.barFill(for: clamped))
                     .frame(width: max(0, width * clamped / 100))
                 if let pacePercent {
                     let pace = min(100, max(0, pacePercent))
                     Capsule()
                         .fill(UsageBoardTheme.primaryText)
-                        .frame(width: 2, height: 10)
+                        .frame(width: 1, height: UsageBoardMetrics.progress + 4)
                         .offset(x: max(0, width * pace / 100 - 1))
                 }
             }
         }
-        .frame(height: 8)
+        .frame(height: UsageBoardMetrics.progress)
         .accessibilityHidden(true)
     }
 }
@@ -500,11 +561,11 @@ private struct UsageBoardLineList: View {
     let lines: [UsageBoardDetailLine]
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: UsageBoardMetrics.gap) {
             ForEach(self.lines) { line in
                 if line.value.isEmpty {
                     Text(line.label)
-                        .font(UsageBoardTheme.bodyFont)
+                        .boardFont(.body)
                         .foregroundStyle(UsageBoardTheme.secondaryText)
                         .fixedSize(horizontal: false, vertical: true)
                         .textSelection(.enabled)
@@ -512,11 +573,11 @@ private struct UsageBoardLineList: View {
                 } else {
                     VStack(alignment: .leading, spacing: 2) {
                         Text(line.label)
-                            .font(UsageBoardTheme.labelFont)
+                            .boardFont(.micro)
                             .foregroundStyle(UsageBoardTheme.secondaryText)
                             .fixedSize(horizontal: false, vertical: true)
                         Text(line.value)
-                            .font(UsageBoardTheme.bodyFont.monospacedDigit())
+                            .boardFont(.body, digits: true)
                             .foregroundStyle(UsageBoardTheme.primaryText)
                             .fixedSize(horizontal: false, vertical: true)
                             .textSelection(.enabled)
@@ -539,17 +600,18 @@ private struct UsageBoardStatusBanner: View {
             UsageBoardStatusBadge(text: self.text, attention: self.attention)
             if !self.detail.isEmpty, self.detail != self.text {
                 Text(self.detail)
-                    .font(UsageBoardTheme.bodyFont)
+                    .boardFont(.body)
                     .foregroundStyle(UsageBoardTheme.primaryText)
                     .fixedSize(horizontal: false, vertical: true)
                     .textSelection(.enabled)
             }
         }
-        .padding(10)
+        .padding(UsageBoardMetrics.pad)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
-            RoundedRectangle(cornerRadius: 8, style: .continuous)
+            RoundedRectangle(cornerRadius: UsageBoardMetrics.radiusItem, style: .continuous)
                 .fill(UsageBoardStatusText.fill(for: self.attention)))
+        .boardHairline(radius: UsageBoardMetrics.radiusItem)
     }
 }
 
@@ -559,10 +621,10 @@ private struct UsageBoardStatusBadge: View {
 
     var body: some View {
         Text(self.text)
-            .font(UsageBoardTheme.labelFont)
+            .boardFont(.micro)
             .foregroundStyle(UsageBoardStatusText.foreground(for: self.attention))
-            .padding(.horizontal, 6)
-            .padding(.vertical, 2)
+            .padding(.horizontal, UsageBoardMetrics.pad)
+            .padding(.vertical, 1)
             .background(Capsule().fill(UsageBoardStatusText.fill(for: self.attention)))
     }
 }
@@ -610,22 +672,23 @@ private struct UsageBoardIconBadge: View {
 
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 7, style: .continuous)
+            RoundedRectangle(cornerRadius: 4, style: .continuous)
                 .fill(UsageBoardTheme.cardRaised)
+                .boardHairline(radius: 4)
             if let icon {
                 Image(nsImage: icon)
                     .resizable()
                     .renderingMode(icon.isTemplate ? .template : .original)
                     .scaledToFit()
-                    .padding(4)
+                    .padding(1)
                     .foregroundStyle(UsageBoardTheme.primaryText)
             } else {
                 Text(self.monogram)
-                    .font(.system(size: 11, weight: .semibold))
+                    .boardFont(.micro, weight: .semibold)
                     .foregroundStyle(UsageBoardTheme.primaryText)
             }
         }
-        .frame(width: 28, height: 28)
+        .frame(width: UsageBoardMetrics.icon, height: UsageBoardMetrics.icon)
         .accessibilityHidden(true)
     }
 }
@@ -637,17 +700,19 @@ struct UsageBoardCommandButton: View {
 
     var body: some View {
         Button(action: self.action) {
-            HStack(spacing: 4) {
+            HStack(spacing: UsageBoardMetrics.gap) {
                 Image(systemName: self.systemImage)
+                    .font(.system(size: 14, weight: .regular))
                 Text(self.title)
-                    .font(UsageBoardTheme.captionFont)
+                    .boardFont(.caption)
             }
             .foregroundStyle(UsageBoardTheme.primaryText)
-            .padding(.horizontal, 8)
-            .padding(.vertical, 5)
+            .padding(.horizontal, 10)
+            .frame(minHeight: UsageBoardMetrics.control)
             .background(
-                RoundedRectangle(cornerRadius: 7, style: .continuous)
-                    .fill(UsageBoardTheme.cardRaised))
+                RoundedRectangle(cornerRadius: UsageBoardMetrics.radiusItem, style: .continuous)
+                    .fill(UsageBoardTheme.card))
+            .boardHairline(radius: UsageBoardMetrics.radiusItem)
         }
         .buttonStyle(.plain)
         .accessibilityLabel(self.title)
@@ -656,24 +721,24 @@ struct UsageBoardCommandButton: View {
 
 private struct UsageBoardSkeletonRow: View {
     var body: some View {
-        RoundedRectangle(cornerRadius: 8, style: .continuous)
+        RoundedRectangle(cornerRadius: UsageBoardMetrics.radiusItem, style: .continuous)
             .fill(UsageBoardTheme.card)
-            .frame(height: 44)
+            .frame(height: UsageBoardMetrics.control)
             .accessibilityHidden(true)
     }
 }
 
 private struct UsageBoardSkeletonDetail: View {
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            RoundedRectangle(cornerRadius: 10, style: .continuous)
+        VStack(alignment: .leading, spacing: UsageBoardMetrics.gap) {
+            RoundedRectangle(cornerRadius: UsageBoardMetrics.radiusCard, style: .continuous)
                 .fill(UsageBoardTheme.card)
-                .frame(height: 64)
-            HStack(spacing: 10) {
+                .frame(height: 36)
+            HStack(spacing: UsageBoardMetrics.gap) {
                 ForEach(0..<3, id: \.self) { _ in
-                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                    RoundedRectangle(cornerRadius: UsageBoardMetrics.radiusItem, style: .continuous)
                         .fill(UsageBoardTheme.cardRaised)
-                        .frame(height: 108)
+                        .frame(height: 64)
                 }
             }
         }
