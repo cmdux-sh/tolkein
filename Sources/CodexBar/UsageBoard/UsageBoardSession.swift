@@ -8,6 +8,8 @@ final class UsageBoardSession {
     var providers: [UsageBoardProvider] = []
     var selectionID: String?
     var isRefreshing = false
+    /// True while the first provider snapshot is still being built off the click path.
+    var isShowingSkeleton = false
     var providerCommands: [UsageBoardCommand] = []
     var icon: @MainActor (String) -> NSImage? = { _ in nil }
     var onCommand: @MainActor (UsageBoardCommand.Action) -> Void = { _ in }
@@ -36,6 +38,7 @@ final class UsageBoardSession {
             || providers.contains { $0.id == self.selectionID }
         self.providers = providers
         self.isRefreshing = isRefreshing
+        self.isShowingSkeleton = false
         if !selectionStillExists {
             self.selectionID = nil
             self.onSelectionChange(nil)

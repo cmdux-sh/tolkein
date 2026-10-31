@@ -1,9 +1,11 @@
 import AppKit
 import CodexBarCore
+import os
 import SwiftUI
 
 @MainActor
 final class UsageBoardPanelController {
+    private static let log = Logger(subsystem: "com.steipete.codexbar", category: "app")
     let session: UsageBoardSession
     private var panel: UsageBoardPanel?
     private var monitors: [Any] = []
@@ -22,31 +24,26 @@ final class UsageBoardPanelController {
         self.anchor
     }
 
-    func present(anchoredTo item: NSStatusItem) {
+    func present(anchoredTo item: NSStatusItem, reason: String) {
         let panel = self.ensurePanel()
         self.anchor = item
         self.place(panel, anchoredTo: item)
-        if !panel.isVisible {
-            panel.alphaValue = 0
-        }
-        // Accessory menu-bar apps stay inactive until something asks. Activating lets the board
-        // take key focus, and hidesOnDeactivate then dismisses it when another app is clicked.
-        NSApp.activate()
+        panel.alphaValue = 1
         panel.makeKeyAndOrderFront(nil)
-        NSAnimationContext.runAnimationGroup { context in
-            context.duration = 0.12
-            panel.animator().alphaValue = 1
-        }
+        // Do not hide when MenuBarAgent returns focus after the status-item click.
+        NSApp.activate()
         self.installMonitorsIfNeeded()
+        Self.log.info("usage board: open reason=\(reason, privacy: .public)")
     }
 
-    func dismiss() {
-        guard !self.isClosing else { return }
+    func dismiss(reason: String = "dismiss") {
+        guard self.isVisible, !self.isClosing else { return }
         self.isClosing = true
         defer { self.isClosing = false }
         self.removeMonitors()
         self.panel?.orderOut(nil)
         self.anchor = nil
+        Self.log.info("usage board: close reason=\(reason, privacy: .public)")
     }
 
     private func ensurePanel() -> NSPanel {
@@ -63,12 +60,13 @@ final class UsageBoardPanelController {
             backing: .buffered,
             defer: false)
         panel.isFloatingPanel = true
-        panel.level = .popUpMenu
-        panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary, .transient]
+        // .popUpMenu is torn down when menu-bar tracking ends, which hid the board on macOS 27.
+        panel.level = .floating
+        panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
         panel.isOpaque = false
         panel.backgroundColor = .clear
         panel.hasShadow = true
-        panel.hidesOnDeactivate = true
+        panel.hidesOnDeactivate = false
         panel.isMovable = false
         panel.title = "CodexBar"
         panel.alphaValue = 0
@@ -116,16 +114,31 @@ final class UsageBoardPanelController {
 
     private func installMonitorsIfNeeded() {
         guard self.monitors.isEmpty else { return }
-        let mouse = NSEvent.addLocalMonitorForEvents(matching: [.leftMouseDown, .rightMouseDown]) { [weak self] event in
+        let mouseMask: NSEvent.EventTypeMask = [.leftMouseDown, .rightMouseDown]
+        let mouse = NSEvent.addLocalMonitorForEvents(matching: mouseMask) { [weak self] event in
             // NSEvent is not Sendable. Copy the values the main actor needs, then hop.
             let windowID = event.window.map(ObjectIdentifier.init)
             let x = Double(event.locationInWindow.x)
             let y = Double(event.locationInWindow.y)
             let shouldClose = MainActor.assumeIsolated { () -> Bool in
                 guard let self else { return false }
-                return self.shouldCloseBoard(windowID: windowID, x: x, y: y)
+                return self.shouldCloseBoard(windowID: windowID, x: x, y: y, pointIsScreen: false)
             }
             return shouldClose ? nil : event
+        }
+        // Global monitors are not guaranteed to run on the main thread, and NSEvent is not Sendable.
+        let global = NSEvent.addGlobalMonitorForEvents(matching: mouseMask) { [weak self] event in
+            let windowID = event.window.map(ObjectIdentifier.init)
+            let x = Double(event.locationInWindow.x)
+            let y = Double(event.locationInWindow.y)
+            let pointIsScreen = event.window == nil
+            Task { @MainActor in
+                _ = self?.shouldCloseBoard(
+                    windowID: windowID,
+                    x: x,
+                    y: y,
+                    pointIsScreen: pointIsScreen)
+            }
         }
         let keys = NSEvent.addLocalMonitorForEvents(matching: [.keyDown]) { [weak self] event in
             let keyCode = event.keyCode
@@ -137,7 +150,7 @@ final class UsageBoardPanelController {
             }
             return consumed ? nil : event
         }
-        self.monitors = [mouse, keys].compactMap(\.self)
+        self.monitors = [mouse, global, keys].compactMap(\.self)
     }
 
     private func removeMonitors() {
@@ -147,12 +160,28 @@ final class UsageBoardPanelController {
         self.monitors.removeAll()
     }
 
-    private func shouldCloseBoard(windowID: ObjectIdentifier?, x: Double, y: Double) -> Bool {
-        guard self.isVisible else { return false }
-        if self.panel.map(ObjectIdentifier.init) == windowID { return false }
-        if self.anchorContains(windowID: windowID, x: x, y: y) { return false }
-        self.dismiss()
+    private func shouldCloseBoard(
+        windowID: ObjectIdentifier?,
+        x: Double,
+        y: Double,
+        pointIsScreen: Bool) -> Bool
+    {
+        guard self.isVisible, let panel = self.panel else { return false }
+        let point = NSPoint(x: x, y: y)
+        if pointIsScreen {
+            if panel.frame.contains(point) { return false }
+            if self.anchorScreenFrame()?.contains(point) == true { return false }
+        } else {
+            if ObjectIdentifier(panel) == windowID { return false }
+            if self.anchorContains(windowID: windowID, x: x, y: y) { return false }
+        }
+        self.dismiss(reason: "outside click")
         return true
+    }
+
+    private func anchorScreenFrame() -> NSRect? {
+        guard let button = self.anchor?.button, let window = button.window else { return nil }
+        return window.convertToScreen(button.convert(button.bounds, to: nil))
     }
 
     private func anchorContains(windowID: ObjectIdentifier?, x: Double, y: Double) -> Bool {
@@ -165,11 +194,12 @@ final class UsageBoardPanelController {
     }
 
     private func handleKey(keyCode: UInt16, modifierBits: UInt, characters: String?) -> Bool {
-        guard self.isVisible, self.panel?.isKeyWindow == true else { return false }
+        guard self.isVisible else { return false }
         if keyCode == 53 {
-            self.session.onCommand(.close)
+            self.dismiss(reason: "escape")
             return true
         }
+        guard self.panel?.isKeyWindow == true else { return false }
         if keyCode == 125 {
             self.session.selectAdjacent(1)
             return true

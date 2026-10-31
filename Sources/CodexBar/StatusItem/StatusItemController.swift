@@ -234,6 +234,8 @@ final class StatusItemController: NSObject, NSMenuDelegate, StatusItemControllin
     var creditsPurchaseWindow: OpenAICreditsPurchaseWindowController?
     var usageBoard: UsageBoardPanelController?
     var usageBoardClickUptime: TimeInterval = 0
+    var usageBoardOpenedAt: TimeInterval = 0
+    var lastUsageBoardClickTypeRaw: UInt?
     var isRedirectingUsageBoardMenu = false
     var isPresentingClassicMenu = false
 

@@ -55,15 +55,23 @@ extension StatusItemController {
         if event?.modifierFlags.contains(.option) == true { return false }
         let item = self.statusItemOwning(menu) ?? self.statusItem
         self.isRedirectingUsageBoardMenu = true
+        // A left click must not be eaten by an attached NSMenu. Cancel that menu and
+        // open the board unless this same click already did.
         item.menu = nil
-        Self.usageBoardLog.info("usage board: click")
+        let alreadyOpened = self.usageBoard?.isVisible == true
+            && ProcessInfo.processInfo.systemUptime - self.usageBoardOpenedAt < 0.5
+        if !alreadyOpened {
+            let identity = item.autosaveName ?? "status-item"
+            Self.usageBoardLog.info(
+                "usage board: click type=menuWillOpen button=\(identity, privacy: .public)")
+        }
         menu.cancelTrackingWithoutAnimation()
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             self.isRedirectingUsageBoardMenu = false
             self.bindPresentedInterface(for: item, menu: nil)
             if self.usageBoard?.isVisible != true {
-                self.toggleUsageBoard(anchoredTo: item)
+                self.toggleUsageBoard(anchoredTo: item, reason: "classic menu redirected")
             }
         }
         return true
@@ -75,32 +83,59 @@ extension StatusItemController {
     }
 
     @objc func handleUsageBoardStatusClick(_ sender: NSStatusBarButton) {
-        Self.usageBoardLog.info("usage board: click")
-        guard let item = self.statusItem(forStatusButton: sender) else { return }
-        let now = ProcessInfo.processInfo.systemUptime
-        if now - self.usageBoardClickUptime < 0.3 { return }
-        self.usageBoardClickUptime = now
         let event = NSApp.currentEvent
+        let typeName = Self.usageBoardEventTypeName(event?.type)
+        guard let item = self.statusItem(forStatusButton: sender) else { return }
+        let buttonName = item.autosaveName ?? sender.accessibilityIdentifier() ?? "status-button"
+        if self.shouldIgnoreDuplicateUsageBoardClick(type: event?.type) {
+            Self.usageBoardLog.debug(
+                "usage board: click ignored type=\(typeName, privacy: .public) button=\(buttonName, privacy: .public)")
+            return
+        }
+        Self.usageBoardLog.info(
+            "usage board: click type=\(typeName, privacy: .public) button=\(buttonName, privacy: .public)")
         let wantsClassicMenu = event?.type == .rightMouseDown
             || event?.type == .rightMouseUp
             || event?.modifierFlags.contains(.option) == true
         if wantsClassicMenu {
-            self.usageBoard?.dismiss()
+            self.usageBoard?.dismiss(reason: "classic menu")
             self.presentClassicMenu(for: item)
-            return
+        } else {
+            // Clear a menu AppKit may have reattached so the next left click is not swallowed.
+            if item.menu != nil {
+                item.menu = nil
+            }
+            self.toggleUsageBoard(anchoredTo: item, reason: "status item click")
         }
-        self.toggleUsageBoard(anchoredTo: item)
+        self.lastUsageBoardClickTypeRaw = event?.type.rawValue
+        self.usageBoardClickUptime = ProcessInfo.processInfo.systemUptime
     }
 
-    func toggleUsageBoard(anchoredTo item: NSStatusItem) {
+    func toggleUsageBoard(anchoredTo item: NSStatusItem, reason: String) {
         if self.usageBoard?.isVisible == true, self.usageBoard?.anchoredStatusItem() === item {
-            self.usageBoard?.dismiss()
+            let age = ProcessInfo.processInfo.systemUptime - self.usageBoardOpenedAt
+            if age < 0.5 {
+                let ageText = String(format: "%.2f", age)
+                Self.usageBoardLog.debug(
+                    "usage board: ignoring close, opened \(ageText, privacy: .public)s ago")
+                return
+            }
+            self.usageBoard?.dismiss(reason: reason)
             return
         }
         let board = self.ensureUsageBoard()
-        self.reloadUsageBoardContents(selecting: self.preferredBoardSelection(for: item))
-        board.present(anchoredTo: item)
-        self.store.noteMenuOpened()
+        let selection = self.preferredBoardSelection(for: item)
+        if board.session.providers.isEmpty {
+            board.session.isShowingSkeleton = true
+        }
+        board.present(anchoredTo: item, reason: reason)
+        self.usageBoardOpenedAt = ProcessInfo.processInfo.systemUptime
+        // Provider cards and menu actions are built after the panel is on screen.
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            self.reloadUsageBoardContents(selecting: selection)
+            self.store.noteMenuOpened()
+        }
     }
 
     func presentClassicMenu(for item: NSStatusItem) {
@@ -116,9 +151,35 @@ extension StatusItemController {
         guard let button = item.button else { return }
         button.target = self
         button.action = #selector(self.handleUsageBoardStatusClick(_:))
-        // Mouse-down is what the status item delivers. Mouse-up covers builds that only
-        // forward the release. The click handler debounces the pair.
-        button.sendAction(on: [.leftMouseDown, .leftMouseUp, .rightMouseDown, .rightMouseUp])
+        // One edge per button. Down and up together toggled the board open and closed
+        // in a single click once building the panel took longer than the debounce.
+        button.sendAction(on: [.leftMouseUp, .rightMouseUp])
+    }
+
+    private func shouldIgnoreDuplicateUsageBoardClick(type: NSEvent.EventType?) -> Bool {
+        let now = ProcessInfo.processInfo.systemUptime
+        guard now - self.usageBoardClickUptime < 0.5,
+              let type, let lastRaw = self.lastUsageBoardClickTypeRaw else { return false }
+        let last = NSEvent.EventType(rawValue: lastRaw)
+        if type == last { return true }
+        switch (last, type) {
+        case (.leftMouseDown, .leftMouseUp), (.leftMouseUp, .leftMouseDown),
+             (.rightMouseDown, .rightMouseUp), (.rightMouseUp, .rightMouseDown):
+            return true
+        default:
+            return false
+        }
+    }
+
+    private static func usageBoardEventTypeName(_ type: NSEvent.EventType?) -> String {
+        switch type {
+        case .leftMouseDown: "leftMouseDown"
+        case .leftMouseUp: "leftMouseUp"
+        case .rightMouseDown: "rightMouseDown"
+        case .rightMouseUp: "rightMouseUp"
+        case .none: "none"
+        default: "other"
+        }
     }
 
     private func isUsageBoardRootMenu(_ menu: NSMenu) -> Bool {
@@ -300,20 +361,20 @@ extension StatusItemController {
     private func performUsageBoardCommand(_ action: UsageBoardCommand.Action) {
         switch action {
         case .close:
-            self.usageBoard?.dismiss()
+            self.usageBoard?.dismiss(reason: "close command")
         case .classicMenu:
             let item = self.usageBoard?.anchoredStatusItem() ?? self.statusItem
-            self.usageBoard?.dismiss()
+            self.usageBoard?.dismiss(reason: "classic menu")
             self.presentClassicMenu(for: item)
         case .refresh:
             self.refreshNow()
         case let .refreshProvider(providerID):
             self.refreshUsageBoardProvider(providerID)
         case .settings:
-            self.usageBoard?.dismiss()
+            self.usageBoard?.dismiss(reason: "settings")
             self.showSettingsGeneral()
         case .quit:
-            self.usageBoard?.dismiss()
+            self.usageBoard?.dismiss(reason: "quit")
             self.quit()
         case let .menu(menuAction):
             self.performUsageBoardMenuAction(menuAction)
@@ -346,7 +407,7 @@ extension StatusItemController {
         case .copyError, .refresh, .refreshAugmentSession:
             break
         default:
-            self.usageBoard?.dismiss()
+            self.usageBoard?.dismiss(reason: "menu action")
         }
         switch action {
         case .dashboard:

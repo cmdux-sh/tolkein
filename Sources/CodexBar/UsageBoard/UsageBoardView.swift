@@ -62,6 +62,9 @@ struct UsageBoardView: View {
         if let provider = self.session.selectedProvider {
             return provider.name
         }
+        if self.session.isShowingSkeleton, self.session.providers.isEmpty {
+            return L("Refreshing")
+        }
         if self.session.providers.isEmpty {
             return L("No usage configured.")
         }
@@ -129,6 +132,11 @@ private struct UsageBoardSidebar: View {
                     accessibilitySummary: L("All providers"))
                 {
                     self.session.select(nil)
+                }
+                if self.session.isShowingSkeleton, self.session.providers.isEmpty {
+                    ForEach(0..<4, id: \.self) { _ in
+                        UsageBoardSkeletonRow()
+                    }
                 }
                 ForEach(self.session.providers) { provider in
                     UsageBoardSidebarRow(
@@ -239,6 +247,9 @@ private struct UsageBoardDetail: View {
                 VStack(alignment: .leading, spacing: 14) {
                     if let provider = self.session.selectedProvider {
                         self.selectedProviderDetail(provider, width: proxy.size.width)
+                    } else if self.session.isShowingSkeleton, self.session.providers.isEmpty {
+                        UsageBoardSkeletonDetail()
+                            .accessibilityLabel(L("Refreshing"))
                     } else if self.session.providers.isEmpty {
                         Text(L("No usage configured."))
                             .font(UsageBoardTheme.bodyFont)
@@ -640,6 +651,33 @@ struct UsageBoardCommandButton: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(self.title)
+    }
+}
+
+private struct UsageBoardSkeletonRow: View {
+    var body: some View {
+        RoundedRectangle(cornerRadius: 8, style: .continuous)
+            .fill(UsageBoardTheme.card)
+            .frame(height: 44)
+            .accessibilityHidden(true)
+    }
+}
+
+private struct UsageBoardSkeletonDetail: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                .fill(UsageBoardTheme.card)
+                .frame(height: 64)
+            HStack(spacing: 10) {
+                ForEach(0..<3, id: \.self) { _ in
+                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                        .fill(UsageBoardTheme.cardRaised)
+                        .frame(height: 108)
+                }
+            }
+        }
+        .accessibilityHidden(true)
     }
 }
 
