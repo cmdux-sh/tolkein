@@ -101,14 +101,14 @@ struct UsageBoardView: View {
 
     private var separator: some View {
         Rectangle()
-            .fill(UsageBoardTheme.separator)
+            .fill(UsageBoardTheme.hairline)
             .frame(height: 1)
             .accessibilityHidden(true)
     }
 
     private var separatorVertical: some View {
         Rectangle()
-            .fill(UsageBoardTheme.separator)
+            .fill(UsageBoardTheme.hairline)
             .frame(width: 1)
             .accessibilityHidden(true)
     }

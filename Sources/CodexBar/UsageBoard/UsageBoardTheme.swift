@@ -1,3 +1,4 @@
+import CodexBarCore
 import SwiftUI
 
 /// Fluid Functionalism tokens for the usage board, mapped onto macOS.
@@ -153,7 +154,7 @@ struct UsageBoardRowFrame: Equatable {
 }
 
 struct UsageBoardRowFramesKey: PreferenceKey {
-    static var defaultValue: [String: CGRect] = [:]
+    static let defaultValue: [String: CGRect] = [:]
 
     static func reduce(value: inout [String: CGRect], nextValue: () -> [String: CGRect]) {
         value.merge(nextValue(), uniquingKeysWith: { _, new in new })
