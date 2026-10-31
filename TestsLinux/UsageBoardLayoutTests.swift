@@ -4,11 +4,17 @@ import Testing
 @Suite
 struct UsageBoardLayoutTests {
     @Test
-    func `board is three times the classic menu column`() {
+    func `board grows toward the visible screen between a floor and a cap`() {
         #expect(UsageBoardLayout.classicMenuWidth == 310)
-        #expect(UsageBoardLayout.preferredWidth == 930)
-        #expect(UsageBoardLayout.fittedWidth(1600) == 930)
+        #expect(UsageBoardLayout.minimumWidth == 930)
+        #expect(UsageBoardLayout.maximumWidth == 1560)
+        #expect(UsageBoardLayout.preferredWidth == 1560)
+        #expect(UsageBoardLayout.fittedWidth(1800) == 1560)
+        #expect(UsageBoardLayout.fittedWidth(1600) == 1560)
+        #expect(UsageBoardLayout.fittedWidth(1200) == 1184)
         #expect(UsageBoardLayout.fittedWidth(800) == 784)
+        #expect(UsageBoardLayout.fittedHeight(1200) == 980)
+        #expect(UsageBoardLayout.fittedHeight(700) == 684)
     }
 
     @Test
@@ -98,5 +104,115 @@ struct UsageBoardLayoutTests {
     func `monogram uses the first letters of a multiword name`() {
         #expect(UsageBoardLayout.monogram(for: "Claude Platform") == "CP")
         #expect(UsageBoardLayout.monogram(for: "ElevenLabs") == "EL")
+    }
+
+    @Test
+    func `overview glance keeps session and weekly and drops extra lines`() {
+        let session = UsageBoardMetric(
+            id: "session",
+            title: "Session",
+            percent: 42,
+            percentText: "42% used",
+            resetText: "Resets in 2h 14m · Pace 30%",
+            detailText: "17% in deficit",
+            showsBar: true)
+        let extra = UsageBoardMetric(
+            id: "extra",
+            title: "Extra usage",
+            percent: 10,
+            percentText: "10% used",
+            resetText: "Lasts until reset",
+            detailText: "Includes extra usage",
+            showsBar: true)
+        let credits = UsageBoardMetric(
+            id: "credits",
+            title: "Credits",
+            percent: nil,
+            percentText: "$12.40 left",
+            resetText: nil,
+            detailText: nil,
+            showsBar: false)
+        let weekly = UsageBoardMetric(
+            id: "weekly",
+            title: "Weekly",
+            percent: 61,
+            percentText: "61% left",
+            resetText: "Resets Mon 9:00 AM",
+            detailText: "Runs out in 26d",
+            showsBar: true)
+        let glance = UsageBoardLayout.glanceMetrics([session, extra, credits, weekly])
+        #expect(glance.map(\.id) == ["session", "weekly"])
+        #expect(UsageBoardLayout.shortPercent("42% used") == "42%")
+        #expect(UsageBoardLayout.shortPercent("61% left") == "61%")
+        #expect(UsageBoardLayout.shortPercent("$12.40 left") == "$12.40 left")
+        #expect(UsageBoardLayout.shortReset("Resets in 2h 14m · Pace 30%") == "2h 14m")
+        #expect(UsageBoardLayout.shortReset("Resets Mon 9:00 AM") == "Mon 9:00 AM")
+        #expect(UsageBoardLayout.shortReset("Lasts until reset") == nil)
+        #expect(UsageBoardLayout.shortReset("17% in deficit · Runs out in 2h") == nil)
+    }
+
+    @Test
+    func `masonry places the next card in the shortest column`() {
+        let placements = UsageBoardLayout.masonryPlacements(
+            itemHeights: [40, 20, 30, 10],
+            columnCount: 2,
+            columnWidth: 100,
+            spacing: 8)
+        #expect(placements.map(\.column) == [0, 1, 1, 0])
+        #expect(placements.map(\.x) == [0, 108, 108, 0])
+        #expect(placements.map(\.y) == [0, 0, 28, 48])
+        #expect(UsageBoardLayout.masonryContentHeight(of: placements) == 58)
+
+        let ties = UsageBoardLayout.masonryPlacements(
+            itemHeights: [10, 10, 10],
+            columnCount: 2,
+            columnWidth: 50,
+            spacing: 0)
+        #expect(ties.map(\.column) == [0, 1, 0])
+        #expect(ties.map(\.y) == [0, 0, 10])
+        #expect(UsageBoardLayout.masonryPlacements(
+            itemHeights: [],
+            columnCount: 3,
+            columnWidth: 100,
+            spacing: 4).isEmpty)
+    }
+
+    @Test
+    func `masonry uses the width and adds columns so the overview can fit without scrolling`() {
+        #expect(UsageBoardLayout.masonryColumnCount(
+            itemCount: 12,
+            availableWidth: 1000,
+            minimumColumnWidth: 240,
+            spacing: 4) == 4)
+        #expect(UsageBoardLayout.masonryColumnWidth(
+            availableWidth: 1000,
+            columnCount: 4,
+            spacing: 4) == 247)
+        let comfortable = UsageBoardLayout.masonryColumnCountFitting(
+            itemHeights: Array(repeating: 72, count: 12),
+            availableWidth: 1000,
+            availableHeight: 400,
+            minimumColumnWidth: 240,
+            spacing: 4)
+        #expect(comfortable == 4)
+        let packed = UsageBoardLayout.masonryPlacements(
+            itemHeights: Array(repeating: 72, count: 12),
+            columnCount: comfortable,
+            columnWidth: 247,
+            spacing: 4)
+        #expect(UsageBoardLayout.masonryContentHeight(of: packed) <= 400)
+
+        let tight = UsageBoardLayout.masonryColumnCountFitting(
+            itemHeights: Array(repeating: 80, count: 40),
+            availableWidth: 1000,
+            availableHeight: 400,
+            minimumColumnWidth: 240,
+            spacing: 4)
+        #expect(tight == 6)
+        let tightWidth = UsageBoardLayout.masonryColumnWidth(
+            availableWidth: 1000,
+            columnCount: tight,
+            spacing: 4)
+        #expect(tightWidth >= 160)
     }
 }

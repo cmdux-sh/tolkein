@@ -71,9 +71,9 @@ final class UsageBoardPanelController {
         panel.title = "CodexBar"
         panel.alphaValue = 0
 
-        let hosting = NSHostingView(rootView: UsageBoardView(session: self.session))
+        let hosting = UsageBoardHostingView(rootView: UsageBoardView(session: self.session))
         hosting.translatesAutoresizingMaskIntoConstraints = false
-        let container = NSView(frame: panel.contentView?.bounds ?? .zero)
+        let container = UsageBoardContainerView(frame: panel.contentView?.bounds ?? .zero)
         container.wantsLayer = true
         container.layer?.backgroundColor = NSColor(
             srgbRed: 12 / 255,
@@ -234,5 +234,18 @@ private final class UsageBoardPanel: NSPanel {
 
     override var canBecomeMain: Bool {
         false
+    }
+}
+
+/// The board is a non-activating panel. Without this, the first click only focuses the window.
+private final class UsageBoardHostingView<Content: View>: NSHostingView<Content> {
+    override func acceptsFirstMouse(for event: NSEvent?) -> Bool {
+        true
+    }
+}
+
+private final class UsageBoardContainerView: NSView {
+    override func acceptsFirstMouse(for event: NSEvent?) -> Bool {
+        true
     }
 }

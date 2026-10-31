@@ -2,16 +2,15 @@ import AppKit
 import CodexBarCore
 import SwiftUI
 
-// Layout, at the classic menu's 310pt column × 3 = 930pt:
+// The board grows toward the visible screen (floor 930, cap 1560):
 //
-// ┌ Sidebar 248 ┬ Detail ──────────────────────────────────────────┐
-// │ All         │ Claude · Pro                          email      │
-// │ Claude  42% │ ┌ Session ────┐ ┌ Weekly ─────┐ ┌ Credits ────┐ │
-// │ Codex   18% │ │ 42%  2h 14m │ │ 61%  Mon 9a │ │ $12.40 left │ │
-// │ Cursor  Sign│ └─────────────┘ └─────────────┘ └─────────────┘ │
-// │ Gemini      │ notes, model lanes, and cost lines (scroll)     │
+// ┌ Sidebar 248 ┬ Detail, masonry, no scroll on All ──────────────┐
+// │ All         │ Claude   Session ████ 42%  2h    Weekly ██ 61%  │
+// │ Claude  42% │ Codex    Session ██ 18%  4h      Weekly █ 12%   │
+// │ Codex   18% │ Cursor   Needs sign-in                          │
+// │ Cursor  Sign│ Gemini   Session ████ 70%  1d                   │
 // └─────────────┴──────────────────────────────────────────────────┘
-// Footer: classic menu (charts, accounts, agent sessions) · refresh · settings
+// One provider still scrolls and keeps credits, notes, and commands.
 
 struct UsageBoardView: View {
     @Bindable var session: UsageBoardSession
@@ -126,7 +125,7 @@ private struct UsageBoardSidebar: View {
         ScrollView {
             ZStack(alignment: .topLeading) {
                 self.hoverHighlight
-                LazyVStack(alignment: .leading, spacing: 0) {
+                VStack(alignment: .leading, spacing: 0) {
                     self.allRow
                     if self.session.isShowingSkeleton, self.session.providers.isEmpty {
                         ForEach(0..<4, id: \.self) { _ in
@@ -141,6 +140,7 @@ private struct UsageBoardSidebar: View {
             .coordinateSpace(name: "usageBoardSidebar")
             .padding(UsageBoardMetrics.pad)
             .onPreferenceChange(UsageBoardRowFramesKey.self) { frames in
+                guard frames != self.frames else { return }
                 self.frames = frames
                 if let hoveredID, let frame = frames[hoveredID] {
                     self.restingFrame = frame
@@ -278,13 +278,19 @@ private struct UsageBoardSidebarRow: View {
             }
             .background {
                 GeometryReader { proxy in
-                    Color.clear.preference(
-                        key: UsageBoardRowFramesKey.self,
-                        value: [self.id: proxy.frame(in: .named("usageBoardSidebar"))])
+                    Color.clear
+                        .preference(
+                            key: UsageBoardRowFramesKey.self,
+                            value: [self.id: proxy.frame(in: .named("usageBoardSidebar"))])
+                        .allowsHitTesting(false)
                 }
+                .allowsHitTesting(false)
             }
+            .contentShape(Rectangle())
         }
-        .buttonStyle(.plain)
+        .buttonStyle(UsageBoardHitButtonStyle())
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .contentShape(Rectangle())
         .focused(self.focus, equals: self.id)
         .accessibilityLabel(self.accessibilitySummary)
         .accessibilityAddTraits(self.isSelected ? AccessibilityTraits.isSelected : AccessibilityTraits())
@@ -296,54 +302,51 @@ private struct UsageBoardDetail: View {
 
     var body: some View {
         GeometryReader { proxy in
-            ScrollView {
-                VStack(alignment: .leading, spacing: UsageBoardMetrics.gapComfortable) {
-                    if let provider = self.session.selectedProvider {
-                        self.selectedProviderDetail(provider, width: proxy.size.width)
-                    } else if self.session.isShowingSkeleton, self.session.providers.isEmpty {
-                        UsageBoardSkeletonDetail()
-                            .accessibilityLabel(L("Refreshing"))
-                    } else if self.session.providers.isEmpty {
-                        Text(L("No usage configured."))
-                            .boardFont(.body)
-                            .foregroundStyle(UsageBoardTheme.secondaryText)
-                    } else {
-                        self.overview(width: proxy.size.width)
-                    }
+            if let provider = self.session.selectedProvider {
+                ScrollView {
+                    self.selectedProviderDetail(provider, width: proxy.size.width)
+                        .padding(UsageBoardMetrics.windowPad)
+                        .frame(maxWidth: .infinity, alignment: .topLeading)
                 }
-                .padding(UsageBoardMetrics.windowPad)
-                .frame(maxWidth: .infinity, alignment: .topLeading)
+            } else if self.session.isShowingSkeleton, self.session.providers.isEmpty {
+                UsageBoardSkeletonDetail()
+                    .padding(UsageBoardMetrics.windowPad)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                    .accessibilityLabel(L("Refreshing"))
+            } else if self.session.providers.isEmpty {
+                Text(L("No usage configured."))
+                    .boardFont(.body)
+                    .foregroundStyle(UsageBoardTheme.secondaryText)
+                    .padding(UsageBoardMetrics.windowPad)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            } else {
+                self.overview(size: proxy.size)
             }
         }
     }
 
-    private func overview(width: CGFloat) -> some View {
+    private func overview(size: CGSize) -> some View {
         let inset = UsageBoardMetrics.windowPad
-        let contentWidth = max(0, width - inset * 2)
-        let columnCount = UsageBoardLayout.metricColumnCount(
-            detailWidth: Double(contentWidth),
-            itemCount: self.session.providers.count)
-        let columnGap = UsageBoardMetrics.gap
-        let columnWidth = (contentWidth - columnGap * CGFloat(max(0, columnCount - 1))) / CGFloat(columnCount)
-        let columns = Array(
-            repeating: GridItem(.flexible(minimum: 160), spacing: columnGap, alignment: .top),
-            count: columnCount)
-        return LazyVGrid(columns: columns, alignment: .leading, spacing: columnGap) {
+        let contentWidth = max(0, size.width - inset * 2)
+        let contentHeight = max(0, size.height - inset * 2)
+        return UsageBoardMasonryLayout(
+            minimumColumnWidth: CGFloat(UsageBoardLayout.overviewMinimumColumnWidth),
+            spacing: UsageBoardMetrics.gap,
+            maximumHeight: contentHeight)
+        {
             ForEach(self.session.providers) { provider in
-                Button {
+                UsageBoardOverviewCard(
+                    provider: provider,
+                    icon: self.session.icon(provider.id))
+                {
                     self.session.select(provider.id)
-                } label: {
-                    UsageBoardProviderCard(
-                        provider: provider,
-                        icon: self.session.icon(provider.id),
-                        metricWidth: max(0, columnWidth - UsageBoardMetrics.pad * 2),
-                        commands: [],
-                        showsClassicHint: false,
-                        onCommand: { _ in })
                 }
-                .buttonStyle(.plain)
             }
         }
+        .frame(width: contentWidth, height: contentHeight, alignment: .topLeading)
+        .clipped()
+        .padding(inset)
+        .frame(width: size.width, height: size.height, alignment: .topLeading)
     }
 
     private func selectedProviderDetail(_ provider: UsageBoardProvider, width: CGFloat) -> some View {
@@ -354,6 +357,109 @@ private struct UsageBoardDetail: View {
             commands: self.session.providerCommands,
             showsClassicHint: true,
             onCommand: self.session.onCommand)
+    }
+}
+
+private struct UsageBoardOverviewCard: View {
+    let provider: UsageBoardProvider
+    let icon: NSImage?
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: self.action) {
+            VStack(alignment: .leading, spacing: UsageBoardMetrics.gap) {
+                self.header
+                let glance = UsageBoardLayout.glanceMetrics(self.provider.metrics)
+                if glance.isEmpty, self.provider.attention == .ready {
+                    Text(L("No windows reported yet."))
+                        .boardFont(.micro)
+                        .foregroundStyle(UsageBoardTheme.secondaryText)
+                        .lineLimit(1)
+                } else {
+                    ForEach(glance) { metric in
+                        UsageBoardGlanceMetric(metric: metric)
+                    }
+                }
+            }
+            .padding(UsageBoardMetrics.pad)
+            .frame(maxWidth: .infinity, alignment: .topLeading)
+            .background(
+                RoundedRectangle(cornerRadius: UsageBoardMetrics.radiusCard, style: .continuous)
+                    .fill(UsageBoardTheme.card))
+            .boardHairline(radius: UsageBoardMetrics.radiusCard)
+            .contentShape(RoundedRectangle(cornerRadius: UsageBoardMetrics.radiusCard, style: .continuous))
+        }
+        .buttonStyle(UsageBoardHitButtonStyle())
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .contentShape(RoundedRectangle(cornerRadius: UsageBoardMetrics.radiusCard, style: .continuous))
+        .accessibilityLabel(self.accessibilitySummary)
+    }
+
+    private var header: some View {
+        HStack(spacing: UsageBoardMetrics.gap) {
+            UsageBoardIconBadge(monogram: self.provider.monogram, icon: self.icon)
+            Text(self.provider.name)
+                .boardFont(.subtitle, weight: .semibold)
+                .lineLimit(1)
+            Spacer(minLength: UsageBoardMetrics.gap)
+            if self.provider.attention != .ready,
+               let status = UsageBoardStatusText.label(for: self.provider.attention)
+            {
+                UsageBoardStatusBadge(text: status, attention: self.provider.attention)
+            } else if let plan = self.provider.planText, !plan.isEmpty {
+                Text(plan)
+                    .boardFont(.micro)
+                    .foregroundStyle(UsageBoardTheme.secondaryText)
+                    .lineLimit(1)
+            }
+        }
+    }
+
+    private var accessibilitySummary: String {
+        var parts = [self.provider.name]
+        if let status = UsageBoardStatusText.label(for: self.provider.attention) {
+            parts.append(status)
+        }
+        let glance = UsageBoardLayout.glanceMetrics(self.provider.metrics)
+        parts.append(contentsOf: glance.map(\.accessibilitySummary))
+        return parts.joined(separator: ", ")
+    }
+}
+
+private struct UsageBoardGlanceMetric: View {
+    let metric: UsageBoardMetric
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: UsageBoardMetrics.gap) {
+            HStack(spacing: UsageBoardMetrics.gap) {
+                Text(self.metric.title)
+                    .boardFont(.micro)
+                    .foregroundStyle(UsageBoardTheme.secondaryText)
+                    .lineLimit(1)
+                Spacer(minLength: UsageBoardMetrics.gap)
+                Text(UsageBoardLayout.shortPercent(self.metric.percentText))
+                    .boardFont(.caption, weight: .semibold, digits: true)
+                    .foregroundStyle(UsageBoardTheme.primaryText)
+                    .lineLimit(1)
+                if let reset = UsageBoardLayout.shortReset(self.metric.resetText) {
+                    Text(reset)
+                        .boardFont(.micro, digits: true)
+                        .foregroundStyle(UsageBoardTheme.secondaryText)
+                        .lineLimit(1)
+                }
+            }
+            if self.metric.showsBar, let percent = self.metric.percent {
+                UsageBoardProgressBar(percent: percent, pacePercent: nil)
+            }
+        }
+        .accessibilityHidden(true)
+    }
+}
+
+private struct UsageBoardHitButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .contentShape(Rectangle())
     }
 }
 
@@ -713,8 +819,9 @@ struct UsageBoardCommandButton: View {
                 RoundedRectangle(cornerRadius: UsageBoardMetrics.radiusItem, style: .continuous)
                     .fill(UsageBoardTheme.card))
             .boardHairline(radius: UsageBoardMetrics.radiusItem)
+            .contentShape(Rectangle())
         }
-        .buttonStyle(.plain)
+        .buttonStyle(UsageBoardHitButtonStyle())
         .accessibilityLabel(self.title)
     }
 }
@@ -749,6 +856,6 @@ private struct UsageBoardSkeletonDetail: View {
 #if DEBUG
 #Preview("Usage board") {
     UsageBoardView(session: UsageBoardPreviewData.session())
-        .frame(width: 930, height: 640)
+        .frame(width: 1280, height: 860)
 }
 #endif
