@@ -1,16 +1,35 @@
 import AppKit
 import CodexBarCore
+import os
 
 extension StatusItemController {
+    private static let usageBoardLog = Logger(subsystem: "com.steipete.codexbar", category: "app")
+
+    /// Packaged CodexBar.app always uses the board. Test hosts are not `.app` bundles, so they
+    /// keep the classic menu. `TestProcessSafety` alone is too broad to be the production gate.
     static var prefersUsageBoard: Bool {
-        !SettingsStore.isRunningTests
+        if ProcessInfo.processInfo.environment["CODEXBAR_FORCE_CLASSIC_MENU"] == "1" {
+            return false
+        }
+        if Bundle.main.bundleURL.pathExtension.caseInsensitiveCompare("app") == .orderedSame {
+            return true
+        }
+        return !SettingsStore.isRunningTests
     }
 
     func bindPresentedInterface(for item: NSStatusItem, menu: NSMenu?) {
         if Self.prefersUsageBoard {
+            let hadMenu = item.menu != nil
+            let button = item.button
+            let actionWasBound = button?.action == #selector(self.handleUsageBoardStatusClick(_:))
+                && button?.target === self
             self.installUsageBoardClick(on: item)
             if item.menu != nil {
                 item.menu = nil
+            }
+            if button != nil, hadMenu || !actionWasBound {
+                let identity = item.autosaveName ?? "status-item"
+                Self.usageBoardLog.info("usage board: bound status item \(identity, privacy: .public)")
             }
             return
         }
@@ -19,15 +38,52 @@ extension StatusItemController {
         }
     }
 
+    func reassertVisibleUsageBoardBindings() {
+        guard Self.prefersUsageBoard else { return }
+        self.bindPresentedInterface(for: self.statusItem, menu: nil)
+        for item in self.statusItems.values {
+            self.bindPresentedInterface(for: item, menu: nil)
+        }
+    }
+
+    func redirectOpenRootMenuToUsageBoard(_ menu: NSMenu) -> Bool {
+        guard Self.prefersUsageBoard, !self.isPresentingClassicMenu else { return false }
+        if self.isRedirectingUsageBoardMenu { return true }
+        guard menu.supermenu == nil, self.isUsageBoardRootMenu(menu) else { return false }
+        let event = NSApp.currentEvent
+        if event?.type == .rightMouseDown || event?.type == .rightMouseUp { return false }
+        if event?.modifierFlags.contains(.option) == true { return false }
+        let item = self.statusItemOwning(menu) ?? self.statusItem
+        self.isRedirectingUsageBoardMenu = true
+        item.menu = nil
+        Self.usageBoardLog.info("usage board: click")
+        menu.cancelTrackingWithoutAnimation()
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            self.isRedirectingUsageBoardMenu = false
+            self.bindPresentedInterface(for: item, menu: nil)
+            if self.usageBoard?.isVisible != true {
+                self.toggleUsageBoard(anchoredTo: item)
+            }
+        }
+        return true
+    }
+
     func reloadUsageBoardIfVisible() {
         guard Self.prefersUsageBoard, self.usageBoard?.isVisible == true else { return }
         self.reloadUsageBoardContents()
     }
 
     @objc func handleUsageBoardStatusClick(_ sender: NSStatusBarButton) {
+        Self.usageBoardLog.info("usage board: click")
         guard let item = self.statusItem(forStatusButton: sender) else { return }
+        let now = ProcessInfo.processInfo.systemUptime
+        if now - self.usageBoardClickUptime < 0.3 { return }
+        self.usageBoardClickUptime = now
         let event = NSApp.currentEvent
-        let wantsClassicMenu = event?.type == .rightMouseDown || event?.modifierFlags.contains(.option) == true
+        let wantsClassicMenu = event?.type == .rightMouseDown
+            || event?.type == .rightMouseUp
+            || event?.modifierFlags.contains(.option) == true
         if wantsClassicMenu {
             self.usageBoard?.dismiss()
             self.presentClassicMenu(for: item)
@@ -49,6 +105,8 @@ extension StatusItemController {
 
     func presentClassicMenu(for item: NSStatusItem) {
         guard let menu = self.classicMenu(for: item), let button = item.button else { return }
+        self.isPresentingClassicMenu = true
+        defer { self.isPresentingClassicMenu = false }
         menu.popUp(positioning: nil, at: NSPoint(x: 0, y: button.bounds.height), in: button)
     }
 }
@@ -58,7 +116,25 @@ extension StatusItemController {
         guard let button = item.button else { return }
         button.target = self
         button.action = #selector(self.handleUsageBoardStatusClick(_:))
-        button.sendAction(on: [.leftMouseDown, .rightMouseDown])
+        // Mouse-down is what the status item delivers. Mouse-up covers builds that only
+        // forward the release. The click handler debounces the pair.
+        button.sendAction(on: [.leftMouseDown, .leftMouseUp, .rightMouseDown, .rightMouseUp])
+    }
+
+    private func isUsageBoardRootMenu(_ menu: NSMenu) -> Bool {
+        if menu === self.mergedMenu || menu === self.fallbackMenu { return true }
+        return self.providerMenus.values.contains { $0 === menu }
+    }
+
+    private func statusItemOwning(_ menu: NSMenu) -> NSStatusItem? {
+        if menu === self.mergedMenu { return self.statusItem }
+        for (instanceID, providerMenu) in self.providerMenus where providerMenu === menu {
+            return self.statusItems[instanceID]
+        }
+        if menu === self.fallbackMenu {
+            return self.statusItems.values.first ?? self.statusItem
+        }
+        return nil
     }
 
     private func ensureUsageBoard() -> UsageBoardPanelController {

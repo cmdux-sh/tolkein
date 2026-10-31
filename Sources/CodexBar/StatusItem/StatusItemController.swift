@@ -233,6 +233,9 @@ final class StatusItemController: NSObject, NSMenuDelegate, StatusItemControllin
 
     var creditsPurchaseWindow: OpenAICreditsPurchaseWindowController?
     var usageBoard: UsageBoardPanelController?
+    var usageBoardClickUptime: TimeInterval = 0
+    var isRedirectingUsageBoardMenu = false
+    var isPresentingClassicMenu = false
 
     var activeLoginProvider: UsageProvider? {
         didSet {
@@ -719,6 +722,7 @@ final class StatusItemController: NSObject, NSMenuDelegate, StatusItemControllin
         self.lastObservedStoreIconWorkSignature = precomputedStoreIconSignature ?? self.storeIconObservationSignature()
         self.beginIconPerfUpdatePass()
         defer {
+            self.reassertVisibleUsageBoardBindings()
             self.endIconPerfUpdatePass()
             MainThreadActivityBreadcrumb.pop()
         }
@@ -770,6 +774,7 @@ final class StatusItemController: NSObject, NSMenuDelegate, StatusItemControllin
         self.lastAppliedProviderIconRenderSignatures.removeAll()
         self.updateVisibility()
         self.updateIcons()
+        self.reassertVisibleUsageBoardBindings()
     }
 
     private func updateVisibility() {

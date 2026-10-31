@@ -82,7 +82,7 @@ extension StatusItemController {
         if let existing = self.statusItems[provider.instanceID] {
             return existing
         }
-        return Self.makeStatusItem(
+        let item = Self.makeStatusItem(
             create: self.statusBar.statusItem(withLength:),
             identity: .provider(provider.instanceID),
             defaults: self.settings.userDefaults,
@@ -94,5 +94,9 @@ extension StatusItemController {
                 self.statusItems[provider.instanceID] = item
                 onCreated?(item)
             })
+        if Self.prefersUsageBoard {
+            self.bindPresentedInterface(for: item, menu: nil)
+        }
+        return item
     }
 }
