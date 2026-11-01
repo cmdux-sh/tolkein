@@ -18,12 +18,13 @@ struct UsageBoardLayoutTests {
     }
 
     @Test
-    func `metric columns use the detail width`() {
+    func `detail stats use two or three compact columns`() {
         #expect(UsageBoardLayout.metricColumnCount(detailWidth: 680, itemCount: 4) == 3)
-        #expect(UsageBoardLayout.metricColumnCount(detailWidth: 680, itemCount: 2) == 2)
+        #expect(UsageBoardLayout.metricColumnCount(detailWidth: 680, itemCount: 2) == 3)
+        #expect(UsageBoardLayout.metricColumnCount(detailWidth: 900, itemCount: 1) == 3)
         #expect(UsageBoardLayout.metricColumnCount(detailWidth: 480, itemCount: 4) == 2)
         #expect(UsageBoardLayout.metricColumnCount(detailWidth: 320, itemCount: 4) == 1)
-        #expect(UsageBoardLayout.metricColumnCount(detailWidth: 900, itemCount: 1) == 1)
+        #expect(UsageBoardLayout.metricColumnCount(detailWidth: 900, itemCount: 0) == 1)
     }
 
     @Test

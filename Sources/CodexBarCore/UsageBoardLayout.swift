@@ -231,14 +231,15 @@ package enum UsageBoardLayout {
         metrics.contains { $0.id == metric.id }
     }
 
-    /// How many window cards fit beside each other in the detail pane.
+    /// How many compact stat tiles share a row in the provider detail.
+    /// A wide pane uses three columns even for a single tile, so one value does not stretch across the pane.
     package static func metricColumnCount(detailWidth: Double, itemCount: Int) -> Int {
-        guard itemCount > 1 else { return 1 }
-        if detailWidth >= 620, itemCount >= 3 {
-            return min(3, itemCount)
+        guard itemCount > 0 else { return 1 }
+        if detailWidth >= 640 {
+            return 3
         }
         if detailWidth >= 400 {
-            return min(2, itemCount)
+            return 2
         }
         return 1
     }
