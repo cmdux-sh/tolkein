@@ -10,7 +10,7 @@ It is a short glue program: spawn CodexBar, merge a YAML file, POST JSON. Python
 
 The collector runs `codexbar usage --provider <id> --json` and does **not** pass `--source`. On CodexBar 0.80.0, `--json` selects JSON output and the default source is `auto`. Warp rejects `cli`, and Grok's explicit `cli` source failed on the Mac that produced the fixtures. Account emails and identity objects are stripped before the POST. Service tokens never leave the Mac.
 
-The LaunchAgent starts **Tolkeins Collector.app**, a small signed helper. The helper stays running and spawns `python3 -m tolkeins`, which spawns CodexBar. macOS attributes Chrome cookie access to that helper, so Gemini and Claude Platform can be granted once under Files & Folders. The helper is signed with a certificate `install.sh` creates on the Mac. That certificate is the stable identity across later installs. The mini has no Apple Developer certificate, and an ad-hoc signature would be a new identity on every rebuild.
+The LaunchAgent starts **Tolkeins Collector.app**, a small signed helper. The helper stays running and spawns `python3 -m tolkeins`, which spawns CodexBar. macOS attributes Chrome folder access to that helper. Cookie decryption still needs CodexBar itself allowed on the **Chrome Safe Storage** Keychain item; `collector/grant-chrome-keychain.sh` is the one-time Terminal step. The helper is signed with an Apple Development or Developer ID identity when one is installed, and otherwise with a local certificate `install.sh` creates. Ad-hoc signatures are not used, because each rebuild would be a new identity.
 
 ## 1. Sign CodexBar in
 
@@ -43,13 +43,15 @@ Set `renewsOn`, `plan`, and `price` for each service. For Grok Bot, set `usedPer
 On the Mac mini, from this repo:
 
 ```bash
-chmod +x collector/install.sh collector/uninstall.sh collector/verify-chrome.sh collector/macos/*.sh
+chmod +x collector/install.sh collector/uninstall.sh collector/verify-chrome.sh collector/grant-chrome-keychain.sh collector/macos/*.sh
 ./collector/install.sh
 ```
 
 This copies the package to `~/.local/share/tolkeins`, creates `~/.config/tolkeins/` (mode 700) and `config.env` (mode 600) if they are missing, and loads a user LaunchAgent (`com.tolkeins.collector`, every 10 minutes). It leaves an existing `config.env` and `subscriptions.yaml` in place. Logs go to `~/Library/Logs/tolkeins/`.
 
-The agent program is `~/Applications/Tolkeins Collector.app` (bundle id `com.tolkeins.collector`). `install.sh` signs that app with a self-signed certificate named `Tolkeins Collector`. The certificate and its key stay in `~/.config/tolkeins/codesign/` (mode 700) and in the keychain `tolkeins-collector`. macOS may ask you to approve a certificate-trust change the first time. Approve it. Re-running the installer reuses the same certificate, so the Chrome grant survives a later install. The script does not print the keychain password, the signing key, or `WRITE_TOKEN`.
+The agent program is `~/Applications/Tolkeins Collector.app` (bundle id `com.tolkeins.collector`). `install.sh` signs that app with the first **Apple Development** identity from `security find-identity -p codesigning`, then a **Developer ID Application** identity, then a self-signed certificate named `Tolkeins Collector` when neither Apple identity exists. `TOLKEINS_SIGN_IDENTITY` forces one of those names, or `local` for the self-signed certificate. The local key stays in `~/.config/tolkeins/codesign/` (mode 700) and the keychain `tolkeins-collector`, and is created only for that fallback. The script does not print the keychain password, the signing key, or `WRITE_TOKEN`.
+
+Switching identity changes the designated requirement. Turn Chrome on again for Tolkeins Collector after that. Re-running the installer with the same identity keeps the grant.
 
 ### Grant Chrome once
 
@@ -57,9 +59,21 @@ The agent program is `~/Applications/Tolkeins Collector.app` (bundle id `com.tol
 2. Open **System Settings → Privacy & Security → Files and Folders**.
 3. Under **Tolkeins Collector**, turn **Chrome** on.
 4. CodexBar's error text says to enable Chrome under CodexBar. For this agent the switch that applies is **Tolkeins Collector**. Leave Full Disk Access for `/usr/bin/python3` off.
-5. Run `./collector/verify-chrome.sh` again.
+5. Run `./collector/verify-chrome.sh` again. If the error is Chrome Safe Storage / Keychain permission, continue below.
 
-A passing run prints `gemini ok` and `claudeplatform ok` with window counts, then `result=pass`. It prints usage numbers only.
+### Grant Chrome Safe Storage once
+
+Chrome encrypts cookies with the Keychain item `Chrome Safe Storage`. CodexBar's `usage` command is a background read and will not show a prompt, including from the LaunchAgent. In Terminal.app:
+
+```bash
+./collector/grant-chrome-keychain.sh
+```
+
+When macOS asks CodexBar to use **Chrome Safe Storage**, click **Always Allow**. Allow Once does not cover the later LaunchAgent run. If the dialog names Terminal or python3, click Deny and add `/Applications/CodexBar.app/Contents/Helpers/CodexBarCLI` (the script prints the resolved path) under that item's Access Control. Do not reveal the password.
+
+Then run `./collector/verify-chrome.sh` again.
+
+A passing run prints `gemini ok` and `claudeplatform ok` with window counts, then `result=pass`. It prints the full provider error text, with emails and token-like strings redacted.
 
 `cursor` still needs a cursor.com sign-in. The helper does not do that. A `needs-sign-in` line for cursor is the same state as before.
 

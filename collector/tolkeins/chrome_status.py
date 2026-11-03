@@ -22,12 +22,12 @@ SECRET_LINE_RE = re.compile(
     r"(WRITE_TOKEN\s*=|Bearer\s+\S+|wk-[A-Za-z0-9]|sk-[A-Za-z0-9]|PRIVATE KEY)"
 )
 CHROME_GRANT_HINTS = ("chrome's profile", "files & folders", "files and folders")
+KEYCHAIN_GRANT_HINTS = ("keychain permission", "safe storage")
 
 
 def redact(text: str) -> str:
     cleaned = EMAIL_RE.sub("[redacted-email]", text)
-    cleaned = TOKEN_RE.sub("[redacted]", cleaned)
-    return cleaned[:180]
+    return TOKEN_RE.sub("[redacted]", cleaned)
 
 
 def filter_stderr(text: str) -> str:
@@ -36,7 +36,7 @@ def filter_stderr(text: str) -> str:
         line = raw.strip()
         if not line or SECRET_LINE_RE.search(line) or "@" in line:
             continue
-        kept.append(line[:240])
+        kept.append(line)
     return "\n".join(kept)
 
 
@@ -54,10 +54,15 @@ def summarize_providers(
 
 
 def chrome_grant_needed(snapshot: dict[str, Any]) -> bool:
-    for line in summarize_providers(snapshot):
-        if "grant=tolkeins-collector-chrome" in line:
-            return True
-    return False
+    return _grant_needed(snapshot, "grant=tolkeins-collector-chrome")
+
+
+def keychain_grant_needed(snapshot: dict[str, Any]) -> bool:
+    return _grant_needed(snapshot, "grant=chrome-safe-storage")
+
+
+def _grant_needed(snapshot: dict[str, Any], marker: str) -> bool:
+    return any(marker in line for line in summarize_providers(snapshot))
 
 
 def _provider_line(provider_id: str, service: dict[str, Any] | None) -> str:
@@ -71,8 +76,11 @@ def _provider_line(provider_id: str, service: dict[str, Any] | None) -> str:
         message = error.get("message") if isinstance(error.get("message"), str) else ""
         safe = redact(message)
         line = f"{provider_id} {kind} windows=0 message={safe}"
-        if any(hint in message.lower() for hint in CHROME_GRANT_HINTS):
+        lowered = message.lower()
+        if any(hint in lowered for hint in CHROME_GRANT_HINTS):
             line += " grant=tolkeins-collector-chrome"
+        if any(hint in lowered for hint in KEYCHAIN_GRANT_HINTS):
+            line += " grant=chrome-safe-storage"
         return line
     parts = [f"{provider_id} ok windows={len(window_list)}"]
     for window in window_list:
@@ -124,6 +132,15 @@ def render_report(snapshot: dict[str, Any] | None, stderr_text: str) -> tuple[st
         lines.append(
             "note=CodexBar's text names CodexBar. This LaunchAgent's responsible app "
             "is Tolkeins Collector, so that is the Chrome switch that applies."
+        )
+    if keychain_grant_needed(snapshot):
+        lines.append(
+            "next=In Terminal.app, run ./collector/grant-chrome-keychain.sh and click "
+            "Always Allow for the Chrome Safe Storage item. Then re-run collector/verify-chrome.sh"
+        )
+        lines.append(
+            "note=CodexBar usage runs are non-interactive and will not show the Keychain "
+            "prompt. cookie refresh --allow-keychain-prompt is the one-time step."
         )
     passed = _providers_ok(summary)
     lines.append("result=pass" if passed else "result=fail")

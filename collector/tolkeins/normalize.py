@@ -235,11 +235,14 @@ def _error_from_record(record: dict[str, Any]) -> dict[str, str] | None:
 def _classify_error(error: dict[str, Any]) -> dict[str, str]:
     message = error.get("message")
     text = message.strip() if isinstance(message, str) and message.strip() else "Unknown CodexBar error"
-    text = EMAIL_RE.sub("", text)[:240]
+    text = EMAIL_RE.sub("", text)[:4000]
+    lowered = text.lower()
     raw_kind = error.get("kind")
     if raw_kind == "collector":
         kind = "collector"
-    elif any(hint in text.lower() for hint in SIGN_IN_HINTS):
+    elif "keychain permission" in lowered or "safe storage" in lowered:
+        kind = "unavailable"
+    elif any(hint in lowered for hint in SIGN_IN_HINTS):
         kind = "needs-sign-in"
     else:
         kind = "unavailable"

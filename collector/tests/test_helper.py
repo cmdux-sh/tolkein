@@ -21,6 +21,11 @@ from tolkeins.launch_agent import (
     render_launch_agent_plist,
 )
 from tolkeins.normalize import build_snapshot
+from tolkeins.signing_identity import (
+    SigningIdentityError,
+    choose_signing_identity,
+    identity_names,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -97,6 +102,7 @@ class LaunchAgentTests(unittest.TestCase):
             ROOT / "install.sh",
             ROOT / "uninstall.sh",
             ROOT / "verify-chrome.sh",
+            ROOT / "grant-chrome-keychain.sh",
             MACOS / "assemble-app.sh",
             MACOS / "sign-app.sh",
             MACOS / "build-prebuilt.sh",
@@ -112,12 +118,28 @@ class LaunchAgentTests(unittest.TestCase):
         self.assertEqual(completed.returncode, 1)
         self.assertIn("macOS", completed.stderr)
 
+    def test_keychain_grant_refuses_linux(self) -> None:
+        completed = subprocess.run(
+            [str(ROOT / "grant-chrome-keychain.sh")],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(completed.returncode, 1)
+        self.assertIn("Mac mini", completed.stderr)
+        text = (ROOT / "grant-chrome-keychain.sh").read_text(encoding="utf-8")
+        self.assertIn("--allow-keychain-prompt", text)
+        self.assertIn("Always Allow", text)
+        self.assertIn("Chrome Safe Storage", text)
+        self.assertIn("sessionKey=", text)
+
     def test_signing_script_keeps_a_certificate_identity(self) -> None:
         text = (MACOS / "sign-app.sh").read_text(encoding="utf-8")
         codesign_lines = [line for line in text.splitlines() if "codesign" in line]
         for line in codesign_lines:
             self.assertNotRegex(line, r"(--sign|-s)\s+-(?:\s|$)")
         self.assertIn("certificate", text)
+        self.assertIn("TOLKEINS_SIGN_IDENTITY", text)
         self.assertNotIn('echo "$PASS"', text)
         self.assertNotIn("cat \"$KEY_FILE\"", text)
         uninstall = (ROOT / "uninstall.sh").read_text(encoding="utf-8")
@@ -274,11 +296,77 @@ class ChromeStatusTests(unittest.TestCase):
         self.assertIn("[redacted-email]", report)
         self.assertIn("[redacted]", report)
 
+    def test_keychain_message_is_printed_in_full(self) -> None:
+        message = (
+            "Chrome cookie access needs Keychain permission — use Refresh beside Cookie source "
+            "or Refresh in the provider menu to allow it, or paste a Cookie header in Manual mode."
+        )
+        snapshot = build_snapshot(
+            {
+                "gemini": [{"provider": "gemini", "source": "web", "error": {"message": message}}],
+                "claudeplatform": [
+                    {"provider": "claudeplatform", "source": "web", "error": {"message": message}}
+                ],
+            },
+            {},
+            ("gemini", "claudeplatform"),
+            GENERATED,
+        )
+        self.assertEqual(snapshot["services"][0]["error"]["kind"], "unavailable")
+        self.assertEqual(snapshot["services"][0]["error"]["message"], message)
+        report, status = render_report(snapshot, "")
+        self.assertEqual(status, 1)
+        self.assertEqual(report.count(message), 2)
+        self.assertIn("grant-chrome-keychain.sh", report)
+        self.assertIn("Always Allow", report)
+        self.assertNotIn("needs-sign-in", report)
+
     def test_invalid_snapshot_fails_closed(self) -> None:
         report, status = render_report(None, "CodexBar CLI is not executable at /opt/homebrew/bin/codexbar")
         self.assertEqual(status, 2)
         self.assertIn("result=fail", report)
         self.assertIn("no snapshot", report)
+
+
+class SigningIdentityTests(unittest.TestCase):
+    def names(self) -> list[str]:
+        text = """
+  1) ABCDEF0123456789 "Apple Development: Arturo Castaneyra (V7U5DSP776)"
+  2) FFEEDDCCBBAA9988 "Developer ID Application: Example (TEAMID1234)"
+     2 valid identities found
+"""
+        parsed = identity_names(text)
+        self.assertNotIn("ABCDEF0123456789", parsed)
+        return parsed
+
+    def test_apple_development_wins_over_developer_id(self) -> None:
+        chosen = choose_signing_identity(self.names(), None)
+        self.assertEqual(chosen, "Apple Development: Arturo Castaneyra (V7U5DSP776)")
+
+    def test_developer_id_when_that_is_the_only_apple_identity(self) -> None:
+        chosen = choose_signing_identity(["Developer ID Application: Example (TEAMID1234)"], None)
+        self.assertEqual(chosen, "Developer ID Application: Example (TEAMID1234)")
+
+    def test_local_certificate_when_no_apple_identity_exists(self) -> None:
+        self.assertIsNone(choose_signing_identity(["Tolkeins Collector"], None))
+        self.assertIsNone(choose_signing_identity([], None))
+
+    def test_override_selects_that_identity(self) -> None:
+        chosen = choose_signing_identity(
+            self.names(),
+            "Developer ID Application: Example (TEAMID1234)",
+        )
+        self.assertEqual(chosen, "Developer ID Application: Example (TEAMID1234)")
+
+    def test_override_local_keeps_the_self_signed_certificate(self) -> None:
+        self.assertIsNone(choose_signing_identity(self.names(), "local"))
+        self.assertIsNone(choose_signing_identity(self.names(), "Tolkeins Collector"))
+
+    def test_unknown_override_is_rejected(self) -> None:
+        with self.assertRaises(SigningIdentityError) as caught:
+            choose_signing_identity(self.names(), "Apple Development: Someone Else (XXXXXXXXXX)")
+        self.assertNotIn("ABCDEF0123456789", str(caught.exception))
+        self.assertIn("Arturo Castaneyra", str(caught.exception))
 
 
 class LauncherBinaryTests(unittest.TestCase):

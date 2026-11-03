@@ -1,10 +1,15 @@
 #!/bin/bash
-# Sign Tolkeins Collector.app with a stable local certificate.
+# Sign Tolkeins Collector.app.
 #
-# Ad-hoc signatures are a different TCC identity on every rebuild. This script
-# creates one self-signed code-signing certificate on the Mac and reuses it.
-# The private key stays in ~/.config/tolkeins/codesign (mode 700) and in the
-# tolkeins-collector keychain. Nothing here is printed.
+# Prefer a valid Apple Development or Developer ID identity so the designated
+# requirement stays on a certificate the mini already trusts. Set
+# TOLKEINS_SIGN_IDENTITY to force a name from `security find-identity -p codesigning`,
+# or "local" to keep the self-signed Tolkeins Collector certificate.
+# The local certificate is created only when no Apple identity is selected.
+# Its private key stays in ~/.config/tolkeins/codesign and is never printed.
+#
+# Changing the signing identity changes the designated requirement. The Chrome
+# Files & Folders switch must be turned on again for Tolkeins Collector.
 
 set -euo pipefail
 
@@ -30,6 +35,95 @@ esac
 if [[ ! -x "${APP}/Contents/MacOS/tolkeins-collector" ]]; then
   echo "missing helper executable in ${APP}" >&2
   exit 1
+fi
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+COLLECTOR_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+# shellcheck source=keychain-list.sh
+source "${SCRIPT_DIR}/keychain-list.sh"
+
+PYTHON="/usr/bin/python3"
+if ! "$PYTHON" -c 'import sys; raise SystemExit(0 if sys.version_info >= (3, 9) else 1)' >/dev/null 2>&1; then
+  PYTHON="$(command -v python3 || true)"
+fi
+if [[ -z "$PYTHON" ]]; then
+  echo "python3 is required to choose a signing identity." >&2
+  exit 1
+fi
+
+identity_text="$(security find-identity -v -p codesigning 2>/dev/null || true)"
+set +e
+if [[ -n "${TOLKEINS_SIGN_IDENTITY:-}" ]]; then
+  chosen="$(
+    printf '%s\n' "$identity_text" | PYTHONPATH="${COLLECTOR_ROOT}" "$PYTHON" -m tolkeins.signing_identity \
+      --override "$TOLKEINS_SIGN_IDENTITY"
+  )"
+else
+  chosen="$(
+    printf '%s\n' "$identity_text" | PYTHONPATH="${COLLECTOR_ROOT}" "$PYTHON" -m tolkeins.signing_identity
+  )"
+fi
+identity_status=$?
+set -e
+if [[ "$identity_status" -ne 0 ]]; then
+  exit "$identity_status"
+fi
+chosen="$(printf '%s' "$chosen" | tr -d '\r')"
+
+record_identity() {
+  local label="$1"
+  local dir="${HOME}/.config/tolkeins/codesign"
+  local file="${dir}/active-identity"
+  local previous=""
+  mkdir -p "$dir"
+  chmod 700 "$dir" "${HOME}/.config/tolkeins"
+  if [[ -f "$file" ]]; then
+    previous="$(tr -d '\r\n' < "$file")"
+  fi
+  printf '%s\n' "$label" > "$file"
+  chmod 644 "$file"
+  echo "Signing identity: ${label}"
+  if [[ "$previous" != "$label" ]]; then
+    echo "This identity is new for Tolkeins Collector."
+    echo "Turn Chrome on again under System Settings → Privacy & Security → Files and Folders."
+    echo "A different designated requirement does not keep the previous grant."
+  fi
+}
+
+verify_signature() {
+  codesign --verify --strict --verbose=2 "$APP" >/dev/null
+  identifier="$(codesign -d -v "$APP" 2>&1 | sed -n 's/^Identifier=//p' | head -n 1)"
+  designated="$(codesign -d -r- "$APP" 2>&1 | sed -n 's/^designated => //p')"
+  if [[ "$identifier" != "com.tolkeins.collector" ]]; then
+    echo "Signed identifier is '${identifier}', expected com.tolkeins.collector." >&2
+    exit 1
+  fi
+  if [[ "$designated" != *certificate* ]]; then
+    echo "The signature is not tied to a certificate, so the Chrome grant would not survive a rebuild." >&2
+    echo "Designated requirement: ${designated}" >&2
+    exit 1
+  fi
+  echo "Signed ${APP}."
+  echo "Bundle id: ${identifier}"
+  echo "Designated requirement: ${designated}"
+}
+
+xattr -cr "$APP" 2>/dev/null || true
+
+if [[ "$chosen" != "local" ]]; then
+  echo "Signing with ${chosen}."
+  tmp="$(mktemp -d)"
+  trap 'rm -rf "$tmp"' EXIT
+  if ! codesign --force --sign "$chosen" --timestamp=none "$APP" 2>"${tmp}/codesign.err"; then
+    echo "codesign could not use ${chosen}." >&2
+    cat "${tmp}/codesign.err" >&2
+    echo "Unlock the login keychain and allow codesign to use that identity, then re-run ./collector/install.sh." >&2
+    echo "TOLKEINS_SIGN_IDENTITY=local forces the self-signed Tolkeins Collector certificate." >&2
+    exit 1
+  fi
+  verify_signature
+  record_identity "$chosen"
+  exit 0
 fi
 
 OPENSSL="/usr/bin/openssl"
@@ -68,10 +162,6 @@ cleanup() {
   fi
 }
 trap cleanup EXIT
-
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# shellcheck source=keychain-list.sh
-source "${SCRIPT_DIR}/keychain-list.sh"
 
 LOGIN_KEYCHAIN=""
 if [[ -f "${HOME}/Library/Keychains/login.keychain-db" ]]; then
@@ -146,8 +236,6 @@ set -e
 security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$PASS" "$KEYCHAIN" >/dev/null 2>&1 || true
 security add-trusted-cert -r trustRoot -p codeSign -k "$KEYCHAIN" "$CERT_FILE" >/dev/null 2>&1 || true
 
-xattr -cr "$APP" 2>/dev/null || true
-
 sign_app() {
   codesign --force --sign "$1" --keychain "$KEYCHAIN" --timestamp=none "$APP"
 }
@@ -163,19 +251,5 @@ if ! sign_app "$CERT_CN" 2>"${tmp}/codesign.err"; then
   fi
 fi
 
-codesign --verify --strict --verbose=2 "$APP" >/dev/null
-identifier="$(codesign -d -v "$APP" 2>&1 | sed -n 's/^Identifier=//p' | head -n 1)"
-designated="$(codesign -d -r- "$APP" 2>&1 | sed -n 's/^designated => //p')"
-if [[ "$identifier" != "com.tolkeins.collector" ]]; then
-  echo "Signed identifier is '${identifier}', expected com.tolkeins.collector." >&2
-  exit 1
-fi
-if [[ "$designated" != *certificate* ]]; then
-  echo "The signature is not tied to the local certificate, so the Chrome grant would not survive a rebuild." >&2
-  echo "Designated requirement: ${designated}" >&2
-  exit 1
-fi
-
-echo "Signed ${APP}."
-echo "Bundle id: ${identifier}"
-echo "Designated requirement: ${designated}"
+verify_signature
+record_identity "$CERT_CN"
