@@ -48,8 +48,8 @@ enum UsageBoardCardProjection {
             metric.dailyTargetText,
         ])
         let displayed = showsBar ? metric.percent : nil
-        let depletion = displayed.map {
-            UsageBoardLayout.depletionPercent(
+        let left = displayed.map {
+            UsageBoardLayout.percentLeft(
                 displayedPercent: $0,
                 showsUsed: metric.percentStyle == .used)
         }
@@ -61,7 +61,7 @@ enum UsageBoardCardProjection {
             resetText: metric.resetText,
             detailText: detail,
             pacePercent: metric.pacePercent,
-            depletionPercent: depletion,
+            percentLeft: left,
             showsBar: showsBar)
     }
 
@@ -86,9 +86,7 @@ enum UsageBoardCardProjection {
                 percentText: UsageFormatter.percentText(remaining, suffix: L("usage_percent_suffix_left")),
                 resetText: self.nonEmpty(model.creditsHintText),
                 detailText: self.joined([credits, model.creditsScaleText]),
-                depletionPercent: UsageBoardLayout.depletionPercent(
-                    displayedPercent: remaining,
-                    showsUsed: false),
+                percentLeft: remaining,
                 showsBar: true))
             return
         }
@@ -122,7 +120,7 @@ enum UsageBoardCardProjection {
                 percentText: UsageFormatter.percentText(displayed, suffix: suffix),
                 resetText: nil,
                 detailText: detail,
-                depletionPercent: min(100, max(0, consumed)),
+                percentLeft: showsUsed ? min(100, max(0, 100 - consumed)) : displayed,
                 showsBar: true))
             return
         }
@@ -203,7 +201,7 @@ enum UsageBoardCardProjection {
                         resetText: row.secondaryValue,
                         detailText: nil,
                         pacePercent: progress.expectedUsedPercent,
-                        depletionPercent: consumed,
+                        percentLeft: min(100, max(0, 100 - consumed)),
                         showsBar: true))
                 } else if self.nonEmpty(row.value) != nil || self.nonEmpty(row.secondaryValue) != nil {
                     lines.append(UsageBoardDetailLine(

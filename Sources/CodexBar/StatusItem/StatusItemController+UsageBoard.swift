@@ -428,18 +428,25 @@ extension StatusItemController {
 
     private func refreshUsageBoardProvider(_ providerID: String) {
         guard let instanceID = self.usageBoardInstanceID(from: providerID) else { return }
-        if instanceID.firstPartyProvider != nil {
-            self.startManualRefresh(
-                for: instanceID,
-                originatingMenuID: nil,
-                originatingMenuInteractionGeneration: nil)
-            return
-        }
-        #if canImport(JavaScriptCore)
+        self.usageBoard?.session.isRefreshing = true
+        self.startManualRefresh(
+            for: instanceID,
+            originatingMenuID: nil,
+            originatingMenuInteractionGeneration: nil)
+        let queued = self.manualRefreshTasks[ManualRefreshScope.provider(instanceID)] != nil
+            || self.manualRefreshTasks[.global] != nil
+        guard !queued else { return }
+        // The shared refresh gate can swallow a click while a background fetch is running.
         Task { @MainActor in
-            await self.store.refreshUserPlugin(instanceID)
+            if let provider = instanceID.firstPartyProvider {
+                await self.store.refreshProvider(provider)
+            } else {
+                #if canImport(JavaScriptCore)
+                await self.store.refreshUserPlugin(instanceID)
+                #endif
+            }
+            self.reloadUsageBoardIfVisible()
         }
-        #endif
     }
 
     private func performUsageBoardMenuAction(_ action: MenuDescriptor.MenuAction) {
@@ -449,8 +456,15 @@ extension StatusItemController {
             self.lastMenuProvider = instanceID
         }
         switch action {
-        case .copyError, .refresh, .refreshAugmentSession:
+        case .copyError, .refreshAugmentSession:
             break
+        case .refresh:
+            if let providerID = self.usageBoard?.session.selectionID {
+                self.refreshUsageBoardProvider(providerID)
+            } else {
+                self.refreshNow()
+            }
+            return
         default:
             self.usageBoard?.dismiss(reason: "menu action")
         }
@@ -569,7 +583,7 @@ extension StatusItemController {
             percentText: UsageFormatter.percentText(percent, suffix: suffix),
             resetText: UsageFormatter.resetLine(for: window, style: self.settings.resetTimeDisplayStyle),
             detailText: nil,
-            depletionPercent: used,
+            percentLeft: remaining,
             showsBar: true))
     }
 }

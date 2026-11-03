@@ -40,8 +40,8 @@ public enum AppGroupSupport {
     }
 
     static func currentGroupID(teamID: String, bundleID: String?) -> String {
-        let base = "\(teamID).com.steipete.codexbar"
-        return self.isDebugBundleID(bundleID) ? "\(base).debug" : base
+        let id = bundleID?.isEmpty == false ? bundleID! : "com.steipete.codexbar"
+        return "\(teamID).\(id)"
     }
 
     public static func resolvedTeamID(bundle: Bundle = .main) -> String {

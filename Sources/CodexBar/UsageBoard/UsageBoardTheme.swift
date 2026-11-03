@@ -42,7 +42,7 @@ enum UsageBoardMetrics {
         case .subtitle: 13
         case .body: 12
         case .caption: 11
-        case .micro: 10
+        case .micro: 11
         }
     }
 
@@ -95,6 +95,8 @@ enum UsageBoardTheme {
     static let hairline = Color(red: 46 / 255, green: 46 / 255, blue: 46 / 255)
     static let track = Color(red: 42 / 255, green: 42 / 255, blue: 42 / 255)
     static let bar = Color(red: 168 / 255, green: 168 / 255, blue: 168 / 255)
+    /// Healthy remaining quota. Blue on the near-black track stays above 4.5:1.
+    static let barHealthy = Color(red: 107 / 255, green: 151 / 255, blue: 255 / 255)
     static let primaryText = Color(red: 244 / 255, green: 244 / 255, blue: 245 / 255)
     static let secondaryText = Color(red: 163 / 255, green: 163 / 255, blue: 163 / 255)
     static let accent = Color(red: 107 / 255, green: 151 / 255, blue: 255 / 255)
@@ -111,9 +113,10 @@ enum UsageBoardTheme {
 
     static func barFill(for tone: UsageBoardBarTone) -> Color {
         switch tone {
-        case .healthy: self.bar
+        case .healthy: self.barHealthy
         case .warning: self.warning
         case .critical: self.critical
+        case .empty: self.track
         }
     }
 }

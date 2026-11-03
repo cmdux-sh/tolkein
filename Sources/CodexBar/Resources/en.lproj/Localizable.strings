@@ -913,8 +913,10 @@
 "%d%% in reserve" = "%d%% in reserve";
 "usage_percent_suffix_left" = "left";
 "usage_percent_suffix_used" = "used";
-"Near the limit" = "Near the limit";
+"More than half left" = "More than half left";
+"Under half left" = "Under half left";
 "Almost out" = "Almost out";
+"None left" = "None left";
 "Store multiple DeepSeek API keys." = "Store multiple DeepSeek API keys.";
 "This week" = "This week";
 "Current window" = "Current window";

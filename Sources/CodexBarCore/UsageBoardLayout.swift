@@ -24,15 +24,15 @@ package enum UsageBoardLayout {
     /// Matches `StatusItemController.menuCardBaseWidth`. The board is at least three times that column.
     package static let classicMenuWidth = 310.0
     package static let widthScale = 3.0
-    package static let sidebarWidth = 248.0
+    package static let sidebarWidth = 200.0
     /// Floor is the original 3× column. The board then grows toward the visible screen.
-    package static let minimumWidth = 930.0
-    package static let maximumWidth = 1560.0
-    package static let preferredWidth = 1560.0
-    package static let preferredHeight = 860.0
-    package static let maximumHeight = 980.0
+    package static let minimumWidth = 560.0
+    package static let maximumWidth = 780.0
+    package static let preferredWidth = 780.0
+    package static let preferredHeight = 460.0
+    package static let maximumHeight = 520.0
     /// Overview cards stay wide enough for a name plus two bars, then narrow only to fit the height.
-    package static let overviewMinimumColumnWidth = 280.0
+    package static let overviewMinimumColumnWidth = 220.0
 
     /// Uses the visible width, capped so an ultrawide does not stretch the board edge to edge.
     /// A display narrower than the floor keeps the board on screen.
@@ -283,20 +283,21 @@ package enum UsageBoardLayout {
         text.folding(options: [.caseInsensitive, .diacriticInsensitive], locale: Locale(identifier: "en_US_POSIX"))
     }
 
-    /// How close a window is to empty. 0 is a full allowance, 100 is exhausted.
-    /// Color uses this, never the labeled percent, because some labels count what is left.
-    package static func barTone(depletionPercent: Double) -> UsageBoardBarTone {
-        let used = min(100, max(0, depletionPercent))
-        if used >= 90 { return .critical }
-        if used >= 70 { return .warning }
+    /// Color follows how much allowance is left, not the labeled number.
+    /// Above 50 is healthy, 25 through 50 is warning, 1 through 24 is critical, and 0 is empty.
+    package static func barTone(percentLeft: Double) -> UsageBoardBarTone {
+        let left = min(100, max(0, percentLeft))
+        if left <= 0 { return .empty }
+        if left < 25 { return .critical }
+        if left <= 50 { return .warning }
         return .healthy
     }
 
     /// `displayedPercent` is the number in the label. `showsUsed` says whether that number is consumed or remaining.
-    package static func depletionPercent(displayedPercent: Double, showsUsed: Bool) -> Double {
+    package static func percentLeft(displayedPercent: Double, showsUsed: Bool) -> Double {
         let displayed = min(100, max(0, displayedPercent))
-        if showsUsed { return displayed }
-        return min(100, max(0, 100 - displayed))
+        if showsUsed { return min(100, max(0, 100 - displayed)) }
+        return displayed
     }
 
     /// Keeps the percent and its used/left word, and drops the rest of a long label.
@@ -318,6 +319,7 @@ package enum UsageBoardBarTone: String, Equatable, Sendable {
     case healthy
     case warning
     case critical
+    case empty
 }
 
 package struct UsageBoardMetric: Equatable, Sendable, Identifiable {
@@ -328,8 +330,8 @@ package struct UsageBoardMetric: Equatable, Sendable, Identifiable {
     package let resetText: String?
     package let detailText: String?
     package let pacePercent: Double?
-    /// Percent consumed. 0 is a full window and 100 is exhausted. Nil when the source has no ratio.
-    package let depletionPercent: Double?
+    /// Percent of the allowance still remaining. The bar fill and color use this, not the label.
+    package let percentLeft: Double?
     package let showsBar: Bool
     package let accessibilitySummary: String
 
@@ -341,7 +343,7 @@ package struct UsageBoardMetric: Equatable, Sendable, Identifiable {
         resetText: String?,
         detailText: String?,
         pacePercent: Double? = nil,
-        depletionPercent: Double? = nil,
+        percentLeft: Double? = nil,
         showsBar: Bool,
         accessibilitySummary: String? = nil)
     {
@@ -352,7 +354,7 @@ package struct UsageBoardMetric: Equatable, Sendable, Identifiable {
         self.resetText = Self.cleaned(resetText)
         self.detailText = Self.cleaned(detailText)
         self.pacePercent = pacePercent
-        self.depletionPercent = depletionPercent
+        self.percentLeft = percentLeft
         self.showsBar = showsBar
         if let accessibilitySummary, !accessibilitySummary.isEmpty {
             self.accessibilitySummary = accessibilitySummary

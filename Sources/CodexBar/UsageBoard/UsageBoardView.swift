@@ -2,31 +2,29 @@ import AppKit
 import CodexBarCore
 import SwiftUI
 
-// The board grows toward the visible screen (floor 930, cap 1560):
+// About half the previous board. The sidebar is the full height of the window.
 //
 // CodexBar
-// ╭ Providers ╮   Claude  Session ████ 42%   Weekly ██ 61%
-// │ All       │   Codex   Session ██ 18%     Weekly █ 12%
-// │ Claude 42%│
-// ╰───────────╯
-// The provider list is its own card. Detail stats sit on the window background.
-// One provider still scrolls. All providers does not, and shows session and weekly only.
+// All
+// Claude  79% left     Claude   Session ████ 79% left
+// Codex    0% left     Codex    Weekly  ██   40% left
+// Refresh
+// Settings
 
 struct UsageBoardView: View {
     @Bindable var session: UsageBoardSession
 
     var body: some View {
-        VStack(spacing: 0) {
-            self.header
-            HStack(alignment: .top, spacing: UsageBoardMetrics.gap) {
-                UsageBoardSidebar(session: self.session)
-                    .frame(width: UsageBoardTheme.sidebarWidth)
-                UsageBoardDetail(session: self.session)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-            }
-            .padding(UsageBoardMetrics.gap)
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-            self.footer
+        HStack(alignment: .top, spacing: 0) {
+            UsageBoardSidebar(session: self.session)
+                .frame(width: UsageBoardTheme.sidebarWidth)
+                .frame(maxHeight: .infinity)
+            Rectangle()
+                .fill(UsageBoardTheme.hairline)
+                .frame(width: 1)
+                .accessibilityHidden(true)
+            UsageBoardDetail(session: self.session)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .background(UsageBoardTheme.canvas)
@@ -35,30 +33,47 @@ struct UsageBoardView: View {
         .preferredColorScheme(.dark)
         .accessibilityElement(children: .contain)
     }
+}
 
-    private var header: some View {
-        HStack(alignment: .center, spacing: UsageBoardMetrics.gapComfortable) {
+private struct UsageBoardSidebar: View {
+    @Bindable var session: UsageBoardSession
+    @State private var hoveredID: String?
+    @State private var frames: [String: CGRect] = [:]
+    @State private var restingFrame: CGRect = .zero
+    @FocusState private var focusedID: String?
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            self.title
+            ScrollView {
+                self.list
+            }
+            .frame(maxHeight: .infinity)
+            self.actions
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .background(UsageBoardTheme.surface)
+    }
+
+    private var title: some View {
+        HStack(spacing: UsageBoardMetrics.gap) {
             Text("CodexBar")
                 .boardFont(.title)
-            Spacer(minLength: 12)
+            Spacer(minLength: UsageBoardMetrics.gap)
             if self.session.isRefreshing {
                 ProgressView()
                     .controlSize(.small)
                     .accessibilityLabel(L("Refreshing"))
             }
         }
-        .padding(.horizontal, UsageBoardMetrics.windowPad)
-        .padding(.top, UsageBoardMetrics.windowPad)
-        .padding(.bottom, UsageBoardMetrics.pad)
+        .padding(.horizontal, UsageBoardMetrics.pad)
+        .padding(.top, UsageBoardMetrics.pad)
+        .padding(.bottom, UsageBoardMetrics.gap)
     }
 
-    private var footer: some View {
-        HStack(alignment: .center, spacing: UsageBoardMetrics.gap) {
-            Text(L("Up and down move between providers. Command-R refreshes. Escape closes."))
-                .boardFont(.caption)
-                .foregroundStyle(UsageBoardTheme.secondaryText)
-                .fixedSize(horizontal: false, vertical: true)
-            Spacer(minLength: UsageBoardMetrics.gapComfortable)
+    private var actions: some View {
+        VStack(alignment: .leading, spacing: UsageBoardMetrics.gap) {
             UsageBoardCommandButton(
                 title: L("Classic menu"),
                 systemImage: "list.bullet.rectangle",
@@ -76,33 +91,8 @@ struct UsageBoardView: View {
                 systemImage: "xmark.rectangle",
                 action: { self.session.onCommand(.quit) })
         }
-        .padding(.horizontal, UsageBoardMetrics.windowPad)
-        .padding(.vertical, UsageBoardMetrics.pad)
-    }
-}
-
-private struct UsageBoardSidebar: View {
-    @Bindable var session: UsageBoardSession
-    @State private var hoveredID: String?
-    @State private var frames: [String: CGRect] = [:]
-    @State private var restingFrame: CGRect = .zero
-    @FocusState private var focusedID: String?
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
-    var body: some View {
-        ViewThatFits(in: .vertical) {
-            self.list
-                .fixedSize(horizontal: false, vertical: true)
-            ScrollView {
-                self.list
-            }
-        }
-        .background(
-            RoundedRectangle(cornerRadius: UsageBoardMetrics.radiusCard, style: .continuous)
-                .fill(UsageBoardTheme.surface))
-        .boardHairline(radius: UsageBoardMetrics.radiusCard)
-        .clipShape(RoundedRectangle(cornerRadius: UsageBoardMetrics.radiusCard, style: .continuous))
-        .frame(maxHeight: .infinity, alignment: .top)
+        .padding(UsageBoardMetrics.pad)
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     private var list: some View {
@@ -424,11 +414,8 @@ private struct UsageBoardGlanceMetric: View {
                         .lineLimit(1)
                 }
             }
-            if self.metric.showsBar, let percent = self.metric.percent {
-                UsageBoardProgressBar(
-                    percent: percent,
-                    depletionPercent: self.metric.depletionPercent,
-                    pacePercent: nil)
+            if self.metric.showsBar, let left = self.metric.percentLeft {
+                UsageBoardProgressBar(percentLeft: left, pacePercent: nil)
             }
         }
         .accessibilityHidden(true)
@@ -577,11 +564,8 @@ private struct UsageBoardMetricCard: View {
                     .foregroundStyle(UsageBoardTheme.primaryText)
                     .lineLimit(1)
             }
-            if self.metric.showsBar, let percent = self.metric.percent {
-                UsageBoardProgressBar(
-                    percent: percent,
-                    depletionPercent: self.metric.depletionPercent,
-                    pacePercent: self.metric.pacePercent)
+            if self.metric.showsBar, let left = self.metric.percentLeft {
+                UsageBoardProgressBar(percentLeft: left, pacePercent: self.metric.pacePercent)
             }
             if let caption = self.caption {
                 Text(caption)
@@ -613,36 +597,39 @@ private struct UsageBoardMetricCard: View {
 
 private enum UsageBoardAccessibility {
     static func summary(for metric: UsageBoardMetric) -> String {
-        guard let depletion = metric.depletionPercent else { return metric.accessibilitySummary }
-        let note: String? = switch UsageBoardLayout.barTone(depletionPercent: depletion) {
+        guard let left = metric.percentLeft else { return metric.accessibilitySummary }
+        let note = switch UsageBoardLayout.barTone(percentLeft: left) {
         case .healthy:
-            nil
+            L("More than half left")
         case .warning:
-            L("Near the limit")
+            L("Under half left")
         case .critical:
             L("Almost out")
+        case .empty:
+            L("None left")
         }
-        guard let note else { return metric.accessibilitySummary }
         return metric.accessibilitySummary + ", " + note
     }
 }
 
 private struct UsageBoardProgressBar: View {
-    let percent: Double
-    let depletionPercent: Double?
+    /// Width and color both follow percent remaining. 0 draws an empty track.
+    let percentLeft: Double
     let pacePercent: Double?
 
     var body: some View {
         GeometryReader { proxy in
             let width = proxy.size.width
-            let clamped = min(100, max(0, self.percent))
-            let tone = UsageBoardLayout.barTone(depletionPercent: self.depletionPercent ?? 0)
+            let left = min(100, max(0, self.percentLeft))
+            let tone = UsageBoardLayout.barTone(percentLeft: left)
             ZStack(alignment: .leading) {
-                Capsule().fill(self.trackColor(tone: tone, fill: clamped))
-                Capsule()
-                    .fill(UsageBoardTheme.barFill(for: tone))
-                    .frame(width: max(0, width * clamped / 100))
-                if let pacePercent {
+                Capsule().fill(UsageBoardTheme.track)
+                if tone != .empty {
+                    Capsule()
+                        .fill(UsageBoardTheme.barFill(for: tone))
+                        .frame(width: max(0, width * left / 100))
+                }
+                if let pacePercent, tone != .empty {
                     let pace = min(100, max(0, pacePercent))
                     Capsule()
                         .fill(UsageBoardTheme.primaryText)
@@ -653,14 +640,6 @@ private struct UsageBoardProgressBar: View {
         }
         .frame(height: UsageBoardMetrics.progress)
         .accessibilityHidden(true)
-    }
-
-    /// An exhausted window has no fill. Tint the track so "0% left" is still visible.
-    private func trackColor(tone: UsageBoardBarTone, fill: Double) -> Color {
-        if tone == .critical, fill < 8 {
-            return UsageBoardTheme.critical.opacity(0.55)
-        }
-        return UsageBoardTheme.track
     }
 }
 
@@ -845,7 +824,7 @@ struct UsageBoardCommandButton: View {
             }
             .foregroundStyle(UsageBoardTheme.primaryText)
             .padding(.horizontal, 10)
-            .frame(minHeight: UsageBoardMetrics.control)
+            .frame(maxWidth: .infinity, minHeight: UsageBoardMetrics.control, alignment: .leading)
             .background(
                 RoundedRectangle(cornerRadius: UsageBoardMetrics.radiusItem, style: .continuous)
                     .fill(UsageBoardTheme.card))
@@ -887,6 +866,6 @@ private struct UsageBoardSkeletonDetail: View {
 #if DEBUG
 #Preview("Usage board") {
     UsageBoardView(session: UsageBoardPreviewData.session())
-        .frame(width: 1280, height: 860)
+        .frame(width: 780, height: 460)
 }
 #endif
