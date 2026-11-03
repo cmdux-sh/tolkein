@@ -27,8 +27,8 @@ Sign in for each provider you care about. `codexbar usage --provider <id> --json
 | `claude` | Sign in. Session, weekly, and extra windows (for example Fable) are read from CodexBar. |
 | `codex` | Sign in. Weekly usage and credit balance are read from CodexBar. `primary` may be null. |
 | `cursor` | Sign in at cursor.com so a Cursor session exists. Until then the snapshot says **Needs sign-in**. The collector does not sign in for you. |
-| `gemini` | CodexBar reads Chrome cookies. Grant Chrome to **Tolkeins Collector** under Files & Folders. |
-| `claudeplatform` | Same Chrome grant as Gemini. |
+| `gemini` | CodexBar reads Chrome cookies. Grant Chrome to **Tolkeins Collector** under Files & Folders, then run `collector/grant-chrome-keychain.sh` in Terminal and click Always Allow. |
+| `claudeplatform` | Same Chrome folder grant and Chrome Safe Storage step as Gemini. |
 | `warp` | Warp is API-token only. Add the `wk-…` key in CodexBar or set `WARP_API_KEY`. Do not force `--source cli`. |
 | `grok` | CodexBar 0.80.0 has no fetch strategy for Grok. Leave it on auto. The weekly pool is entered by hand in `subscriptions.yaml` until CodexBar returns a window with the same label. |
 
