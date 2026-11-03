@@ -2,7 +2,11 @@ import CodexBarCore
 
 /// Maps an existing menu-card model into the wide board. Reads the model only; it does not fetch.
 enum UsageBoardCardProjection {
-    static func provider(from model: UsageMenuCardView.Model) -> UsageBoardProvider {
+    static func provider(
+        from model: UsageMenuCardView.Model,
+        id: String? = nil,
+        name: String? = nil) -> UsageBoardProvider
+    {
         var metrics = model.metrics.map(self.metric)
         var lines: [UsageBoardDetailLine] = []
         self.appendCredits(from: model, metrics: &metrics, lines: &lines)
@@ -23,8 +27,8 @@ enum UsageBoardCardProjection {
         }
 
         return UsageBoardProviderBuilder.make(
-            id: model.provider.rawValue,
-            name: model.providerName,
+            id: id ?? model.provider.rawValue,
+            name: name ?? model.providerName,
             planText: model.planText,
             email: model.email,
             subtitle: model.subtitleText,
@@ -43,14 +47,21 @@ enum UsageBoardCardProjection {
             metric.detailRightText,
             metric.dailyTargetText,
         ])
+        let displayed = showsBar ? metric.percent : nil
+        let depletion = displayed.map {
+            UsageBoardLayout.depletionPercent(
+                displayedPercent: $0,
+                showsUsed: metric.percentStyle == .used)
+        }
         return UsageBoardMetric(
             id: metric.id,
             title: metric.title,
-            percent: showsBar ? metric.percent : nil,
+            percent: displayed,
             percentText: showsBar ? metric.percentLabel : (metric.statusText ?? metric.percentLabel),
             resetText: metric.resetText,
             detailText: detail,
             pacePercent: metric.pacePercent,
+            depletionPercent: depletion,
             showsBar: showsBar)
     }
 
@@ -66,13 +77,18 @@ enum UsageBoardCardProjection {
         }
         guard !alreadyShown else { return }
         if model.creditsShowProgress, let percent = model.creditsProgressPercent {
+            // `creditsProgressPercent` is remaining headroom, not consumption.
+            let remaining = min(100, max(0, percent))
             metrics.append(UsageBoardMetric(
                 id: "credits",
                 title: creditsTitle,
-                percent: percent,
-                percentText: UsageFormatter.percentText(percent, suffix: L("usage_percent_suffix_used")),
+                percent: remaining,
+                percentText: UsageFormatter.percentText(remaining, suffix: L("usage_percent_suffix_left")),
                 resetText: self.nonEmpty(model.creditsHintText),
                 detailText: self.joined([credits, model.creditsScaleText]),
+                depletionPercent: UsageBoardLayout.depletionPercent(
+                    displayedPercent: remaining,
+                    showsUsed: false),
                 showsBar: true))
             return
         }
@@ -95,14 +111,18 @@ enum UsageBoardCardProjection {
             cost.personalSpendLine,
             cost.dailyTargetText,
         ])
-        if let percent = cost.percentUsed {
+        if let consumed = cost.percentUsed {
+            let showsUsed = cost.percentStyle == .used
+            let displayed = min(100, max(0, cost.displayPercent ?? consumed))
+            let suffix = showsUsed ? L("usage_percent_suffix_used") : L("usage_percent_suffix_left")
             metrics.append(UsageBoardMetric(
                 id: id,
                 title: cost.title,
-                percent: percent,
-                percentText: cost.percentLine ?? UsageFormatter.percentString(percent),
+                percent: displayed,
+                percentText: UsageFormatter.percentText(displayed, suffix: suffix),
                 resetText: nil,
                 detailText: detail,
+                depletionPercent: min(100, max(0, consumed)),
                 showsBar: true))
             return
         }
@@ -174,14 +194,16 @@ enum UsageBoardCardProjection {
             for (rowIndex, row) in section.rows.enumerated() {
                 let id = "detail-\(sectionIndex)-\(rowIndex)"
                 if let progress = row.progress {
+                    let consumed = min(100, max(0, progress.usedPercent))
                     metrics.append(UsageBoardMetric(
                         id: id,
                         title: row.label,
-                        percent: progress.usedPercent,
-                        percentText: row.value,
+                        percent: consumed,
+                        percentText: self.explicitUsageLabel(row.value, consumed: consumed),
                         resetText: row.secondaryValue,
                         detailText: nil,
                         pacePercent: progress.expectedUsedPercent,
+                        depletionPercent: consumed,
                         showsBar: true))
                 } else if self.nonEmpty(row.value) != nil || self.nonEmpty(row.secondaryValue) != nil {
                     lines.append(UsageBoardDetailLine(
@@ -191,6 +213,17 @@ enum UsageBoardCardProjection {
                 }
             }
         }
+    }
+
+    /// Detail rows store consumption in `progress.used`. Keep a count such as "0 / 30", and say that it is used.
+    private static func explicitUsageLabel(_ value: String, consumed: Double) -> String {
+        let folded = UsageBoardLayout.fold(value)
+        if folded.contains("%") || folded.contains("used") || folded.contains("left") {
+            return value
+        }
+        let percent = UsageFormatter.percentText(consumed, suffix: L("usage_percent_suffix_used"))
+        let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
+        return trimmed.isEmpty ? percent : "\(trimmed) · \(percent)"
     }
 
     private static func joined(_ parts: [String?]) -> String? {

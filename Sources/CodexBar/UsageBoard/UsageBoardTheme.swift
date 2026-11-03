@@ -109,10 +109,12 @@ enum UsageBoardTheme {
 
     static let sidebarWidth = CGFloat(UsageBoardLayout.sidebarWidth)
 
-    static func barFill(for percent: Double) -> Color {
-        if percent >= 90 { return self.critical }
-        if percent >= 70 { return self.warning }
-        return self.bar
+    static func barFill(for tone: UsageBoardBarTone) -> Color {
+        switch tone {
+        case .healthy: self.bar
+        case .warning: self.warning
+        case .critical: self.critical
+        }
     }
 }
 

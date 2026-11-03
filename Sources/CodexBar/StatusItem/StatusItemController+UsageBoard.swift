@@ -264,8 +264,9 @@ extension StatusItemController {
     }
 
     private func makeUsageBoardProviders() -> [UsageBoardProvider] {
-        var providers = self.store.enabledFirstPartyProvidersForDisplay().map { provider in
-            UsageBoardCardProjection.provider(from: self.store.menuCardModel(for: provider))
+        var providers: [UsageBoardProvider] = []
+        for provider in self.store.enabledFirstPartyProvidersForDisplay() {
+            providers.append(contentsOf: self.usageBoardProviders(for: provider))
         }
         #if canImport(JavaScriptCore)
         providers.append(contentsOf: self.topLevelUserProviderPlugins().map(self.usageBoardProvider(for:)))
@@ -273,11 +274,55 @@ extension StatusItemController {
         return providers
     }
 
+    /// Manus stores one session cookie per account. The board shows each saved account, not only the active one.
+    private func usageBoardProviders(for provider: UsageProvider) -> [UsageBoardProvider] {
+        guard provider == .manus else {
+            return [UsageBoardCardProjection.provider(from: self.store.menuCardModel(for: provider))]
+        }
+        let accounts = self.settings.tokenAccounts(for: provider)
+        guard accounts.count > 1 else {
+            return [UsageBoardCardProjection.provider(from: self.store.menuCardModel(for: provider))]
+        }
+        let cached = self.store.validTokenAccountSnapshots(provider: provider, accounts: accounts)
+        return accounts.enumerated().map { index, account in
+            let record = cached.first { $0.id == account.id } ?? TokenAccountUsageSnapshot(
+                account: account,
+                snapshot: nil,
+                error: nil,
+                sourceLabel: nil,
+                cacheKey: "")
+            let label = account.displayName.trimmingCharacters(in: .whitespacesAndNewlines)
+            let accountName = label.isEmpty ? L("Account %@", "\(index + 1)") : label
+            let boardID = "\(provider.rawValue)/account/\(account.id.uuidString)"
+            guard let model = self.store.tokenAccountMenuCardModel(for: provider, accountSnapshot: record) else {
+                return UsageBoardProviderBuilder.make(
+                    id: boardID,
+                    name: "Manus · \(accountName)",
+                    planText: nil,
+                    email: accountName,
+                    subtitle: L("No usage fetched yet"),
+                    isLoading: false,
+                    isError: false,
+                    metrics: [],
+                    lines: [],
+                    notes: [])
+            }
+            return UsageBoardCardProjection.provider(
+                from: model,
+                id: boardID,
+                name: "\(model.providerName) · \(accountName)")
+        }
+    }
+
+    private func usageBoardInstanceID(from providerID: String) -> ProviderInstanceID? {
+        MergedOverviewRow.providerID(from: providerID)
+    }
+
     private func refreshUsageBoardCommands() {
         guard let board = self.usageBoard else { return }
         let providerID = board.session.selectionID
         board.session.providerCommands = self.usageBoardCommands(for: providerID)
-        if let providerID, let instanceID = ProviderInstanceID(rawValue: providerID) {
+        if let providerID, let instanceID = self.usageBoardInstanceID(from: providerID) {
             self.lastMenuProvider = instanceID
         }
     }
@@ -291,7 +336,7 @@ extension StatusItemController {
                 systemImage: "arrow.clockwise",
                 action: .refreshProvider(providerID)),
         ]
-        if let provider = UsageProvider(rawValue: providerID) {
+        if let provider = self.usageBoardInstanceID(from: providerID)?.firstPartyProvider {
             let descriptor = self.makeMenuDescriptor(provider: provider, includeContextualActions: true)
             for section in descriptor.sections {
                 for entry in section.entries {
@@ -382,7 +427,7 @@ extension StatusItemController {
     }
 
     private func refreshUsageBoardProvider(_ providerID: String) {
-        guard let instanceID = ProviderInstanceID(rawValue: providerID) else { return }
+        guard let instanceID = self.usageBoardInstanceID(from: providerID) else { return }
         if instanceID.firstPartyProvider != nil {
             self.startManualRefresh(
                 for: instanceID,
@@ -399,7 +444,7 @@ extension StatusItemController {
 
     private func performUsageBoardMenuAction(_ action: MenuDescriptor.MenuAction) {
         if let providerID = self.usageBoard?.session.selectionID,
-           let instanceID = ProviderInstanceID(rawValue: providerID)
+           let instanceID = self.usageBoardInstanceID(from: providerID)
         {
             self.lastMenuProvider = instanceID
         }
@@ -432,11 +477,11 @@ extension StatusItemController {
     }
 
     private func usageBoardIcon(for providerID: String) -> NSImage? {
-        if let provider = UsageProvider(rawValue: providerID) {
+        if let provider = self.usageBoardInstanceID(from: providerID)?.firstPartyProvider {
             return self.brandIcon(provider)
         }
         #if canImport(JavaScriptCore)
-        if let instanceID = ProviderInstanceID(rawValue: providerID),
+        if let instanceID = self.usageBoardInstanceID(from: providerID),
            let plugin = UserProviderPluginRegistry.plugin(for: instanceID)
         {
             return Self.userPluginSVGImage(plugin)
@@ -524,6 +569,7 @@ extension StatusItemController {
             percentText: UsageFormatter.percentText(percent, suffix: suffix),
             resetText: UsageFormatter.resetLine(for: window, style: self.settings.resetTimeDisplayStyle),
             detailText: nil,
+            depletionPercent: used,
             showsBar: true))
     }
 }

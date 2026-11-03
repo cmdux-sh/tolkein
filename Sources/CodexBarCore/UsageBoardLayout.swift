@@ -282,6 +282,42 @@ package enum UsageBoardLayout {
     package static func fold(_ text: String) -> String {
         text.folding(options: [.caseInsensitive, .diacriticInsensitive], locale: Locale(identifier: "en_US_POSIX"))
     }
+
+    /// How close a window is to empty. 0 is a full allowance, 100 is exhausted.
+    /// Color uses this, never the labeled percent, because some labels count what is left.
+    package static func barTone(depletionPercent: Double) -> UsageBoardBarTone {
+        let used = min(100, max(0, depletionPercent))
+        if used >= 90 { return .critical }
+        if used >= 70 { return .warning }
+        return .healthy
+    }
+
+    /// `displayedPercent` is the number in the label. `showsUsed` says whether that number is consumed or remaining.
+    package static func depletionPercent(displayedPercent: Double, showsUsed: Bool) -> Double {
+        let displayed = min(100, max(0, displayedPercent))
+        if showsUsed { return displayed }
+        return min(100, max(0, 100 - displayed))
+    }
+
+    /// Keeps the percent and its used/left word, and drops the rest of a long label.
+    package static func explicitPercent(_ text: String) -> String {
+        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard let percentIndex = trimmed.firstIndex(of: "%") else { return trimmed }
+        let after = trimmed.index(after: percentIndex)
+        let rest = trimmed[after...].drop { $0 == " " }
+        guard let wordEnd = rest.firstIndex(where: \.isWhitespace) else {
+            return rest.isEmpty ? String(trimmed[..<after]) : String(trimmed[..<after]) + " " + rest
+        }
+        let word = rest[..<wordEnd]
+        guard word.count <= 16 else { return String(trimmed[..<after]) }
+        return String(trimmed[..<after]) + " " + word
+    }
+}
+
+package enum UsageBoardBarTone: String, Equatable, Sendable {
+    case healthy
+    case warning
+    case critical
 }
 
 package struct UsageBoardMetric: Equatable, Sendable, Identifiable {
@@ -292,6 +328,8 @@ package struct UsageBoardMetric: Equatable, Sendable, Identifiable {
     package let resetText: String?
     package let detailText: String?
     package let pacePercent: Double?
+    /// Percent consumed. 0 is a full window and 100 is exhausted. Nil when the source has no ratio.
+    package let depletionPercent: Double?
     package let showsBar: Bool
     package let accessibilitySummary: String
 
@@ -303,6 +341,7 @@ package struct UsageBoardMetric: Equatable, Sendable, Identifiable {
         resetText: String?,
         detailText: String?,
         pacePercent: Double? = nil,
+        depletionPercent: Double? = nil,
         showsBar: Bool,
         accessibilitySummary: String? = nil)
     {
@@ -313,6 +352,7 @@ package struct UsageBoardMetric: Equatable, Sendable, Identifiable {
         self.resetText = Self.cleaned(resetText)
         self.detailText = Self.cleaned(detailText)
         self.pacePercent = pacePercent
+        self.depletionPercent = depletionPercent
         self.showsBar = showsBar
         if let accessibilitySummary, !accessibilitySummary.isEmpty {
             self.accessibilitySummary = accessibilitySummary

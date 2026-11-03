@@ -397,7 +397,7 @@ private struct UsageBoardOverviewCard: View {
             parts.append(status)
         }
         let glance = UsageBoardLayout.glanceMetrics(self.provider.metrics)
-        parts.append(contentsOf: glance.map(\.accessibilitySummary))
+        parts.append(contentsOf: glance.map { UsageBoardAccessibility.summary(for: $0) })
         return parts.joined(separator: ", ")
     }
 }
@@ -413,7 +413,7 @@ private struct UsageBoardGlanceMetric: View {
                     .foregroundStyle(UsageBoardTheme.secondaryText)
                     .lineLimit(1)
                 Spacer(minLength: UsageBoardMetrics.gap)
-                Text(UsageBoardLayout.shortPercent(self.metric.percentText))
+                Text(UsageBoardLayout.explicitPercent(self.metric.percentText))
                     .boardFont(.caption, weight: .semibold, digits: true)
                     .foregroundStyle(UsageBoardTheme.primaryText)
                     .lineLimit(1)
@@ -425,7 +425,10 @@ private struct UsageBoardGlanceMetric: View {
                 }
             }
             if self.metric.showsBar, let percent = self.metric.percent {
-                UsageBoardProgressBar(percent: percent, pacePercent: nil)
+                UsageBoardProgressBar(
+                    percent: percent,
+                    depletionPercent: self.metric.depletionPercent,
+                    pacePercent: nil)
             }
         }
         .accessibilityHidden(true)
@@ -575,7 +578,10 @@ private struct UsageBoardMetricCard: View {
                     .lineLimit(1)
             }
             if self.metric.showsBar, let percent = self.metric.percent {
-                UsageBoardProgressBar(percent: percent, pacePercent: self.metric.pacePercent)
+                UsageBoardProgressBar(
+                    percent: percent,
+                    depletionPercent: self.metric.depletionPercent,
+                    pacePercent: self.metric.pacePercent)
             }
             if let caption = self.caption {
                 Text(caption)
@@ -591,7 +597,7 @@ private struct UsageBoardMetricCard: View {
                 .fill(UsageBoardTheme.card))
         .boardHairline(radius: UsageBoardMetrics.radiusCard)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(self.metric.accessibilitySummary)
+        .accessibilityLabel(UsageBoardAccessibility.summary(for: self.metric))
     }
 
     private var caption: String? {
@@ -605,18 +611,36 @@ private struct UsageBoardMetricCard: View {
     }
 }
 
+private enum UsageBoardAccessibility {
+    static func summary(for metric: UsageBoardMetric) -> String {
+        guard let depletion = metric.depletionPercent else { return metric.accessibilitySummary }
+        let note: String? = switch UsageBoardLayout.barTone(depletionPercent: depletion) {
+        case .healthy:
+            nil
+        case .warning:
+            L("Near the limit")
+        case .critical:
+            L("Almost out")
+        }
+        guard let note else { return metric.accessibilitySummary }
+        return metric.accessibilitySummary + ", " + note
+    }
+}
+
 private struct UsageBoardProgressBar: View {
     let percent: Double
+    let depletionPercent: Double?
     let pacePercent: Double?
 
     var body: some View {
         GeometryReader { proxy in
             let width = proxy.size.width
             let clamped = min(100, max(0, self.percent))
+            let tone = UsageBoardLayout.barTone(depletionPercent: self.depletionPercent ?? 0)
             ZStack(alignment: .leading) {
-                Capsule().fill(UsageBoardTheme.track)
+                Capsule().fill(self.trackColor(tone: tone, fill: clamped))
                 Capsule()
-                    .fill(UsageBoardTheme.barFill(for: clamped))
+                    .fill(UsageBoardTheme.barFill(for: tone))
                     .frame(width: max(0, width * clamped / 100))
                 if let pacePercent {
                     let pace = min(100, max(0, pacePercent))
@@ -629,6 +653,14 @@ private struct UsageBoardProgressBar: View {
         }
         .frame(height: UsageBoardMetrics.progress)
         .accessibilityHidden(true)
+    }
+
+    /// An exhausted window has no fill. Tint the track so "0% left" is still visible.
+    private func trackColor(tone: UsageBoardBarTone, fill: Double) -> Color {
+        if tone == .critical, fill < 8 {
+            return UsageBoardTheme.critical.opacity(0.55)
+        }
+        return UsageBoardTheme.track
     }
 }
 

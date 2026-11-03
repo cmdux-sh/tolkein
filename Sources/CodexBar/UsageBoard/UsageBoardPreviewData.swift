@@ -128,6 +128,7 @@ enum UsageBoardPreviewData {
             resetText: reset,
             detailText: detail,
             pacePercent: id == "session" ? 30 : nil,
+            depletionPercent: percent,
             showsBar: true)
     }
 }
