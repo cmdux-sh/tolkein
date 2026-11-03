@@ -1,6 +1,8 @@
 #!/bin/bash
 # Install the Tolkeins collector as a per-user LaunchAgent.
-# Safe to re-run. Does not overwrite an existing config.env or subscriptions.yaml.
+# launchd starts Tolkeins Collector.app. That signed app spawns python, so
+# macOS can grant Chrome cookie access to one stable bundle id.
+# Safe to re-run. Does not overwrite config.env or subscriptions.yaml.
 
 set -euo pipefail
 
@@ -10,26 +12,31 @@ if [[ "$(uname -s)" != "Darwin" ]]; then
 fi
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PYTHON3="$(command -v python3 || true)"
-if [[ -z "${PYTHON3}" ]]; then
-  echo "python3 was not found on PATH." >&2
-  exit 1
-fi
-if ! "${PYTHON3}" -c 'import sys; raise SystemExit(0 if sys.version_info >= (3, 9) else 1)'; then
-  echo "python3 3.9 or newer is required (zoneinfo)." >&2
-  exit 1
+
+PYTHON3=""
+if /usr/bin/python3 -c 'import sys; raise SystemExit(0 if sys.version_info >= (3, 9) else 1)' >/dev/null 2>&1; then
+  PYTHON3="/usr/bin/python3"
+else
+  PYTHON3="$(command -v python3 || true)"
+  if [[ -z "$PYTHON3" ]] || ! "$PYTHON3" -c 'import sys; raise SystemExit(0 if sys.version_info >= (3, 9) else 1)'; then
+    echo "python3 3.9 or newer is required (zoneinfo)." >&2
+    exit 1
+  fi
 fi
 
 CONFIG_DIR="${HOME}/.config/tolkeins"
 INSTALL_DIR="${HOME}/.local/share/tolkeins"
 LOG_DIR="${HOME}/Library/Logs/tolkeins"
 AGENTS_DIR="${HOME}/Library/LaunchAgents"
+APP="${HOME}/Applications/Tolkeins Collector.app"
 LABEL="com.tolkeins.collector"
 PLIST="${AGENTS_DIR}/${LABEL}.plist"
 DOMAIN="gui/$(id -u)"
 
-mkdir -p "${CONFIG_DIR}" "${INSTALL_DIR}" "${LOG_DIR}" "${AGENTS_DIR}"
+mkdir -p "${CONFIG_DIR}" "${INSTALL_DIR}" "${LOG_DIR}" "${AGENTS_DIR}" "${HOME}/Applications"
 chmod 700 "${CONFIG_DIR}"
+
+launchctl bootout "${DOMAIN}/${LABEL}" 2>/dev/null || true
 
 rm -rf "${INSTALL_DIR}/tolkeins"
 cp -R "${ROOT}/tolkeins" "${INSTALL_DIR}/tolkeins"
@@ -49,56 +56,28 @@ else
   echo "Kept existing ${CONFIG_DIR}/subscriptions.yaml"
 fi
 
-python3 - "${PLIST}" "${PYTHON3}" "${INSTALL_DIR}" "${CONFIG_DIR}" "${LOG_DIR}" <<'PY'
-import html
-import pathlib
-import sys
+"${ROOT}/macos/assemble-app.sh" "${APP}"
+"${ROOT}/macos/sign-app.sh" "${APP}"
 
-destination, python3, install_dir, config_dir, log_dir = sys.argv[1:]
+LSREGISTER="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister"
+if [[ -x "$LSREGISTER" ]]; then
+  "$LSREGISTER" -f "$APP" >/dev/null
+fi
 
-def xml(value: str) -> str:
-    return html.escape(value, quote=True)
+PYTHONPATH="${INSTALL_DIR}" "${PYTHON3}" -m tolkeins.launch_agent \
+  --executable "${APP}/Contents/MacOS/tolkeins-collector" \
+  --python "${PYTHON3}" \
+  --install-dir "${INSTALL_DIR}" \
+  --config-dir "${CONFIG_DIR}" \
+  --log-dir "${LOG_DIR}" \
+  --output "${PLIST}"
 
-plist = f"""<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-  <key>Label</key>
-  <string>com.tolkeins.collector</string>
-  <key>ProgramArguments</key>
-  <array>
-    <string>{xml(python3)}</string>
-    <string>-m</string>
-    <string>tolkeins</string>
-  </array>
-  <key>WorkingDirectory</key>
-  <string>{xml(config_dir)}</string>
-  <key>EnvironmentVariables</key>
-  <dict>
-    <key>PYTHONPATH</key>
-    <string>{xml(install_dir)}</string>
-    <key>TOLKEINS_CONFIG_DIR</key>
-    <string>{xml(config_dir)}</string>
-  </dict>
-  <key>StartInterval</key>
-  <integer>600</integer>
-  <key>RunAtLoad</key>
-  <true/>
-  <key>StandardOutPath</key>
-  <string>{xml(log_dir)}/collector.log</string>
-  <key>StandardErrorPath</key>
-  <string>{xml(log_dir)}/collector.err.log</string>
-</dict>
-</plist>
-"""
-pathlib.Path(destination).write_text(plist, encoding="utf-8")
-PY
-
-launchctl bootout "${DOMAIN}/${LABEL}" 2>/dev/null || true
 launchctl bootstrap "${DOMAIN}" "${PLIST}"
 launchctl enable "${DOMAIN}/${LABEL}"
 launchctl kickstart -k "${DOMAIN}/${LABEL}" || true
 
 echo "Installed ${LABEL}."
+echo "Program: ${APP}/Contents/MacOS/tolkeins-collector"
 echo "Logs: ${LOG_DIR}/collector.err.log"
-echo "Manual run: TOLKEINS_CONFIG_DIR='${CONFIG_DIR}' PYTHONPATH='${INSTALL_DIR}' '${PYTHON3}' -m tolkeins --dry-run"
+echo "Grant Chrome once: System Settings → Privacy & Security → Files and Folders → Tolkeins Collector → Chrome."
+echo "The switch appears after this first run. Then run ./collector/verify-chrome.sh"

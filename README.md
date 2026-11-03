@@ -10,6 +10,8 @@ It is a short glue program: spawn CodexBar, merge a YAML file, POST JSON. Python
 
 The collector runs `codexbar usage --provider <id> --json` and does **not** pass `--source`. On CodexBar 0.80.0, `--json` selects JSON output and the default source is `auto`. Warp rejects `cli`, and Grok's explicit `cli` source failed on the Mac that produced the fixtures. Account emails and identity objects are stripped before the POST. Service tokens never leave the Mac.
 
+The LaunchAgent starts **Tolkeins Collector.app**, a small signed helper. The helper stays running and spawns `python3 -m tolkeins`, which spawns CodexBar. macOS attributes Chrome cookie access to that helper, so Gemini and Claude Platform can be granted once under Files & Folders. The helper is signed with a certificate `install.sh` creates on the Mac. That certificate is the stable identity across later installs. The mini has no Apple Developer certificate, and an ad-hoc signature would be a new identity on every rebuild.
+
 ## 1. Sign CodexBar in
 
 Install CodexBar 0.80.0 or newer and confirm the binary:
@@ -24,7 +26,9 @@ Sign in for each provider you care about. `codexbar usage --provider <id> --json
 | --- | --- |
 | `claude` | Sign in. Session, weekly, and extra windows (for example Fable) are read from CodexBar. |
 | `codex` | Sign in. Weekly usage and credit balance are read from CodexBar. `primary` may be null. |
-| `cursor` | Sign in so a Cursor session exists. Until then the snapshot says **Needs sign-in**. |
+| `cursor` | Sign in at cursor.com so a Cursor session exists. Until then the snapshot says **Needs sign-in**. The collector does not sign in for you. |
+| `gemini` | CodexBar reads Chrome cookies. Grant Chrome to **Tolkeins Collector** under Files & Folders. |
+| `claudeplatform` | Same Chrome grant as Gemini. |
 | `warp` | Warp is API-token only. Add the `wk-…` key in CodexBar or set `WARP_API_KEY`. Do not force `--source cli`. |
 | `grok` | CodexBar 0.80.0 has no fetch strategy for Grok. Leave it on auto. The weekly pool is entered by hand in `subscriptions.yaml` until CodexBar returns a window with the same label. |
 
@@ -36,16 +40,30 @@ Set `renewsOn`, `plan`, and `price` for each service. For Grok Bot, set `usedPer
 
 ## 3. Install the collector
 
-On the Mac mini:
+On the Mac mini, from this repo:
 
 ```bash
-chmod +x collector/install.sh collector/uninstall.sh
+chmod +x collector/install.sh collector/uninstall.sh collector/verify-chrome.sh collector/macos/*.sh
 ./collector/install.sh
 ```
 
-This copies the package to `~/.local/share/tolkeins`, creates `~/.config/tolkeins/` (mode 700) and `config.env` (mode 600) if they are missing, and loads a user LaunchAgent (`com.tolkeins.collector`) that runs every 10 minutes. Logs go to `~/Library/Logs/tolkeins/`.
+This copies the package to `~/.local/share/tolkeins`, creates `~/.config/tolkeins/` (mode 700) and `config.env` (mode 600) if they are missing, and loads a user LaunchAgent (`com.tolkeins.collector`, every 10 minutes). It leaves an existing `config.env` and `subscriptions.yaml` in place. Logs go to `~/Library/Logs/tolkeins/`.
 
-Fill in the URL and write token after the Worker exists (step 4). Until then a launchd run exits without posting.
+The agent program is `~/Applications/Tolkeins Collector.app` (bundle id `com.tolkeins.collector`). `install.sh` signs that app with a self-signed certificate named `Tolkeins Collector`. The certificate and its key stay in `~/.config/tolkeins/codesign/` (mode 700) and in the keychain `tolkeins-collector`. macOS may ask you to approve a certificate-trust change the first time. Approve it. Re-running the installer reuses the same certificate, so the Chrome grant survives a later install. The script does not print the keychain password, the signing key, or `WRITE_TOKEN`.
+
+### Grant Chrome once
+
+1. Run `./collector/verify-chrome.sh` once. Gemini and Claude Platform fail until the grant exists. That run is what makes **Tolkeins Collector** appear in Settings.
+2. Open **System Settings → Privacy & Security → Files and Folders**.
+3. Under **Tolkeins Collector**, turn **Chrome** on.
+4. CodexBar's error text says to enable Chrome under CodexBar. For this agent the switch that applies is **Tolkeins Collector**. Leave Full Disk Access for `/usr/bin/python3` off.
+5. Run `./collector/verify-chrome.sh` again.
+
+A passing run prints `gemini ok` and `claudeplatform ok` with window counts, then `result=pass`. It prints usage numbers only.
+
+`cursor` still needs a cursor.com sign-in. The helper does not do that. A `needs-sign-in` line for cursor is the same state as before.
+
+Fill in the URL and write token after the Worker exists (step 4). Until then a launchd run exits without posting. `verify-chrome.sh` passes `--dry-run`, so it does not POST.
 
 ```bash
 # ~/.config/tolkeins/config.env
@@ -53,14 +71,9 @@ WORKER_URL=https://tolkeins.<your-subdomain>.workers.dev
 WRITE_TOKEN=<the WRITE_TOKEN secret>
 ```
 
-Environment variables override the file. A dry run prints the snapshot and does not POST:
+Environment variables override the file.
 
-```bash
-cd ~/.local/share/tolkeins
-TOLKEINS_CONFIG_DIR=~/.config/tolkeins python3 -m tolkeins --dry-run
-```
-
-Remove the agent with `./collector/uninstall.sh`. Add `--purge` to also delete `~/.config/tolkeins` (that deletes the write token).
+Remove the agent, the helper app, and the installed copy with `./collector/uninstall.sh`. Config, the write token, and the signing certificate stay, so a later install keeps the Chrome grant. Add `--purge` to also delete `~/.config/tolkeins` and the signing keychain. A new certificate is a new identity, and Chrome must be granted again.
 
 ## 4. Deploy the Worker (you run this)
 
@@ -147,7 +160,8 @@ Optional fields are omitted when empty. `error.kind` is `needs-sign-in`, `unavai
 
 | Path | Role |
 | --- | --- |
-| `collector/` | Python package, LaunchAgent installer, fixtures from the Mac mini |
+| `collector/` | Python package, LaunchAgent installer, Chrome grant check, fixtures from the Mac mini |
+| `collector/macos/` | Tolkeins Collector.app launcher, local signing script, prebuilt Mach-O slices |
 | `worker/` | TypeScript Worker, KV document, Vitest |
 | `ios/` | SwiftUI app and WidgetKit extension |
 
