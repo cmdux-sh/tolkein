@@ -36,6 +36,14 @@ DOMAIN="gui/$(id -u)"
 mkdir -p "${CONFIG_DIR}" "${INSTALL_DIR}" "${LOG_DIR}" "${AGENTS_DIR}" "${HOME}/Applications"
 chmod 700 "${CONFIG_DIR}"
 
+# Build and sign a staged copy first. If signing fails, the installed app and the
+# running agent are left as they were.
+STAGE="$(mktemp -d)"
+trap 'rm -rf "$STAGE"' EXIT
+STAGED_APP="${STAGE}/Tolkeins Collector.app"
+"${ROOT}/macos/assemble-app.sh" "${STAGED_APP}"
+"${ROOT}/macos/sign-app.sh" "${STAGED_APP}"
+
 launchctl bootout "${DOMAIN}/${LABEL}" 2>/dev/null || true
 
 rm -rf "${INSTALL_DIR}/tolkeins"
@@ -56,8 +64,9 @@ else
   echo "Kept existing ${CONFIG_DIR}/subscriptions.yaml"
 fi
 
-"${ROOT}/macos/assemble-app.sh" "${APP}"
-"${ROOT}/macos/sign-app.sh" "${APP}"
+rm -rf "${APP}"
+mv "${STAGED_APP}" "${APP}"
+codesign --verify --strict "${APP}"
 
 LSREGISTER="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister"
 if [[ -x "$LSREGISTER" ]]; then

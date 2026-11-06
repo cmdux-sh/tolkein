@@ -30,6 +30,21 @@ def redact(text: str) -> str:
     return TOKEN_RE.sub("[redacted]", cleaned)
 
 
+COOKIE_LINE_RE = re.compile(r"(sessionKey=|^Cookie:|\b[\w.-]+=[^\s;]{8,})", re.IGNORECASE)
+
+
+def redact_status(text: str) -> str:
+    """Keep CodexBar status lines; drop cookie and secret lines; redact what is left."""
+
+    kept: list[str] = []
+    for raw in text.splitlines():
+        line = raw.strip()
+        if not line or SECRET_LINE_RE.search(line) or COOKIE_LINE_RE.search(line):
+            continue
+        kept.append(redact(line))
+    return "\n".join(kept)
+
+
 def filter_stderr(text: str) -> str:
     kept: list[str] = []
     for raw in text.splitlines():
@@ -149,9 +164,17 @@ def render_report(snapshot: dict[str, Any] | None, stderr_text: str) -> tuple[st
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Summarize gemini and claudeplatform from a dry-run.")
-    parser.add_argument("--snapshot", required=True)
-    parser.add_argument("--stderr", required=True)
+    parser.add_argument("--snapshot")
+    parser.add_argument("--stderr")
+    parser.add_argument("--redact-stdin", action="store_true", help="Filter CodexBar status text on stdin.")
     args = parser.parse_args(argv)
+    if args.redact_stdin:
+        filtered = redact_status(sys.stdin.read())
+        if filtered:
+            sys.stdout.write(filtered + "\n")
+        return 0
+    if not args.snapshot or not args.stderr:
+        parser.error("--snapshot and --stderr are required")
     stderr_text = Path(args.stderr).read_text(encoding="utf-8", errors="replace")
     raw = Path(args.snapshot).read_text(encoding="utf-8", errors="replace").strip()
     snapshot: dict[str, Any] | None

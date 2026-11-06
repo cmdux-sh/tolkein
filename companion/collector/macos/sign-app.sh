@@ -114,7 +114,9 @@ if [[ "$chosen" != "local" ]]; then
   echo "Signing with ${chosen}."
   tmp="$(mktemp -d)"
   trap 'rm -rf "$tmp"' EXIT
-  if ! codesign --force --sign "$chosen" --timestamp=none "$APP" 2>"${tmp}/codesign.err"; then
+  # A certificate imported twice makes its name ambiguous to codesign; its SHA-1 is not.
+  chosen_hash="$(printf '%s\n' "$identity_text" | grep -F "\"${chosen}\"" | grep -Eo '[0-9A-F]{40}' | head -n 1 || true)"
+  if ! codesign --force --sign "${chosen_hash:-$chosen}" --timestamp=none "$APP" 2>"${tmp}/codesign.err"; then
     echo "codesign could not use ${chosen}." >&2
     cat "${tmp}/codesign.err" >&2
     echo "Unlock the login keychain and allow codesign to use that identity, then re-run ./collector/install.sh." >&2
@@ -156,6 +158,9 @@ cleanup() {
   rm -rf "$tmp"
   if [[ -n "${previous_default}" ]]; then
     security default-keychain -d user -s "$previous_default" >/dev/null 2>&1 || true
+  fi
+  if [[ -n "${KEYCHAIN_SNAPSHOT:-}" ]]; then
+    keychain_reset_search_list >/dev/null 2>&1 || true
   fi
   if [[ -f "$KEYCHAIN" ]]; then
     security lock-keychain "$KEYCHAIN" >/dev/null 2>&1 || true

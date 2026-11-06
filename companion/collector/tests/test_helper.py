@@ -12,7 +12,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from tolkeins.chrome_status import filter_stderr, render_report
+from tolkeins.chrome_status import filter_stderr, redact_status, render_report
 from tolkeins.launch_agent import (
     BUNDLE_ID,
     EXECUTABLE_NAME,
@@ -142,7 +142,7 @@ class LaunchAgentTests(unittest.TestCase):
         self.assertIn("--allow-keychain-prompt", text)
         self.assertIn("Always Allow", text)
         self.assertIn("Chrome Safe Storage", text)
-        self.assertIn("sessionKey=", text)
+        self.assertIn("--redact-stdin", text)
 
     def test_signing_script_keeps_a_certificate_identity(self) -> None:
         text = (MACOS / "sign-app.sh").read_text(encoding="utf-8")
@@ -157,6 +157,47 @@ class LaunchAgentTests(unittest.TestCase):
         self.assertIn("Tolkeins Collector.app", uninstall)
         self.assertIn("--purge", uninstall)
         self.assertIn("tolkeins-collector.keychain-db", uninstall)
+
+    def test_keychain_reset_restores_the_exact_snapshot(self) -> None:
+        script = """
+set -euo pipefail
+source "$1"
+security() {
+  if [[ "$1" == "list-keychains" && "${4:-}" == "-s" ]]; then
+    printf '%s\\n' "${@:5}"
+  fi
+}
+KEYCHAIN_SNAPSHOT=$'/Users/a/Library/Keychains/other.keychain-db\\n/Users/a/Library/Keychains/login.keychain-db\\n'
+keychain_reset_search_list
+"""
+        completed = subprocess.run(
+            ["bash", "-c", script, "bash", str(MACOS / "keychain-list.sh")],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+        self.assertEqual(
+            completed.stdout.split(),
+            ["/Users/a/Library/Keychains/other.keychain-db", "/Users/a/Library/Keychains/login.keychain-db"],
+        )
+
+    def test_grant_output_keeps_status_and_drops_cookies(self) -> None:
+        text = "\n".join(
+            [
+                "gemini: refreshed from Chrome",
+                "Cookie: __Secure-1PSID=abcdefghij",
+                "sid=abcdef123456; path=/",
+                "token abcdefghijklmnopqrstuvwxyz0123 for me@example.com",
+                "sessionKey=sk-ant-123",
+            ]
+        )
+        self.assertEqual(
+            redact_status(text).splitlines(),
+            ["gemini: refreshed from Chrome", "token [redacted] for [redacted-email]"],
+        )
+        script = (ROOT / "grant-chrome-keychain.sh").read_text(encoding="utf-8")
+        self.assertIn("--redact-stdin", script)
 
     def test_keychain_search_list_keeps_login_keychain(self) -> None:
         script = """

@@ -40,3 +40,20 @@ ${KEYCHAIN_SNAPSHOT:-}
 EOF
   security list-keychains -d user -s "${final[@]}"
 }
+
+# Put the search list back exactly as it was before signing. The signing keychain only
+# needs to be on the list while codesign runs.
+keychain_reset_search_list() {
+  local -a items=()
+  local item
+  while IFS= read -r item; do
+    if [[ -n "$item" ]]; then
+      items[${#items[@]}]="$item"
+    fi
+  done <<EOF
+${KEYCHAIN_SNAPSHOT:-}
+EOF
+  if [[ ${#items[@]} -gt 0 ]]; then
+    security list-keychains -d user -s "${items[@]}"
+  fi
+}

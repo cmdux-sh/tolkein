@@ -56,8 +56,11 @@ echo
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
 
+COLLECTOR_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Drop cookie and secret lines, then redact any long token or email left in the rest.
 filter_status() {
-  grep -E -v 'sessionKey=|^Cookie:|eyJ[A-Za-z0-9_-]{20,}' || true
+  PYTHONPATH="${COLLECTOR_ROOT}" /usr/bin/python3 -m tolkeins.chrome_status --redact-stdin
 }
 
 status=0
