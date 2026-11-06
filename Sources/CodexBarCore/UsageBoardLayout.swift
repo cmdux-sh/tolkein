@@ -441,6 +441,7 @@ package struct UsageBoardProvider: Equatable, Sendable, Identifiable {
 }
 
 package enum UsageBoardProviderBuilder {
+    // swiftlint:disable:next function_parameter_count
     package static func make(
         id: String,
         name: String,

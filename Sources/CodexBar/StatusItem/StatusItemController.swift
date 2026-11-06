@@ -39,6 +39,7 @@ struct NativeHighlightDeferredMenuRebuild {
 }
 
 @MainActor
+// swiftlint:disable:next type_body_length
 final class StatusItemController: NSObject, NSMenuDelegate, StatusItemControlling {
     // Disable SwiftUI menu cards + menu refresh work in tests to avoid swiftpm-testing-helper crashes.
     static var menuCardRenderingEnabled = !SettingsStore.isRunningTests

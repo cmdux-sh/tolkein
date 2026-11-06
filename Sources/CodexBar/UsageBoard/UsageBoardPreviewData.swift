@@ -91,6 +91,7 @@ enum UsageBoardPreviewData {
             ])
     }
 
+    // swiftlint:disable:next function_parameter_count
     private static func provider(
         id: String,
         name: String,
