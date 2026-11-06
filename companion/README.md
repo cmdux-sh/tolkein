@@ -1,5 +1,7 @@
 # tolkeins
 
+This folder used to be the separate `cmdux-sh/tolkeins` repository. It now lives inside `cmdux-sh/tolkein` next to the CodexBar fork it reads. Run every command below from this `companion/` folder.
+
 Personal tracker for AI subscription usage, reset times, and renewal dates. A collector on your Mac reads [CodexBar](https://github.com/steipete/CodexBar) and posts numbers only. A Cloudflare Worker stores the latest snapshot. An iPhone widget and an assistant read it over HTTPS.
 
 Nothing in this repo is deployed. Commands below are for you to run.
