@@ -1,4 +1,6 @@
 import { authorize } from "./auth"
+import { historyToCsv, resolveHistoryRange, TORONTO } from "./daily"
+import { listDailyHistory, recordDailySnapshot, runDailyClose } from "./daily-store"
 import { parseSnapshot, SnapshotError } from "./snapshot"
 import { historyLimit, nextDocument, SNAPSHOT_KEY, type StoredDocument } from "./store"
 
@@ -14,6 +16,27 @@ export default {
       return json({ error: "internal_error" }, 500)
     }
   },
+  async scheduled(controller, env, _ctx): Promise<void> {
+    try {
+      const document = await readDocument(env)
+      const result = await runDailyClose(env.HISTORY, controller.scheduledTime, document?.latest ?? null)
+      console.log(
+        JSON.stringify({
+          message: result.acted ? "daily close" : "daily close skipped",
+          cron: controller.cron,
+          scheduledTime: new Date(controller.scheduledTime).toISOString(),
+          date: result.date,
+          closed: result.closed,
+          sealed: result.sealed,
+          pruned: result.pruned,
+        }),
+      )
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "unknown error"
+      console.error(JSON.stringify({ message: "daily close failed", error: message, cron: controller.cron }))
+      throw error
+    }
+  },
 } satisfies ExportedHandler<Env>
 
 async function route(request: Request, env: Env): Promise<Response> {
@@ -21,6 +44,7 @@ async function route(request: Request, env: Env): Promise<Response> {
   if (request.method === "GET" && url.pathname === "/health") return json({ ok: true })
   if (url.pathname === "/v1/snapshot") return postSnapshot(request, env)
   if (url.pathname === "/v1/usage") return getUsage(request, env)
+  if (url.pathname === "/v1/history.csv") return getHistoryCsv(request, env, url)
   if (url.pathname === "/v1/history") return getHistory(request, env, url)
   return json({ error: "not_found" }, 404)
 }
@@ -46,8 +70,10 @@ async function postSnapshot(request: Request, env: Env): Promise<Response> {
     console.error(JSON.stringify({ message: "snapshot rejected", path: "/v1/snapshot", reason }))
     return json({ error: "invalid_snapshot", reason }, 400)
   }
-  // Await the single KV put so a failed write is a 500, not a lost snapshot.
+  // Await the KV put so a failed write is a 500, not a lost snapshot.
+  // The daily row is separate: a failed history write must not pretend the day was recorded.
   await storeSnapshot(env, snapshot, historyLimit(env.HISTORY_LIMIT))
+  await recordDailySnapshot(env.HISTORY, snapshot)
   return json({ ok: true, generatedAt: snapshot.generatedAt })
 }
 
@@ -70,11 +96,40 @@ async function getHistory(request: Request, env: Env, url: URL): Promise<Respons
   if (request.method !== "GET") return json({ error: "method_not_allowed" }, 405)
   const auth = await readAuth(request, env)
   if (auth instanceof Response) return auth
+  if (url.searchParams.has("from") || url.searchParams.has("to")) return dailyHistory(env, url, "json")
   const document = await readDocument(env)
   const history = document?.history ?? []
   const sliced = sliceHistory(history, url.searchParams.get("limit"))
   if (sliced === "invalid") return json({ error: "invalid_limit" }, 400)
   return json({ history: sliced })
+}
+
+async function getHistoryCsv(request: Request, env: Env, url: URL): Promise<Response> {
+  if (request.method !== "GET") return json({ error: "method_not_allowed" }, 405)
+  const auth = await readAuth(request, env)
+  if (auth instanceof Response) return auth
+  return dailyHistory(env, url, "csv")
+}
+
+async function dailyHistory(env: Env, url: URL, format: "json" | "csv"): Promise<Response> {
+  const range = resolveHistoryRange({
+    from: url.searchParams.get("from"),
+    to: url.searchParams.get("to"),
+    now: new Date(),
+  })
+  if ("error" in range) return json({ error: range.error }, 400)
+  const days = await listDailyHistory(env.HISTORY, range.from, range.to)
+  if (format === "csv") {
+    return new Response(historyToCsv(days), {
+      status: 200,
+      headers: {
+        "cache-control": "no-store",
+        "content-type": "text/csv; charset=utf-8",
+        "content-disposition": 'attachment; filename="tolkeins-history.csv"',
+      },
+    })
+  }
+  return json({ timezone: TORONTO, from: range.from, to: range.to, days })
 }
 
 async function readAuth(request: Request, env: Env): Promise<true | Response> {
