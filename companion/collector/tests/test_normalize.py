@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import contextlib
+import io
 import json
 import sys
 import unittest
@@ -8,7 +10,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from tolkeins.normalize import build_snapshot, load_subscriptions, next_reset, scrub
+from tolkeins.normalize import ERROR_MESSAGE_LIMIT, build_snapshot, load_subscriptions, next_reset, scrub
 
 
 FIXTURES = Path(__file__).resolve().parent / "fixtures"
@@ -157,6 +159,25 @@ class NormalizeTests(unittest.TestCase):
         now = datetime(2026, 10, 21, 14, 0, tzinfo=timezone.utc)
         reset = next_reset(now, weekday=2, month_day=None, reset_time="12:00", timezone_name="America/Toronto")
         self.assertEqual(reset.strftime("%Y-%m-%dT%H:%M:%SZ"), "2026-10-21T16:00:00Z")
+
+    def test_long_error_message_is_clamped_and_logged(self) -> None:
+        full = ("cursor failed " + ("detail " * 80)).strip()
+        self.assertGreater(len(full), ERROR_MESSAGE_LIMIT)
+        stderr = io.StringIO()
+        with contextlib.redirect_stderr(stderr):
+            snapshot = build_snapshot(
+                {"cursor": [{"provider": "cursor", "source": "web", "error": {"message": full}}]},
+                {},
+                ("cursor",),
+                NOW,
+            )
+        message = snapshot["services"][0]["error"]["message"]
+        self.assertLessEqual(len(message), ERROR_MESSAGE_LIMIT)
+        self.assertTrue(message.endswith("..."))
+        self.assertTrue(full.startswith(message[:20]))
+        logged = stderr.getvalue()
+        self.assertIn(full, logged)
+        self.assertNotIn(full, json.dumps(snapshot))
 
     def test_next_reset_month_day(self) -> None:
         reset = next_reset(
