@@ -1,0 +1,5 @@
+# Copy to .dev.vars for `wrangler dev`. Never commit .dev.vars.
+# Production values are set with `wrangler secret put`, not with this file.
+WRITE_TOKEN=replace-with-openssl-rand-base64-32
+READ_TOKEN_PHONE=replace-with-a-different-token
+READ_TOKEN_ASSISTANT=replace-with-a-third-token
