@@ -42,14 +42,29 @@ resolve_package_signing_identity() {
     echo "ERROR: APP_IDENTITY must match exactly one valid identity (found $matches); use its full name or SHA-1 hash." >&2
     return 1
   fi
-  # Developer ID names end in the Team ID; development names may end in a personal ID instead.
-  local team_pattern='^Developer ID Application: .+ \(([A-Z0-9]{10})\)$'
-  if [[ ! "$selected_name" =~ $team_pattern ]]; then
-    echo "ERROR: Cannot derive a Team ID from APP_IDENTITY; use a Developer ID Application identity." >&2
+  # Developer ID names end in the Team ID. Apple Development names end in a personal ID;
+  # the team is the certificate OU, or APP_TEAM_ID when that lookup is unavailable.
+  local team=""
+  local developer_id_pattern='^Developer ID Application: .+ \(([A-Z0-9]{10})\)$'
+  if [[ "$selected_name" =~ $developer_id_pattern ]]; then
+    team="${BASH_REMATCH[1]}"
+  elif [[ -n "${APP_TEAM_ID:-}" ]]; then
+    team="$APP_TEAM_ID"
+  else
+    local pem subject
+    pem="$(security find-certificate -c "$selected_name" -p 2>/dev/null || true)"
+    if [[ -n "$pem" ]]; then
+      subject="$(printf '%s' "$pem" | openssl x509 -noout -subject -nameopt RFC2253 2>/dev/null || true)"
+      if [[ "$subject" =~ OU=([A-Z0-9]{10}) ]]; then
+        team="${BASH_REMATCH[1]}"
+      fi
+    fi
+  fi
+  if [[ ! "$team" =~ ^[A-Z0-9]{10}$ ]]; then
+    echo "ERROR: Cannot derive a Team ID from APP_IDENTITY. Set APP_TEAM_ID to the certificate OU." >&2
     return 1
   fi
-  local team="${BASH_REMATCH[1]}"
-  if [[ -n "${APP_TEAM_ID:-}" && "$APP_TEAM_ID" != "$team" ]]; then
+  if [[ -n "${APP_TEAM_ID:-}" && "$APP_TEAM_ID" != "$team" && "$selected_name" =~ $developer_id_pattern ]]; then
     echo "ERROR: APP_TEAM_ID does not match the selected signing identity." >&2
     return 1
   fi
@@ -275,11 +290,13 @@ if [[ -f "$ICON_SOURCE" ]]; then
   iconutil --convert icns --output "$ICON_TARGET" "$ICON_SOURCE"
 fi
 
-BUNDLE_ID="com.steipete.codexbar"
-FEED_URL="https://raw.githubusercontent.com/steipete/CodexBar/main/appcast.xml"
-AUTO_CHECKS=true
+BUNDLE_ID="sh.cmdux.tolkein"
+# This fork has no update feed of its own. Upstream's feed is signed with upstream's key and
+# would replace sh.cmdux.tolkein with com.steipete.codexbar, so release builds do not check it.
+FEED_URL=""
+AUTO_CHECKS=false
 if [[ "$LOWER_CONF" == "debug" ]]; then
-  BUNDLE_ID="com.steipete.codexbar.debug"
+  BUNDLE_ID="sh.cmdux.tolkein.debug"
   FEED_URL=""
   AUTO_CHECKS=false
 fi

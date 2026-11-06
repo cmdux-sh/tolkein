@@ -2763,6 +2763,18 @@
 "Auto uses the active saved session, otherwise an API key or browser cookies." = "Otomatis menggunakan sesi tersimpan yang aktif, atau kunci API atau cookie browser jika tidak ada sesi yang aktif.";
 "Store multiple Command Code subscription sessions." = "Simpan beberapa sesi langganan Command Code.";
 
+/* Wide usage board */
+"All providers" = "All providers";
+"Classic menu" = "Classic menu";
+"Needs sign-in" = "Needs sign-in";
+"Couldn't load usage" = "Couldn't load usage";
+"No windows reported yet." = "No windows reported yet.";
+"Charts, accounts, and history stay in the classic menu." = "Charts, accounts, and history stay in the classic menu.";
+"Up and down move between providers. Command-R refreshes. Escape closes." = "Up and down move between providers. Command-R refreshes. Escape closes.";
+"More than half left" = "More than half left";
+"Under half left" = "Under half left";
+"Almost out" = "Almost out";
+"None left" = "None left";
 "codex_reset_credit_expiry_notifications_title" = "Kedaluwarsa kredit reset Codex";
 
 "codex_reset_credit_expiry_notifications_subtitle" = "Menambahkan pengingat saat penggunaan diperbarui, 1 hari dan 1 jam sebelum kedaluwarsa.";

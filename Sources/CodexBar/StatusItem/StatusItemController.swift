@@ -39,6 +39,7 @@ struct NativeHighlightDeferredMenuRebuild {
 }
 
 @MainActor
+// swiftlint:disable:next type_body_length
 final class StatusItemController: NSObject, NSMenuDelegate, StatusItemControlling {
     // Disable SwiftUI menu cards + menu refresh work in tests to avoid swiftpm-testing-helper crashes.
     static var menuCardRenderingEnabled = !SettingsStore.isRunningTests
@@ -232,6 +233,12 @@ final class StatusItemController: NSObject, NSMenuDelegate, StatusItemControllin
     }
 
     var creditsPurchaseWindow: OpenAICreditsPurchaseWindowController?
+    var usageBoard: UsageBoardPanelController?
+    var usageBoardClickUptime: TimeInterval = 0
+    var usageBoardOpenedAt: TimeInterval = 0
+    var lastUsageBoardClickTypeRaw: UInt?
+    var isRedirectingUsageBoardMenu = false
+    var isPresentingClassicMenu = false
 
     var activeLoginProvider: UsageProvider? {
         didSet {
@@ -539,6 +546,7 @@ final class StatusItemController: NSObject, NSMenuDelegate, StatusItemControllin
             deferOpenParentMenuRebuild: true,
             allowStaleContentDuringDataRefresh: true)
         self.completeParentMenuRebuildAfterHostedSubviewCloseIfNeeded()
+        self.reloadUsageBoardIfVisible()
     }
 
     private func observeStoreIconChanges() {
@@ -699,6 +707,7 @@ final class StatusItemController: NSObject, NSMenuDelegate, StatusItemControllin
             self.refreshOpenMenusAllowingParentRebuild(
                 deferParentRebuildDuringTracking: !localizationChanged)
         }
+        self.reloadUsageBoardIfVisible()
     }
 
     /// Updates the menu bar icons.
@@ -716,6 +725,7 @@ final class StatusItemController: NSObject, NSMenuDelegate, StatusItemControllin
         self.lastObservedStoreIconWorkSignature = precomputedStoreIconSignature ?? self.storeIconObservationSignature()
         self.beginIconPerfUpdatePass()
         defer {
+            self.reassertVisibleUsageBoardBindings()
             self.endIconPerfUpdatePass()
             MainThreadActivityBreadcrumb.pop()
         }
@@ -767,6 +777,7 @@ final class StatusItemController: NSObject, NSMenuDelegate, StatusItemControllin
         self.lastAppliedProviderIconRenderSignatures.removeAll()
         self.updateVisibility()
         self.updateIcons()
+        self.reassertVisibleUsageBoardBindings()
     }
 
     private func updateVisibility() {
@@ -825,9 +836,7 @@ final class StatusItemController: NSObject, NSMenuDelegate, StatusItemControllin
         if self.mergedMenu == nil {
             self.mergedMenu = self.makeMenu()
         }
-        if self.statusItem.menu !== self.mergedMenu {
-            self.statusItem.menu = self.mergedMenu
-        }
+        self.bindPresentedInterface(for: self.statusItem, menu: self.mergedMenu)
         self.prepareAttachedClosedMenusIfNeeded()
     }
 
@@ -843,17 +852,12 @@ final class StatusItemController: NSObject, NSMenuDelegate, StatusItemControllin
                     if self.providerMenus[provider.instanceID] == nil {
                         self.providerMenus[provider.instanceID] = self.makeMenu(for: provider)
                     }
-                    let menu = self.providerMenus[provider.instanceID]
-                    if item.menu !== menu {
-                        item.menu = menu
-                    }
+                    self.bindPresentedInterface(for: item, menu: self.providerMenus[provider.instanceID])
                 } else if fallback == provider {
                     if self.fallbackMenu == nil {
                         self.fallbackMenu = self.makeMenu(for: nil)
                     }
-                    if item.menu !== self.fallbackMenu {
-                        item.menu = self.fallbackMenu
-                    }
+                    self.bindPresentedInterface(for: item, menu: self.fallbackMenu)
                 }
             } else if let item = self.statusItems[provider.instanceID] {
                 item.menu = nil

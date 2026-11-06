@@ -622,6 +622,10 @@ extension StatusItemController: StatusItemMenuPersistentActionDelegate {
     }
 
     func openMenuFromShortcut() {
+        if Self.prefersUsageBoard, self.usageBoard?.isVisible == true {
+            self.usageBoard?.dismiss(reason: "shortcut")
+            return
+        }
         if self.closeOpenMenusFromShortcutIfNeeded() {
             return
         }

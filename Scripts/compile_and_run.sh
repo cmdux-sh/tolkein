@@ -239,7 +239,7 @@ if [[ "${SIGNING_MODE:-adhoc}" == "adhoc" && "${CLEAR_ADHOC_KEYCHAIN}" == "1" ]]
   # Clear both the legacy keychain store and the current cache service when developers explicitly want a clean reset
   # of CodexBar-owned keychain state for ad-hoc builds.
   delete_keychain_service_items "com.steipete.CodexBar"
-  delete_keychain_service_items "com.steipete.codexbar.cache"
+  delete_keychain_service_items "sh.cmdux.tolkein.cache"
 elif [[ "${SIGNING_MODE:-adhoc}" == "adhoc" ]]; then
   log "==> Preserving CodexBar keychain entries (pass --clear-adhoc-keychain to reset adhoc keychain state)"
 fi

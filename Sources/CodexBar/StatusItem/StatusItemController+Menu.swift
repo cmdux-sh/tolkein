@@ -64,6 +64,9 @@ extension StatusItemController {
     }
 
     func menuWillOpen(_ menu: NSMenu) {
+        if self.redirectOpenRootMenuToUsageBoard(menu) {
+            return
+        }
         if menu.supermenu == nil {
             // Records interaction and may bring an adaptive timer forward; never refreshes
             // synchronously. Root opens only: hover-opening a hosted chart submenu must not kick

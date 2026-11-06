@@ -8,6 +8,7 @@ extension StatusItemController {
         self.isReleasedForTesting = true
         #endif
 
+        self.usageBoard?.dismiss(reason: "shutdown")
         let openMenus = Array(self.openMenus.values)
         for menu in openMenus {
             menu.cancelTrackingWithoutAnimation()

@@ -25,6 +25,26 @@
       "id": "00000000000000000000000000000000"
     }
   ],
+  // Daily history is one D1 row per America/Toronto date. The latest snapshot
+  // stays in USAGE so GET /v1/usage does not read or rewrite the archive.
+  // Placeholder id. `npx wrangler d1 create tolkeins-history` prints the real one.
+  "d1_databases": [
+    {
+      "binding": "HISTORY",
+      "database_name": "tolkeins-history",
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "migrations"
+    }
+  ],
+  // Cron Triggers run in UTC. 23:55 America/Toronto is 03:55 UTC during EDT
+  // (UTC-4, second Sunday in March through first Sunday in November) and
+  // 04:55 UTC during EST (UTC-5). Both expressions fire every day. The handler
+  // closes the local date only when controller.scheduledTime is 23:xx in
+  // Toronto, so the other run returns immediately. 23:55 is not inside the
+  // DST gap or the repeated hour, so the local day still closes once.
+  "triggers": {
+    "crons": ["55 3 * * *", "55 4 * * *"]
+  },
   // One document holds the latest snapshot and a short history, so each
   // collector run is a single KV write (144/day at a 10-minute interval).
   "vars": {
