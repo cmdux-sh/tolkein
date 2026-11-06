@@ -291,8 +291,10 @@ if [[ -f "$ICON_SOURCE" ]]; then
 fi
 
 BUNDLE_ID="sh.cmdux.tolkein"
-FEED_URL="https://raw.githubusercontent.com/steipete/CodexBar/main/appcast.xml"
-AUTO_CHECKS=true
+# This fork has no update feed of its own. Upstream's feed is signed with upstream's key and
+# would replace sh.cmdux.tolkein with com.steipete.codexbar, so release builds do not check it.
+FEED_URL=""
+AUTO_CHECKS=false
 if [[ "$LOWER_CONF" == "debug" ]]; then
   BUNDLE_ID="sh.cmdux.tolkein.debug"
   FEED_URL=""
