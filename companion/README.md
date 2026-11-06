@@ -238,7 +238,9 @@ curl -sS \
 
 That Monday (still EDT) starts at 00:08 Toronto (`04:08Z`) and the last snapshot is 23:50 (`03:50Z` the next UTC date). The session window climbed from 10% to 80%, then reset, and finished at 12%. `change` is always end minus start, in percentage points, so the session change is `2` even though the window reset. `used` is `82`: `(80 - 10) + 12`. The 80 is the highest percent observed before the drop. The ending percent stands in for usage after a restart near zero. If the window resets more than once, each finished stretch is added the same way, and the final end is added once. When `resetsAt` moves forward but no higher sample was seen, the value before the reset is the start of that stretch, so `used` collapses to the ending percent.
 
-`reset` is true when `resetsAt` moves to a later instant or the percent drops by more than 0.001 (float noise). A small dip is therefore treated as a reset, and `used` can be larger than the net change.
+`reset` is true when the percent drops by more than one point, or when `resetsAt` moves forward by more than half the window (at least 30 minutes; 30 minutes when the window length is unknown). A smaller dip or a few minutes of `resetsAt` drift is noise, not a restart. Without a reset, `used` is the net change and never below 0.
+
+A snapshot whose `generatedAt` is more than 5 minutes ahead of the Worker's clock is kept as the latest snapshot but is not added to the daily history.
 
 Credits compare the first and last balance only. `used` is start minus end. If the balance rose, `used` is 0 and `added` is the increase. A spend and a top-up on the same day are not both visible.
 

@@ -84,6 +84,20 @@ describe("daily change math", () => {
     })
   })
 
+  it("treats a few minutes of resetsAt drift as the same window", () => {
+    const track = fold([
+      point("2026-10-26T04:00:00Z", 50, "2026-10-26T12:00:00Z"),
+      point("2026-10-26T04:10:00Z", 51, "2026-10-26T12:00:07Z"),
+      point("2026-10-26T04:20:00Z", 52, "2026-10-26T12:04:00Z"),
+    ])
+    expect(summarizeTrack(track)[0]?.windows[0]).toMatchObject({ reset: false, change: 2, used: 2 })
+  })
+
+  it("treats a dip under one point as noise and never reports negative use", () => {
+    const track = fold([point("2026-10-26T04:00:00Z", 50), point("2026-10-26T05:00:00Z", 49.6)])
+    expect(summarizeTrack(track)[0]?.windows[0]).toMatchObject({ reset: false, change: -0.4, used: 0 })
+  })
+
   it("ignores a sub-thousandth dip and rounds a tenth of a point", () => {
     const flat = fold([point("2026-10-26T04:00:00Z", 20), point("2026-10-26T05:00:00Z", 19.9995)])
     expect(summarizeTrack(flat)[0]?.windows[0]).toMatchObject({ reset: false, change: -0.0005 })
@@ -132,6 +146,17 @@ describe("daily change math", () => {
     expect(lines[1]).toContain('"Claude, Max"')
     expect(lines[1]).toContain(",9,9,0,0,USD")
     expect(lines[2]?.endsWith(",,,,")).toBe(true)
+  })
+
+  it("defuses names a spreadsheet would run as a formula", () => {
+    const track = fold([
+      snapshot("2026-10-26T04:00:00Z", [{ id: "x", name: "=HYPERLINK(1)", windows: [{ label: "-Weekly", usedPercent: 5 }] }]),
+    ])
+    const csv = historyToCsv([
+      { date: "2026-10-26", startAt: "2026-10-26T04:00:00Z", endAt: "2026-10-26T04:00:00Z", closed: false, services: summarizeTrack(track) },
+    ])
+    const row = csv.trim().split("\n")[1] ?? ""
+    expect(row).toContain(",'=HYPERLINK(1),'-Weekly,")
   })
 })
 

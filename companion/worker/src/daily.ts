@@ -3,7 +3,10 @@ import type { UsageService, UsageSnapshot, UsageWindow } from "./snapshot"
 export const TORONTO = "America/Toronto"
 export const RETENTION_DAYS = 400
 
-const USAGE_DROP = 0.001
+// A real reset falls toward zero, so a dip under a point is noise, not a restart.
+const USAGE_DROP = 1
+// A real reset moves resetsAt forward by about one window. Smaller moves are drift.
+const MIN_RESET_ADVANCE_MS = 30 * 60_000
 
 export interface WindowTrack {
   label: string
@@ -197,7 +200,7 @@ export function summarizeWindow(track: WindowTrack): HistoryWindow {
   const change = roundPoints(track.end - track.start)
   // No reset: consumption is the net change. A reset adds the climb before the
   // reset to the ending percent, which stands in for usage since a restart near zero.
-  const used = track.reset ? roundPoints(track.closedUse + track.end) : change
+  const used = track.reset ? roundPoints(track.closedUse + track.end) : Math.max(0, change)
   const window: HistoryWindow = {
     label: track.label,
     start: track.start,
@@ -341,7 +344,10 @@ function isReset(track: WindowTrack, window: UsageWindow): boolean {
   if (!window.resetsAt || !track.resetsAtEnd) return false
   const next = Date.parse(window.resetsAt)
   const previous = Date.parse(track.resetsAtEnd)
-  return Number.isFinite(next) && Number.isFinite(previous) && next > previous
+  if (!Number.isFinite(next) || !Number.isFinite(previous)) return false
+  const minutes = window.windowMinutes ?? track.windowMinutes
+  const tolerance = minutes ? Math.max(MIN_RESET_ADVANCE_MS, (minutes * 60_000) / 2) : MIN_RESET_ADVANCE_MS
+  return next - previous > tolerance
 }
 
 function applyCredits(service: ServiceTrack, remaining: number, currencyCode: string | undefined): void {
@@ -388,7 +394,9 @@ function csvLine(values: Array<string | number | boolean | undefined>): string {
 
 function csvField(value: string | number | boolean | undefined): string {
   if (value === undefined) return ""
-  const text = String(value)
+  let text = String(value)
+  // Spreadsheets run a cell that starts with = + - or @ as a formula. Numbers stay as they are.
+  if (typeof value === "string" && /^[=+\-@]/.test(text)) text = `'${text}`
   if (/[",\n\r]/.test(text)) return `"${text.replace(/"/g, '""')}"`
   return text
 }

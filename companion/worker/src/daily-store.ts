@@ -39,6 +39,8 @@ export interface CloseResult {
   pruned: number
 }
 
+const MAX_CLOCK_SKEW_MS = 5 * 60_000
+
 export async function ensureDailySchema(db: D1Database): Promise<void> {
   // prepare().run() keeps the whole statement. exec() in the local runtime
   // splits on newlines and would send only "CREATE TABLE ... (".
@@ -49,6 +51,8 @@ export async function recordDailySnapshot(db: D1Database, snapshot: UsageSnapsho
   await ensureDailySchema(db)
   const date = torontoDate(snapshot.generatedAt)
   const generatedMs = instantMs(snapshot.generatedAt)
+  // A collector clock far ahead would start a future day or block the rest of today.
+  if (generatedMs > Date.now() + MAX_CLOCK_SKEW_MS) return
   const existing = await getRow(db, date)
   if (!existing) {
     const track = createTrack()
@@ -66,7 +70,11 @@ export async function recordDailySnapshot(db: D1Database, snapshot: UsageSnapsho
       if (!isConstraintError(error)) throw error
     }
   }
-  await updateRow(db, date, snapshot, generatedMs)
+  // Two overlapping POSTs can read the same row. Retry so neither merge is lost.
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    if (await updateRow(db, date, snapshot, generatedMs)) return
+  }
+  throw new Error("daily row kept changing; snapshot not merged")
 }
 
 export async function listDailyHistory(db: D1Database, from: string, to: string): Promise<HistoryDay[]> {
@@ -107,21 +115,22 @@ export async function runDailyClose(db: D1Database, scheduledTime: number, lates
   return { acted: true, date, closed, sealed, pruned }
 }
 
-async function updateRow(db: D1Database, date: string, snapshot: UsageSnapshot, generatedMs: number): Promise<void> {
+async function updateRow(db: D1Database, date: string, snapshot: UsageSnapshot, generatedMs: number): Promise<boolean> {
   const existing = await getRow(db, date)
   if (!existing) throw new Error("daily row missing")
-  if (generatedMs <= existing.last_generated_ms) return
+  if (generatedMs <= existing.last_generated_ms) return true
   const track = parseTrack(existing.track_json)
   if (!track) throw new Error("daily track unreadable")
   applySnapshot(track, snapshot)
-  await db
+  const result = await db
     .prepare(
       `UPDATE daily_usage
        SET end_at = ?, track_json = ?, last_generated_at = ?, last_generated_ms = ?
-       WHERE date = ? AND last_generated_ms < ?`,
+       WHERE date = ? AND last_generated_ms = ?`,
     )
-    .bind(snapshot.generatedAt, JSON.stringify(track), snapshot.generatedAt, generatedMs, date, generatedMs)
+    .bind(snapshot.generatedAt, JSON.stringify(track), snapshot.generatedAt, generatedMs, date, existing.last_generated_ms)
     .run()
+  return (result.meta.changes ?? 0) > 0
 }
 
 async function getRow(db: D1Database, date: string): Promise<DailyRow | null> {
