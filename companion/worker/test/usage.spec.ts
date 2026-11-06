@@ -1,6 +1,7 @@
 import { env } from "cloudflare:workers"
 import { beforeEach, describe, expect, it } from "vitest"
 import { authorize, tokensMatch } from "../src/auth"
+import { ensureDailySchema } from "../src/daily-store"
 import worker from "../src/index"
 import { parseSnapshot } from "../src/snapshot"
 import { nextDocument } from "../src/store"
@@ -72,6 +73,8 @@ describe("snapshot document", () => {
 describe("worker", () => {
   beforeEach(async () => {
     await env.USAGE.delete("v1")
+    await ensureDailySchema(env.HISTORY)
+    await env.HISTORY.prepare("DELETE FROM daily_usage").run()
   })
 
   it("serves health without a token and hides usage", async () => {
