@@ -27,8 +27,11 @@ public enum ManusProviderDescriptor {
             settingsSection: .init(ManusProviderSettingsKey.self, cookieSettings: ManusProviderSettings.self),
             browserCookieOrder: ProviderBrowserCookieDefaults.defaultImportOrder,
             resolveValues: { context in
-                guard context.settings?.manus?.cookieSource != .off else { return nil }
+                let settings = context.settings?.manus
                 let token = ManusSettingsReader.sessionToken(environment: context.env)
+                    ?? ManusCookieHeader.token(from: settings?.manualCookieHeader)
+                if settings?.cookieSource == .off, token == nil { return nil }
+                // Prefer the pasted or per-account session_id so fetch does not import browser cookies.
                 return .init(secrets: token.map { ["SESSION_TOKEN": $0] } ?? [:])
             },
             field: .init(

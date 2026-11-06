@@ -2739,6 +2739,18 @@
 "Auto uses the active saved session, otherwise an API key or browser cookies." = "自動使用目前啟用的已儲存工作階段，否則使用 API 金鑰或瀏覽器 Cookie。";
 "Store multiple Command Code subscription sessions." = "儲存多個 Command Code 訂閱工作階段。";
 
+/* Wide usage board */
+"All providers" = "All providers";
+"Classic menu" = "Classic menu";
+"Needs sign-in" = "Needs sign-in";
+"Couldn't load usage" = "Couldn't load usage";
+"No windows reported yet." = "No windows reported yet.";
+"Charts, accounts, and history stay in the classic menu." = "Charts, accounts, and history stay in the classic menu.";
+"Up and down move between providers. Command-R refreshes. Escape closes." = "Up and down move between providers. Command-R refreshes. Escape closes.";
+"More than half left" = "More than half left";
+"Under half left" = "Under half left";
+"Almost out" = "Almost out";
+"None left" = "None left";
 "codex_reset_credit_expiry_notifications_title" = "Codex 重置卡到期提醒";
 
 "codex_reset_credit_expiry_notifications_subtitle" = "重新整理用量時，在到期前 1 天和 1 小時傳送提醒。";

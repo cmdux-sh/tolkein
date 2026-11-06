@@ -86,7 +86,7 @@ import tempfile
 from pathlib import Path
 
 source = Path(sys.argv[1]).read_text()
-start = source.index('BUNDLE_ID="com.steipete.codexbar"')
+start = source.index('BUNDLE_ID="sh.cmdux.tolkein"')
 end = source.index('BUILD_TIMESTAMP=', start)
 generation = source[start:end]
 start = source.index('if [[ "$EMBED_PROVISIONING_PROFILE" == "1" ]]; then')
@@ -117,12 +117,10 @@ for team, configuration, signing, profile_present in itertools.product(
         identity_stub = f'security() {{ echo \'  1) {"A" * 40} "{env["APP_IDENTITY"]}"\'; }}'
         result = subprocess.run(['bash', '-eu', '-c', identity_stub + '\n' + helper + '\n' + generation + '\n' + embedding],
                                 env=env, capture_output=True, text=True)
-        cloudkit = team == 'Y5PE65HELJ' and configuration == 'release' and signing == 'identity'
-        if cloudkit and not profile_present:
-            assert result.returncode != 0 and 'Missing' in result.stderr, result.stderr
-            continue
+        # The fork bundle does not embed the upstream Developer ID CloudKit profile.
+        cloudkit = False
         assert result.returncode == 0, (team, configuration, signing, profile_present, result.stderr)
-        bundle = 'com.steipete.codexbar' + ('.debug' if configuration == 'debug' else '')
+        bundle = 'sh.cmdux.tolkein' + ('.debug' if configuration == 'debug' else '')
         expected_group = f'{team}.{bundle}'
         app_entitlements = plistlib.loads((root / '.build/entitlements/CodexBar.entitlements').read_bytes())
         widget_entitlements = plistlib.loads((root / '.build/entitlements/CodexBarWidget.entitlements').read_bytes())
@@ -161,6 +159,7 @@ cases = [
     ('missing team', 'Teamless', None, f'  1) {first_hash} "Teamless"\n', 0, None),
     ('malformed team', 'Broken', None, f'  1) {first_hash} "Broken (SHORT)"\n', 0, None),
     ('development personal ID is not a team', 'Apple Development:', None, f'  1) {first_hash} "Apple Development: Fixture (PERSONID01)"\n', 0, None),
+    ('apple development uses APP_TEAM_ID', 'Apple Development: Arturo Castaneyra (V7U5DSP776)', '9M93D96C9U', f'  1) {first_hash} "Apple Development: Arturo Castaneyra (V7U5DSP776)"\n', 0, '9M93D96C9U'),
     ('arbitrary suffix is not a team', 'Local Certificate', None, f'  1) {first_hash} "Local Certificate (TESTTEAM01)"\n', 0, None),
     ('query failure', fork, None, listing, 1, None),
     ('no identities', fork, None, '     0 valid identities found\n', 0, None),
@@ -191,11 +190,12 @@ with tempfile.TemporaryDirectory(prefix='codexbar-identity-test-') as directory:
             assert not app_path.exists(), label
             continue
         assert result.returncode == 0, (label, result.stderr)
-        assert result.stdout == second_hash, (label, result.stdout)
+        expected_hash = first_hash if label.startswith('apple development') else second_hash
+        assert result.stdout == expected_hash, (label, result.stdout)
         app_entitlements = plistlib.loads(app_path.read_bytes())
         widget_entitlements = plistlib.loads((app_path.parent / 'CodexBarWidget.entitlements').read_bytes())
         suffix = '.debug' if configuration == 'debug' else ''
-        expected_group = [f'{expected_team}.com.steipete.codexbar{suffix}']
+        expected_group = [f'{expected_team}.sh.cmdux.tolkein{suffix}']
         expected_app = {'com.apple.security.application-groups': expected_group}
         if lldb == '1':
             expected_app['com.apple.security.get-task-allow'] = True

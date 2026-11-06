@@ -39,6 +39,8 @@ enum MenuBarLayoutNativeProof {
             let quit = NSMenuItem(title: "Quit proof", action: #selector(self.quit), keyEquivalent: "")
             quit.target = self
             menu.addItem(quit)
+            // Synthetic proof item only. The live CodexBar status item is bound by
+            // StatusItemController.bindPresentedInterface and must stay menu-less.
             item.menu = menu
             self.refresh()
         }

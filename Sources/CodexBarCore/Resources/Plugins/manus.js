@@ -8,7 +8,6 @@ defineProvider({
   async fetchUsage(ctx) {
     const domain = "manus.im";
     const policy = ctx.browser.availability(domain);
-    if (policy === "off") throw ctx.fail.missingCredential("Manus cookies are disabled.");
     const attempted = new Set();
     let rejected = false;
     const attempt = async (raw) => {
@@ -39,18 +38,26 @@ defineProvider({
         throw ctx.fail.parseFailure("Failed to parse Manus response: invalid JSON");
       }
     };
+    // A saved session_id is enough. Do not open browser cookies, or macOS TCC prompts fire.
+    const secret = (ctx.settings.getSecret("SESSION_TOKEN") || "").trim();
     let root;
-    for await (const session of ctx.browser.sessions(domain)) {
-      root = await attempt(session.header);
-      if (root !== undefined) break;
-      ctx.browser.rejectCookie(domain, session);
-    }
-    if (root === undefined && policy !== "manual") root = await attempt(ctx.settings.getSecret("SESSION_TOKEN"));
-    if (root === undefined) {
-      if (rejected) throw ctx.fail.authenticationExpired("Invalid Manus session token.");
-      throw ctx.fail.missingCredential(
-        policy === "manual" ? "Manus session cookie is invalid." : "No Manus session token provided.",
-      );
+    if (secret) {
+      root = await attempt(secret);
+      if (root === undefined) throw ctx.fail.authenticationExpired("Invalid Manus session token.");
+    } else if (policy === "off") {
+      throw ctx.fail.missingCredential("Manus cookies are disabled.");
+    } else {
+      for await (const session of ctx.browser.sessions(domain)) {
+        root = await attempt(session.header);
+        if (root !== undefined) break;
+        ctx.browser.rejectCookie(domain, session);
+      }
+      if (root === undefined) {
+        if (rejected) throw ctx.fail.authenticationExpired("Invalid Manus session token.");
+        throw ctx.fail.missingCredential(
+          policy === "manual" ? "Manus session cookie is invalid." : "No Manus session token provided.",
+        );
+      }
     }
     const data = root?.data ?? root?.result ?? root?.response ?? root?.availableCredits ?? root;
     const creditKeys = [

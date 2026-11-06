@@ -52,6 +52,12 @@ enum MenuSwitchFlickerProbe {
     static func startIfRequested(controller: StatusItemController) {
         guard let dir = ProcessInfo.processInfo.environment["CODEXBAR_FLICKER_PROBE_DIR"],
               !dir.isEmpty else { return }
+        // The usage board owns left-click. This probe drives the classic NSMenu and must not
+        // attach one while the packaged app is showing the board.
+        guard !StatusItemController.prefersUsageBoard else {
+            self.debugLog("usage board owns the status item click; flicker probe will not open the classic menu")
+            return
+        }
         let directory = URL(fileURLWithPath: dir, isDirectory: true)
         // "hold" mode: open the menu and record for 30s without self-switching,
         // so an external driver can exercise the real pointer path with
