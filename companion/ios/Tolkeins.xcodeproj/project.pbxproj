@@ -1,0 +1,507 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A1000000000000000000012C /* TolkeinsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000064 /* TolkeinsApp.swift */; };
+		A1000000000000000000012D /* UsageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000065 /* UsageModel.swift */; };
+		A1000000000000000000012E /* UsageListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000066 /* UsageListView.swift */; };
+		A1000000000000000000012F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000067 /* SettingsView.swift */; };
+		A10000000000000000000130 /* AppIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000068 /* AppIdentity.swift */; };
+		A10000000000000000000131 /* UsageModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000069 /* UsageModels.swift */; };
+		A10000000000000000000132 /* UsageFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000006A /* UsageFormatting.swift */; };
+		A10000000000000000000133 /* Urgency.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000006B /* Urgency.swift */; };
+		A10000000000000000000134 /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000006C /* KeychainStore.swift */; };
+		A10000000000000000000135 /* SnapshotStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000006D /* SnapshotStore.swift */; };
+		A10000000000000000000136 /* UsageClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000006E /* UsageClient.swift */; };
+		A10000000000000000000137 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000006F /* Theme.swift */; };
+		A10000000000000000000190 /* AppIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000068 /* AppIdentity.swift */; };
+		A10000000000000000000191 /* UsageModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000069 /* UsageModels.swift */; };
+		A10000000000000000000192 /* UsageFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000006A /* UsageFormatting.swift */; };
+		A10000000000000000000193 /* Urgency.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000006B /* Urgency.swift */; };
+		A10000000000000000000194 /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000006C /* KeychainStore.swift */; };
+		A10000000000000000000195 /* SnapshotStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000006D /* SnapshotStore.swift */; };
+		A10000000000000000000196 /* UsageClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000006E /* UsageClient.swift */; };
+		A10000000000000000000197 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000006F /* Theme.swift */; };
+		A10000000000000000000198 /* TolkeinsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000070 /* TolkeinsWidget.swift */; };
+		A100000000000000000001F4 /* Assets.xcassets in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000071 /* Assets.xcassets */; };
+		A100000000000000000001F5 /* PrivacyInfo.xcprivacy in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000072 /* PrivacyInfo.xcprivacy */; };
+		A10000000000000000000258 /* PrivacyInfo.xcprivacy in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000072 /* PrivacyInfo.xcprivacy */; };
+		A100000000000000000002BC /* TolkeinsWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A10000000000000000000002 /* TolkeinsWidget.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A10000000000000000000336 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A1000000000000000000033E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A10000000000000000000335;
+			remoteInfo = TolkeinsWidget;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A1000000000000000000032D /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A100000000000000000002BC /* TolkeinsWidget.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		A10000000000000000000064 /* TolkeinsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TolkeinsApp.swift; sourceTree = "<group>"; };
+		A10000000000000000000065 /* UsageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageModel.swift; sourceTree = "<group>"; };
+		A10000000000000000000066 /* UsageListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageListView.swift; sourceTree = "<group>"; };
+		A10000000000000000000067 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A10000000000000000000068 /* AppIdentity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIdentity.swift; sourceTree = "<group>"; };
+		A10000000000000000000069 /* UsageModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageModels.swift; sourceTree = "<group>"; };
+		A1000000000000000000006A /* UsageFormatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageFormatting.swift; sourceTree = "<group>"; };
+		A1000000000000000000006B /* Urgency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Urgency.swift; sourceTree = "<group>"; };
+		A1000000000000000000006C /* KeychainStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStore.swift; sourceTree = "<group>"; };
+		A1000000000000000000006D /* SnapshotStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotStore.swift; sourceTree = "<group>"; };
+		A1000000000000000000006E /* UsageClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageClient.swift; sourceTree = "<group>"; };
+		A1000000000000000000006F /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		A10000000000000000000070 /* TolkeinsWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TolkeinsWidget.swift; sourceTree = "<group>"; };
+		A10000000000000000000071 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A10000000000000000000072 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		A10000000000000000000073 /* Shared.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Shared.xcconfig; sourceTree = "<group>"; };
+		A10000000000000000000074 /* App.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = App.xcconfig; sourceTree = "<group>"; };
+		A10000000000000000000075 /* Widget.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Widget.xcconfig; sourceTree = "<group>"; };
+		A10000000000000000000001 /* Tolkeins.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tolkeins.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A10000000000000000000002 /* TolkeinsWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TolkeinsWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A1000000000000000000032B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A1000000000000000000032F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A10000000000000000000323 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000064 /* TolkeinsApp.swift */,
+				A10000000000000000000065 /* UsageModel.swift */,
+				A10000000000000000000066 /* UsageListView.swift */,
+				A10000000000000000000067 /* SettingsView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000324 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000068 /* AppIdentity.swift */,
+				A10000000000000000000069 /* UsageModels.swift */,
+				A1000000000000000000006A /* UsageFormatting.swift */,
+				A1000000000000000000006B /* Urgency.swift */,
+				A1000000000000000000006C /* KeychainStore.swift */,
+				A1000000000000000000006D /* SnapshotStore.swift */,
+				A1000000000000000000006E /* UsageClient.swift */,
+				A1000000000000000000006F /* Theme.swift */,
+				A10000000000000000000072 /* PrivacyInfo.xcprivacy */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000325 /* Widget */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000070 /* TolkeinsWidget.swift */,
+			);
+			path = Widget;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000322 /* Tolkeins */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000323 /* App */,
+				A10000000000000000000324 /* Shared */,
+				A10000000000000000000325 /* Widget */,
+				A10000000000000000000071 /* Assets.xcassets */,
+			);
+			path = Tolkeins;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000321 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000073 /* Shared.xcconfig */,
+				A10000000000000000000074 /* App.xcconfig */,
+				A10000000000000000000075 /* Widget.xcconfig */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000326 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000001 /* Tolkeins.app */,
+				A10000000000000000000002 /* TolkeinsWidget.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000320 /* root */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000322 /* Tolkeins */,
+				A10000000000000000000321 /* Config */,
+				A10000000000000000000326 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A10000000000000000000334 /* Tolkeins */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A1000000000000000000034F /* Build configuration list for PBXNativeTarget "Tolkeins" */;
+			buildPhases = (
+				A1000000000000000000032A /* Sources */,
+				A1000000000000000000032B /* Frameworks */,
+				A1000000000000000000032C /* Resources */,
+				A1000000000000000000032D /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A10000000000000000000337 /* PBXTargetDependency */,
+			);
+			name = Tolkeins;
+			productName = Tolkeins;
+			productReference = A10000000000000000000001 /* Tolkeins.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A10000000000000000000335 /* TolkeinsWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A10000000000000000000350 /* Build configuration list for PBXNativeTarget "TolkeinsWidget" */;
+			buildPhases = (
+				A1000000000000000000032E /* Sources */,
+				A1000000000000000000032F /* Frameworks */,
+				A10000000000000000000330 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TolkeinsWidget;
+			productName = TolkeinsWidget;
+			productReference = A10000000000000000000002 /* TolkeinsWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A1000000000000000000033E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					A10000000000000000000334 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+					A10000000000000000000335 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = A1000000000000000000034E /* Build configuration list for PBXProject "Tolkeins" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A10000000000000000000320;
+			productRefGroup = A10000000000000000000326 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A10000000000000000000334 /* Tolkeins */,
+				A10000000000000000000335 /* TolkeinsWidget */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A1000000000000000000032C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A100000000000000000001F4 /* resource */,
+				A100000000000000000001F5 /* resource */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A10000000000000000000330 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000258 /* resource */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A1000000000000000000032A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1000000000000000000012C /* source */,
+				A1000000000000000000012D /* source */,
+				A1000000000000000000012E /* source */,
+				A1000000000000000000012F /* source */,
+				A10000000000000000000130 /* source */,
+				A10000000000000000000131 /* source */,
+				A10000000000000000000132 /* source */,
+				A10000000000000000000133 /* source */,
+				A10000000000000000000134 /* source */,
+				A10000000000000000000135 /* source */,
+				A10000000000000000000136 /* source */,
+				A10000000000000000000137 /* source */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A1000000000000000000032E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000190 /* source */,
+				A10000000000000000000191 /* source */,
+				A10000000000000000000192 /* source */,
+				A10000000000000000000193 /* source */,
+				A10000000000000000000194 /* source */,
+				A10000000000000000000195 /* source */,
+				A10000000000000000000196 /* source */,
+				A10000000000000000000197 /* source */,
+				A10000000000000000000198 /* source */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A10000000000000000000337 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A10000000000000000000335 /* TolkeinsWidget */;
+			targetProxy = A10000000000000000000336 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		A10000000000000000000348 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+							ALWAYS_SEARCH_USER_PATHS = NO;
+							CLANG_ANALYZER_NONNULL = YES;
+							CLANG_ENABLE_MODULES = YES;
+							CLANG_ENABLE_OBJC_ARC = YES;
+							COPY_PHASE_STRIP = NO;
+							DEBUG_INFORMATION_FORMAT = dwarf;
+							ENABLE_STRICT_OBJC_MSGSEND = YES;
+							GCC_C_LANGUAGE_STANDARD = gnu17;
+							GCC_NO_COMMON_BLOCKS = YES;
+							IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+							MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+							SDKROOT = iphoneos;
+							SWIFT_VERSION = 5.0;
+							TARGETED_DEVICE_FAMILY = 1;
+				
+							DEBUG_INFORMATION_FORMAT = dwarf;
+							ENABLE_TESTABILITY = YES;
+							GCC_DYNAMIC_NO_PIC = NO;
+							GCC_OPTIMIZATION_LEVEL = 0;
+							MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+							ONLY_ACTIVE_ARCH = YES;
+							SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+							SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		A10000000000000000000349 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+							ALWAYS_SEARCH_USER_PATHS = NO;
+							CLANG_ANALYZER_NONNULL = YES;
+							CLANG_ENABLE_MODULES = YES;
+							CLANG_ENABLE_OBJC_ARC = YES;
+							COPY_PHASE_STRIP = NO;
+							DEBUG_INFORMATION_FORMAT = dwarf;
+							ENABLE_STRICT_OBJC_MSGSEND = YES;
+							GCC_C_LANGUAGE_STANDARD = gnu17;
+							GCC_NO_COMMON_BLOCKS = YES;
+							IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+							MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+							SDKROOT = iphoneos;
+							SWIFT_VERSION = 5.0;
+							TARGETED_DEVICE_FAMILY = 1;
+				
+							DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+							ENABLE_NS_ASSERTIONS = NO;
+							MTL_ENABLE_DEBUG_INFO = NO;
+							SWIFT_COMPILATION_MODE = wholemodule;
+							SWIFT_OPTIMIZATION_LEVEL = "-O";
+							VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A1000000000000000000034A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A10000000000000000000074 /* App.xcconfig */;
+			buildSettings = {
+							ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+							ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+							CODE_SIGN_ENTITLEMENTS = Tolkeins/App/Tolkeins.entitlements;
+							CODE_SIGN_STYLE = Automatic;
+							CURRENT_PROJECT_VERSION = 1;
+							ENABLE_PREVIEWS = YES;
+							GENERATE_INFOPLIST_FILE = NO;
+							INFOPLIST_FILE = Tolkeins/App/Info.plist;
+							LD_RUNPATH_SEARCH_PATHS = (
+								"$(inherited)",
+								"@executable_path/Frameworks",
+							);
+							MARKETING_VERSION = 1.0;
+							PRODUCT_NAME = "$(TARGET_NAME)";
+							SWIFT_EMIT_LOC_STRINGS = YES;
+							SWIFT_VERSION = 5.0;
+							TARGETED_DEVICE_FAMILY = 1;
+							IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+			};
+			name = Debug;
+		};
+		A1000000000000000000034B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A10000000000000000000074 /* App.xcconfig */;
+			buildSettings = {
+							ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+							ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+							CODE_SIGN_ENTITLEMENTS = Tolkeins/App/Tolkeins.entitlements;
+							CODE_SIGN_STYLE = Automatic;
+							CURRENT_PROJECT_VERSION = 1;
+							ENABLE_PREVIEWS = YES;
+							GENERATE_INFOPLIST_FILE = NO;
+							INFOPLIST_FILE = Tolkeins/App/Info.plist;
+							LD_RUNPATH_SEARCH_PATHS = (
+								"$(inherited)",
+								"@executable_path/Frameworks",
+							);
+							MARKETING_VERSION = 1.0;
+							PRODUCT_NAME = "$(TARGET_NAME)";
+							SWIFT_EMIT_LOC_STRINGS = YES;
+							SWIFT_VERSION = 5.0;
+							TARGETED_DEVICE_FAMILY = 1;
+							IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+			};
+			name = Release;
+		};
+		A1000000000000000000034C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A10000000000000000000075 /* Widget.xcconfig */;
+			buildSettings = {
+							APPLICATION_EXTENSION_API_ONLY = YES;
+							CODE_SIGN_ENTITLEMENTS = Tolkeins/Widget/TolkeinsWidget.entitlements;
+							CODE_SIGN_STYLE = Automatic;
+							CURRENT_PROJECT_VERSION = 1;
+							GENERATE_INFOPLIST_FILE = NO;
+							INFOPLIST_FILE = Tolkeins/Widget/Info.plist;
+							LD_RUNPATH_SEARCH_PATHS = (
+								"$(inherited)",
+								"@executable_path/Frameworks",
+								"@executable_path/../../Frameworks",
+							);
+							MARKETING_VERSION = 1.0;
+							PRODUCT_NAME = "$(TARGET_NAME)";
+							SKIP_INSTALL = YES;
+							SWIFT_EMIT_LOC_STRINGS = YES;
+							SWIFT_VERSION = 5.0;
+							TARGETED_DEVICE_FAMILY = 1;
+							IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+			};
+			name = Debug;
+		};
+		A1000000000000000000034D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A10000000000000000000075 /* Widget.xcconfig */;
+			buildSettings = {
+							APPLICATION_EXTENSION_API_ONLY = YES;
+							CODE_SIGN_ENTITLEMENTS = Tolkeins/Widget/TolkeinsWidget.entitlements;
+							CODE_SIGN_STYLE = Automatic;
+							CURRENT_PROJECT_VERSION = 1;
+							GENERATE_INFOPLIST_FILE = NO;
+							INFOPLIST_FILE = Tolkeins/Widget/Info.plist;
+							LD_RUNPATH_SEARCH_PATHS = (
+								"$(inherited)",
+								"@executable_path/Frameworks",
+								"@executable_path/../../Frameworks",
+							);
+							MARKETING_VERSION = 1.0;
+							PRODUCT_NAME = "$(TARGET_NAME)";
+							SKIP_INSTALL = YES;
+							SWIFT_EMIT_LOC_STRINGS = YES;
+							SWIFT_VERSION = 5.0;
+							TARGETED_DEVICE_FAMILY = 1;
+							IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A1000000000000000000034E /* Build configuration list for PBXProject "Tolkeins" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A10000000000000000000348 /* Debug */,
+				A10000000000000000000349 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A1000000000000000000034F /* Build configuration list for PBXNativeTarget "Tolkeins" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A1000000000000000000034A /* Debug */,
+				A1000000000000000000034B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A10000000000000000000350 /* Build configuration list for PBXNativeTarget "TolkeinsWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A1000000000000000000034C /* Debug */,
+				A1000000000000000000034D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A1000000000000000000033E /* Project object */;
+}

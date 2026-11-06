@@ -1,0 +1,59 @@
+[
+  {
+    "pace": {
+      "secondary": {
+        "summary": "42% in reserve | Expected 89% used | Lasts until reset",
+        "expectedUsedPercent": 89,
+        "deltaPercent": -42,
+        "stage": "farBehind",
+        "willLastToReset": true
+      },
+      "primary": {
+        "summary": "53% in reserve | Expected 73% used | Lasts until reset",
+        "expectedUsedPercent": 73,
+        "deltaPercent": -53,
+        "stage": "farBehind",
+        "willLastToReset": true
+      }
+    },
+    "rateWindowLabels": { "secondary": "Weekly", "primary": "Session" },
+    "usage": {
+      "dataConfidence": "percentOnly",
+      "loginMethod": "Max",
+      "extraRateWindows": [
+        {
+          "id": "claude-weekly-scoped-fable",
+          "window": {
+            "resetDescription": "Resets Oct 24 at 8pm (America/Toronto)",
+            "windowMinutes": 10080,
+            "usedPercent": 0,
+            "resetsAt": "2026-10-25T00:00:00Z"
+          },
+          "title": "Fable only"
+        }
+      ],
+      "accountEmail": "REDACTED",
+      "identity": {
+        "providerID": "claude",
+        "accountEmail": "REDACTED",
+        "loginMethod": "Max"
+      },
+      "primary": {
+        "resetsAt": "2026-10-24T06:40:00Z",
+        "resetDescription": "Resets 2:40am (America/Toronto)",
+        "usedPercent": 20,
+        "windowMinutes": 300
+      },
+      "secondary": {
+        "resetsAt": "2026-10-25T00:00:00Z",
+        "resetDescription": "Resets Oct 24 at 8pm (America/Toronto)",
+        "usedPercent": 47,
+        "windowMinutes": 10080
+      },
+      "tertiary": null,
+      "updatedAt": "2026-10-24T05:18:46Z"
+    },
+    "source": "claude",
+    "provider": "claude"
+  }
+]

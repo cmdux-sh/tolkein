@@ -1,0 +1,33 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  // Personal usage tracker. Do not put tokens in this file.
+  // Create the namespace, replace the id, then: npx wrangler secret put WRITE_TOKEN
+  // (and READ_TOKEN_PHONE, READ_TOKEN_ASSISTANT). Deploy is a separate manual step.
+  "name": "tolkeins",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-24",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true,
+    "logs": {
+      "enabled": true,
+      "head_sampling_rate": 1
+    },
+    "traces": {
+      "enabled": true,
+      "head_sampling_rate": 1
+    }
+  },
+  "kv_namespaces": [
+    {
+      "binding": "USAGE",
+      // Placeholder. `wrangler kv namespace create USAGE` prints the real id.
+      "id": "00000000000000000000000000000000"
+    }
+  ],
+  // One document holds the latest snapshot and a short history, so each
+  // collector run is a single KV write (144/day at a 10-minute interval).
+  "vars": {
+    "HISTORY_LIMIT": "48"
+  }
+}

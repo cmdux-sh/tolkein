@@ -1,0 +1,56 @@
+# Hand-edited plan metadata. CodexBar never sees this file.
+# Renewal dates and prices are merged into the snapshot. Manual windows cover
+# pools CodexBar cannot read (for example the Grok Bot weekly allowance).
+# A manual window whose label matches a live CodexBar window is ignored;
+# CodexBar's numbers win.
+
+services:
+  claude:
+    name: Claude
+    plan: Max
+    renewsOn: 2026-11-12
+    price:
+      amount: 100
+      currency: USD
+      interval: month
+  codex:
+    name: Codex
+    plan: Pro
+    renewsOn: 2026-11-03
+    price:
+      amount: 20
+      currency: USD
+      interval: month
+  cursor:
+    name: Cursor
+    plan: Pro
+    renewsOn: 2026-11-01
+    price:
+      amount: 20
+      currency: USD
+      interval: month
+  warp:
+    name: Warp
+    plan: Build
+    renewsOn: 2026-11-15
+    price:
+      amount: 20
+      currency: USD
+      interval: month
+  grok:
+    name: Grok Bot
+    plan: SuperGrok
+    renewsOn: 2026-11-20
+    price:
+      amount: 30
+      currency: USD
+      interval: month
+    # Edit usedPercent when you check the pool. resetWeekday is the next
+    # reset in timezone, strictly after the collector runs.
+    manualWindows:
+      - label: Weekly
+        usedPercent: 0
+        windowMinutes: 10080
+        resetWeekday: saturday
+        resetTime: "00:00"
+        timezone: America/Toronto
