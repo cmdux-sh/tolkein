@@ -24,15 +24,24 @@ public enum OpenAIDashboardWebsiteDataStore {
     /// Cookies, local storage and other session data are deliberately excluded.
     public static func clearNetworkCaches() async {
         guard !TestProcessSafety.isRunning else { return }
+        self.startWebKit()
         for identifier in await WKWebsiteDataStore.allDataStoreIdentifiers {
             await OpenAIDashboardCacheMaintenance.shared.clearIfNeeded(WKWebsiteDataStore(forIdentifier: identifier))
         }
+    }
+
+    /// Listing data store identifiers before anything has touched WebKit crashes inside WebKit
+    /// (`RunLoop::dispatch` on an uninitialized main run loop), which killed the app at launch.
+    /// Creating the default store on the main actor starts WebKit first.
+    private static func startWebKit() {
+        _ = WKWebsiteDataStore.default()
     }
 
     public static func removeStore(
         forRemovedAccount account: ManagedCodexAccount,
         isStillRemoved: @MainActor () -> Bool) async
     {
+        self.startWebKit()
         await self.removeStore(
             forRemovedAccount: account,
             identifiers: WKWebsiteDataStore.allDataStoreIdentifiers,
