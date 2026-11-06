@@ -113,18 +113,29 @@ class LaunchAgentTests(unittest.TestCase):
             self.assertEqual(completed.returncode, 0, completed.stderr)
             self.assertTrue(script.stat().st_mode & stat.S_IXUSR)
 
+    def run_as_linux(self, script: Path) -> subprocess.CompletedProcess[str]:
+        # A fake uname makes the platform guard fire on macOS too, and a scratch HOME keeps
+        # a broken guard from installing into the real one.
+        with tempfile.TemporaryDirectory() as raw:
+            directory = Path(raw)
+            uname = directory / "uname"
+            uname.write_text("#!/bin/sh\necho Linux\n", encoding="utf-8")
+            uname.chmod(0o755)
+            return subprocess.run(
+                [str(script)],
+                check=False,
+                capture_output=True,
+                text=True,
+                env={"PATH": f"{directory}:/usr/bin:/bin", "HOME": str(directory)},
+            )
+
     def test_install_refuses_linux(self) -> None:
-        completed = subprocess.run([str(ROOT / "install.sh")], check=False, capture_output=True, text=True)
+        completed = self.run_as_linux(ROOT / "install.sh")
         self.assertEqual(completed.returncode, 1)
         self.assertIn("macOS", completed.stderr)
 
     def test_keychain_grant_refuses_linux(self) -> None:
-        completed = subprocess.run(
-            [str(ROOT / "grant-chrome-keychain.sh")],
-            check=False,
-            capture_output=True,
-            text=True,
-        )
+        completed = self.run_as_linux(ROOT / "grant-chrome-keychain.sh")
         self.assertEqual(completed.returncode, 1)
         self.assertIn("Mac mini", completed.stderr)
         text = (ROOT / "grant-chrome-keychain.sh").read_text(encoding="utf-8")
@@ -410,13 +421,12 @@ class LauncherBinaryTests(unittest.TestCase):
   printf 'PYTHONPATH=%s\\n' "${PYTHONPATH-}"
   printf 'CONFIG=%s\\n' "${TOLKEINS_CONFIG_DIR-}"
   ppid=$(ps -o ppid= -p $$ | tr -d ' ')
-  printf 'parent='
-  tr '\\0' ' ' < "/proc/${ppid}/cmdline"
-  printf '\\n'
+  # ps instead of /proc so the probe works on macOS and Linux.
+  printf 'parent=%s\\n' "$(ps -o command= -p "$ppid")"
   gpid=$(ps -o ppid= -p "$ppid" | tr -d ' ')
   printf 'grand='
-  if [ -r "/proc/${gpid}/cmdline" ]; then
-    tr '\\0' ' ' < "/proc/${gpid}/cmdline"
+  if [ -n "$gpid" ]; then
+    ps -o command= -p "$gpid" || true
   fi
   printf '\\n'
 } > "$FAKE_OUT"
