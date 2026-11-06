@@ -34,6 +34,8 @@ read_when:
 4. **Optional file log**: enable Debug → Logging → "Enable file logging" to write
    `~/Library/Logs/CodexBar/CodexBar.log` (verbosity defaults to "Verbose")
 
+CLI path diagnostics in **Settings → Debug** load when that pane opens. Startup still captures the login-shell PATH for normal provider commands; the Debug pane waits for that capture before resolving its diagnostic paths.
+
 ## Plural format validation
 
 Plural references share printf argument positions with ordinary values and star width/precision arguments. For example, `%d: %#@count@` can be translated as `%2$#@count@ (%1$d)`; swapping the count to `%1$#@count@` is invalid even though both arguments are integers. Run `node --test Scripts/test_localization_formats.mjs` for focused validator tests and `node Scripts/check-app-locales.mjs` for the catalogs.
@@ -48,6 +50,12 @@ CI builds and tests with Xcode 27 only, on GitHub's `xcode-27` image. Older
 toolchains (the former Xcode 26.3 / macOS 15 compatibility build) are no longer
 verified; the package manifest still declares Swift tools 6.2, but builds with
 older Xcode releases are best effort.
+
+`SettingsMenuPicker` uses the native picker for the official Swift 6.4 / macOS 27 SDK pairing. Older Xcode
+builds retain the menu-backed workaround for disabled picker items when SDK 26 builds run on macOS 27
+(#1904, #1936). The compiler check is a proxy for that paired toolchain, not an SDK-linkage check. Custom
+compiler/SDK combinations need separate validation. Keep the workaround until both SDK 26-linked and
+SDK 27-linked builds have verified interactive, persisted selection.
 
 Keep large initializer and `#expect` expressions simple: bind intermediate values
 to explicitly typed locals when the type checker struggles. Use
@@ -709,6 +717,8 @@ eight with a 120-second suite timeout and no retries for ordinary test failures.
 the existing isolated-selection retry policy; each retry has its own deadline. Three independent
 hosted complete-inventory runs validated this mode before enabling it.
 Both serial and direct modes print ordered selection groups and timing summaries.
+Discovery-home cleanup unmounts volumes Xcode mounted beneath that temporary home before deleting it,
+without following symlinks. Unmount, traversal, and deletion errors still fail discovery.
 
 Each macOS job restores a compiled SwiftPM cache bound to its toolchain, SDK, architecture,
 package state and build scripts/options. The helper verifies tracked input contents and permissions

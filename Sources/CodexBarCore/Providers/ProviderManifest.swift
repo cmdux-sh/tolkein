@@ -115,5 +115,7 @@ public enum ProviderManifest {
         TraeCNProviderDescriptor.descriptor,
         ChatboxProviderDescriptor.descriptor,
         AbliterationProviderDescriptor.descriptor,
+        OpenDesignProviderDescriptor.descriptor,
+        SiliconFlowProviderDescriptor.descriptor,
     ]
 }

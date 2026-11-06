@@ -27,12 +27,23 @@ built-in provider behavior.
 
 ## Menu-bar percentage
 
+With merged icons and **Current selection**, plugins use the shared menu-bar layout renderer. A plugin without a
+saved override inherits the global layout, including token order, separators, window-specific percentages, reset
+countdowns and conditional branches. Existing plugin overrides are preserved exactly: a saved percentage-only
+layout from 0.82.0 remains percentage-only. Removing an override restores global inheritance.
+
+Window titles, named extra windows and reset descriptions come from the plugin's own snapshot. Reset-only changes
+redraw the layout, and countdowns update when their displayed text changes. Branding never changes the provider
+identity or borrows another provider's window or account data. Tokens for data the plugin does not supply remain
+unavailable; prepaid balances are not enabled by this layout integration.
+
 In **Settings → Plugins**, each installed plugin has a **Menu bar metric** picker. **Auto** keeps the existing default:
 the most-used reported seven-day window, otherwise the first available primary, secondary, tertiary, or extra window.
 Choose **Primary**, **Secondary**, **Tertiary**, or a named extra window to use that quota for both the Icon & percent
 number and the provider-switcher gauge. Reported window titles replace the generic labels; named extras appear after
 the plugin reports them. For example, choosing a monthly window at 76.9% used displays **77%** even just after a weekly
-reset. Both surfaces honor the existing used/remaining display preference.
+reset. Both surfaces honor the existing used/remaining display preference. The menu-bar percentage refreshes when
+its selected window changes, even while Auto stays unchanged.
 
 The choice is saved per plugin using the existing menu-bar layout preferences and applies without another fetch.
 If the selected window is missing or has unknown usage, the display falls back to Auto and resumes the selected
@@ -92,6 +103,9 @@ See [WorkBuddy](workbuddy.md) for the request contract, bounded optional reset l
 [abliteration.ai](abliteration.md) uses a fixed-origin bearer request to read prepaid USD credits. It reuses the
 standard API-key field and classified errors, with no browser access or inferred reset schedule.
 
+[SiliconFlow](siliconflow.md) reads `GET /v1/user/info` with the same API-key field. China (`api.siliconflow.cn`)
+is the default and displays CNY; the international origin displays USD. The key is not sent to any other host.
+
 [X API](xapi.md) uses the same cookie host with a bundled `ct0` header echo for account discovery and developer-console
 credits. Its script preserves dollar balances and debt without receiving cookie values or adding a native fetcher.
 
@@ -101,6 +115,9 @@ nonpersistent cookie sessions use the shared access gate; the existing Gemini CL
 [Claude Platform](claudeplatform.md) sends the opaque `sessionKey` cookie through the same cookie host, so its script
 never sees cookie values. It lists organizations, then reads required `prepaid/credits` (a 403 tries the next API
 organization) and optional `current_spend`, whose failures keep the balance. Both plugin engines run it.
+
+[OpenDesign](opendesign.md) uses opaque, request-scoped cookies for two read-only GETs: current workspace and
+subscription windows. Its script validates workspace ownership and selects five-hour/weekly quotas by duration.
 
 Manus, Muse (muse.ai), Perplexity, Hyper, Raycast, Sakana, and T3 Chat use the shared app implementation. Helmcode retains its tenant
 picker/snapshot, and Qoder retains its regional dashboard action and source-label adapter while sharing cookie UI.
@@ -180,6 +197,14 @@ defineProvider({
   authenticated HTTP for loopback, RFC 1918 IPv4, IPv4 link-local, IPv6 unique-local/link-local, and `.local` targets,
   but only through the separate typed approval described below. Public targets always require HTTPS.
 - `auth` (optional): one of the forms below. The named secret must be a declared `secure` setting.
+- `dashboardURL` (optional): a fixed URL such as `"https://example.com/usage"`, or `{setting: "DASHBOARD_URL"}`
+  referencing a declared `plain` setting. A settings-derived destination must match an approved endpoint origin.
+  A fixed HTTPS destination may use a separate origin; the complete URL appears in the approval sheet and CLI
+  approval output. HTTP links must match an endpoint with an appropriate loopback/private-network policy and retain
+  its typed approval requirements. Unsupported schemes, embedded credentials, and fragments are rejected.
+  An omitted, empty, or unresolved link shows no action. Once approved, the selected plugin's menu shows
+  **Usage Dashboard**, which opens that destination in the default browser only on a click. Changing the resolved
+  URL requires fresh approval; links add no HTTP, cookie, or script authority and never fall back to another provider.
 - `settings`: up to 32 setting definitions. Keys contain 1–64 ASCII letters, digits, or underscores and start with a
   letter. Each entry has `key`, `title`, optional `subtitle`, and `type: "plain" | "secure"` (default `secure`).
 - `capabilities` (optional): `"browser-cookies"`, `"http-status"`, and `"persistent-storage"`. With `"http-status"`, the plugin observes
@@ -237,6 +262,8 @@ so portable third-party plugins must use the host helpers below instead of ECMA-
   only collects an already completed secondary; a fast primary can wait for the remainder of that budget.
   Failed optional work is discarded. Unfinished optional work is cancelled on collection, primary failure, or caller
   cancellation. This works on both engines without JavaScript promise concurrency. HTTP responses expose their final `url`.
+  Timeout and cancellation results return without waiting for a transport's cancellation handler. Cancellation of
+  already-started network work is best effort; this does not guarantee recovery from a stuck networking session.
 - `await ctx.http.postJSON(url, {body, headers?})` performs JSON POST. `body` must be JSON-serializable.
 - `await ctx.http.post(url, {body, headers?})` sends the same JSON POST and returns `{status, headers, bodyText}` so a
   plugin can classify non-JSON error pages before parsing a successful response.
@@ -281,9 +308,10 @@ so portable third-party plugins must use the host helpers below instead of ECMA-
   When an admitted discovery attempt cannot read a browser profile, the error names the browser and points to
   **System Settings → Privacy & Security → Files & Folders → CodexBar**. Enable that browser and refresh.
   Policy-blocked imports do not probe profiles, and an observed Keychain denial keeps its existing guidance.
-- `ctx.browser.supportedBrowsers` is a comma-separated display list from the provider's configured browser catalog subset (Chrome for user plugins). It describes supported Automatic sources, not installed or searched profiles; it performs no browser or Keychain access. On platforms without browser import it reads `none on this platform`.
+- `ctx.browser.supportedBrowsers` is a comma-separated display list from the provider's configured browser catalog subset (the shared browser order for user plugins). It describes supported Automatic sources, not installed or searched profiles; it performs no browser or Keychain access. On platforms without browser import it reads `none on this platform`.
 - `await ctx.browser.cookieHeader(domain)` returns a cookie header only with the `browser-cookies` capability and for a
-  declared domain. User plugins import from Chrome; bundled providers retain their declared browser order.
+  declared domain. User plugins use the shared supported-browser order, including Aside; bundled providers retain
+  their declared browser order. A header is the first available candidate, not proof that a session is valid.
   Cookie values are secret-equivalent and redacted.
 - `for await (const session of ctx.browser.sessions(domain))` visits origin-bound candidates in order: the exclusive
   manual credential, or the cached session followed by browser profiles in the provider's import order. Each candidate
@@ -296,7 +324,8 @@ so portable third-party plugins must use the host helpers below instead of ECMA-
 - `ctx.browser.rejectCookie(domain, session)` rejects that candidate after an authentication failure. It conditionally
   evicts the matching persistent entry without deleting a newer session or another domain's cache. The opaque candidate
   ID makes late rejections safe. Continuing the iterator visits the next candidate; a successful fetch can return
-  immediately. `cookieHeader` remains available for providers needing only one header.
+  immediately. User plugins follow the same lazy traversal and should use this iterator to recover from expired
+  sessions in earlier browsers. `cookieHeader` remains available for providers needing only one header.
 - `ctx.html.metaContent(html, name)` returns the first matching quoted meta value or `null`.
 - `ctx.html.matchFirst(html, regexSource, flags?)` returns the first capture/full match or `null`.
 - `ctx.log(...values)` writes to the instance-scoped plugin log. Known secrets and cookie values are redacted.
@@ -318,6 +347,9 @@ so portable third-party plugins must use the host helpers below instead of ECMA-
   February 28, or February 29 in a leap year). Offsets are limited to ±120,000 months, and invalid dates, time zones,
   fractional offsets, or results outside JavaScript's Date range throw.
 - `ctx.env.timeZone` is the host's current IANA time-zone identifier; zero-offset GMT aliases are normalized to `UTC`.
+- `ctx.env.supportsMenuBarItems === true` means snapshots may include a compact multi-quota menu-bar summary.
+- `ctx.env.supportsIconProvider === true` means snapshots may request built-in provider branding with `iconProvider`.
+  Older hosts omit this flag; omit the snapshot field on those hosts to retain the manifest icon without a fetch error.
 - `ctx.format.number(value, options?)`, `usd(value)`, and `monthDay(date)` provide deterministic formatting on both
   engines. Number options support `minimumFractionDigits` and `maximumFractionDigits`.
 - `ctx.format.currency(value, currencyCode)` uses the same native `UsageFormatter` as the app, with `en_US` currency
@@ -355,6 +387,10 @@ cross-process locking. Removing the source file manually does not delete state. 
 cookies, and tokens belong in secure settings. Storage does not alter `ctx.cache` or the settings `persist` allowlist.
 
 Bundled first-party providers that have cut over to JavaScript use the shared runtime's 20-second hung-script watchdog.
+Default API plugin descriptors retain a strategy for each declared timeout, reusing its initialized runtime across
+refreshes. Each fetch still reads current settings and credentials and requests fresh usage. Overlapping fetches use
+separate temporary runtimes so one account cannot consume another account's fetch deadline. Web strategies keep
+their existing source-specific lifecycle.
 A timeout fails that refresh and discards the poisoned worker before returning the error, so an immediate retry starts
 with a fresh context. Cancellation retires the worker in the same way. This is production-default and does not depend
 on `CODEXBAR_JS_PROVIDERS`.
@@ -367,7 +403,8 @@ abandoned evaluation thread can remain alive until process exit.
 
 QuickJS worker jobs drain autoreleased host objects when they finish, preventing refresh temporaries from building up
 across a plugin's lifetime. JavaScriptCore registration and completed-fetch callbacks do not keep retired runtimes or
-contexts alive; active evaluations and the existing fetch watchdog still determine when cleanup can finish.
+contexts alive. Completed-fetch watchdogs copy the timeout value, allowing retired runtimes to be released
+as soon as the fetch finishes.
 
 ## Snapshot result
 
@@ -404,6 +441,46 @@ and 120 characters per detail string. Wrong types and limit violations fail the 
 Standard windows (`primary`, `secondary`, and `tertiary`) may include an optional `title`. Generic menu cards and
 `plugins fetch` text output use it instead of Primary, Secondary, or Tertiary. Titles are trimmed, limited to 256 UTF-8
 bytes, and must be strings; omitted, null, or blank titles use the default label. JSON snapshots retain the title.
+
+Snapshots may set `iconProvider` to a built-in provider ID (for example `claude`, `codex`, `antigravity`, or `zai`)
+to use that provider's cached logo for the menu-bar brand icon and provider switcher. This is presentation metadata:
+it does not change the plugin's name, identity, credentials, quotas, permissions, or menu-card heading. It loads no
+external images. Missing/null values, or an unavailable bundled image, use the existing manifest SVG/monogram.
+Unknown IDs and non-string values fail validation. An icon alone does not count as measured usage or identity.
+Send the field only when the host advertises support:
+
+```js
+if (ctx.env.supportsIconProvider === true && selectedProvider !== "auto") {
+  snapshot.iconProvider = selectedProvider;
+}
+return snapshot;
+```
+
+Returning to `auto` means omitting the field in the next snapshot, which restores the manifest icon even if the
+percentage did not change. The option applies when the menu bar is configured to show the brand icon; it does not
+replace the quota meter in meter-only mode.
+
+For an aggregator, `menuBarItems` can show up to eight ordered logo/percentage pairs in the existing status item:
+
+```js
+if (ctx.env.supportsMenuBarItems === true) {
+  snapshot.menuBarItems = [
+    { title: "Claude", iconProvider: "claude", windowID: "claude-weekly" },
+    { title: "Codex", iconProvider: "codex", windowID: "codex-weekly" },
+  ];
+}
+```
+
+Each `windowID` references an existing native `extraWindows` ID; the script chooses its intended quota explicitly.
+Missing, unmeasured or unknown references show unavailable, never another quota. Genuine 0% remaining stays 0%.
+Titles and references are limited to 120 characters. The summary is presentation metadata, not another usage source.
+It appears in merged **Icon & percent** mode with this plugin selected; clicking the group opens the same plugin menu.
+The app preserves the configured order, used/remaining preference, accessibility labels, template tinting and existing
+status-item placement. Meter-only mode keeps its existing rendering. A nonempty summary takes precedence over the
+plugin's resolved menu-bar layout and pauses that layout's countdown updates. Empty/omitted items restore the configured
+layout, including its saved **Menu bar metric** selection and countdowns.
+Scripts must omit the entire field on older hosts. Summary rendering caches unchanged frames and uses only bundled
+provider images (or manifest fallback), without new timers, status items or network requests.
 
 Plugin cards show `resetsAt` using the app's countdown or absolute-time preference. When no usable timestamp is
 available, `resetDescription` supplies the reset text through the same formatter as built-in providers. A refresh
@@ -529,8 +606,9 @@ error and can also be deleted.
 
 ## Security and limitations
 
-User-plugin HTTP sessions are scoped to a single request and released after success or failure.
-Reloading or removing plugins does not leave inactive sessions retained by their delegates. Redirect and credential-isolation rules remain unchanged.
+User plugins share one process-lifetime HTTP session with a stateless delegate. Each request has its own response
+buffer and byte limit; completion or cancellation removes its state. The session retains no plugin runtime or client.
+Cookies, caches, and credential storage remain disabled, redirects are refused, and both session timeouts remain 15 seconds.
 
 Treat a plugin like code you run locally, even though its host capabilities are narrow. Read the manifest and source,
 verify every origin, and avoid installing files from untrusted repositories. Approval grants the listed origin network
@@ -623,7 +701,7 @@ cache and browser import, and Off fails before either is accessed.
 
 Call `ctx.browser.rejectCookie(domain)` after the server rejects a session. The host checks the declared domain and
 evicts only the cached entry observed by that fetch (each domain is pinned for the fetch lifetime); a newer session and other domains remain intact. Manual headers
-are never erased. User plugins have no persistent cookie cache, so rejection is a validated no-op for them.
+are never erased. User plugins do not persist cookie headers; rejecting a candidate lets their iterator advance.
 
 ## Bundled provider examples
 

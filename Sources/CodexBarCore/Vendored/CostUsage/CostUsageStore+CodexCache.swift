@@ -98,7 +98,8 @@ extension CostUsageStore {
                 maxFileBytes: fileBudgetBytes,
                 requestedSinceDay: budgetProtectionWindow.sinceKey,
                 requestedUntilDay: budgetProtectionWindow.untilKey,
-                calendar: calendar)
+                calendar: calendar,
+                forceCheckpoint: false)
             guard !result.catchUpRequired else { return result }
             self.codexSavePreLockCheckpoint()
             guard self.beginSaveTransaction() else { return Self.rescanRequired(result) }
@@ -244,7 +245,6 @@ extension CostUsageStore {
         restored.lastScanUnixMs = cache.lastScanUnixMs
         restored.timeZoneIdentifier = calendar.timeZone.identifier
         restored.codexScanCatchUpPending = cache.codexScanCatchUpPending
-        restored.files = restored.files.mapValues(Self.normalizingScanComplete)
         var incoming = cache
         incoming.timeZoneIdentifier = calendar.timeZone.identifier
         incoming.files = incoming.files.mapValues(Self.normalizingScanComplete)
@@ -292,6 +292,9 @@ extension CostUsageStore {
     }
 
     private static func normalizingScanComplete(_ usage: CostUsageFileUsage) -> CostUsageFileUsage {
+        #if DEBUG
+        CostUsageStoreTestHooks.current.codexScanCompleteNormalizationVisit?()
+        #endif
         var usage = usage
         usage.codexScanComplete = usage.codexScanComplete ?? true
         return usage
@@ -580,6 +583,12 @@ extension CostUsageStore {
 
         for file in persistence.files where !file.belongsToOpenCodeLocalHistory {
             guard var usage = cache.files[file.path] else { continue }
+            let archived: Bool? = CostUsageScanner.isArchivedCodexRollout(file.path) ? true : nil
+            if usage.codexArchived != archived {
+                usage.codexArchived = archived
+                cache.files[file.path] = usage
+            }
+            if archived == true { continue }
             let normalizedIdentity = Self.normalizedCodexFileIdentity(
                 file: file,
                 currentRootDevices: currentRootDevices)

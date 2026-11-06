@@ -1,4 +1,5 @@
 /* Brazilian Portuguese localization for CodexBar */
+"Copilot subscription ended" = "A assinatura do Copilot terminou";
 
 /* iCloud Sync */
 "+ %d more" = "+ %d mais";
@@ -1294,7 +1295,8 @@
 "session_id=...\n\nor paste just the session_id value" = "session_id=...\n\nou cole apenas o valor de session_id";
 "Clear" = "Limpar";
 "No matching providers" = "Nenhum provedor correspondente";
-"Search providers" = "Buscar provedores";
+"No matching settings or providers" = "Nenhum ajuste ou provedor correspondente";
+"Search settings" = "Buscar nos ajustes";
 
 "language_vietnamese" = "Vietnamita";
 "language_turkish" = "Türkçe";
@@ -1347,11 +1349,8 @@
 "Share Stats…" = "Compartilhar estatísticas…";
 "Stats copied" = "Estatísticas copiadas";
 "DeepSeek this month token usage trend" = "Tendência de uso de tokens do DeepSeek neste mês";
-"Chrome profile" = "Perfil do Chrome";
 "Choose which signed-in DeepSeek Platform session supplies detailed usage." = "Escolha qual sessão conectada do DeepSeek Platform fornece o uso detalhado.";
 "Detailed usage unavailable." = "Uso detalhado indisponível.";
-"Sign in to DeepSeek Platform in Chrome for detailed usage." = "Entre no DeepSeek Platform pelo Chrome para ver o uso detalhado.";
-"Select a DeepSeek Chrome profile in Settings." = "Selecione um perfil do Chrome para o DeepSeek nos Ajustes.";
 "Select profile…" = "Selecionar perfil…";
 
 "%@: %@" = "%@: %@";
@@ -1574,7 +1573,7 @@
 "7-day usage" = "Uso de 7 dias";
 "Total usage" = "Uso total";
 "claude_oauth_keychain_access_disabled" = "O acesso ao Keychain está desativado, então o CodexBar não pode ler os dados de login do Claude.";
-"claude_oauth_keychain_access_revoked" = "O acesso às Chaves do Claude foi revogado pela rotação do token do Claude Code. Clique em Atualizar para conceder o acesso novamente ou altere a fonte de uso do Claude para CLI/Web.";
+"claude_oauth_keychain_access_revoked" = "As credenciais OAuth do Claude estão indisponíveis para o CodexBar no momento. Clique em Atualizar para tentar acessar novamente ou altere a fonte de uso do Claude para CLI/Web.";
 "claude_showing_last_known_usage" = "Exibindo o último uso conhecido, capturado %@.";
 "claude_limited_usage_detail" = "Detalhes de uso limitados";
 /* Spend dashboard cost analysis */
@@ -2770,3 +2769,59 @@
 "No windows reported yet." = "No windows reported yet.";
 "Charts, accounts, and history stay in the classic menu." = "Charts, accounts, and history stay in the classic menu.";
 "Up and down move between providers. Command-R refreshes. Escape closes." = "Up and down move between providers. Command-R refreshes. Escape closes.";
+"More than half left" = "More than half left";
+"Under half left" = "Under half left";
+"Almost out" = "Almost out";
+"None left" = "None left";
+"codex_reset_credit_expiry_notifications_title" = "Expiração dos créditos de redefinição do Codex";
+
+"codex_reset_credit_expiry_notifications_subtitle" = "Adiciona lembretes ao atualizar o uso, 1 dia e 1 hora antes do vencimento.";
+/* OpenDesign */
+"OpenDesign" = "OpenDesign";
+"Show OpenDesign usage" = "Mostrar uso do OpenDesign";
+"Sign in to OpenDesign, then refresh CodexBar." = "Entre no OpenDesign e atualize o CodexBar.";
+"OpenDesign usage response format changed." = "O formato da resposta de uso do OpenDesign mudou.";
+"OpenDesign billing access was denied." = "O acesso ao faturamento do OpenDesign foi negado.";
+"OpenDesign request failed. Try again later." = "A solicitação ao OpenDesign falhou. Tente novamente mais tarde.";
+"OpenDesign subscription usage is unavailable for this workspace." = "O uso da assinatura do OpenDesign não está disponível para este espaço de trabalho.";
+"upcoming_reset_notifications_title" = "Avisos de redefinição próxima";
+"upcoming_reset_notifications_subtitle" = "Avisa sobre o Codex antes que o limite semanal seja redefinido enquanto ainda há cota sem usar.";
+"upcoming_reset_notification_title" = "%1$@: redefinição em breve (%2$@)";
+"upcoming_reset_notification_body" = "%1$@ da cota ainda está sem uso. Ela será redefinida em %2$@ e a cota não usada será perdida.";
+"upcoming_reset_notification_body_with_account" = "Conta %1$@. %2$@ da cota ainda está sem uso. Ela será redefinida em %3$@ e a cota não usada será perdida.";
+"Sign in to DeepSeek Platform in a Chromium-based browser for detailed usage." = "Entre no DeepSeek Platform por um navegador baseado em Chromium para ver o uso detalhado.";
+"Select a DeepSeek browser profile in Settings." = "Selecione um perfil de navegador do DeepSeek nos Ajustes.";
+"menu_bar_layout_token_separator_glyph_accessibility" = "Separador %@";
+"menu_bar_layout_separator_pipe" = "Barra vertical";
+"menu_bar_layout_separator_slash" = "Barra";
+"menu_bar_layout_separator_hyphen" = "Hífen";
+"menu_bar_layout_separator_bullet" = "Marcador";
+"menu_bar_layout_separator_diamond" = "Losango preenchido";
+"menu_bar_layout_separator_hollowDiamond" = "Losango vazio";
+"menu_bar_layout_separator_tilde" = "Til";
+"menu_bar_layout_separator_doubleBar" = "Barra vertical dupla";
+"Rename" = "Renomear";
+"Rename account" = "Renomear conta";
+"Account name" = "Nome da conta";
+"Leave blank to use the default name." = "Deixe em branco para usar o nome padrão.";
+"Rewards" = "Recompensas";
+"Reward expiry" = "Validade das recompensas";
+"China (CNY) is the default. International accounts use https://api.siliconflow.com (USD)." = "China (CNY) é o padrão. Contas internacionais usam https://api.siliconflow.com (USD).";
+"https://api.siliconflow.cn" = "https://api.siliconflow.cn";
+"SiliconFlow API origin must be https://api.siliconflow.cn or https://api.siliconflow.com." = "A origem da API do SiliconFlow deve ser https://api.siliconflow.cn ou https://api.siliconflow.com.";
+"SiliconFlow refused the balance query. Check the balance in the SiliconFlow console." = "O SiliconFlow recusou a consulta de saldo. Confira o saldo no console do SiliconFlow.";
+
+"SiliconFlow" = "SiliconFlow";
+"Show SiliconFlow usage" = "Mostrar uso do SiliconFlow";
+"SiliconFlow is rate limiting requests. Try again later." = "O SiliconFlow está limitando a frequência das solicitações. Tente novamente mais tarde.";
+"SiliconFlow request failed. Try refreshing later." = "A solicitação ao SiliconFlow falhou. Tente atualizar mais tarde.";
+"SiliconFlow returned an unrecognized response. Update CodexBar and try again." = "O SiliconFlow retornou uma resposta desconhecida. Atualize o CodexBar e tente novamente.";
+"Claude Platform session validated and saved." = "Sessão do Claude Platform validada e salva.";
+"Use %@ or %@." = "Use %@ ou %@.";
+"Sign in at %@. Supply its Cookie header containing sessionKey privately to %@. Then run %@." = "Entre em %@. Forneça o cabeçalho Cookie contendo sessionKey de forma privada a %@. Em seguida, execute %@.";
+"Read cookie header from stdin" = "Ler cabeçalho de cookies de stdin";
+"User-Agent" = "User-Agent";
+"Optional. Paste the User-Agent value from the same request as the Cookie." = "Opcional. Cole o valor de User-Agent da mesma solicitação que o cabeçalho Cookie.";
+"Paste the WorkBuddy User-Agent as a single request header value." = "Cole o User-Agent do WorkBuddy como um único valor de cabeçalho da solicitação.";
+"TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "Não foi possível ler o resumo de cobrança do TypeSafe. Abra https://console.typesafe.ai/billing para verificar o acesso; se a página abrir, relate a falha de integração.";
+"No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "Nenhum cookie de sessão do TypeSafe encontrado. Entre em console.typesafe.ai/billing ou cole um cabeçalho Cookie.";

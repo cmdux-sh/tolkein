@@ -129,6 +129,8 @@ public enum UsageProvider: String, CaseIterable, Sendable, Codable {
     case traecn
     case chatbox
     case abliteration
+    case opendesign
+    case siliconflow
 }
 
 // swiftformat:enable sortDeclarations

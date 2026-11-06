@@ -102,7 +102,7 @@ enum ProviderPluginHTTPResponse {
         }
     }
 
-    private enum Completion: Sendable {
+    enum Completion: Sendable {
         case primary(ProviderHTTPResponse)
         case optional(ProviderHTTPResponse?)
         case budgetExpired
@@ -163,6 +163,7 @@ enum ProviderPluginHTTPResponse {
                     optionalFinished = true
                 case .budgetExpired: budgetExpired = true
                 }
+                contextOptions.didCollectHTTPCompletion?(completion)
                 // After expiry, retain optional results only while the required request is still pending.
                 if let primary, optionalFinished || budgetExpired || !(200..<300).contains(primary.statusCode) {
                     break
@@ -331,11 +332,15 @@ enum ProviderPluginHTTPResponse {
         let bounded = ProviderHTTPTransportHandler { request in
             try Task.checkCancellation()
             let (starts, started) = AsyncStream<ContinuousClock.Instant>.makeStream()
+            let cancellation = AdmissionCancellation()
             let task = Task {
                 defer { started.finish() }
-                try await beforeAttempt?(request)
+                try cancellation.check()
                 try Task.checkCancellation()
+                try await beforeAttempt?(request)
                 started.yield(.now)
+                try cancellation.check()
+                try Task.checkCancellation()
                 return try await transport.data(for: request)
             }
             return try await withTaskCancellationHandler {
@@ -352,10 +357,26 @@ enum ProviderPluginHTTPResponse {
                 case .timedOut: throw URLError(.timedOut)
                 }
             } onCancel: {
-                task.cancel()
+                cancellation.cancel()
+                // A transport cancellation handler can block; don't hold the caller's
+                // cancellation path or task-group coordinator while requesting it.
+                DispatchQueue.global().async { task.cancel() }
             }
         }
         return try await bounded.response(for: request, retryPolicy: retryPolicy)
+    }
+
+    private final class AdmissionCancellation: @unchecked Sendable {
+        private let lock = NSLock()
+        private var cancelled = false
+
+        func cancel() {
+            self.lock.withLock { self.cancelled = true }
+        }
+
+        func check() throws {
+            if self.lock.withLock({ self.cancelled }) { throw CancellationError() }
+        }
     }
 
     struct StatusFailure: LocalizedError {

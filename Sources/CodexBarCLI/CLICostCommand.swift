@@ -848,7 +848,14 @@ extension CodexBarCLI {
                 output: CLIOutputPreferences.from(values: values),
                 kind: .args)
         }
-        if let raw = values.options["days"]?.last, let days = Int(raw) {
+        if let raw = values.options["days"]?.last {
+            guard let days = Int(raw) else {
+                Self.exit(
+                    code: .failure,
+                    message: "Error: --days must be an integer.",
+                    output: CLIOutputPreferences.from(values: values),
+                    kind: .args)
+            }
             return .rolling(days: max(1, min(365, days)))
         }
         let period = values.options["period"]?.last.flatMap(CostReportingPeriod.init(rawValue:)) ?? saved
@@ -973,7 +980,9 @@ struct CostOptions: CommanderParsable {
     @Option(name: .long("group-by"), help: "Group text output by: project | session")
     var groupBy: String?
 
-    @Option(name: .long("remote"), help: "Read one SSH host; separate summaries unless --identified-only is selected")
+    @Option(
+        name: .long("remote"),
+        help: "Read an SSH host; repeat only with --identified-only, otherwise separate summaries")
     var remote: String?
 
     @Flag(name: .long("summary-only"), help: "Versioned native Codex JSON totals without account or session details")

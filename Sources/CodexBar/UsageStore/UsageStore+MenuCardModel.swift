@@ -10,6 +10,7 @@ enum UsageMenuCardContext {
     struct Account {
         var snapshot: UsageSnapshot?
         var error: String?
+        var quotaRefreshFailed: Bool?
         var info: AccountInfo?
         var privacyOrdinal: PersonalInfoRedactor.AccountOrdinal?
         var historySelection: PlanUtilizationHistorySelection?
@@ -43,8 +44,12 @@ extension UsageStore {
         context: UsageMenuCardContext = .menu,
         now: Date = Date()) -> UsageMenuCardView.Model
     {
-        UsageMenuCardView.Model.make(self.menuCardInput(for: provider, context: context, now: now))
+        var model = UsageMenuCardView.Model.make(self.menuCardInput(for: provider, context: context, now: now))
             .applyingUsageItemVisibility(hiddenItemIDs: self.settings.hiddenUsageItemIDs(for: provider))
+        if let name = self.codexMenuAccountName(for: provider, context: context) {
+            model.providerName = name
+        }
+        return model
     }
 
     func menuCardInput(
@@ -141,6 +146,9 @@ extension UsageStore {
             isRefreshing: isSettings ? self.refreshingProviders.contains(provider.instanceID)
                 : self.shouldShowRefreshingMenuCardIndicator(for: provider),
             lastError: lastError,
+            quotaRefreshFailed: isLive ? self.errors[provider.instanceID] != nil
+                : (account?.quotaRefreshFailed ?? (account?.error != nil)),
+            dashboardRefreshFailed: isLive && self.lastOpenAIDashboardError != nil,
             limitsAvailability: isSettings && !isLive ? nil : self.knownLimitsAvailability(for: provider),
             usageBarsShowUsed: self.settings.usageBarsShowUsed,
             resetTimeDisplayStyle: self.settings.resetTimeDisplayStyle,

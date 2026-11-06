@@ -113,6 +113,8 @@ extension ProviderInstanceID {
     public static let traecn = UsageProvider.traecn.instanceID
     public static let chatbox = UsageProvider.chatbox.instanceID
     public static let abliteration = UsageProvider.abliteration.instanceID
+    public static let opendesign = UsageProvider.opendesign.instanceID
+    public static let siliconflow = UsageProvider.siliconflow.instanceID
 }
 
 // swiftformat:enable sortDeclarations
