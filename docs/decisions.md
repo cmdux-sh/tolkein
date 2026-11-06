@@ -7,3 +7,15 @@
 Why: the two repositories had nearly the same name and were easy to confuse. The companion reads the app, so the two belong together.
 
 The app stays at the root and the root README is left as upstream wrote it, so syncing with `steipete/CodexBar` keeps merging cleanly.
+
+## 2026-11-06: Archive cmdux-sh/tolkeins
+
+The old `cmdux-sh/tolkeins` repository is archived (read-only), and its README points here. Its two open drafts moved to tolkein PRs #3 and #4.
+
+Why: everything from it now lives in `companion/` with its history. Archiving keeps old links working and can be undone.
+
+## 2026-11-06: Manus reads a saved session token first
+
+When a Manus session token is saved (environment or pasted header), the app uses only that token and does not open browser cookies, even when Manus cookies are set to off. A rejected token fails with "Invalid Manus session token." instead of falling back to the browser.
+
+Why: reading browser cookies triggers macOS privacy prompts. Pasting a fresh token is the accepted cost when one expires.
