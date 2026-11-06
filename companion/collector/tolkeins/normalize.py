@@ -7,6 +7,7 @@ Only usage numbers, plan labels, and reset times are published.
 from __future__ import annotations
 
 import re
+import sys
 from calendar import monthrange
 from datetime import datetime, timedelta, timezone
 from typing import Any
@@ -16,6 +17,8 @@ from tolkeins.yaml_lite import YAMLError, parse_yaml
 
 
 SCHEMA_VERSION = 1
+# worker/src/snapshot.ts requireString max for services[].error.message.
+ERROR_MESSAGE_LIMIT = 240
 EMAIL_RE = re.compile(r"[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}")
 DROP_KEYS = {
     "accountemail",
@@ -183,8 +186,28 @@ def normalize_service(
     if price:
         service["price"] = price
     if error:
-        service["error"] = error
+        service["error"] = _publish_error(provider, error)
     return service
+
+
+def clamp_error_message(text: str, limit: int = ERROR_MESSAGE_LIMIT) -> str:
+    """Fit a service error into the worker's message limit, keeping an ellipsis."""
+
+    if len(text) <= limit:
+        return text
+    ellipsis = "..."
+    head = text[: limit - len(ellipsis)].rstrip()
+    return f"{head}{ellipsis}"
+
+
+def _publish_error(provider: str, error: dict[str, str]) -> dict[str, str]:
+    message = error.get("message") or "Unknown error"
+    clamped = clamp_error_message(message)
+    if clamped != message:
+        print(f"{provider} error message: {message}", file=sys.stderr)
+    published = dict(error)
+    published["message"] = clamped
+    return published
 
 
 def scrub(value: Any) -> Any:
@@ -235,11 +258,14 @@ def _error_from_record(record: dict[str, Any]) -> dict[str, str] | None:
 def _classify_error(error: dict[str, Any]) -> dict[str, str]:
     message = error.get("message")
     text = message.strip() if isinstance(message, str) and message.strip() else "Unknown CodexBar error"
-    text = EMAIL_RE.sub("", text)[:240]
+    text = EMAIL_RE.sub("", text).strip() or "Unknown error"
+    lowered = text.lower()
     raw_kind = error.get("kind")
     if raw_kind == "collector":
         kind = "collector"
-    elif any(hint in text.lower() for hint in SIGN_IN_HINTS):
+    elif "keychain permission" in lowered or "safe storage" in lowered:
+        kind = "unavailable"
+    elif any(hint in lowered for hint in SIGN_IN_HINTS):
         kind = "needs-sign-in"
     else:
         kind = "unavailable"

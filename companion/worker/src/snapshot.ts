@@ -203,10 +203,13 @@ function parsePrice(input: unknown, path: string): UsageService["price"] | undef
   return { amount, currency: currency.toUpperCase(), interval }
 }
 
+const ERROR_MESSAGE_MAX = 240
+
 function parseError(input: unknown, path: string): UsageService["error"] | undefined {
   if (input === undefined || input === null) return undefined
   const record = asRecord(input, path)
-  const message = requireString(record.message, `${path}.message`, 240)
+  // A long provider error must not reject the rest of the snapshot.
+  const message = clampString(record.message, `${path}.message`, ERROR_MESSAGE_MAX)
   const kindText = optionalString(record.kind, `${path}.kind`, 32) ?? "unavailable"
   const kind: ErrorKind = ERROR_KINDS.has(kindText as ErrorKind) ? (kindText as ErrorKind) : "unavailable"
   return { message, kind }
@@ -225,6 +228,15 @@ function requireString(input: unknown, path: string, max: number): string {
   if (!cleaned) throw new SnapshotError(`${path} is empty`)
   if (cleaned.length > max) throw new SnapshotError(`${path} is too long`)
   return cleaned
+}
+
+function clampString(input: unknown, path: string, max: number): string {
+  if (typeof input !== "string") throw new SnapshotError(`${path} must be a string`)
+  const cleaned = stripEmail(input).trim()
+  if (!cleaned) throw new SnapshotError(`${path} is empty`)
+  if (cleaned.length <= max) return cleaned
+  const ellipsis = "..."
+  return `${cleaned.slice(0, max - ellipsis.length).trimEnd()}${ellipsis}`
 }
 
 function optionalString(input: unknown, path: string, max: number): string | undefined {

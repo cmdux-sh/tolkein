@@ -68,6 +68,36 @@ describe("snapshot document", () => {
     expect(snapshot.services[0]?.windows[0]?.usedPercent).toBe(47)
     expect(snapshot.services[0]?.pace?.primary?.summary).toContain("ping")
   })
+
+  it("truncates a long service error instead of rejecting the snapshot", () => {
+    const full = `cursor detail ${"x".repeat(400)}`
+    const snapshot = parseSnapshot({
+      schemaVersion: 1,
+      generatedAt: "2026-10-24T05:22:00Z",
+      services: [
+        {
+          id: "cursor",
+          name: "Cursor",
+          windows: [],
+          source: "cursor",
+          fetchedAt: "2026-10-24T05:22:00Z",
+          error: { message: full, kind: "needs-sign-in" },
+        },
+        {
+          id: "claude",
+          name: "Claude",
+          windows: [{ label: "Weekly", usedPercent: 12 }],
+          source: "claude",
+          fetchedAt: "2026-10-24T05:22:00Z",
+        },
+      ],
+    })
+    const message = snapshot.services[0]?.error?.message ?? ""
+    expect(message.length).toBeLessThanOrEqual(240)
+    expect(message.endsWith("...")).toBe(true)
+    expect(message.startsWith("cursor detail")).toBe(true)
+    expect(snapshot.services[1]?.windows[0]?.usedPercent).toBe(12)
+  })
 })
 
 describe("worker", () => {
