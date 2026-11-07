@@ -590,7 +590,9 @@ Pull requests from forks
 cannot read the secret, so their macOS jobs fail at that step. The package is first-party, so
 `Scripts/acknowledgements.py` lists it in `FIRST_PARTY` instead of bundling a third-party notice. To change its
 version, update the requirement in `Package.swift`, run `swift package resolve`, then resolve the widget workspace as
-above.
+above. `Scripts/package_app.sh` builds the widget offline (`-skipPackageUpdates`) in its own derived folder; when the
+widget's pins change, it fetches the pinned packages into that folder once first, so a version bump does not fail with
+"Couldn't check out revision".
 
 The `lint-build-test` check in `.github/workflows/ci.yml` keeps its existing name and requires successful lint,
 change detection, and the full `build-linux-cli` glibc matrix (x86_64 and ARM64 build, tests, and smoke checks)
