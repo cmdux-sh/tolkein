@@ -129,10 +129,10 @@ jobs:
           [[ "$(/usr/bin/xcodebuild -version)" == Xcode\ 27* ]]
           /usr/bin/xcodebuild -version
 
-      - name: Grant read access to MacDesignSystem
+      - name: Grant read access to Internal UI
         env:
           MAC_DESIGN_SYSTEM_DEPLOY_KEY: ${{ secrets.MAC_DESIGN_SYSTEM_DEPLOY_KEY }}
-        run: ./Scripts/ci-grant-mac-design-system.sh
+        run: ./Scripts/ci-grant-internal-ui.sh
 
       - name: Identify SwiftPM build context
         id: build-context
@@ -181,7 +181,7 @@ jobs:
 
       - name: Resolve Swift packages
         # The test runner gives SwiftPM a temporary HOME, which hides the runner's git config that
-        # routes the private MacDesignSystem package through the deploy key. Resolving here first
+        # routes the private Internal UI package through the deploy key. Resolving here first
         # leaves every package checked out in .build, so the test run never clones.
         run: swift package resolve
 
@@ -338,10 +338,10 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - name: Grant read access to MacDesignSystem
+      - name: Grant read access to Internal UI
         env:
           MAC_DESIGN_SYSTEM_DEPLOY_KEY: ${{ secrets.MAC_DESIGN_SYSTEM_DEPLOY_KEY }}
-        run: ./Scripts/ci-grant-mac-design-system.sh
+        run: ./Scripts/ci-grant-internal-ui.sh
 
       - name: Runner info
         run: |
@@ -528,10 +528,10 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - name: Grant read access to MacDesignSystem
+      - name: Grant read access to Internal UI
         env:
           MAC_DESIGN_SYSTEM_DEPLOY_KEY: ${{ secrets.MAC_DESIGN_SYSTEM_DEPLOY_KEY }}
-        run: ./Scripts/ci-grant-mac-design-system.sh
+        run: ./Scripts/ci-grant-internal-ui.sh
 
       - name: Runner info
         run: |

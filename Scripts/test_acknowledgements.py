@@ -53,13 +53,13 @@ class AcknowledgementsTests(unittest.TestCase):
                 path = root / lock
                 path.parent.mkdir(parents=True, exist_ok=True)
                 path.write_bytes((notices.ROOT / lock).read_bytes())
-            first_party = {'identity': 'macdesignsystem', 'location': 'https://github.com/cmdux-sh/MacDesignSystem.git',
+            first_party = {'identity': 'internal-ui', 'location': 'https://github.com/cmdux-sh/internal-ui.git',
                            'state': {'revision': 'c' * 40}}
             for lock in notices.LOCKS:
                 data = json.loads((root / lock).read_text())
-                data['pins'] = [pin for pin in data['pins'] if pin['identity'] != 'macdesignsystem'] + [dict(first_party)]
+                data['pins'] = [pin for pin in data['pins'] if pin['identity'] != 'internal-ui'] + [dict(first_party)]
                 (root / lock).write_text(json.dumps(data))
-            self.assertNotIn('macdesignsystem', notices.pins(root))
+            self.assertNotIn('internal-ui', notices.pins(root))
             data = json.loads((root / notices.LOCKS[1]).read_text())
             data['pins'][-1] = dict(first_party, state={'revision': 'd' * 40})
             (root / notices.LOCKS[1]).write_text(json.dumps(data))

@@ -1,6 +1,6 @@
 import CodexBarCore
 import Foundation
-import MacDesignSystem
+import InternalUI
 import SwiftUI
 import Testing
 @testable import CodexBar
