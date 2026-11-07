@@ -276,6 +276,8 @@ extension StatusItemController {
 
     /// Manus stores one session cookie per account. The board shows each saved account, not only the active one.
     private func usageBoardProviders(for provider: UsageProvider) -> [UsageBoardProvider] {
+        // Provider-specific by design: only Manus keeps one session cookie per saved account,
+        // so only it expands into one card per account.
         guard provider == .manus else {
             return [UsageBoardCardProjection.provider(from: self.store.menuCardModel(for: provider))]
         }

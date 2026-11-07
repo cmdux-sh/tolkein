@@ -3,12 +3,14 @@ import Testing
 @testable import CodexBarCore
 
 struct ManusPluginTests {
-    @Test(arguments: BundledPluginTestSupport.engines)
-    func `rejected cache and browser candidates advance before environment fallback`(
-        engine: ProviderPluginEngineKind) async throws
+    /// A saved session token is used first and alone: browser cookies are never opened while one exists,
+    /// because reading them triggers macOS privacy prompts (docs/decisions.md, 2026-11-06).
+    @Test(arguments: BundledPluginTestSupport.engines, [ProviderCookieSource.auto, .manual, .off])
+    func `saved session token is used without opening browser cookies`(
+        engine: ProviderPluginEngineKind,
+        cookieSource: ProviderCookieSource) async throws
     {
-        let rejected = LockIsolated<[String]>([])
-        let sessions = SessionQueue(["session_id=cached", "session_id=browser", "session_id=browser"])
+        let sessions = SessionQueue([])
         let runtime = try BundledPluginTestSupport.runtime(
             "manus",
             engine: engine,
@@ -16,27 +18,71 @@ struct ManusPluginTests {
             ProviderHTTPTransportHandler { request in
                 let token = request.value(forHTTPHeaderField: "Authorization")
                 await sessions.record(token ?? "missing")
-                return try CookiePluginFixtures.response(
-                    request,
-                    body: token == "Bearer environment" ? #"{"totalCredits":5}"# : "expired",
-                    status: token == "Bearer environment" ? 200 : 401)
+                return try CookiePluginFixtures.response(request, body: #"{"totalCredits":5}"#)
             })
         let usage = try await runtime.fetchUsage(
             secrets: ["SESSION_TOKEN": "environment"],
-            cookieSessionResolver: { _, _ in await sessions.next() },
-            cookieSessionInvalidator: { domain, id in
-                #expect(domain == "manus.im")
-                rejected.setValue(rejected.value + [id])
+            cookieSource: cookieSource,
+            cookieSessionResolver: { _, _ in
+                Issue.record("A saved token must not open browser sessions")
+                return nil
+            },
+            cookieResolver: { _, _ in
+                Issue.record("A saved token must not import cookies")
+                return "session_id=browser"
             })
         #expect(usage.identity?.loginMethod == "Balance: 5 credits")
-        #expect(rejected.value.count == 3)
-        #expect(await sessions.attempts == ["Bearer cached", "Bearer browser", "Bearer environment"])
+        #expect(await sessions.attempts == ["Bearer environment"])
     }
 
     @Test(arguments: BundledPluginTestSupport.engines)
-    func `manual mode never uses environment after rejected credentials`(
+    func `rejected saved token fails without browser fallback`(engine: ProviderPluginEngineKind) async throws {
+        let runtime = try BundledPluginTestSupport.runtime(
+            "manus",
+            engine: engine,
+            transport:
+            ProviderHTTPTransportHandler { request in
+                #expect(request.value(forHTTPHeaderField: "Authorization") == "Bearer environment")
+                return try CookiePluginFixtures.response(request, body: "expired", status: 401)
+            })
+        await CookiePluginFixtures.expectFailure(.authenticationExpired) {
+            try await runtime.fetchUsage(
+                secrets: ["SESSION_TOKEN": "environment"],
+                cookieSessionResolver: { _, _ in
+                    Issue.record("A rejected saved token must not fall back to browser cookies")
+                    return nil
+                })
+        }
+    }
+
+    @Test(arguments: BundledPluginTestSupport.engines)
+    func `rejected browser sessions are invalidated and fail as expired`(
         engine: ProviderPluginEngineKind) async throws
     {
+        let rejected = LockIsolated<[String]>([])
+        let sessions = SessionQueue(["session_id=cached", "session_id=browser"])
+        let runtime = try BundledPluginTestSupport.runtime(
+            "manus",
+            engine: engine,
+            transport:
+            ProviderHTTPTransportHandler { request in
+                await sessions.record(request.value(forHTTPHeaderField: "Authorization") ?? "missing")
+                return try CookiePluginFixtures.response(request, body: "expired", status: 401)
+            })
+        await CookiePluginFixtures.expectFailure(.authenticationExpired) {
+            try await runtime.fetchUsage(
+                cookieSessionResolver: { _, _ in await sessions.next() },
+                cookieSessionInvalidator: { domain, id in
+                    #expect(domain == "manus.im")
+                    rejected.setValue(rejected.value + [id])
+                })
+        }
+        #expect(rejected.value.count == 2)
+        #expect(await sessions.attempts == ["Bearer cached", "Bearer browser"])
+    }
+
+    @Test(arguments: BundledPluginTestSupport.engines)
+    func `manual cookie is used when no token is saved`(engine: ProviderPluginEngineKind) async throws {
         let runtime = try BundledPluginTestSupport.runtime(
             "manus",
             engine: engine,
@@ -47,14 +93,15 @@ struct ManusPluginTests {
             })
         await CookiePluginFixtures.expectFailure(.authenticationExpired) {
             try await runtime.fetchUsage(
-                secrets: ["SESSION_TOKEN": "environment"],
                 cookieSource: .manual,
                 cookieResolver: { _, _ in "manual" })
         }
     }
 
     @Test(arguments: BundledPluginTestSupport.engines)
-    func `off mode never imports cookies or uses environment`(engine: ProviderPluginEngineKind) async throws {
+    func `off mode without a token never imports cookies or sends a request`(
+        engine: ProviderPluginEngineKind) async throws
+    {
         let runtime = try BundledPluginTestSupport.runtime(
             "manus",
             engine: engine,
@@ -65,7 +112,6 @@ struct ManusPluginTests {
             })
         await CookiePluginFixtures.expectFailure(.missingCredential) {
             try await runtime.fetchUsage(
-                secrets: ["SESSION_TOKEN": "environment"],
                 cookieSource: .off,
                 cookieResolver: { _, _ in
                     Issue.record("Disabled provider must not import cookies")
