@@ -37,6 +37,10 @@ Sparkle appcast minimum in `.github/release.json`.
 Why: MacDesignSystem targets macOS 15. The appcast minimum keeps Sparkle from offering macOS 14 users an
 update that would not launch; their last compatible build keeps working.
 
+The floor is package-wide, so the macOS CLI also needs macOS 15; Linux builds are unaffected. The root README and
+the codexbar.app site (`docs/index.html`, `docs/site-locales.mjs`) still say macOS 14+, because they are upstream's and
+stay as upstream wrote them. The Homebrew tap's `depends_on macos:` moves to `:sequoia` with the first macOS 15 release.
+
 ## 2026-11-07: Private package, read by CI through a deploy key
 
 MacDesignSystem stays private. `Package.swift` declares it only on macOS, so Linux jobs never fetch it. macOS CI and

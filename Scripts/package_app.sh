@@ -283,7 +283,7 @@ APP="$APP_STAGE"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources" "$APP/Contents/Frameworks"
 mkdir -p "$APP/Contents/Helpers" "$APP/Contents/PlugIns"
 
-# Convert new .icon bundle to .icns if present (macOS 14+/IconStudio export)
+# Convert new .icon bundle to .icns if present (IconStudio export)
 ICON_SOURCE="$ROOT/Icon.icon"
 ICON_TARGET="$ROOT/Icon.icns"
 if [[ -f "$ICON_SOURCE" ]]; then

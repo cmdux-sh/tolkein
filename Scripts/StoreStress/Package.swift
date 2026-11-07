@@ -4,7 +4,7 @@ import PackageDescription
 let package = Package(
     name: "StoreStress",
     platforms: [
-        .macOS(.v14),
+        .macOS(.v15),
     ],
     dependencies: [
         .package(name: "CodexBar", path: "../.."),
