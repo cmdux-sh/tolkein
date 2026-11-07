@@ -2766,17 +2766,17 @@
 "Store multiple Command Code subscription sessions." = "Memorizza più sessioni di abbonamento a Command Code.";
 
 /* Wide usage board */
-"All providers" = "All providers";
-"Classic menu" = "Classic menu";
-"Needs sign-in" = "Needs sign-in";
-"Couldn't load usage" = "Couldn't load usage";
-"No windows reported yet." = "No windows reported yet.";
-"Charts, accounts, and history stay in the classic menu." = "Charts, accounts, and history stay in the classic menu.";
-"Up and down move between providers. Command-R refreshes. Escape closes." = "Up and down move between providers. Command-R refreshes. Escape closes.";
-"More than half left" = "More than half left";
-"Under half left" = "Under half left";
-"Almost out" = "Almost out";
-"None left" = "None left";
+"All providers" = "Tutti i provider";
+"Classic menu" = "Menu classico";
+"Needs sign-in" = "Accesso richiesto";
+"Couldn't load usage" = "Impossibile caricare l'utilizzo";
+"No windows reported yet." = "Nessuna finestra segnalata finora.";
+"Charts, accounts, and history stay in the classic menu." = "Grafici, account e cronologia restano nel menu classico.";
+"Up and down move between providers. Command-R refreshes. Escape closes." = "Su e giù passano da un provider all'altro. Comando-R aggiorna. Esc chiude.";
+"More than half left" = "Più di metà rimanente";
+"Under half left" = "Meno di metà rimanente";
+"Almost out" = "Quasi esaurito";
+"None left" = "Esaurito";
 "codex_reset_credit_expiry_notifications_title" = "Scadenza dei crediti di ripristino Codex";
 
 "codex_reset_credit_expiry_notifications_subtitle" = "Aggiunge promemoria all’aggiornamento dell’utilizzo, 1 giorno e 1 ora prima della scadenza.";
