@@ -75,11 +75,9 @@ final class UsageBoardPanelController {
         hosting.translatesAutoresizingMaskIntoConstraints = false
         let container = UsageBoardContainerView(frame: panel.contentView?.bounds ?? .zero)
         container.wantsLayer = true
-        container.layer?.backgroundColor = NSColor(
-            srgbRed: 12 / 255,
-            green: 12 / 255,
-            blue: 12 / 255,
-            alpha: 1).cgColor
+        // The SwiftUI board paints its own appearance-aware background (MacDesignSystem tokens);
+        // the layer only rounds and clips it.
+        container.layer?.backgroundColor = NSColor.clear.cgColor
         container.layer?.cornerRadius = UsageBoardMetrics.radiusWindow
         container.layer?.masksToBounds = true
         container.addSubview(hosting)

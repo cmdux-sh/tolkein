@@ -1,7 +1,9 @@
+import AppKit
 import CodexBarCore
+import MacDesignSystem
 import SwiftUI
 
-/// Fluid Functionalism tokens for the usage board, mapped onto macOS.
+/// Fluid Functionalism metrics for the usage board, on MacDesignSystem colors and radii.
 ///
 /// The board is one compact region: control height 28, row padding 6, gap 4.
 /// Comfortable values (36 / 8 / 8) stay here so the step-down is visible.
@@ -18,9 +20,11 @@ enum UsageBoardMetrics {
     /// Compact Fluid Functionalism is 14. Sixteen keeps the SF Symbol on the HIG grid.
     static let icon: CGFloat = 16
     static let radiusWindow: CGFloat = 12
-    static let radiusCard: CGFloat = 8
-    static let radiusItem: CGFloat = 6
-    static let hairline: CGFloat = 1
+    /// Cards inset from the window share the design system's row radius (8).
+    static let radiusCard: CGFloat = MacRadius.row
+    /// Small items (rows, buttons, banners) use the design system's tile radius (6).
+    static let radiusItem: CGFloat = MacRadius.iconTile
+    static let hairline: CGFloat = MacSize.border
     static let focusRing: CGFloat = 2
     static let progress: CGFloat = 3
     static let windowPad: CGFloat = 8
@@ -85,31 +89,45 @@ enum UsageBoardMotion {
     }
 }
 
-/// Near-black floor, one step of elevation, hairline borders.
-/// Primary `#F4F4F5` on `#1A1A1A` is about 16:1. Muted `#A3A3A3` on the same card is about 6.9:1.
+/// Colors come from MacDesignSystem's semantic tokens, so the board follows the app's light or dark
+/// appearance like the rest of Tolkein's Mac UI. Dark keeps the near-black floor with one step of
+/// elevation; light uses the design system's white panels on a near-white window.
 enum UsageBoardTheme {
-    static let canvas = Color(red: 12 / 255, green: 12 / 255, blue: 12 / 255)
-    static let surface = Color(red: 20 / 255, green: 20 / 255, blue: 20 / 255)
-    static let card = Color(red: 26 / 255, green: 26 / 255, blue: 26 / 255)
-    static let cardRaised = Color(red: 32 / 255, green: 32 / 255, blue: 32 / 255)
-    static let hairline = Color(red: 46 / 255, green: 46 / 255, blue: 46 / 255)
-    static let track = Color(red: 42 / 255, green: 42 / 255, blue: 42 / 255)
-    static let bar = Color(red: 168 / 255, green: 168 / 255, blue: 168 / 255)
-    /// Healthy remaining quota. Blue on the near-black track stays above 4.5:1.
-    static let barHealthy = Color(red: 107 / 255, green: 151 / 255, blue: 255 / 255)
-    static let primaryText = Color(red: 244 / 255, green: 244 / 255, blue: 245 / 255)
-    static let secondaryText = Color(red: 163 / 255, green: 163 / 255, blue: 163 / 255)
-    static let accent = Color(red: 107 / 255, green: 151 / 255, blue: 255 / 255)
-    static let selectionFill = Color(red: 107 / 255, green: 151 / 255, blue: 255 / 255).opacity(0.16)
-    static let hover = Color.white.opacity(0.06)
-    static let warning = Color(red: 196 / 255, green: 161 / 255, blue: 90 / 255)
-    static let critical = Color(red: 210 / 255, green: 123 / 255, blue: 114 / 255)
-    static let errorFill = Color(red: 42 / 255, green: 22 / 255, blue: 24 / 255)
-    static let errorText = Color(red: 240 / 255, green: 180 / 255, blue: 174 / 255)
-    static let signInFill = Color(red: 26 / 255, green: 26 / 255, blue: 26 / 255)
-    static let signInText = Color(red: 163 / 255, green: 163 / 255, blue: 163 / 255)
+    static let canvas = MacColor.window
+    static let surface = MacColor.panel
+    static let card = MacColor.panel
+    static let cardRaised = MacColor.raised
+    static let hairline = MacColor.hairline
+    static let track = MacColor.hairlineStrong
+    /// Healthy remaining quota uses the accent, which stays above 4.5:1 on the track in both appearances.
+    static let barHealthy = MacColor.accent
+    static let primaryText = MacColor.primary
+    static let secondaryText = MacColor.muted
+    static let accent = MacColor.accent
+    static let selectionFill = MacColor.accentSoft
+    static let hover = MacColor.hover
+    /// MacDesignSystem has no warning token yet; this pairs the board's amber with a darker light variant.
+    static let warning = adaptive(dark: (196, 161, 90), light: (154, 103, 0))
+    static let critical = MacColor.destructive
+    static let errorFill = MacColor.destructive.opacity(0.14)
+    static let errorText = MacColor.destructive
+    static let signInFill = MacColor.raised
+    static let signInText = MacColor.muted
 
     static let sidebarWidth = CGFloat(UsageBoardLayout.sidebarWidth)
+
+    private static func adaptive(dark: (Int, Int, Int), light: (Int, Int, Int)) -> Color {
+        func color(_ rgb: (Int, Int, Int)) -> NSColor {
+            NSColor(
+                srgbRed: CGFloat(rgb.0) / 255,
+                green: CGFloat(rgb.1) / 255,
+                blue: CGFloat(rgb.2) / 255,
+                alpha: 1)
+        }
+        return Color(nsColor: NSColor(name: nil) { appearance in
+            appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua ? color(dark) : color(light)
+        })
+    }
 
     static func barFill(for tone: UsageBoardBarTone) -> Color {
         switch tone {
@@ -144,6 +162,12 @@ extension View {
             role: role,
             weight: weight ?? UsageBoardMetrics.weight(role),
             digits: digits ?? UsageBoardMetrics.usesDigits(role)))
+    }
+
+    /// A card on the board: the design system's raised surface (soft halo and ring in light,
+    /// solid fill and hairline in dark).
+    func boardCard(radius: CGFloat = UsageBoardMetrics.radiusCard, fill: Color = UsageBoardTheme.card) -> some View {
+        macSurface(radius: radius, fill: fill, elevation: .raised)
     }
 
     func boardHairline(radius: CGFloat) -> some View {

@@ -1,5 +1,6 @@
 import AppKit
 import CodexBarCore
+import MacDesignSystem
 import SwiftUI
 
 // About half the previous board. The sidebar is the full height of the window.
@@ -29,8 +30,6 @@ struct UsageBoardView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .background(UsageBoardTheme.canvas)
         .foregroundStyle(UsageBoardTheme.primaryText)
-        .environment(\.colorScheme, .dark)
-        .preferredColorScheme(.dark)
         .accessibilityElement(children: .contain)
     }
 }
@@ -77,18 +76,22 @@ private struct UsageBoardSidebar: View {
             UsageBoardCommandButton(
                 title: L("Classic menu"),
                 systemImage: "list.bullet.rectangle",
+                kind: .plain,
                 action: { self.session.onCommand(.classicMenu) })
             UsageBoardCommandButton(
                 title: L("Refresh"),
                 systemImage: "arrow.clockwise",
+                kind: .plain,
                 action: { self.session.onCommand(.refresh) })
             UsageBoardCommandButton(
                 title: L("Settings..."),
                 systemImage: "gearshape",
+                kind: .plain,
                 action: { self.session.onCommand(.settings) })
             UsageBoardCommandButton(
                 title: L("Quit"),
                 systemImage: "xmark.rectangle",
+                kind: .plain,
                 action: { self.session.onCommand(.quit) })
         }
         .padding(UsageBoardMetrics.pad)
@@ -275,8 +278,8 @@ private struct UsageBoardDetail: View {
         GeometryReader { proxy in
             if let provider = self.session.selectedProvider {
                 ScrollView {
-                    self.selectedProviderDetail(provider, width: proxy.size.width)
-                        .padding(UsageBoardMetrics.gap)
+                    self.selectedProviderDetail(provider, width: proxy.size.width - UsageBoardMetrics.windowPad * 2)
+                        .padding(UsageBoardMetrics.windowPad)
                         .frame(maxWidth: .infinity, alignment: .topLeading)
                 }
             } else if self.session.isShowingSkeleton, self.session.providers.isEmpty {
@@ -297,10 +300,13 @@ private struct UsageBoardDetail: View {
     }
 
     private func overview(size: CGSize) -> some View {
-        UsageBoardMasonryLayout(
+        // Inset from the panel edge so raised cards keep their halo instead of touching the rim.
+        let inset = UsageBoardMetrics.windowPad
+        let content = CGSize(width: max(0, size.width - inset * 2), height: max(0, size.height - inset * 2))
+        return UsageBoardMasonryLayout(
             minimumColumnWidth: CGFloat(UsageBoardLayout.overviewMinimumColumnWidth),
             spacing: UsageBoardMetrics.gap,
-            maximumHeight: size.height)
+            maximumHeight: content.height)
         {
             ForEach(self.session.providers) { provider in
                 UsageBoardOverviewCard(
@@ -311,7 +317,8 @@ private struct UsageBoardDetail: View {
                 }
             }
         }
-        .frame(width: size.width, height: size.height, alignment: .topLeading)
+        .frame(width: content.width, height: content.height, alignment: .topLeading)
+        .padding(inset)
         .clipped()
     }
 
@@ -319,7 +326,7 @@ private struct UsageBoardDetail: View {
         UsageBoardProviderCard(
             provider: provider,
             icon: self.session.icon(provider.id),
-            metricWidth: max(0, width - UsageBoardMetrics.gap * 2),
+            metricWidth: max(0, width),
             commands: self.session.providerCommands,
             showsClassicHint: true,
             onCommand: self.session.onCommand)
@@ -349,10 +356,7 @@ private struct UsageBoardOverviewCard: View {
             }
             .padding(UsageBoardMetrics.pad)
             .frame(maxWidth: .infinity, alignment: .topLeading)
-            .background(
-                RoundedRectangle(cornerRadius: UsageBoardMetrics.radiusCard, style: .continuous)
-                    .fill(UsageBoardTheme.card))
-            .boardHairline(radius: UsageBoardMetrics.radiusCard)
+            .boardCard()
             .contentShape(RoundedRectangle(cornerRadius: UsageBoardMetrics.radiusCard, style: .continuous))
         }
         .buttonStyle(UsageBoardHitButtonStyle())
@@ -576,10 +580,7 @@ private struct UsageBoardMetricCard: View {
         }
         .padding(UsageBoardMetrics.pad)
         .frame(maxWidth: .infinity, minHeight: UsageBoardMetrics.control, alignment: .topLeading)
-        .background(
-            RoundedRectangle(cornerRadius: UsageBoardMetrics.radiusCard, style: .continuous)
-                .fill(UsageBoardTheme.card))
-        .boardHairline(radius: UsageBoardMetrics.radiusCard)
+        .boardCard()
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(UsageBoardAccessibility.summary(for: self.metric))
     }
@@ -698,10 +699,7 @@ private struct UsageBoardStatGrid: View {
         }
         .padding(UsageBoardMetrics.pad)
         .frame(maxWidth: .infinity, minHeight: UsageBoardMetrics.control, alignment: .topLeading)
-        .background(
-            RoundedRectangle(cornerRadius: UsageBoardMetrics.radiusCard, style: .continuous)
-                .fill(UsageBoardTheme.card))
-        .boardHairline(radius: UsageBoardMetrics.radiusCard)
+        .boardCard()
         .accessibilityElement(children: .combine)
     }
 }
@@ -809,29 +807,26 @@ private struct UsageBoardIconBadge: View {
     }
 }
 
+/// A board command on the design system's button: a 28 pt (native large) control.
+/// Sidebar commands are plain (no well, inner highlight on hover); provider commands are standard.
 struct UsageBoardCommandButton: View {
     let title: String
     let systemImage: String
+    var kind: MacButtonKind = .standard
     let action: () -> Void
 
     var body: some View {
         Button(action: self.action) {
-            HStack(spacing: UsageBoardMetrics.gap) {
+            HStack(spacing: UsageBoardMetrics.gapComfortable) {
+                // A fixed icon slot keeps every title on the same leading edge.
                 Image(systemName: self.systemImage)
-                    .font(.system(size: 14, weight: .regular))
+                    .frame(width: UsageBoardMetrics.icon)
                 Text(self.title)
-                    .boardFont(.caption)
             }
-            .foregroundStyle(UsageBoardTheme.primaryText)
-            .padding(.horizontal, 10)
-            .frame(maxWidth: .infinity, minHeight: UsageBoardMetrics.control, alignment: .leading)
-            .background(
-                RoundedRectangle(cornerRadius: UsageBoardMetrics.radiusItem, style: .continuous)
-                    .fill(UsageBoardTheme.card))
-            .boardHairline(radius: UsageBoardMetrics.radiusItem)
-            .contentShape(Rectangle())
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .buttonStyle(UsageBoardHitButtonStyle())
+        .buttonStyle(.mac(self.kind))
+        .macControlSize(.large)
         .accessibilityLabel(self.title)
     }
 }
