@@ -103,3 +103,9 @@ Arturo renamed the shared design system to Internal UI. He plans to sell it as a
 - Component names (`MacButton`, `MacColor`…) are unchanged.
 
 Why: the package, its catalog app and its MCP server now share one product name. GitHub redirects the old repository address, but SwiftPM keys the package by its URL, so Tolkein switches to the new URL instead of relying on the redirect.
+
+## 2026-11-07: A hook runs the Internal UI checker after every edit
+
+`.claude/settings.json` (fork-only) adds a Claude Code `PostToolUse` hook for Edit, MultiEdit and Write. It runs `internal-ui-mcp hook` from `~/.local/bin`, which checks the edited file when it is Swift that imports InternalUI. When there are findings, the hook exits 2, and Claude Code hands the report to the agent to fix. On machines without the server installed, the hook does nothing.
+
+Why: the Liner research on MCP practice found that instructions and tool descriptions only nudge agents. A hook is the one way to make the check happen every time. The Usage Board's files pass the checker today, so the hook only reports new problems.
