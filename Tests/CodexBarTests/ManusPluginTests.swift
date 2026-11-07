@@ -3,8 +3,8 @@ import Testing
 @testable import CodexBarCore
 
 struct ManusPluginTests {
-    // A saved session token is used first and alone: browser cookies are never opened while one exists,
-    // because reading them triggers macOS privacy prompts (docs/decisions.md, 2026-11-06).
+    /// A saved session token is used first and alone: browser cookies are never opened while one exists,
+    /// because reading them triggers macOS privacy prompts (docs/decisions.md, 2026-11-06).
     @Test(arguments: BundledPluginTestSupport.engines, [ProviderCookieSource.auto, .manual, .off])
     func `saved session token is used without opening browser cookies`(
         engine: ProviderPluginEngineKind,
