@@ -12,6 +12,7 @@ enum UsageBoardPreviewData {
 
     private static var claude: UsageBoardProvider {
         self.provider(
+            // Provider-specific by design: DEBUG preview fixture that names real providers so previews look realistic.
             id: "claude",
             name: "Claude",
             plan: "Pro",
@@ -32,6 +33,7 @@ enum UsageBoardPreviewData {
 
     private static var codex: UsageBoardProvider {
         self.provider(
+            // Provider-specific by design: DEBUG preview fixture that names real providers so previews look realistic.
             id: "codex",
             name: "Codex",
             plan: "Plus",
@@ -47,6 +49,7 @@ enum UsageBoardPreviewData {
 
     private static var cursor: UsageBoardProvider {
         UsageBoardProviderBuilder.make(
+            // Provider-specific by design: DEBUG preview fixture that names real providers so previews look realistic.
             id: "cursor",
             name: "Cursor",
             planText: nil,
@@ -61,6 +64,7 @@ enum UsageBoardPreviewData {
 
     private static var gemini: UsageBoardProvider {
         UsageBoardProviderBuilder.make(
+            // Provider-specific by design: DEBUG preview fixture that names real providers so previews look realistic.
             id: "gemini",
             name: "Gemini",
             planText: nil,
@@ -75,6 +79,7 @@ enum UsageBoardPreviewData {
 
     private static var elevenLabs: UsageBoardProvider {
         self.provider(
+            // Provider-specific by design: DEBUG preview fixture that names real providers so previews look realistic.
             id: "elevenlabs",
             name: "ElevenLabs",
             plan: "Creator",
