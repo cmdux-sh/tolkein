@@ -179,6 +179,12 @@ jobs:
           # Record inputs before compiling; cache publication also requires a clean tree.
           python3 Scripts/ci_swiftpm_cache.py snapshot --context "$BUILD_CONTEXT"
 
+      - name: Resolve Swift packages
+        # The test runner gives SwiftPM a temporary HOME, which hides the runner's git config that
+        # routes the private MacDesignSystem package through the deploy key. Resolving here first
+        # leaves every package checked out in .build, so the test run never clones.
+        run: swift package resolve
+
       - name: Swift Test
         # Batch short suites; the runner isolates expensive suites without changing their deadlines.
         timeout-minutes: 75
