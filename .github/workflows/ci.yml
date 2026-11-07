@@ -332,6 +332,11 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
+      - name: Grant read access to MacDesignSystem
+        env:
+          MAC_DESIGN_SYSTEM_DEPLOY_KEY: ${{ secrets.MAC_DESIGN_SYSTEM_DEPLOY_KEY }}
+        run: ./Scripts/ci-grant-mac-design-system.sh
+
       - name: Runner info
         run: |
           set -euo pipefail
@@ -516,6 +521,11 @@ jobs:
     runs-on: ${{ matrix.runs-on }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Grant read access to MacDesignSystem
+        env:
+          MAC_DESIGN_SYSTEM_DEPLOY_KEY: ${{ secrets.MAC_DESIGN_SYSTEM_DEPLOY_KEY }}
+        run: ./Scripts/ci-grant-mac-design-system.sh
 
       - name: Runner info
         run: |

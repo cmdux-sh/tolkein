@@ -581,10 +581,12 @@ resolved file when automatic resolution is disabled.
 ### Private MacDesignSystem package
 
 The macOS app target depends on `cmdux-sh/MacDesignSystem`, a private SwiftPM package shared by this fork's Mac apps.
-`Package.swift` declares it only on macOS, so Linux builds and the Linux CLI jobs never fetch it. Local builds clone it
-over HTTPS with your normal GitHub credentials (for example `gh auth setup-git`). macOS CI and release jobs run
-`Scripts/ci-grant-mac-design-system.sh` first: it writes the read-only deploy key from the
-`MAC_DESIGN_SYSTEM_DEPLOY_KEY` repository secret into the job's `RUNNER_TEMP` and, through `GITHUB_ENV`, rewrites only that package URL to SSH for the rest of the job. Pull requests from forks
+`Package.swift` declares it only on macOS, so Linux never builds it, but SwiftPM still clones every pinned package, so
+Linux jobs need read access too. Local builds clone it over HTTPS with your normal GitHub credentials (for example
+`gh auth setup-git`). Every CI job that runs SwiftPM first runs `Scripts/ci-grant-mac-design-system.sh`: it writes the
+read-only deploy key from the `MAC_DESIGN_SYSTEM_DEPLOY_KEY` repository secret into the job's `RUNNER_TEMP`, adds an
+SSH host alias that alone uses that key, and rewrites only that package URL to the alias in the runner's git config.
+Pull requests from forks
 cannot read the secret, so their macOS jobs fail at that step. The package is first-party, so
 `Scripts/acknowledgements.py` lists it in `FIRST_PARTY` instead of bundling a third-party notice. To change its
 version, update the requirement in `Package.swift`, run `swift package resolve`, then resolve the widget workspace as

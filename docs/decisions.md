@@ -43,9 +43,10 @@ stay as upstream wrote them. The Homebrew tap's `depends_on macos:` moves to `:s
 
 ## 2026-11-07: Private package, read by CI through a deploy key
 
-MacDesignSystem stays private. `Package.swift` declares it only on macOS, so Linux jobs never fetch it. macOS CI and
-release jobs read it with a read-only SSH deploy key, stored as the `MAC_DESIGN_SYSTEM_DEPLOY_KEY` secret and installed
-by `Scripts/ci-grant-mac-design-system.sh`, which rewrites only that package URL to SSH and pins GitHub's host keys.
+MacDesignSystem stays private. `Package.swift` declares it only on macOS, so Linux never builds it; SwiftPM still
+clones every pinned package, so every CI and release job that runs SwiftPM reads it with a read-only SSH deploy key, stored as the `MAC_DESIGN_SYSTEM_DEPLOY_KEY` secret and installed
+by `Scripts/ci-grant-mac-design-system.sh`, which gives the key its own SSH host alias, rewrites only that package URL to
+it, and pins GitHub's host keys.
 
 Why: Arturo chose to keep the package private with a CI credential. A deploy key is scoped to one repository and
 read-only, unlike a personal access token. The package is first-party, so it needs no bundled third-party notice.
