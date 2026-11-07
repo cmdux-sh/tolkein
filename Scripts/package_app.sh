@@ -116,7 +116,7 @@ source "$ROOT/Scripts/sparkle_signing_paths.sh"
 CODEXBAR_MACOS_SDK_PATH=$(xcrun --sdk macosx --show-sdk-path)
 SDK_VERSION=$(xcrun --sdk macosx --show-sdk-version)
 BUILD_ARGS=(--sdk "$CODEXBAR_MACOS_SDK_PATH"
-  -Xlinker -platform_version -Xlinker macos -Xlinker 14.0 -Xlinker "$SDK_VERSION")
+  -Xlinker -platform_version -Xlinker macos -Xlinker 15.0 -Xlinker "$SDK_VERSION")
 
 # Clean build only when explicitly requested (slower).
 if [[ "${CODEXBAR_FORCE_CLEAN:-0}" == "1" ]]; then
@@ -258,10 +258,10 @@ stage_build_products() {
     fi
     if ! otool -arch "$arch" -l "$product" | awk -v sdk="$SDK_VERSION" '
       $1 == "cmd" { build = ($2 == "LC_BUILD_VERSION") }
-      build && $1 == "minos" { minimum = ($2 == "14.0") }
+      build && $1 == "minos" { minimum = ($2 == "15.0") }
       build && $1 == "sdk" { valid = (minimum && $2 == sdk) }
       END { exit !valid }'; then
-      echo "ERROR: Expected macOS 14.0 / SDK ${SDK_VERSION} for ${product} (${arch})." >&2
+      echo "ERROR: Expected macOS 15.0 / SDK ${SDK_VERSION} for ${product} (${arch})." >&2
       return 1
     fi
     cp "$product" "$stage_dir/$name"
@@ -388,7 +388,7 @@ cat > "$APP/Contents/Info.plist" <<PLIST
     <key>CFBundlePackageType</key><string>APPL</string>
     <key>CFBundleShortVersionString</key><string>${MARKETING_VERSION}</string>
     <key>CFBundleVersion</key><string>${BUILD_NUMBER}</string>
-    <key>LSMinimumSystemVersion</key><string>14.0</string>
+    <key>LSMinimumSystemVersion</key><string>15.0</string>
     <key>LSUIElement</key><true/>
     <key>CFBundleIconFile</key><string>Icon</string>
     <key>NSHumanReadableCopyright</key><string>© 2026 Peter Steinberger. MIT License.</string>

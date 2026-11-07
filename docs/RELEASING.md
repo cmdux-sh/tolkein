@@ -38,10 +38,10 @@ Local read-only helpers remain: `Scripts/check-release-assets.sh`, `Scripts/veri
 The app and dSYM are universal arm64/x86_64. The release also contains both architectures of the macOS CLI, Linux glibc CLI, Linux musl CLI, and Linux desktop. Homebrew receives both the app cask and CLI formula updates.
 
 All macOS release jobs use Apple Silicon `xcode-27` runners and Xcode 27 while
-retaining the macOS 14 deployment target. The x86_64 CLI is cross-built and
+retaining the macOS 15 deployment target. The x86_64 CLI is cross-built and
 executed under Rosetta. Signed app verification launches both architectures.
 
-Sparkle 2.10 requires macOS 12 or later, below the app's macOS 14 minimum. CI builds
+Sparkle 2.10 requires macOS 12 or later, below the app's macOS 15 minimum. CI builds
 the appcast directly with an explicit Markdown format and minimum system version;
 it downloads its pinned `sign_update` separately from the app's SwiftPM dependency.
 The retired `generate_appcast` path and `.mac-release.env` arguments do not affect

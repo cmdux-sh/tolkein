@@ -3,7 +3,7 @@
 > Every AI coding limit, in your menu bar.
 
 [![Latest release](https://img.shields.io/github/v/release/steipete/CodexBar?style=flat-square&color=0a0a0c)](https://github.com/steipete/CodexBar/releases/latest)
-[![macOS 14+](https://img.shields.io/badge/macOS-14%2B-0a0a0c?style=flat-square)](https://github.com/steipete/CodexBar/releases/latest)
+[![macOS 15+](https://img.shields.io/badge/macOS-15%2B-0a0a0c?style=flat-square)](https://github.com/steipete/CodexBar/releases/latest)
 [![Linux desktop](https://img.shields.io/badge/Linux-Qt_6-1793d1?style=flat-square)](Integrations/Linux/README.md)
 [![Homebrew](https://img.shields.io/badge/brew-steipete%2Ftap%2Fcodexbar-orange?style=flat-square)](https://github.com/steipete/homebrew-tap)
 [![AUR](https://img.shields.io/aur/version/codexbar-cli?style=flat-square&color=1793d1)](https://aur.archlinux.org/packages/codexbar-cli)
@@ -12,7 +12,7 @@
 
 <a href="https://codexbar.app"><img src="docs/social.png?v=0f99e47c69627e0b" alt="CodexBar — every AI coding limit in your menu bar. 112 providers." width="100%" /></a>
 
-Tiny macOS 14+ menu bar app that keeps **AI coding-provider limits visible** and shows when each window resets. See the [supported providers](#providers) below. One status item per provider, or Merge Icons mode with a provider switcher. No Dock icon, minimal UI, dynamic bar icons.
+Tiny macOS 15+ menu bar app that keeps **AI coding-provider limits visible** and shows when each window resets. See the [supported providers](#providers) below. One status item per provider, or Merge Icons mode with a provider switcher. No Dock icon, minimal UI, dynamic bar icons.
 
 Also available as a [Linux desktop app](Integrations/Linux/README.md) with usage and spending windows, separate settings, desktop notifications, and an optional tray icon. On Omarchy, a native bar widget shares the desktop app’s data and follows your theme.
 
@@ -29,7 +29,7 @@ Also available as a [Linux desktop app](Integrations/Linux/README.md) with usage
 
 ### macOS app
 
-Requires macOS 14+ (Sonoma). Download from [GitHub Releases](https://github.com/steipete/CodexBar/releases), or install with Homebrew:
+Requires macOS 15+ (Sequoia). Download from [GitHub Releases](https://github.com/steipete/CodexBar/releases), or install with Homebrew:
 
 ```bash
 brew install --cask codexbar
@@ -274,7 +274,7 @@ Wondering if CodexBar scans your disk? It doesn’t crawl your filesystem; it re
 - Optional: set OpenAI cookies (Automatic or Manual) for Codex dashboard extras.
 
 ## Build from source
-Requires macOS 14+ and Swift 6.2+.
+Requires macOS 15+ and Swift 6.2+.
 
 ```bash
 ./Scripts/package_app.sh        # builds CodexBar.app in-place with ad-hoc signing

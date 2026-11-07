@@ -129,6 +129,11 @@ jobs:
           [[ "$(/usr/bin/xcodebuild -version)" == Xcode\ 27* ]]
           /usr/bin/xcodebuild -version
 
+      - name: Grant read access to MacDesignSystem
+        env:
+          MAC_DESIGN_SYSTEM_DEPLOY_KEY: ${{ secrets.MAC_DESIGN_SYSTEM_DEPLOY_KEY }}
+        run: ./Scripts/ci-grant-mac-design-system.sh
+
       - name: Identify SwiftPM build context
         id: build-context
         run: python3 Scripts/ci_swiftpm_cache.py context --lane xcode27-arm64

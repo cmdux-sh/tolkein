@@ -76,7 +76,7 @@ jobs:
     runs-on: xcode-27
     timeout-minutes: 120
     env:
-      MACOSX_DEPLOYMENT_TARGET: "14.0"
+      MACOSX_DEPLOYMENT_TARGET: "15.0"
     permissions:
       contents: read
     steps:
@@ -94,6 +94,11 @@ jobs:
             sudo softwareupdate --install-rosetta --agree-to-license
           fi
           arch -x86_64 /usr/bin/true
+      - name: Grant read access to MacDesignSystem
+        env:
+          MAC_DESIGN_SYSTEM_DEPLOY_KEY: ${{ secrets.MAC_DESIGN_SYSTEM_DEPLOY_KEY }}
+        run: ./Scripts/ci-grant-mac-design-system.sh
+
       - name: Install widget project generator
         run: brew install xcodegen
       - name: Install checksum-pinned Sparkle signing tool
@@ -162,6 +167,8 @@ jobs:
     with:
       ref: ${{ needs.validate.outputs.sha }}
       tag: ${{ needs.validate.outputs.tag }}
+    secrets:
+      MAC_DESIGN_SYSTEM_DEPLOY_KEY: ${{ secrets.MAC_DESIGN_SYSTEM_DEPLOY_KEY }}
 
   desktop:
     needs: [validate, availability]

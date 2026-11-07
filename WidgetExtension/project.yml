@@ -1,7 +1,7 @@
 name: CodexBarWidgetExtension
 options:
   deploymentTarget:
-    macOS: "14.0"
+    macOS: "15.0"
 packages:
   CodexBar:
     path: ..
@@ -9,7 +9,7 @@ targets:
   CodexBarWidgetExtension:
     type: app-extension
     platform: macOS
-    deploymentTarget: "14.0"
+    deploymentTarget: "15.0"
     sources:
       - path: ../Sources/CodexBarWidget
     dependencies:
@@ -26,7 +26,7 @@ targets:
         CFBundleShortVersionString: "$(MARKETING_VERSION)"
         CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
         CodexBarTeamID: "$(CODEXBAR_TEAM_ID)"
-        LSMinimumSystemVersion: "14.0"
+        LSMinimumSystemVersion: "15.0"
         NSExtension:
           NSExtensionPointIdentifier: com.apple.widgetkit-extension
     settings:

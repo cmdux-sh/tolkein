@@ -164,7 +164,7 @@ struct PreferencesView: View {
         }
     }
 
-    /// macOS 14/15: hand-built sidebar and titlebar backing.
+    /// macOS 15: hand-built sidebar and titlebar backing.
     private var legacyLayout: some View {
         HStack(spacing: 0) {
             // Golden Gate-style sidebar: edge-to-edge material with a hairline separator,

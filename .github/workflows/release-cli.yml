@@ -9,6 +9,9 @@ on:
       tag:
         required: true
         type: string
+    secrets:
+      MAC_DESIGN_SYSTEM_DEPLOY_KEY:
+        required: true
 
 permissions: {}
 
@@ -109,9 +112,15 @@ jobs:
           set -euo pipefail
           sudo xcode-select -s /Applications/Xcode_27.0.app/Contents/Developer
           echo "DEVELOPER_DIR=/Applications/Xcode_27.0.app/Contents/Developer" >> "$GITHUB_ENV"
-          echo "MACOSX_DEPLOYMENT_TARGET=14.0" >> "$GITHUB_ENV"
+          echo "MACOSX_DEPLOYMENT_TARGET=15.0" >> "$GITHUB_ENV"
           [[ "$(/usr/bin/xcodebuild -version)" == Xcode\ 27* ]]
           /usr/bin/xcodebuild -version
+
+      - name: Grant read access to MacDesignSystem
+        if: matrix.platform == 'macos'
+        env:
+          MAC_DESIGN_SYSTEM_DEPLOY_KEY: ${{ secrets.MAC_DESIGN_SYSTEM_DEPLOY_KEY }}
+        run: ./Scripts/ci-grant-mac-design-system.sh
 
       - name: Ensure Rosetta for x86_64 execution
         if: matrix.platform == 'macos' && matrix.asset-arch == 'x86_64'
