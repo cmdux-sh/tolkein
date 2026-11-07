@@ -1,5 +1,5 @@
 {
-  "originHash" : "eca18cd912234e1802377a07da8363b5b79494bf7826f3d46396cebc9f830427",
+  "originHash" : "9276e93b854141105d681273607f7b54a39a488d1b42b04b145ed5abaf5f5c95",
   "pins" : [
     {
       "identity" : "commander",
@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/cmdux-sh/MacDesignSystem.git",
       "state" : {
-        "revision" : "82c485436e50fd32c8d07fd57d72d9ccd5924322",
-        "version" : "0.4.0"
+        "revision" : "fcda48585cb543e548e103ee5b0c6a22862b7dd9",
+        "version" : "0.5.0"
       }
     },
     {
