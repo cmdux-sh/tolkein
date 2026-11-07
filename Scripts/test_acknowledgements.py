@@ -46,6 +46,26 @@ class AcknowledgementsTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'pins disagree'):
                 notices.check(root, self.entries)
 
+    def test_first_party_packages_need_no_notice_but_must_agree(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            for lock in notices.LOCKS:
+                path = root / lock
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes((notices.ROOT / lock).read_bytes())
+            first_party = {'identity': 'macdesignsystem', 'location': 'https://github.com/cmdux-sh/MacDesignSystem.git',
+                           'state': {'revision': 'c' * 40}}
+            for lock in notices.LOCKS:
+                data = json.loads((root / lock).read_text())
+                data['pins'] = [pin for pin in data['pins'] if pin['identity'] != 'macdesignsystem'] + [dict(first_party)]
+                (root / lock).write_text(json.dumps(data))
+            self.assertNotIn('macdesignsystem', notices.pins(root))
+            data = json.loads((root / notices.LOCKS[1]).read_text())
+            data['pins'][-1] = dict(first_party, state={'revision': 'd' * 40})
+            (root / notices.LOCKS[1]).write_text(json.dumps(data))
+            with self.assertRaisesRegex(ValueError, 'pins disagree'):
+                notices.pins(root)
+
     def test_missing_or_modified_notice_is_rejected(self):
         entries = copy.deepcopy(self.entries)
         entries[0]['sources'][0]['text'] += 'edited'

@@ -15,11 +15,28 @@ import UniformTypeIdentifiers
 ///   Swift Concurrency main-actor jobs do not run; all main-thread driving uses
 ///   a common-modes `Timer`.
 /// - The interesting frames appear while the main thread is busy rebuilding the
-///   menu, so captures run on a background thread: `CGWindowListCreateImage`
-///   reads the WindowServer's current composite without touching AppKit.
+///   menu, so captures run on a background thread: `CGWindowListCreateImage` (looked up
+///   at run time, see `windowListCreateImage`) reads the WindowServer's current composite without touching AppKit.
 @MainActor
 enum MenuSwitchFlickerProbe {
     private nonisolated static let processStart = DispatchTime.now()
+
+    private typealias WindowListCreateImage = @convention(c) (
+        CGRect,
+        CGWindowListOption,
+        CGWindowID,
+        CGWindowImageOption) -> Unmanaged<CGImage>?
+
+    /// `CGWindowListCreateImage` is unavailable to code built for macOS 15 or later, but the
+    /// WindowServer still exports it. This diagnostic needs its synchronous, AppKit-free capture
+    /// on a background thread, which ScreenCaptureKit's async API does not offer, so it is looked
+    /// up at run time. Nil when a future macOS removes it; the probe then records bounds only.
+    private nonisolated static let windowListCreateImage: WindowListCreateImage? = {
+        guard let symbol = dlsym(UnsafeMutableRawPointer(bitPattern: -2), "CGWindowListCreateImage") else {
+            return nil
+        }
+        return unsafeBitCast(symbol, to: WindowListCreateImage.self)
+    }()
 
     /// Appends timestamped diagnostic lines from production code paths while the
     /// probe env var is set; inert otherwise.
@@ -147,11 +164,11 @@ enum MenuSwitchFlickerProbe {
                 let elapsed = Double(DispatchTime.now().uptimeNanoseconds - self.start.uptimeNanoseconds)
                     / 1_000_000
                 // Include framing so the window shadow / material edge is captured too.
-                let image = CGWindowListCreateImage(
+                let image = MenuSwitchFlickerProbe.windowListCreateImage?(
                     .null,
                     .optionIncludingWindow,
                     self.windowID,
-                    [.bestResolution])
+                    [.bestResolution])?.takeRetainedValue()
                 let bounds = self.currentBounds() ?? .null
                 var wroteFrame = false
                 if let image {

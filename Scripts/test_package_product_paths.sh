@@ -107,8 +107,8 @@ otool() {
 touch "$SWIFTBUILD_DIR/CodexBar" "$SWIFTBUILD_DIR/CodexBarCLI" "$SWIFTBUILD_DIR/CodexBarClaudeWatchdog"
 PRODUCT_STAGE_ROOT="$STAGE_ROOT"
 SDK_VERSION=27.2
-MOCK_MINOS=14.0
-MOCK_SDK=14.0
+MOCK_MINOS=15.0
+MOCK_SDK=15.0
 if stage_build_products arm64 2>"$TEMP_DIR/metadata.log"; then
   echo "ERROR: Staging accepted the deployment target as the linked SDK." >&2
   exit 1
@@ -119,7 +119,7 @@ if stage_build_products arm64 2>"$TEMP_DIR/metadata.log"; then
   echo "ERROR: Staging accepted a raised minimum macOS version." >&2
   exit 1
 fi
-MOCK_MINOS=14.0
+MOCK_MINOS=15.0
 stage_build_products arm64
 for name in CodexBar CodexBarCLI CodexBarClaudeWatchdog; do
   [[ -f "$STAGE_ROOT/arm64/$name" ]]

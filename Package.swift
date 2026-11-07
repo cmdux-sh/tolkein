@@ -18,11 +18,21 @@ let sqlite3LinkerSettings: [LinkerSetting] = if let sqlite3LibDir, !sqlite3LibDi
     []
 }
 
+// The shared Mac UI package is private and macOS-only. Declaring it only on macOS keeps the
+// Linux CLI jobs from fetching it; macOS CI reads it with a read-only deploy key.
+let macOSOnlyDependencies: [Package.Dependency] = {
+    #if os(macOS)
+    [.package(url: "https://github.com/cmdux-sh/MacDesignSystem.git", from: "0.1.0")]
+    #else
+    []
+    #endif
+}()
+
 let package = Package(
     name: "CodexBar",
     defaultLocalization: "en",
     platforms: [
-        .macOS(.v14),
+        .macOS(.v15),
     ],
     products: {
         var products: [Product] = [
@@ -51,7 +61,7 @@ let package = Package(
         .package(url: "https://github.com/sindresorhus/KeyboardShortcuts", from: "3.1.0"),
         .package(url: "https://github.com/zats/Vortex", revision: "ef5392088d4aeb255c4eee83157dbdafcd31bf07"),
         sweetCookieKitDependency,
-    ],
+    ] + macOSOnlyDependencies,
     targets: {
         var targets: [Target] = [
             .target(
@@ -194,6 +204,7 @@ let package = Package(
                     .product(name: "Sparkle", package: "Sparkle"),
                     .product(name: "KeyboardShortcuts", package: "KeyboardShortcuts"),
                     .product(name: "Vortex", package: "Vortex"),
+                    .product(name: "MacDesignSystem", package: "MacDesignSystem"),
                     "AdaptiveRefreshCore",
                     "CodexBarCore",
                 ],

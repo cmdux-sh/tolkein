@@ -10,7 +10,7 @@ read_when:
 
 ## Snapshot pipeline
 - Quota headlines follow the menu layout: `Weekly 93% left` and `Resets in 1 minute` above the bar. Reset text moves below the headline when the tile is too narrow.
-- On macOS 15+, snapshot ages and reset references use live SwiftUI date text with minute precision; WidgetKit advances the text without requesting extra timeline reloads. Reset references use the native calendar wording for distant dates, reach `now` at expiration, and identify elapsed resets afterward. macOS 14 retains native relative-date text for compatibility.
+- Snapshot ages and reset references use live SwiftUI date text with minute precision; WidgetKit advances the text without requesting extra timeline reloads. Reset references use the native calendar wording for distant dates, reach `now` at expiration, and identify elapsed resets afterward.
 - `WidgetSnapshotStore` writes compact JSON snapshots to the app-group container.
 - Provider entries include optional `details` sections from the same usage snapshot, including Claude Cloud credits, their remaining amount, grant total, and expiry when reported. Empty sections are omitted. These are supplementary data for snapshot consumers; quota `usageRows` and widget rendering are unchanged, and older readers ignore the added field. Details require a current source snapshot and are not restored from an older quota-only reading.
 - Widgets read the snapshot and render usage/credits/history states.
@@ -128,7 +128,7 @@ Saved Codex/Claude intents retain their types, raw values, defaults, and exact *
 
 Include a non-default Claude/Weekly widget in native upgrade verification, then check Devin/Cursor choices in the editor. Synthetic renders prove layout only, not installed WidgetKit behavior.
 
-## Visibility troubleshooting (macOS 14+)
+## Visibility troubleshooting (macOS 15+)
 When widgets do not appear in the gallery at all, the issue is almost always
 registration, signing, or daemon caching (not SwiftUI code).
 

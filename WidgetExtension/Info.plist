@@ -23,7 +23,7 @@
 	<key>CodexBarTeamID</key>
 	<string>$(CODEXBAR_TEAM_ID)</string>
 	<key>LSMinimumSystemVersion</key>
-	<string>14.0</string>
+	<string>15.0</string>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionPointIdentifier</key>

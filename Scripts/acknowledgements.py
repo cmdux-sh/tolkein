@@ -26,6 +26,9 @@ PACKAGES = {
     'swift-log': ('swift-log', ['The SwiftLog Project'], 'Apache-2.0', ['NOTICE.txt', 'LICENSE.txt']),
     'vortex': ('Vortex', ['Paul Hudson'], 'MIT', ['LICENSE']),
 }
+# First-party packages owned by this fork's author ship no third-party notice. Root and
+# widget pins must still agree for them.
+FIRST_PARTY = {'macdesignsystem'}
 SUCRASE_SHA256 = '4d997e15b72cbc9ccf6e743c30c6eb48bf4533f6709852367b40766be5eba70b'
 
 # These versions reproduce the checked-in Sucrase bundle, including its transitive imports.
@@ -66,6 +69,8 @@ def pins(root):
             if key in result and result[key] != value:
                 raise ValueError(f'{key}: root/widget pins disagree')
             result[key] = value
+    for key in FIRST_PARTY:
+        result.pop(key, None)
     if result.keys() != PACKAGES.keys():
         raise ValueError(f'Update PACKAGES for resolved dependency changes: {result.keys() ^ PACKAGES.keys()}')
     return result

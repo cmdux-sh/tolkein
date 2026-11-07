@@ -42,7 +42,7 @@ read_when:
 
 ## Concurrency & platform
 - Swift 6 strict concurrency enabled; prefer Sendable state and explicit MainActor hops.
-- macOS 14+ targeting; avoid deprecated APIs when refactoring.
+- macOS 15+ targeting; avoid deprecated APIs when refactoring.
 - Cost stores share one utility serial executor per canonical database location, including symlinked cache roots and
   database files. Separate database operations do not share SQLite lock waits. Executors are weakly registered and
   released with their last store or queued job. Normal app fetches still use the separate serial scan queue;

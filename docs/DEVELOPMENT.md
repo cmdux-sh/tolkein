@@ -578,6 +578,20 @@ xcodebuild -resolvePackageDependencies -project WidgetExtension/CodexBarWidgetEx
 The check names each drifted package and prints this repair command before packaging can fail with an out-of-date
 resolved file when automatic resolution is disabled.
 
+### Private MacDesignSystem package
+
+The macOS app target depends on `cmdux-sh/MacDesignSystem`, a private SwiftPM package shared by this fork's Mac apps.
+`Package.swift` declares it only on macOS, so Linux never builds it, but SwiftPM still clones every pinned package, so
+Linux jobs need read access too. Local builds clone it over HTTPS with your normal GitHub credentials (for example
+`gh auth setup-git`). Every CI job that runs SwiftPM first runs `Scripts/ci-grant-mac-design-system.sh`: it writes the
+read-only deploy key from the `MAC_DESIGN_SYSTEM_DEPLOY_KEY` repository secret into the job's `RUNNER_TEMP`, adds an
+SSH host alias that alone uses that key, and rewrites only that package URL to the alias in the runner's git config.
+Pull requests from forks
+cannot read the secret, so their macOS jobs fail at that step. The package is first-party, so
+`Scripts/acknowledgements.py` lists it in `FIRST_PARTY` instead of bundling a third-party notice. To change its
+version, update the requirement in `Package.swift`, run `swift package resolve`, then resolve the widget workspace as
+above.
+
 The `lint-build-test` check in `.github/workflows/ci.yml` keeps its existing name and requires successful lint,
 change detection, and the full `build-linux-cli` glibc matrix (x86_64 and ARM64 build, tests, and smoke checks)
 when the shared macOS/Linux path gate requires it. Both platforms use the same docs/site allowlist; source,

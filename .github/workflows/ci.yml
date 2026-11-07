@@ -129,6 +129,11 @@ jobs:
           [[ "$(/usr/bin/xcodebuild -version)" == Xcode\ 27* ]]
           /usr/bin/xcodebuild -version
 
+      - name: Grant read access to MacDesignSystem
+        env:
+          MAC_DESIGN_SYSTEM_DEPLOY_KEY: ${{ secrets.MAC_DESIGN_SYSTEM_DEPLOY_KEY }}
+        run: ./Scripts/ci-grant-mac-design-system.sh
+
       - name: Identify SwiftPM build context
         id: build-context
         run: python3 Scripts/ci_swiftpm_cache.py context --lane xcode27-arm64
@@ -173,6 +178,12 @@ jobs:
           python3 Scripts/ci_swiftpm_cache.py restore --context "$BUILD_CONTEXT" --clean-fallback
           # Record inputs before compiling; cache publication also requires a clean tree.
           python3 Scripts/ci_swiftpm_cache.py snapshot --context "$BUILD_CONTEXT"
+
+      - name: Resolve Swift packages
+        # The test runner gives SwiftPM a temporary HOME, which hides the runner's git config that
+        # routes the private MacDesignSystem package through the deploy key. Resolving here first
+        # leaves every package checked out in .build, so the test run never clones.
+        run: swift package resolve
 
       - name: Swift Test
         # Batch short suites; the runner isolates expensive suites without changing their deadlines.
@@ -326,6 +337,11 @@ jobs:
       SQLITE_AMALGAMATION_SHA3_256: 628a44cfe82c66aed1ccbbe85a562d2e33ebe64b3288981ed76285612227934e
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Grant read access to MacDesignSystem
+        env:
+          MAC_DESIGN_SYSTEM_DEPLOY_KEY: ${{ secrets.MAC_DESIGN_SYSTEM_DEPLOY_KEY }}
+        run: ./Scripts/ci-grant-mac-design-system.sh
 
       - name: Runner info
         run: |
@@ -511,6 +527,11 @@ jobs:
     runs-on: ${{ matrix.runs-on }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Grant read access to MacDesignSystem
+        env:
+          MAC_DESIGN_SYSTEM_DEPLOY_KEY: ${{ secrets.MAC_DESIGN_SYSTEM_DEPLOY_KEY }}
+        run: ./Scripts/ci-grant-mac-design-system.sh
 
       - name: Runner info
         run: |

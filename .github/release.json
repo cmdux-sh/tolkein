@@ -2,7 +2,7 @@
   "app": "CodexBar",
   "repository": "steipete/CodexBar",
   "bundle_id": "com.steipete.codexbar",
-  "minimum_macos": "14.0",
+  "minimum_macos": "15.0",
   "architectures": [
     "arm64",
     "x86_64"
