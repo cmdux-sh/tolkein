@@ -3,30 +3,50 @@ import CodexBarCore
 import MacDesignSystem
 import SwiftUI
 
-// The usage board, built from MacDesignSystem components (see docs/decisions.md):
+// The usage board is a small window in MacDesignSystem's panel chrome (see docs/decisions.md):
 //
-// CodexBar                │ ┌ Codex ─────── Plus ┐ ┌ Cursor ── Cursor Pro ┐
-// Overview                │ │ Session  49% left  │ │ Total     29% left   │
-//   All providers         │ │ ▬▬▬▬▬▬▬▬▬▬──────── │ │ ▬▬▬▬▬──────────────  │
-// Providers               │ └────────────────────┘ └──────────────────────┘
-//   Codex           49%   │ ┌ Needs attention ──────────────────────────┐
-//   Claude      ⚠   8%    │ │ Claude   ⚠ Sign-in needed                 │
-// Classic menu · Refresh… │ └───────────────────────────────────────────┘
+// ┌──────────────────┐  Claude                                   ↻  ⋯
+// │ CodexBar         │  Ultra · Updated 4 mins ago
+// │ Providers        │ ┌ Weekly ──── 31% left ┐ ┌ Fable weekly ─ 92% left ┐
+// │   All providers  │ │ ▬▬▬▬▬▬──────────────  │ │ ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬─  │
+// │   Claude    31%  │ └──────────────────────┘ └─────────────────────────┘
+// │   Codex      ⊗   │ ┌ Today ................................. $358.18 ┐
+// │ Classic menu …   │ └ 30d cost ............................ $4,926.79 ┘
+// └──────────────────┘
 
 struct UsageBoardView: View {
     @Bindable var session: UsageBoardSession
 
     var body: some View {
-        HStack(spacing: 0) {
+        MacWindow(
+            self.title,
+            subtitle: self.subtitle,
+            chrome: .panel,
+            sidebarTitle: "CodexBar",
+            sidebarWidth: CGFloat(UsageBoardLayout.sidebarWidth))
+        {
             UsageBoardSidebar(session: self.session)
-                .frame(width: CGFloat(UsageBoardLayout.sidebarWidth))
-            Divider()
+        } toolbar: {
+            UsageBoardToolbar(session: self.session)
+        } content: {
             UsageBoardDetail(session: self.session)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .background(MacColor.window)
-        .accessibilityElement(children: .contain)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    private var title: String {
+        self.session.selectedProvider?.name ?? L("All providers")
+    }
+
+    private var subtitle: String? {
+        if let provider = self.session.selectedProvider {
+            let freshness = provider.attention == .ready ? provider.subtitle : nil
+            let parts = [provider.planText, freshness].compactMap(\.self).filter { !$0.isEmpty }
+            return parts.isEmpty ? nil : parts.joined(separator: " · ")
+        }
+        let attention = self.session.providers.filter { $0.attention != .ready }.count
+        guard attention > 0 else { return nil }
+        return "\(attention) \(L("Needs attention").lowercased())"
     }
 }
 
@@ -70,6 +90,27 @@ enum UsageBoardStatus {
         }
         return metric.accessibilitySummary + ", " + note
     }
+
+    /// Notes that only restate facts already shown ("Today: $358.18 · 1B tokens" next to Today and Latest
+    /// tokens) are dropped, so each fact appears once.
+    static func distinctNotes(_ provider: UsageBoardProvider) -> [String] {
+        let shown = provider.lines.flatMap { [$0.label, $0.value] } + provider.metrics.flatMap {
+            [$0.percentText, $0.resetText, $0.detailText].compactMap(\.self)
+        }
+        let notes = provider.notes + provider.lines.filter(\.value.isEmpty).map(\.label)
+        return notes.filter { note in
+            let figures = self.figures(in: note)
+            guard !figures.isEmpty else { return true }
+            return !figures.allSatisfy { figure in shown.contains { $0.contains(figure) } }
+        }
+    }
+
+    /// Money and amounts in a sentence: "$358.18", "1B", "15B".
+    static func figures(in text: String) -> [String] {
+        text.split(whereSeparator: { $0 == " " || $0 == "·" })
+            .map { $0.trimmingCharacters(in: CharacterSet(charactersIn: ":;()")) }
+            .filter { token in token.first.map { $0 == "$" || $0.isNumber } ?? false }
+    }
 }
 
 /// A provider's logo, or its monogram when it has none. Sized like a sidebar icon.
@@ -94,6 +135,52 @@ private struct UsageBoardProviderIcon: View {
     }
 }
 
+// MARK: - Title row
+
+/// The title row's actions: refresh, and the selected provider's other commands in an overflow menu.
+private struct UsageBoardToolbar: View {
+    let session: UsageBoardSession
+
+    var body: some View {
+        HStack(spacing: MacSpace.unit * 2) {
+            if self.session.isRefreshing {
+                ProgressView().controlSize(.small).accessibilityLabel(L("Refreshing"))
+            } else {
+                MacToolButton(L("Refresh"), systemImage: "arrow.clockwise", help: L("Refresh") + " (⌘R)") {
+                    self.session.onCommand(self.refreshAction)
+                }
+            }
+            let menuCommands = self.session.selectedProvider == nil
+                ? [] : self.session.providerCommands.filter { !Self.isRefresh($0) }
+            if !menuCommands.isEmpty {
+                MacToolMenu(L("More")) {
+                    ForEach(menuCommands) { command in
+                        Button { self.session.onCommand(command.action) } label: {
+                            Label(command.title, systemImage: command.systemImage)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private var refreshAction: UsageBoardCommand.Action {
+        if self.session.selectedProvider != nil,
+           let refresh = self.session.providerCommands.first(where: Self.isRefresh)
+        {
+            return refresh.action
+        }
+        return .refresh
+    }
+
+    private static func isRefresh(_ command: UsageBoardCommand) -> Bool {
+        switch command.action {
+        case .refresh, .refreshProvider: true
+        default: false
+        }
+    }
+}
+
 // MARK: - Sidebar
 
 private struct UsageBoardSidebar: View {
@@ -102,20 +189,13 @@ private struct UsageBoardSidebar: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            HStack(spacing: MacSpace.unit * 2) {
-                MacText("CodexBar", role: .title)
-                Spacer(minLength: 0)
-                if self.session.isRefreshing {
-                    ProgressView().controlSize(.small).accessibilityLabel(L("Refreshing"))
-                }
-            }
-            .padding(.horizontal, MacSpace.panelPadding + MacSpace.rowPaddingX)
-            .padding(.top, MacSpace.panelPadding)
-
-            MacSourceList(self.sections, selection: self.selection)
+            MacSourceList([self.section], selection: self.selection)
                 .frame(maxHeight: .infinity)
-
-            Divider()
+            // A token hairline: inside the glass sidebar, a system Divider can take the wrong appearance.
+            Rectangle()
+                .fill(MacColor.hairline)
+                .frame(height: MacSize.border)
+                .padding(.horizontal, MacSpace.panelPadding)
             UsageBoardFooter(session: self.session)
         }
     }
@@ -126,7 +206,7 @@ private struct UsageBoardSidebar: View {
             set: { self.session.select($0 == Self.allID ? nil : $0) })
     }
 
-    private var sections: [MacSourceSection] {
+    private var section: MacSourceSection {
         let providers = self.session.providers.map { provider in
             let icon = self.session.icon(provider.id)
             return MacSourceItem(
@@ -139,62 +219,42 @@ private struct UsageBoardSidebar: View {
                     ? provider.headlinePercentText.map(UsageBoardLayout.shortPercent) : nil,
                 status: UsageBoardStatus.tone(provider.attention))
         }
-        return [
-            MacSourceSection(L("Overview"), items: [
-                MacSourceItem(Self.allID, L("All providers"), systemImage: "square.grid.2x2", detail: nil),
-            ]),
-            MacSourceSection(L("Providers"), items: providers),
-        ]
+        let all = MacSourceItem(Self.allID, L("All providers"), systemImage: "square.grid.2x2", detail: nil)
+        return MacSourceSection(L("Providers"), items: [all] + providers)
     }
 }
 
-/// App commands: plain buttons in a footer, not rows in the source list (it is for places).
+/// App commands: small plain buttons at the foot of the sidebar, not rows in the source list (it is for
+/// places).
 private struct UsageBoardFooter: View {
     let session: UsageBoardSession
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            UsageBoardCommandButton(title: L("Classic menu"), systemImage: "list.bullet.rectangle", kind: .plain) {
-                self.session.onCommand(.classicMenu)
-            }
-            UsageBoardCommandButton(title: L("Refresh"), systemImage: "arrow.clockwise", kind: .plain) {
-                self.session.onCommand(.refresh)
-            }
-            UsageBoardCommandButton(title: L("Settings..."), systemImage: "gearshape", kind: .plain) {
-                self.session.onCommand(.settings)
-            }
-            UsageBoardCommandButton(title: L("Quit"), systemImage: "xmark.rectangle", kind: .plain) {
-                self.session.onCommand(.quit)
-            }
+            self.command(L("Classic menu"), "list.bullet.rectangle", .classicMenu)
+            self.command(L("Settings..."), "gearshape", .settings)
+            self.command(L("Quit"), "xmark.rectangle", .quit)
         }
         .padding(MacSpace.panelPadding)
+        .macControlSize(.regular)
     }
-}
 
-/// A command on the library button at the native large size, with a fixed icon slot so titles line up.
-struct UsageBoardCommandButton: View {
-    let title: String
-    let systemImage: String
-    var kind: MacButtonKind = .standard
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: self.action) {
+    private func command(_ title: String, _ symbol: String, _ action: UsageBoardCommand.Action) -> some View {
+        Button { self.session.onCommand(action) } label: {
             HStack(spacing: MacSpace.unit * 2) {
-                Image(systemName: self.systemImage)
+                Image(systemName: symbol)
                     .frame(width: MacSize.sidebarIcon)
                     .foregroundStyle(MacColor.muted)
-                Text(self.title)
+                Text(title)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .buttonStyle(.mac(self.kind))
-        .macControlSize(.large)
-        .accessibilityLabel(self.title)
+        .buttonStyle(.mac(.plain))
+        .accessibilityLabel(title)
     }
 }
 
-// MARK: - Detail
+// MARK: - Content
 
 private struct UsageBoardDetail: View {
     @Bindable var session: UsageBoardSession
@@ -205,11 +265,8 @@ private struct UsageBoardDetail: View {
                 ScrollView {
                     UsageBoardProviderDetail(
                         provider: provider,
-                        icon: self.session.icon(provider.id),
-                        width: proxy.size.width - MacSpace.panelPadding * 2,
-                        commands: self.session.providerCommands,
-                        onCommand: self.session.onCommand)
-                        .padding(MacSpace.panelPadding)
+                        width: proxy.size.width - MacSpace.panelPadding * 2)
+                        .padding([.horizontal, .bottom], MacSpace.panelPadding)
                         .macSlimScrollers()
                 }
             } else if self.session.providers.isEmpty {
@@ -236,7 +293,7 @@ private struct UsageBoardOverview: View {
 
     var body: some View {
         let inset = MacSpace.panelPadding
-        let content = CGSize(width: max(0, self.size.width - inset * 2), height: max(0, self.size.height - inset * 2))
+        let content = CGSize(width: max(0, self.size.width - inset * 2), height: max(0, self.size.height - inset))
         let ready = self.session.providers.filter { $0.attention == .ready }
         let attention = self.session.providers.filter { $0.attention != .ready }
         return UsageBoardMasonryLayout(
@@ -256,7 +313,7 @@ private struct UsageBoardOverview: View {
             }
         }
         .frame(width: content.width, height: content.height, alignment: .topLeading)
-        .padding(inset)
+        .padding([.horizontal, .bottom], inset)
         .clipped()
     }
 }
@@ -268,7 +325,7 @@ private struct UsageBoardOverviewCard: View {
 
     var body: some View {
         Button(action: self.action) {
-            VStack(alignment: .leading, spacing: MacSpace.unit * 2) {
+            VStack(alignment: .leading, spacing: MacSpace.chromeGap) {
                 HStack(spacing: MacSpace.unit * 2) {
                     UsageBoardProviderIcon(monogram: self.provider.monogram, icon: self.icon)
                     MacText(self.provider.name, role: .subtitle)
@@ -311,8 +368,18 @@ private struct UsageBoardAttentionCard: View {
     let select: (String) -> Void
 
     var body: some View {
+        // When every provider has the same problem, say it once under the title and list the names.
+        let labels = Set(self.providers.compactMap { UsageBoardStatus.label($0.attention) })
+        let shared = labels.count == 1 ? self.providers.first : nil
         VStack(alignment: .leading, spacing: MacSpace.unit * 2) {
-            MacText(L("Needs attention"), role: .subtitle)
+            VStack(alignment: .leading, spacing: MacSpace.unit) {
+                MacText(L("Needs attention"), role: .subtitle)
+                if let shared, let label = UsageBoardStatus.label(shared.attention),
+                   let tone = UsageBoardStatus.tone(shared.attention)
+                {
+                    MacStatusLabel(label, tone: tone)
+                }
+            }
             ForEach(self.providers) { provider in
                 Button { self.select(provider.id) } label: {
                     HStack(spacing: MacSpace.unit * 2) {
@@ -320,13 +387,16 @@ private struct UsageBoardAttentionCard: View {
                         MacText(provider.name, role: .body)
                             .lineLimit(1)
                         Spacer(minLength: MacSpace.unit)
-                        if let label = UsageBoardStatus.label(provider.attention),
+                        if shared == nil, let label = UsageBoardStatus.label(provider.attention),
                            let tone = UsageBoardStatus.tone(provider.attention)
                         {
                             MacStatusLabel(label, tone: tone)
                         }
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .frame(
+                        maxWidth: .infinity,
+                        minHeight: MacControlMetrics.forSize(.regular).height,
+                        alignment: .leading)
                     .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
@@ -339,19 +409,19 @@ private struct UsageBoardAttentionCard: View {
     }
 }
 
-/// One usage window: label and value on a line, the meter under it, then reset and detail text.
+/// One usage window: label and value on a line, the meter under it, then reset and detail lines.
 private struct UsageBoardMetricRow: View {
     let metric: UsageBoardMetric
     let compact: Bool
 
     var body: some View {
-        VStack(alignment: .leading, spacing: MacSpace.unit) {
+        VStack(alignment: .leading, spacing: MacSpace.unit * 1.5) {
             HStack(alignment: .firstTextBaseline, spacing: MacSpace.unit * 2) {
                 MacText(self.metric.title, role: .caption, muted: true)
                     .lineLimit(1)
                 Spacer(minLength: MacSpace.unit)
                 Text(self.compact ? UsageBoardLayout.explicitPercent(self.metric.percentText) : self.metric.percentText)
-                    .font(MacTextRole.caption.font.weight(.semibold))
+                    .font(MacTextRole.subtitle.font)
                     .monospacedDigit()
                     .foregroundStyle(MacColor.primary)
                     .lineLimit(1)
@@ -371,18 +441,17 @@ private struct UsageBoardMetricRow: View {
                     marker: self.compact ? nil : self.metric.pacePercent.map { $0 / 100 },
                     valueText: self.metric.percentText)
             }
-            if !self.compact, let caption = self.caption {
-                MacText(caption, role: .caption, muted: true)
-                    .lineLimit(2)
+            if !self.compact {
+                // One line each, so a long caption never breaks mid-phrase.
+                ForEach([self.metric.resetText, self.metric.detailText].compactMap(\.self), id: \.self) { line in
+                    MacText(line, role: .caption, muted: true)
+                        .lineLimit(1)
+                        .help(line)
+                }
             }
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(UsageBoardStatus.accessibilitySummary(self.metric))
-    }
-
-    private var caption: String? {
-        let parts = [self.metric.resetText, self.metric.detailText].compactMap(\.self)
-        return parts.isEmpty ? nil : parts.joined(separator: " · ")
     }
 }
 
@@ -390,30 +459,15 @@ private struct UsageBoardMetricRow: View {
 
 private struct UsageBoardProviderDetail: View {
     let provider: UsageBoardProvider
-    let icon: NSImage?
     let width: CGFloat
-    let commands: [UsageBoardCommand]
-    let onCommand: (UsageBoardCommand.Action) -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: MacSpace.tabContentGap) {
-            self.header
             self.status
-            if !self.commands.isEmpty {
-                LazyVGrid(
-                    columns: [GridItem(.adaptive(minimum: 150), spacing: MacSpace.chromeGap, alignment: .leading)],
-                    alignment: .leading,
-                    spacing: MacSpace.chromeGap)
-                {
-                    ForEach(self.commands) { command in
-                        UsageBoardCommandButton(title: command.title, systemImage: command.systemImage) {
-                            self.onCommand(command.action)
-                        }
-                    }
-                }
-            }
             if self.provider.metrics.isEmpty {
-                MacText(L("No windows reported yet."), muted: true)
+                if self.provider.attention == .ready {
+                    MacText(L("No windows reported yet."), muted: true)
+                }
             } else {
                 LazyVGrid(
                     columns: self.columns(count: self.provider.metrics.count),
@@ -427,33 +481,30 @@ private struct UsageBoardProviderDetail: View {
                     }
                 }
             }
-            self.facts
-            ForEach(Array(self.notes.enumerated()), id: \.offset) { _, note in
-                MacText(note, role: .caption, muted: true)
-                    .textSelection(.enabled)
+            let facts = self.provider.lines.filter { !$0.value.isEmpty }
+            if !facts.isEmpty {
+                MacKeyValueList(facts.map { MacKeyValueList.Row($0.label, $0.value, id: $0.id) })
+                    .padding(.horizontal, MacSpace.panelPadding)
+                    .macCard(padding: 0)
             }
-            MacText(L("Charts, accounts, and history stay in the classic menu."), role: .caption, muted: true)
+            let notes = UsageBoardStatus.distinctNotes(self.provider)
+            if !notes.isEmpty || !self.provider.email.isEmpty {
+                VStack(alignment: .leading, spacing: MacSpace.unit) {
+                    ForEach(Array(notes.enumerated()), id: \.offset) { _, note in
+                        MacText(note, role: .caption, muted: true)
+                            .textSelection(.enabled)
+                    }
+                    if !self.provider.email.isEmpty {
+                        MacText(self.provider.email, role: .caption, muted: true)
+                            .textSelection(.enabled)
+                    }
+                    MacText(L("Charts, accounts, and history stay in the classic menu."), role: .caption, muted: true)
+                }
+                .padding(.horizontal, MacSpace.unit)
+            }
         }
         .frame(maxWidth: .infinity, alignment: .topLeading)
         .accessibilityElement(children: .contain)
-    }
-
-    private var header: some View {
-        HStack(alignment: .firstTextBaseline, spacing: MacSpace.unit * 2) {
-            UsageBoardProviderIcon(monogram: self.provider.monogram, icon: self.icon)
-            VStack(alignment: .leading, spacing: MacSpace.unit / 2) {
-                HStack(alignment: .firstTextBaseline, spacing: MacSpace.unit * 2) {
-                    MacText(self.provider.name, role: .title)
-                    if let plan = self.provider.planText, !plan.isEmpty {
-                        MacText(plan, role: .caption, muted: true)
-                    }
-                }
-                if !self.provider.email.isEmpty {
-                    MacText(self.provider.email, role: .caption, muted: true)
-                        .textSelection(.enabled)
-                }
-            }
-        }
     }
 
     @ViewBuilder private var status: some View {
@@ -467,33 +518,9 @@ private struct UsageBoardProviderDetail: View {
                         .textSelection(.enabled)
                 }
             }
-        } else if !self.provider.subtitle.isEmpty {
-            MacText(self.provider.subtitle, role: .caption, muted: true)
-        }
-    }
-
-    /// Label and value pairs (balances, costs) on one card, like inspector rows.
-    @ViewBuilder private var facts: some View {
-        let valued = self.provider.lines.filter { !$0.value.isEmpty }
-        if !valued.isEmpty {
-            VStack(spacing: 0) {
-                ForEach(valued) { line in
-                    MacInspectorRow(line.label) {
-                        Text(line.value)
-                            .font(MacTextRole.body.font)
-                            .monospacedDigit()
-                            .foregroundStyle(MacColor.primary)
-                            .textSelection(.enabled)
-                            .frame(maxWidth: .infinity, alignment: .trailing)
-                    }
-                }
-            }
+            .frame(maxWidth: .infinity, alignment: .leading)
             .macCard(padding: MacSpace.panelPadding)
         }
-    }
-
-    private var notes: [String] {
-        self.provider.notes + self.provider.lines.filter(\.value.isEmpty).map(\.label)
     }
 
     private func columns(count: Int) -> [GridItem] {

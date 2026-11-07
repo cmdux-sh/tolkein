@@ -22,7 +22,7 @@ let sqlite3LinkerSettings: [LinkerSetting] = if let sqlite3LibDir, !sqlite3LibDi
 // Linux CLI jobs from fetching it; macOS CI reads it with a read-only deploy key.
 let macOSOnlyDependencies: [Package.Dependency] = {
     #if os(macOS)
-    [.package(url: "https://github.com/cmdux-sh/MacDesignSystem.git", from: "0.3.0")]
+    [.package(url: "https://github.com/cmdux-sh/MacDesignSystem.git", from: "0.4.0")]
     #else
     []
     #endif
