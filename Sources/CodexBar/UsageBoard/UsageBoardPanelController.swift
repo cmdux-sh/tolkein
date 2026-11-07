@@ -1,5 +1,6 @@
 import AppKit
 import CodexBarCore
+import MacDesignSystem
 import os
 import SwiftUI
 
@@ -75,10 +76,10 @@ final class UsageBoardPanelController {
         hosting.translatesAutoresizingMaskIntoConstraints = false
         let container = UsageBoardContainerView(frame: panel.contentView?.bounds ?? .zero)
         container.wantsLayer = true
-        // The SwiftUI board paints its own appearance-aware background (MacDesignSystem tokens);
-        // the layer only rounds and clips it.
+        // The SwiftUI board paints its own appearance-aware background (MacDesignSystem tokens); the
+        // layer only rounds and clips it, on the library's panel radius.
         container.layer?.backgroundColor = NSColor.clear.cgColor
-        container.layer?.cornerRadius = UsageBoardMetrics.radiusWindow
+        container.layer?.cornerRadius = MacRadius.panel
         container.layer?.masksToBounds = true
         container.addSubview(hosting)
         panel.contentView = container

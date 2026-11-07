@@ -56,3 +56,15 @@ read-only, unlike a personal access token. The package is first-party, so it nee
 The Usage Board takes its colors, radii, card surface and buttons from MacDesignSystem and no longer forces dark mode. It follows light or dark like the rest of the Mac UI. Dark keeps the near-black floor; light uses white raised cards on the near-white window. The board's amber warning color stays local until MacDesignSystem has a warning token.
 
 Why: one appearance-aware look across the app. Arturo's design system already defines both appearances, so the board needs no separate dark-only palette.
+
+## 2026-11-07: The Usage Board is rebuilt from library components
+
+The first restyle only swapped token colours onto the board's own hand-built rows, cards and bars, and Arturo judged it a mess. The board is now built from MacDesignSystem 0.3.0 components, guided by its design-guide MCP:
+- The sidebar is `MacSourceList`, with each provider's logo, a short value ("42%") and a status symbol.
+- App commands are plain library buttons in a footer.
+- Usage windows are `MacMeter` and statuses are `MacStatusLabel`.
+- Overview cards are `macCard`, and only clickable providers get one.
+
+Providers that need attention share one "Needs attention" card instead of a red pill each. The board's local theme (colours, metrics, fonts) is gone.
+
+Why: Arturo asked for the board to be rebuilt with the MCP. The missing pieces (meter, status label, richer sidebar rows) were added to the library first, so other apps get them too.

@@ -2762,6 +2762,7 @@
 "All providers" = "All providers";
 "Classic menu" = "Classic menu";
 "Needs sign-in" = "Needs sign-in";
+"Needs attention" = "Needs attention";
 "Couldn't load usage" = "Couldn't load usage";
 "No windows reported yet." = "No windows reported yet.";
 "Charts, accounts, and history stay in the classic menu." = "Charts, accounts, and history stay in the classic menu.";

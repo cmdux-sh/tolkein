@@ -2769,6 +2769,7 @@
 "All providers" = "Tutti i provider";
 "Classic menu" = "Menu classico";
 "Needs sign-in" = "Accesso richiesto";
+"Needs attention" = "Richiede attenzione";
 "Couldn't load usage" = "Impossibile caricare l'utilizzo";
 "No windows reported yet." = "Nessuna finestra segnalata finora.";
 "Charts, accounts, and history stay in the classic menu." = "Grafici, account e cronologia restano nel menu classico.";
