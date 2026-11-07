@@ -50,3 +50,9 @@ it, and pins GitHub's host keys.
 
 Why: Arturo chose to keep the package private with a CI credential. A deploy key is scoped to one repository and
 read-only, unlike a personal access token. The package is first-party, so it needs no bundled third-party notice.
+
+## 2026-11-07: The Usage Board follows the app's appearance
+
+The Usage Board takes its colors, radii, card surface and buttons from MacDesignSystem and no longer forces dark mode. It follows light or dark like the rest of the Mac UI. Dark keeps the near-black floor; light uses white raised cards on the near-white window. The board's amber warning color stays local until MacDesignSystem has a warning token.
+
+Why: one appearance-aware look across the app. Arturo's design system already defines both appearances, so the board needs no separate dark-only palette.
