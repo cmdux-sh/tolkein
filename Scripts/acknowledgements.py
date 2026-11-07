@@ -28,7 +28,7 @@ PACKAGES = {
 }
 # First-party packages owned by this fork's author ship no third-party notice. Root and
 # widget pins must still agree for them.
-FIRST_PARTY = {'macdesignsystem'}
+FIRST_PARTY = {'internal-ui'}
 SUCRASE_SHA256 = '4d997e15b72cbc9ccf6e743c30c6eb48bf4533f6709852367b40766be5eba70b'
 
 # These versions reproduce the checked-in Sucrase bundle, including its transitive imports.

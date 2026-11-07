@@ -1,9 +1,9 @@
 import AppKit
 import CodexBarCore
-import MacDesignSystem
+import InternalUI
 import SwiftUI
 
-// The usage board is a small window in MacDesignSystem's panel chrome (see docs/decisions.md):
+// The usage board is a small window in Internal UI's panel chrome (see docs/decisions.md):
 //
 // ┌──────────────────┐  Claude                                   ↻  ⋯
 // │ CodexBar         │  Ultra · Updated 4 mins ago

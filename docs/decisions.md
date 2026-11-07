@@ -92,3 +92,14 @@ Fork-only instruction files tell agents how to work on the app's UI:
 `UsageBoardSnapshotTests` renders the board in eight states and both appearances on every test run, and writes the PNGs when `CODEXBAR_SNAPSHOT_DIR` is set.
 
 Why: the Usage Board took three rounds because nothing pointed agents at the MCP, its recipes or a review with real data. Upstream's `AGENTS.md` is left as written: fork-only files avoid merge conflicts when syncing upstream.
+
+## 2026-11-07: The design system is now Internal UI
+
+Arturo renamed the shared design system to Internal UI. He plans to sell it as a product. Tolkein moves to the renamed package:
+- The dependency is `https://github.com/cmdux-sh/internal-ui.git` from 0.6.0, the product `InternalUI`. The code says `import InternalUI`.
+- The agent rules name the MCP server `internal-ui`. It replaces `mac-design-system`.
+- `Scripts/ci-grant-internal-ui.sh` replaces `Scripts/ci-grant-mac-design-system.sh`, and the SSH host alias is `internal-ui.github.com`.
+- The repository secret keeps the name `MAC_DESIGN_SYSTEM_DEPLOY_KEY`. The deploy key itself moved with the renamed repository.
+- Component names (`MacButton`, `MacColor`…) are unchanged.
+
+Why: the package, its catalog app and its MCP server now share one product name. GitHub redirects the old repository address, but SwiftPM keys the package by its URL, so Tolkein switches to the new URL instead of relying on the redirect.

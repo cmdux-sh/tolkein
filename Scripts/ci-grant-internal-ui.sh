@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
-# Gives a CI job read access to the private cmdux-sh/MacDesignSystem package.
+# Gives a CI job read access to the private cmdux-sh/internal-ui package (Internal UI).
 #
 # The repository secret MAC_DESIGN_SYSTEM_DEPLOY_KEY holds a read-only SSH deploy key
-# registered on cmdux-sh/MacDesignSystem. Package.swift keeps the HTTPS URL, so local
+# registered on cmdux-sh/internal-ui. The secret keeps its name from before the package was renamed
+# (GitHub cannot read a secret back to copy it). Package.swift keeps the HTTPS URL, so local
 # builds use the developer's normal GitHub credentials; CI rewrites only that one URL to SSH.
 # Linux jobs need it too: SwiftPM clones every pinned package, even ones the manifest only
 # declares on macOS.
@@ -23,7 +24,7 @@ fi
 # job. A dedicated SSH host alias carries the key, so other git SSH traffic never uses it.
 # SwiftPM strips GIT_CONFIG_* variables when it runs git, so the rewrite is in the runner's
 # (per-job) global git config.
-access_dir="$RUNNER_TEMP/mac-design-system-access"
+access_dir="$RUNNER_TEMP/internal-ui-access"
 key_path="$access_dir/deploy_key"
 known_hosts="$access_dir/known_hosts"
 mkdir -p "$access_dir"
@@ -43,7 +44,7 @@ mkdir -p "$ssh_dir"
 chmod 700 "$ssh_dir"
 cat >> "$ssh_dir/config" <<SSHCONFIG
 
-Host mac-design-system.github.com
+Host internal-ui.github.com
   HostName github.com
   User git
   IdentityFile $key_path
@@ -53,7 +54,7 @@ Host mac-design-system.github.com
 SSHCONFIG
 chmod 600 "$ssh_dir/config"
 
-git config --global url."mac-design-system.github.com:cmdux-sh/MacDesignSystem.git".insteadOf \
-  "https://github.com/cmdux-sh/MacDesignSystem.git"
-git ls-remote --exit-code https://github.com/cmdux-sh/MacDesignSystem.git HEAD > /dev/null
-echo "MacDesignSystem read access configured."
+git config --global url."internal-ui.github.com:cmdux-sh/internal-ui.git".insteadOf \
+  "https://github.com/cmdux-sh/internal-ui.git"
+git ls-remote --exit-code https://github.com/cmdux-sh/internal-ui.git HEAD > /dev/null
+echo "Internal UI read access configured."

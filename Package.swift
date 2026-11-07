@@ -22,7 +22,7 @@ let sqlite3LinkerSettings: [LinkerSetting] = if let sqlite3LibDir, !sqlite3LibDi
 // Linux CLI jobs from fetching it; macOS CI reads it with a read-only deploy key.
 let macOSOnlyDependencies: [Package.Dependency] = {
     #if os(macOS)
-    [.package(url: "https://github.com/cmdux-sh/MacDesignSystem.git", from: "0.5.0")]
+    [.package(url: "https://github.com/cmdux-sh/internal-ui.git", from: "0.6.0")]
     #else
     []
     #endif
@@ -204,7 +204,7 @@ let package = Package(
                     .product(name: "Sparkle", package: "Sparkle"),
                     .product(name: "KeyboardShortcuts", package: "KeyboardShortcuts"),
                     .product(name: "Vortex", package: "Vortex"),
-                    .product(name: "MacDesignSystem", package: "MacDesignSystem"),
+                    .product(name: "InternalUI", package: "internal-ui"),
                     "AdaptiveRefreshCore",
                     "CodexBarCore",
                 ],

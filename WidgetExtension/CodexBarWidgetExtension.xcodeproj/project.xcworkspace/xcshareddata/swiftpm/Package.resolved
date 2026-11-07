@@ -1,5 +1,5 @@
 {
-  "originHash" : "9276e93b854141105d681273607f7b54a39a488d1b42b04b145ed5abaf5f5c95",
+  "originHash" : "d590328788c7c6fc38e0471948f15c275c2b9b7f49edf1d004eb4b12c1b5f2a3",
   "pins" : [
     {
       "identity" : "commander",
@@ -11,21 +11,21 @@
       }
     },
     {
+      "identity" : "internal-ui",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/cmdux-sh/internal-ui.git",
+      "state" : {
+        "revision" : "ebf451e8f7a1b2acf94af8ab2c6fc5e1bd4a37f7",
+        "version" : "0.6.0"
+      }
+    },
+    {
       "identity" : "keyboardshortcuts",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/sindresorhus/KeyboardShortcuts",
       "state" : {
         "revision" : "772133d9dbe800fdac0473226822994c5c162c58",
         "version" : "3.1.0"
-      }
-    },
-    {
-      "identity" : "macdesignsystem",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/cmdux-sh/MacDesignSystem.git",
-      "state" : {
-        "revision" : "fcda48585cb543e548e103ee5b0c6a22862b7dd9",
-        "version" : "0.5.0"
       }
     },
     {

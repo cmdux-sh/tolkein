@@ -1,7 +1,7 @@
 # Mac UI in this target (Tolkein fork)
 
-The app's SwiftUI is built on MacDesignSystem (the private `cmdux-sh/MacDesignSystem` package). Its design-guide
-MCP server, `mac-design-system`, gives agents the components, tokens, recipes, checks and review loop. Use it for
+The app's SwiftUI is built on Internal UI (the private `cmdux-sh/internal-ui` package, module `InternalUI`). Its design-guide
+MCP server, `internal-ui`, gives agents the components, tokens, recipes, checks and review loop. Use it for
 any UI change here, before writing code:
 
 1. **New screen:** start from `get_recipe` (`menu-bar-panel`, `settings-window`, `app-window`). **Restyling an
@@ -15,9 +15,9 @@ any UI change here, before writing code:
    `CODEXBAR_SNAPSHOT_DIR=/tmp/tolkein-snapshots swift test --filter UsageBoardSnapshotTests`
    then open the PNGs. Add a case to that suite (or a similar one) for a new screen. Run
    `get_guide("composition/review")`, give a one-line verdict per item, and make targeted fixes.
-5. **Missing component:** add it to MacDesignSystem with a catalog page and tests, tag a version, and bump the
+5. **Missing component:** add it to Internal UI with a catalog page and tests, tag a version, and bump the
    requirement in `Package.swift` (resolve the widget workspace too; see `docs/DEVELOPMENT.md`). Do not
    hand-roll it here.
 
-If the `mac-design-system` tools are not available, install them from a MacDesignSystem clone with
+If the `internal-ui` tools are not available, install them from an Internal UI clone (`cmdux-sh/internal-ui`) with
 `Scripts/install-mcp.sh` and start a new session.

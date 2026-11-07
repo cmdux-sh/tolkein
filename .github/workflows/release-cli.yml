@@ -116,10 +116,10 @@ jobs:
           [[ "$(/usr/bin/xcodebuild -version)" == Xcode\ 27* ]]
           /usr/bin/xcodebuild -version
 
-      - name: Grant read access to MacDesignSystem
+      - name: Grant read access to Internal UI
         env:
           MAC_DESIGN_SYSTEM_DEPLOY_KEY: ${{ secrets.MAC_DESIGN_SYSTEM_DEPLOY_KEY }}
-        run: ./Scripts/ci-grant-mac-design-system.sh
+        run: ./Scripts/ci-grant-internal-ui.sh
 
       - name: Ensure Rosetta for x86_64 execution
         if: matrix.platform == 'macos' && matrix.asset-arch == 'x86_64'

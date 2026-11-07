@@ -94,10 +94,10 @@ jobs:
             sudo softwareupdate --install-rosetta --agree-to-license
           fi
           arch -x86_64 /usr/bin/true
-      - name: Grant read access to MacDesignSystem
+      - name: Grant read access to Internal UI
         env:
           MAC_DESIGN_SYSTEM_DEPLOY_KEY: ${{ secrets.MAC_DESIGN_SYSTEM_DEPLOY_KEY }}
-        run: ./Scripts/ci-grant-mac-design-system.sh
+        run: ./Scripts/ci-grant-internal-ui.sh
 
       - name: Install widget project generator
         run: brew install xcodegen
