@@ -82,3 +82,13 @@ After reviewing the rebuilt board in the running app, Arturo found that nothing 
 - When every failing provider has the same problem, the "Needs attention" card says it once.
 
 Why: Arturo chose to add the missing components and MCP rules first, then redo the board with them. The review rendered real-length data, a mostly failing provider list, and a short height that must scroll.
+
+## 2026-11-07: Agents use the design-system MCP for Mac UI by default
+
+Fork-only instruction files tell agents how to work on the app's UI:
+- `Sources/CodexBar/AGENTS.md` (and a `CLAUDE.md` that imports it) applies to the app target. Agents start new screens from a `get_recipe` scaffold and restructure existing screens to the closest recipe. They build only from library components and tokens, and `check_swiftui` every SwiftUI file they change. They render in light and dark with stress data, every state and a scrolling height, and run the review checklist. Missing components go into MacDesignSystem.
+- A root `CLAUDE.md` imports `AGENTS.md`, so Claude Code reads the repository rules too.
+
+`UsageBoardSnapshotTests` renders the board in eight states and both appearances on every test run, and writes the PNGs when `CODEXBAR_SNAPSHOT_DIR` is set.
+
+Why: the Usage Board took three rounds because nothing pointed agents at the MCP, its recipes or a review with real data. Upstream's `AGENTS.md` is left as written: fork-only files avoid merge conflicts when syncing upstream.

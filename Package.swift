@@ -22,7 +22,7 @@ let sqlite3LinkerSettings: [LinkerSetting] = if let sqlite3LibDir, !sqlite3LibDi
 // Linux CLI jobs from fetching it; macOS CI reads it with a read-only deploy key.
 let macOSOnlyDependencies: [Package.Dependency] = {
     #if os(macOS)
-    [.package(url: "https://github.com/cmdux-sh/MacDesignSystem.git", from: "0.4.0")]
+    [.package(url: "https://github.com/cmdux-sh/MacDesignSystem.git", from: "0.5.0")]
     #else
     []
     #endif
@@ -209,6 +209,8 @@ let package = Package(
                     "CodexBarCore",
                 ],
                 path: "Sources/CodexBar",
+                // Agent instructions for this target's UI (see Sources/CodexBar/AGENTS.md).
+                exclude: ["AGENTS.md", "CLAUDE.md"],
                 resources: [
                     .process("Resources"),
                 ],

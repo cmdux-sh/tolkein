@@ -191,11 +191,7 @@ private struct UsageBoardSidebar: View {
         VStack(alignment: .leading, spacing: 0) {
             MacSourceList([self.section], selection: self.selection)
                 .frame(maxHeight: .infinity)
-            // A token hairline: inside the glass sidebar, a system Divider can take the wrong appearance.
-            Rectangle()
-                .fill(MacColor.hairline)
-                .frame(height: MacSize.border)
-                .padding(.horizontal, MacSpace.panelPadding)
+            MacDivider(inset: MacSpace.panelPadding)
             UsageBoardFooter(session: self.session)
         }
     }
