@@ -1,272 +1,260 @@
 import AppKit
 import CodexBarCore
+import MacDesignSystem
 import SwiftUI
 
-// About half the previous board. The sidebar is the full height of the window.
+// The usage board is a small window in MacDesignSystem's panel chrome (see docs/decisions.md):
 //
-// CodexBar
-// All
-// Claude  79% left     Claude   Session ████ 79% left
-// Codex    0% left     Codex    Weekly  ██   40% left
-// Refresh
-// Settings
+// ┌──────────────────┐  Claude                                   ↻  ⋯
+// │ CodexBar         │  Ultra · Updated 4 mins ago
+// │ Providers        │ ┌ Weekly ──── 31% left ┐ ┌ Fable weekly ─ 92% left ┐
+// │   All providers  │ │ ▬▬▬▬▬▬──────────────  │ │ ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬─  │
+// │   Claude    31%  │ └──────────────────────┘ └─────────────────────────┘
+// │   Codex      ⊗   │ ┌ Today ................................. $358.18 ┐
+// │ Classic menu …   │ └ 30d cost ............................ $4,926.79 ┘
+// └──────────────────┘
 
 struct UsageBoardView: View {
     @Bindable var session: UsageBoardSession
 
     var body: some View {
-        HStack(alignment: .top, spacing: 0) {
+        MacWindow(
+            self.title,
+            subtitle: self.subtitle,
+            chrome: .panel,
+            sidebarTitle: "CodexBar",
+            sidebarWidth: CGFloat(UsageBoardLayout.sidebarWidth))
+        {
             UsageBoardSidebar(session: self.session)
-                .frame(width: UsageBoardTheme.sidebarWidth)
-                .frame(maxHeight: .infinity)
-            Rectangle()
-                .fill(UsageBoardTheme.hairline)
-                .frame(width: 1)
-                .accessibilityHidden(true)
+        } toolbar: {
+            UsageBoardToolbar(session: self.session)
+        } content: {
             UsageBoardDetail(session: self.session)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .background(UsageBoardTheme.canvas)
-        .foregroundStyle(UsageBoardTheme.primaryText)
-        .environment(\.colorScheme, .dark)
-        .preferredColorScheme(.dark)
-        .accessibilityElement(children: .contain)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    private var title: String {
+        self.session.selectedProvider?.name ?? L("All providers")
+    }
+
+    private var subtitle: String? {
+        if let provider = self.session.selectedProvider {
+            let freshness = provider.attention == .ready ? provider.subtitle : nil
+            let parts = [provider.planText, freshness].compactMap(\.self).filter { !$0.isEmpty }
+            return parts.isEmpty ? nil : parts.joined(separator: " · ")
+        }
+        let attention = self.session.providers.filter { $0.attention != .ready }.count
+        guard attention > 0 else { return nil }
+        return "\(attention) \(L("Needs attention").lowercased())"
     }
 }
+
+// MARK: - Shared pieces
+
+enum UsageBoardStatus {
+    /// The library tone for a provider that needs attention, or nil when it is ready.
+    static func tone(_ attention: UsageBoardAttention) -> MacStatusTone? {
+        switch attention {
+        case .ready: nil
+        case .loading: .busy
+        case .needsSignIn: .warning
+        case .error: .error
+        }
+    }
+
+    static func label(_ attention: UsageBoardAttention) -> String? {
+        switch attention {
+        case .ready: nil
+        case .loading: L("Refreshing")
+        case .needsSignIn: L("Needs sign-in")
+        case .error: L("Couldn't load usage")
+        }
+    }
+
+    static func meterTone(percentLeft: Double) -> MacMeter.Tone {
+        switch UsageBoardLayout.barTone(percentLeft: percentLeft) {
+        case .healthy: .accent
+        case .warning: .warning
+        case .critical, .empty: .critical
+        }
+    }
+
+    static func accessibilitySummary(_ metric: UsageBoardMetric) -> String {
+        guard let left = metric.percentLeft else { return metric.accessibilitySummary }
+        let note = switch UsageBoardLayout.barTone(percentLeft: left) {
+        case .healthy: L("More than half left")
+        case .warning: L("Under half left")
+        case .critical: L("Almost out")
+        case .empty: L("None left")
+        }
+        return metric.accessibilitySummary + ", " + note
+    }
+
+    /// Notes that only restate facts already shown ("Today: $358.18 · 1B tokens" next to Today and Latest
+    /// tokens) are dropped, so each fact appears once.
+    static func distinctNotes(_ provider: UsageBoardProvider) -> [String] {
+        let shown = provider.lines.flatMap { [$0.label, $0.value] } + provider.metrics.flatMap {
+            [$0.percentText, $0.resetText, $0.detailText].compactMap(\.self)
+        }
+        let notes = provider.notes + provider.lines.filter(\.value.isEmpty).map(\.label)
+        return notes.filter { note in
+            let figures = self.figures(in: note)
+            guard !figures.isEmpty else { return true }
+            return !figures.allSatisfy { figure in shown.contains { $0.contains(figure) } }
+        }
+    }
+
+    /// Money and amounts in a sentence: "$358.18", "1B", "15B".
+    static func figures(in text: String) -> [String] {
+        text.split(whereSeparator: { $0 == " " || $0 == "·" })
+            .map { $0.trimmingCharacters(in: CharacterSet(charactersIn: ":;()")) }
+            .filter { token in token.first.map { $0 == "$" || $0.isNumber } ?? false }
+    }
+}
+
+/// A provider's logo, or its monogram when it has none. Sized like a sidebar icon.
+private struct UsageBoardProviderIcon: View {
+    let monogram: String
+    let icon: NSImage?
+
+    var body: some View {
+        Group {
+            if let icon {
+                Image(nsImage: icon)
+                    .renderingMode(icon.isTemplate ? .template : .original)
+                    .resizable()
+                    .scaledToFit()
+            } else {
+                MacText(self.monogram, role: .micro, muted: true)
+            }
+        }
+        .frame(width: MacSize.sidebarIcon, height: MacSize.sidebarIcon)
+        .foregroundStyle(MacColor.primary)
+        .accessibilityHidden(true)
+    }
+}
+
+// MARK: - Title row
+
+/// The title row's actions: refresh, and the selected provider's other commands in an overflow menu.
+private struct UsageBoardToolbar: View {
+    let session: UsageBoardSession
+
+    var body: some View {
+        HStack(spacing: MacSpace.unit * 2) {
+            if self.session.isRefreshing {
+                ProgressView().controlSize(.small).accessibilityLabel(L("Refreshing"))
+            } else {
+                MacToolButton(L("Refresh"), systemImage: "arrow.clockwise", help: L("Refresh") + " (⌘R)") {
+                    self.session.onCommand(self.refreshAction)
+                }
+            }
+            let menuCommands = self.session.selectedProvider == nil
+                ? [] : self.session.providerCommands.filter { !Self.isRefresh($0) }
+            if !menuCommands.isEmpty {
+                MacToolMenu(L("More")) {
+                    ForEach(menuCommands) { command in
+                        Button { self.session.onCommand(command.action) } label: {
+                            Label(command.title, systemImage: command.systemImage)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private var refreshAction: UsageBoardCommand.Action {
+        if self.session.selectedProvider != nil,
+           let refresh = self.session.providerCommands.first(where: Self.isRefresh)
+        {
+            return refresh.action
+        }
+        return .refresh
+    }
+
+    private static func isRefresh(_ command: UsageBoardCommand) -> Bool {
+        switch command.action {
+        case .refresh, .refreshProvider: true
+        default: false
+        }
+    }
+}
+
+// MARK: - Sidebar
 
 private struct UsageBoardSidebar: View {
     @Bindable var session: UsageBoardSession
-    @State private var hoveredID: String?
-    @State private var frames: [String: CGRect] = [:]
-    @State private var restingFrame: CGRect = .zero
-    @FocusState private var focusedID: String?
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    private static let allID = "all"
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            self.title
-            ScrollView {
-                self.list
-            }
-            .frame(maxHeight: .infinity)
-            self.actions
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .background(UsageBoardTheme.surface)
-    }
-
-    private var title: some View {
-        HStack(spacing: UsageBoardMetrics.gap) {
-            Text("CodexBar")
-                .boardFont(.title)
-            Spacer(minLength: UsageBoardMetrics.gap)
-            if self.session.isRefreshing {
-                ProgressView()
-                    .controlSize(.small)
-                    .accessibilityLabel(L("Refreshing"))
-            }
-        }
-        .padding(.horizontal, UsageBoardMetrics.pad)
-        .padding(.top, UsageBoardMetrics.pad)
-        .padding(.bottom, UsageBoardMetrics.gap)
-    }
-
-    private var actions: some View {
-        VStack(alignment: .leading, spacing: UsageBoardMetrics.gap) {
-            UsageBoardCommandButton(
-                title: L("Classic menu"),
-                systemImage: "list.bullet.rectangle",
-                action: { self.session.onCommand(.classicMenu) })
-            UsageBoardCommandButton(
-                title: L("Refresh"),
-                systemImage: "arrow.clockwise",
-                action: { self.session.onCommand(.refresh) })
-            UsageBoardCommandButton(
-                title: L("Settings..."),
-                systemImage: "gearshape",
-                action: { self.session.onCommand(.settings) })
-            UsageBoardCommandButton(
-                title: L("Quit"),
-                systemImage: "xmark.rectangle",
-                action: { self.session.onCommand(.quit) })
-        }
-        .padding(UsageBoardMetrics.pad)
-        .frame(maxWidth: .infinity, alignment: .leading)
-    }
-
-    private var list: some View {
-        ZStack(alignment: .topLeading) {
-            self.hoverHighlight
-            VStack(alignment: .leading, spacing: 0) {
-                self.allRow
-                if self.session.isShowingSkeleton, self.session.providers.isEmpty {
-                    ForEach(0..<4, id: \.self) { _ in
-                        UsageBoardSkeletonRow()
-                    }
-                }
-                ForEach(self.session.providers) { provider in
-                    self.providerRow(provider)
-                }
-            }
-        }
-        .coordinateSpace(name: "usageBoardSidebar")
-        .padding(UsageBoardMetrics.pad)
-        .onPreferenceChange(UsageBoardRowFramesKey.self) { frames in
-            guard frames != self.frames else { return }
-            self.frames = frames
-            if let hoveredID, let frame = frames[hoveredID] {
-                self.restingFrame = frame
-            }
+            MacSourceList([self.section], selection: self.selection)
+                .frame(maxHeight: .infinity)
+            // A token hairline: inside the glass sidebar, a system Divider can take the wrong appearance.
+            Rectangle()
+                .fill(MacColor.hairline)
+                .frame(height: MacSize.border)
+                .padding(.horizontal, MacSpace.panelPadding)
+            UsageBoardFooter(session: self.session)
         }
     }
 
-    private var hoverHighlight: some View {
-        let frame = self.frames[self.hoveredID ?? ""] ?? self.restingFrame
-        let visible = self.hoveredID != nil && frame != .zero
-        return RoundedRectangle(cornerRadius: UsageBoardMetrics.radiusItem, style: .continuous)
-            .fill(UsageBoardTheme.hover)
-            .frame(width: frame.width, height: frame.height)
-            .offset(x: frame.minX, y: frame.minY)
-            .opacity(visible ? 1 : 0)
-            .allowsHitTesting(false)
-            .animation(self.reduceMotion ? nil : UsageBoardMotion.fastSpring, value: frame)
-            .animation(UsageBoardMotion.fastExitTween, value: visible)
+    private var selection: Binding<String> {
+        Binding(
+            get: { self.session.selectionID ?? Self.allID },
+            set: { self.session.select($0 == Self.allID ? nil : $0) })
     }
 
-    private var allRow: some View {
-        UsageBoardSidebarRow(
-            id: "all",
-            title: L("All providers"),
-            caption: nil,
-            percentText: nil,
-            attention: .ready,
-            monogram: "∗",
-            icon: nil,
-            isSelected: self.session.selectionID == nil,
-            isFocused: self.focusedID == "all",
-            accessibilitySummary: L("All providers"),
-            focus: self.$focusedID)
-        {
-            self.session.select(nil)
+    private var section: MacSourceSection {
+        let providers = self.session.providers.map { provider in
+            let icon = self.session.icon(provider.id)
+            return MacSourceItem(
+                provider.id,
+                provider.name,
+                systemImage: "gauge.medium",
+                image: icon.map { Image(nsImage: $0).renderingMode($0.isTemplate ? .template : .original) },
+                imageID: icon.map { "\(provider.id)-\(ObjectIdentifier($0).hashValue)" },
+                detail: provider.attention == .ready
+                    ? provider.headlinePercentText.map(UsageBoardLayout.shortPercent) : nil,
+                status: UsageBoardStatus.tone(provider.attention))
         }
-        .onHover { inside in
-            self.hoveredID = inside ? "all" : (self.hoveredID == "all" ? nil : self.hoveredID)
-        }
-    }
-
-    private func providerRow(_ provider: UsageBoardProvider) -> some View {
-        UsageBoardSidebarRow(
-            id: provider.id,
-            title: provider.name,
-            caption: provider.headlineCaption,
-            percentText: provider.headlinePercentText,
-            attention: provider.attention,
-            monogram: provider.monogram,
-            icon: self.session.icon(provider.id),
-            isSelected: self.session.selectionID == provider.id,
-            isFocused: self.focusedID == provider.id,
-            accessibilitySummary: self.accessibilitySummary(for: provider),
-            focus: self.$focusedID)
-        {
-            self.session.select(provider.id)
-        }
-        .onHover { inside in
-            self.hoveredID = inside ? provider.id : (self.hoveredID == provider.id ? nil : self.hoveredID)
-        }
-    }
-
-    private func accessibilitySummary(for provider: UsageBoardProvider) -> String {
-        var parts = [provider.name]
-        if let status = UsageBoardStatusText.label(for: provider.attention) {
-            parts.append(status)
-        }
-        if let headline = provider.headlinePercentText {
-            parts.append(headline)
-        }
-        if let caption = provider.headlineCaption {
-            parts.append(caption)
-        }
-        if provider.attention != .ready, !provider.subtitle.isEmpty {
-            parts.append(provider.subtitle)
-        }
-        return parts.joined(separator: ", ")
+        let all = MacSourceItem(Self.allID, L("All providers"), systemImage: "square.grid.2x2", detail: nil)
+        return MacSourceSection(L("Providers"), items: [all] + providers)
     }
 }
 
-private struct UsageBoardSidebarRow: View {
-    let id: String
-    let title: String
-    let caption: String?
-    let percentText: String?
-    let attention: UsageBoardAttention
-    let monogram: String
-    let icon: NSImage?
-    let isSelected: Bool
-    let isFocused: Bool
-    let accessibilitySummary: String
-    var focus: FocusState<String?>.Binding
-    let action: () -> Void
+/// App commands: small plain buttons at the foot of the sidebar, not rows in the source list (it is for
+/// places).
+private struct UsageBoardFooter: View {
+    let session: UsageBoardSession
 
     var body: some View {
-        Button(action: self.action) {
-            HStack(alignment: .center, spacing: UsageBoardMetrics.gapComfortable) {
-                UsageBoardIconBadge(monogram: self.monogram, icon: self.icon)
-                VStack(alignment: .leading, spacing: 0) {
-                    Text(self.title)
-                        .boardFont(.subtitle, weight: self.isSelected ? .semibold : .regular)
-                        .lineLimit(1)
-                        .multilineTextAlignment(.leading)
-                    if let caption, !caption.isEmpty {
-                        Text(caption)
-                            .boardFont(.micro)
-                            .foregroundStyle(UsageBoardTheme.secondaryText)
-                            .lineLimit(1)
-                    }
-                    if let status = UsageBoardStatusText.label(for: self.attention) {
-                        UsageBoardStatusBadge(text: status, attention: self.attention)
-                    }
-                }
-                Spacer(minLength: UsageBoardMetrics.gap)
-                if let percentText {
-                    Text(percentText)
-                        .boardFont(.caption, weight: .semibold)
-                        .foregroundStyle(UsageBoardTheme.primaryText)
-                        .lineLimit(1)
-                }
-            }
-            .padding(.horizontal, UsageBoardMetrics.padComfortable)
-            .padding(.vertical, UsageBoardMetrics.pad)
-            .frame(maxWidth: .infinity, minHeight: UsageBoardMetrics.control, alignment: .leading)
-            .background(
-                RoundedRectangle(cornerRadius: UsageBoardMetrics.radiusItem, style: .continuous)
-                    .fill(self.isSelected ? UsageBoardTheme.selectionFill : Color.clear))
-            .overlay {
-                if self.isFocused {
-                    RoundedRectangle(cornerRadius: UsageBoardMetrics.radiusItem, style: .continuous)
-                        .strokeBorder(UsageBoardTheme.accent, lineWidth: UsageBoardMetrics.focusRing)
-                }
-            }
-            .background {
-                GeometryReader { proxy in
-                    Color.clear
-                        .preference(
-                            key: UsageBoardRowFramesKey.self,
-                            value: [self.id: proxy.frame(in: .named("usageBoardSidebar"))])
-                        .allowsHitTesting(false)
-                }
-                .allowsHitTesting(false)
-            }
-            .contentShape(Rectangle())
+        VStack(alignment: .leading, spacing: 0) {
+            self.command(L("Classic menu"), "list.bullet.rectangle", .classicMenu)
+            self.command(L("Settings..."), "gearshape", .settings)
+            self.command(L("Quit"), "xmark.rectangle", .quit)
         }
-        .buttonStyle(UsageBoardHitButtonStyle())
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .contentShape(Rectangle())
-        .focused(self.focus, equals: self.id)
-        .accessibilityLabel(self.accessibilitySummary)
-        .accessibilityAddTraits(self.isSelected ? AccessibilityTraits.isSelected : AccessibilityTraits())
+        .padding(MacSpace.panelPadding)
+        .macControlSize(.regular)
+    }
+
+    private func command(_ title: String, _ symbol: String, _ action: UsageBoardCommand.Action) -> some View {
+        Button { self.session.onCommand(action) } label: {
+            HStack(spacing: MacSpace.unit * 2) {
+                Image(systemName: symbol)
+                    .frame(width: MacSize.sidebarIcon)
+                    .foregroundStyle(MacColor.muted)
+                Text(title)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .buttonStyle(.mac(.plain))
+        .accessibilityLabel(title)
     }
 }
+
+// MARK: - Content
 
 private struct UsageBoardDetail: View {
     @Bindable var session: UsageBoardSession
@@ -275,54 +263,58 @@ private struct UsageBoardDetail: View {
         GeometryReader { proxy in
             if let provider = self.session.selectedProvider {
                 ScrollView {
-                    self.selectedProviderDetail(provider, width: proxy.size.width)
-                        .padding(UsageBoardMetrics.gap)
-                        .frame(maxWidth: .infinity, alignment: .topLeading)
+                    UsageBoardProviderDetail(
+                        provider: provider,
+                        width: proxy.size.width - MacSpace.panelPadding * 2)
+                        .padding([.horizontal, .bottom], MacSpace.panelPadding)
+                        .macSlimScrollers()
                 }
-            } else if self.session.isShowingSkeleton, self.session.providers.isEmpty {
-                UsageBoardSkeletonDetail()
-                    .padding(UsageBoardMetrics.windowPad)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                    .accessibilityLabel(L("Refreshing"))
             } else if self.session.providers.isEmpty {
-                Text(L("No usage configured."))
-                    .boardFont(.body)
-                    .foregroundStyle(UsageBoardTheme.secondaryText)
-                    .padding(UsageBoardMetrics.windowPad)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                Group {
+                    if self.session.isShowingSkeleton {
+                        MacStatusLabel(L("Refreshing"), tone: .busy)
+                    } else {
+                        MacText(L("No usage configured."), muted: true)
+                    }
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
-                self.overview(size: proxy.size)
+                UsageBoardOverview(session: self.session, size: proxy.size)
             }
         }
     }
+}
 
-    private func overview(size: CGSize) -> some View {
-        UsageBoardMasonryLayout(
+/// Every provider at a glance. Ready providers get a card each; providers that need attention share one
+/// card, so eight identical failures read as one problem.
+private struct UsageBoardOverview: View {
+    let session: UsageBoardSession
+    let size: CGSize
+
+    var body: some View {
+        let inset = MacSpace.panelPadding
+        let content = CGSize(width: max(0, self.size.width - inset * 2), height: max(0, self.size.height - inset))
+        let ready = self.session.providers.filter { $0.attention == .ready }
+        let attention = self.session.providers.filter { $0.attention != .ready }
+        return UsageBoardMasonryLayout(
             minimumColumnWidth: CGFloat(UsageBoardLayout.overviewMinimumColumnWidth),
-            spacing: UsageBoardMetrics.gap,
-            maximumHeight: size.height)
+            spacing: MacSpace.chromeGap,
+            maximumHeight: content.height)
         {
-            ForEach(self.session.providers) { provider in
-                UsageBoardOverviewCard(
-                    provider: provider,
-                    icon: self.session.icon(provider.id))
-                {
+            ForEach(ready) { provider in
+                UsageBoardOverviewCard(provider: provider, icon: self.session.icon(provider.id)) {
                     self.session.select(provider.id)
                 }
             }
+            if !attention.isEmpty {
+                UsageBoardAttentionCard(providers: attention, icon: self.session.icon) { id in
+                    self.session.select(id)
+                }
+            }
         }
-        .frame(width: size.width, height: size.height, alignment: .topLeading)
+        .frame(width: content.width, height: content.height, alignment: .topLeading)
+        .padding([.horizontal, .bottom], inset)
         .clipped()
-    }
-
-    private func selectedProviderDetail(_ provider: UsageBoardProvider, width: CGFloat) -> some View {
-        UsageBoardProviderCard(
-            provider: provider,
-            icon: self.session.icon(provider.id),
-            metricWidth: max(0, width - UsageBoardMetrics.gap * 2),
-            commands: self.session.providerCommands,
-            showsClassicHint: true,
-            onCommand: self.session.onCommand)
     }
 }
 
@@ -333,539 +325,215 @@ private struct UsageBoardOverviewCard: View {
 
     var body: some View {
         Button(action: self.action) {
-            VStack(alignment: .leading, spacing: UsageBoardMetrics.gap) {
-                self.header
-                let glance = UsageBoardLayout.glanceMetrics(self.provider.metrics)
-                if glance.isEmpty, self.provider.attention == .ready {
-                    Text(L("No windows reported yet."))
-                        .boardFont(.micro)
-                        .foregroundStyle(UsageBoardTheme.secondaryText)
+            VStack(alignment: .leading, spacing: MacSpace.chromeGap) {
+                HStack(spacing: MacSpace.unit * 2) {
+                    UsageBoardProviderIcon(monogram: self.provider.monogram, icon: self.icon)
+                    MacText(self.provider.name, role: .subtitle)
                         .lineLimit(1)
+                    Spacer(minLength: MacSpace.unit)
+                    if let plan = self.provider.planText, !plan.isEmpty {
+                        MacText(plan, role: .caption, muted: true)
+                            .lineLimit(1)
+                    }
+                }
+                let glance = UsageBoardLayout.glanceMetrics(self.provider.metrics)
+                if glance.isEmpty {
+                    MacText(L("No windows reported yet."), role: .caption, muted: true)
                 } else {
                     ForEach(glance) { metric in
-                        UsageBoardGlanceMetric(metric: metric)
+                        UsageBoardMetricRow(metric: metric, compact: true)
                     }
                 }
             }
-            .padding(UsageBoardMetrics.pad)
             .frame(maxWidth: .infinity, alignment: .topLeading)
-            .background(
-                RoundedRectangle(cornerRadius: UsageBoardMetrics.radiusCard, style: .continuous)
-                    .fill(UsageBoardTheme.card))
-            .boardHairline(radius: UsageBoardMetrics.radiusCard)
-            .contentShape(RoundedRectangle(cornerRadius: UsageBoardMetrics.radiusCard, style: .continuous))
+            .macCard(padding: MacSpace.panelPadding)
+            .contentShape(Rectangle())
         }
-        .buttonStyle(UsageBoardHitButtonStyle())
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .contentShape(RoundedRectangle(cornerRadius: UsageBoardMetrics.radiusCard, style: .continuous))
+        .buttonStyle(.plain)
+        .accessibilityElement(children: .ignore)
         .accessibilityLabel(self.accessibilitySummary)
-    }
-
-    private var header: some View {
-        HStack(spacing: UsageBoardMetrics.gap) {
-            UsageBoardIconBadge(monogram: self.provider.monogram, icon: self.icon)
-            Text(self.provider.name)
-                .boardFont(.subtitle, weight: .semibold)
-                .lineLimit(1)
-            Spacer(minLength: UsageBoardMetrics.gap)
-            if self.provider.attention != .ready,
-               let status = UsageBoardStatusText.label(for: self.provider.attention)
-            {
-                UsageBoardStatusBadge(text: status, attention: self.provider.attention)
-            } else if let plan = self.provider.planText, !plan.isEmpty {
-                Text(plan)
-                    .boardFont(.micro)
-                    .foregroundStyle(UsageBoardTheme.secondaryText)
-                    .lineLimit(1)
-            }
-        }
+        .accessibilityAddTraits(.isButton)
     }
 
     private var accessibilitySummary: String {
-        var parts = [self.provider.name]
-        if let status = UsageBoardStatusText.label(for: self.provider.attention) {
-            parts.append(status)
-        }
-        let glance = UsageBoardLayout.glanceMetrics(self.provider.metrics)
-        parts.append(contentsOf: glance.map { UsageBoardAccessibility.summary(for: $0) })
-        return parts.joined(separator: ", ")
+        ([self.provider.name] + UsageBoardLayout.glanceMetrics(self.provider.metrics)
+            .map(UsageBoardStatus.accessibilitySummary))
+            .joined(separator: ", ")
     }
 }
 
-private struct UsageBoardGlanceMetric: View {
-    let metric: UsageBoardMetric
+private struct UsageBoardAttentionCard: View {
+    let providers: [UsageBoardProvider]
+    let icon: @MainActor (String) -> NSImage?
+    let select: (String) -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: UsageBoardMetrics.gap) {
-            HStack(spacing: UsageBoardMetrics.gap) {
-                Text(self.metric.title)
-                    .boardFont(.micro)
-                    .foregroundStyle(UsageBoardTheme.secondaryText)
+        // When every provider has the same problem, say it once under the title and list the names.
+        let labels = Set(self.providers.compactMap { UsageBoardStatus.label($0.attention) })
+        let shared = labels.count == 1 ? self.providers.first : nil
+        VStack(alignment: .leading, spacing: MacSpace.unit * 2) {
+            VStack(alignment: .leading, spacing: MacSpace.unit) {
+                MacText(L("Needs attention"), role: .subtitle)
+                if let shared, let label = UsageBoardStatus.label(shared.attention),
+                   let tone = UsageBoardStatus.tone(shared.attention)
+                {
+                    MacStatusLabel(label, tone: tone)
+                }
+            }
+            ForEach(self.providers) { provider in
+                Button { self.select(provider.id) } label: {
+                    HStack(spacing: MacSpace.unit * 2) {
+                        UsageBoardProviderIcon(monogram: provider.monogram, icon: self.icon(provider.id))
+                        MacText(provider.name, role: .body)
+                            .lineLimit(1)
+                        Spacer(minLength: MacSpace.unit)
+                        if shared == nil, let label = UsageBoardStatus.label(provider.attention),
+                           let tone = UsageBoardStatus.tone(provider.attention)
+                        {
+                            MacStatusLabel(label, tone: tone)
+                        }
+                    }
+                    .frame(
+                        maxWidth: .infinity,
+                        minHeight: MacControlMetrics.forSize(.regular).height,
+                        alignment: .leading)
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel([provider.name, UsageBoardStatus.label(provider.attention)]
+                    .compactMap(\.self).joined(separator: ", "))
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .topLeading)
+        .macCard(padding: MacSpace.panelPadding)
+    }
+}
+
+/// One usage window: label and value on a line, the meter under it, then reset and detail lines.
+private struct UsageBoardMetricRow: View {
+    let metric: UsageBoardMetric
+    let compact: Bool
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: MacSpace.unit * 1.5) {
+            HStack(alignment: .firstTextBaseline, spacing: MacSpace.unit * 2) {
+                MacText(self.metric.title, role: .caption, muted: true)
                     .lineLimit(1)
-                Spacer(minLength: UsageBoardMetrics.gap)
-                Text(UsageBoardLayout.explicitPercent(self.metric.percentText))
-                    .boardFont(.caption, weight: .semibold, digits: true)
-                    .foregroundStyle(UsageBoardTheme.primaryText)
+                Spacer(minLength: MacSpace.unit)
+                Text(self.compact ? UsageBoardLayout.explicitPercent(self.metric.percentText) : self.metric.percentText)
+                    .font(MacTextRole.subtitle.font)
+                    .monospacedDigit()
+                    .foregroundStyle(MacColor.primary)
                     .lineLimit(1)
-                if let reset = UsageBoardLayout.shortReset(self.metric.resetText) {
+                if self.compact, let reset = UsageBoardLayout.shortReset(self.metric.resetText) {
                     Text(reset)
-                        .boardFont(.micro, digits: true)
-                        .foregroundStyle(UsageBoardTheme.secondaryText)
+                        .font(MacTextRole.caption.font)
+                        .monospacedDigit()
+                        .foregroundStyle(MacColor.muted)
                         .lineLimit(1)
                 }
             }
             if self.metric.showsBar, let left = self.metric.percentLeft {
-                UsageBoardProgressBar(percentLeft: left, pacePercent: nil)
+                MacMeter(
+                    self.metric.title,
+                    fraction: left / 100,
+                    tone: UsageBoardStatus.meterTone(percentLeft: left),
+                    marker: self.compact ? nil : self.metric.pacePercent.map { $0 / 100 },
+                    valueText: self.metric.percentText)
+            }
+            if !self.compact {
+                // One line each, so a long caption never breaks mid-phrase.
+                ForEach([self.metric.resetText, self.metric.detailText].compactMap(\.self), id: \.self) { line in
+                    MacText(line, role: .caption, muted: true)
+                        .lineLimit(1)
+                        .help(line)
+                }
             }
         }
-        .accessibilityHidden(true)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(UsageBoardStatus.accessibilitySummary(self.metric))
     }
 }
 
-private struct UsageBoardHitButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .contentShape(Rectangle())
-    }
-}
+// MARK: - Selected provider
 
-private struct UsageBoardProviderCard: View {
+private struct UsageBoardProviderDetail: View {
     let provider: UsageBoardProvider
-    let icon: NSImage?
-    let metricWidth: CGFloat
-    let commands: [UsageBoardCommand]
-    let showsClassicHint: Bool
-    let onCommand: (UsageBoardCommand.Action) -> Void
+    let width: CGFloat
 
     var body: some View {
-        VStack(alignment: .leading, spacing: UsageBoardMetrics.gap) {
-            self.header
-            if let status = UsageBoardStatusText.label(for: self.provider.attention) {
-                UsageBoardStatusBanner(
-                    text: status,
-                    detail: self.provider.subtitle,
-                    attention: self.provider.attention)
-            } else if !self.provider.subtitle.isEmpty {
-                Text(self.provider.subtitle)
-                    .boardFont(.caption)
-                    .foregroundStyle(UsageBoardTheme.secondaryText)
-                    .lineLimit(3)
-                    .textSelection(.enabled)
-            }
-            if !self.commands.isEmpty {
-                self.commandRow
-            }
+        VStack(alignment: .leading, spacing: MacSpace.tabContentGap) {
+            self.status
             if self.provider.metrics.isEmpty {
-                Text(L("No windows reported yet."))
-                    .boardFont(.body)
-                    .foregroundStyle(UsageBoardTheme.secondaryText)
+                if self.provider.attention == .ready {
+                    MacText(L("No windows reported yet."), muted: true)
+                }
             } else {
-                UsageBoardMetricGrid(metrics: self.provider.metrics, width: self.metricWidth)
-            }
-            if !self.provider.lines.isEmpty {
-                UsageBoardStatGrid(lines: self.provider.lines, width: self.metricWidth)
-            }
-            if !self.provider.notes.isEmpty {
-                VStack(alignment: .leading, spacing: UsageBoardMetrics.gap) {
-                    ForEach(Array(self.provider.notes.enumerated()), id: \.offset) { _, note in
-                        Text(note)
-                            .boardFont(.caption)
-                            .foregroundStyle(UsageBoardTheme.secondaryText)
-                            .lineLimit(3)
-                            .textSelection(.enabled)
+                LazyVGrid(
+                    columns: self.columns(count: self.provider.metrics.count),
+                    alignment: .leading,
+                    spacing: MacSpace.chromeGap)
+                {
+                    ForEach(self.provider.metrics) { metric in
+                        UsageBoardMetricRow(metric: metric, compact: false)
+                            .frame(maxWidth: .infinity, alignment: .topLeading)
+                            .macCard(padding: MacSpace.panelPadding)
                     }
                 }
             }
-            if self.showsClassicHint {
-                Text(L("Charts, accounts, and history stay in the classic menu."))
-                    .boardFont(.caption)
-                    .foregroundStyle(UsageBoardTheme.secondaryText)
-                    .lineLimit(2)
+            let facts = self.provider.lines.filter { !$0.value.isEmpty }
+            if !facts.isEmpty {
+                MacKeyValueList(facts.map { MacKeyValueList.Row($0.label, $0.value, id: $0.id) })
+                    .padding(.horizontal, MacSpace.panelPadding)
+                    .macCard(padding: 0)
+            }
+            let notes = UsageBoardStatus.distinctNotes(self.provider)
+            if !notes.isEmpty || !self.provider.email.isEmpty {
+                VStack(alignment: .leading, spacing: MacSpace.unit) {
+                    ForEach(Array(notes.enumerated()), id: \.offset) { _, note in
+                        MacText(note, role: .caption, muted: true)
+                            .textSelection(.enabled)
+                    }
+                    if !self.provider.email.isEmpty {
+                        MacText(self.provider.email, role: .caption, muted: true)
+                            .textSelection(.enabled)
+                    }
+                    MacText(L("Charts, accounts, and history stay in the classic menu."), role: .caption, muted: true)
+                }
+                .padding(.horizontal, MacSpace.unit)
             }
         }
         .frame(maxWidth: .infinity, alignment: .topLeading)
         .accessibilityElement(children: .contain)
     }
 
-    private var header: some View {
-        HStack(alignment: .top, spacing: UsageBoardMetrics.gapComfortable) {
-            UsageBoardIconBadge(monogram: self.provider.monogram, icon: self.icon)
-            VStack(alignment: .leading, spacing: 0) {
-                HStack(alignment: .firstTextBaseline, spacing: UsageBoardMetrics.gapComfortable) {
-                    Text(self.provider.name)
-                        .boardFont(.title)
-                    if let plan = self.provider.planText {
-                        Text(plan)
-                            .boardFont(.caption)
-                            .foregroundStyle(UsageBoardTheme.secondaryText)
-                    }
-                }
-                if !self.provider.email.isEmpty {
-                    Text(self.provider.email)
-                        .boardFont(.caption)
-                        .foregroundStyle(UsageBoardTheme.secondaryText)
-                        .textSelection(.enabled)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-            }
-            Spacer(minLength: 8)
-        }
-    }
-
-    private var commandRow: some View {
-        LazyVGrid(
-            columns: [GridItem(.adaptive(minimum: 148), spacing: 6, alignment: .leading)],
-            alignment: .leading,
-            spacing: 6)
+    @ViewBuilder private var status: some View {
+        if let label = UsageBoardStatus.label(self.provider.attention),
+           let tone = UsageBoardStatus.tone(self.provider.attention)
         {
-            ForEach(self.commands) { command in
-                UsageBoardCommandButton(
-                    title: command.title,
-                    systemImage: command.systemImage)
-                {
-                    self.onCommand(command.action)
+            VStack(alignment: .leading, spacing: MacSpace.unit) {
+                MacStatusLabel(label, tone: tone)
+                if !self.provider.subtitle.isEmpty, self.provider.subtitle != label {
+                    MacText(self.provider.subtitle, role: .caption, muted: true)
+                        .textSelection(.enabled)
                 }
             }
-        }
-    }
-}
-
-private struct UsageBoardMetricGrid: View {
-    let metrics: [UsageBoardMetric]
-    let width: CGFloat
-
-    var body: some View {
-        let columns = self.columns
-        LazyVGrid(columns: columns, alignment: .leading, spacing: UsageBoardMetrics.gap) {
-            ForEach(self.metrics) { metric in
-                UsageBoardMetricCard(metric: metric)
-            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .macCard(padding: MacSpace.panelPadding)
         }
     }
 
-    private var columns: [GridItem] {
-        UsageBoardDetailGrid.columns(width: self.width, count: self.metrics.count)
-    }
-}
-
-private struct UsageBoardMetricCard: View {
-    let metric: UsageBoardMetric
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: UsageBoardMetrics.gap) {
-            HStack(alignment: .firstTextBaseline, spacing: UsageBoardMetrics.gap) {
-                Text(self.metric.title)
-                    .boardFont(.caption)
-                    .foregroundStyle(UsageBoardTheme.secondaryText)
-                    .lineLimit(1)
-                Spacer(minLength: UsageBoardMetrics.gap)
-                Text(self.metric.percentText)
-                    .boardFont(.subtitle, weight: .semibold, digits: true)
-                    .foregroundStyle(UsageBoardTheme.primaryText)
-                    .lineLimit(1)
-            }
-            if self.metric.showsBar, let left = self.metric.percentLeft {
-                UsageBoardProgressBar(percentLeft: left, pacePercent: self.metric.pacePercent)
-            }
-            if let caption = self.caption {
-                Text(caption)
-                    .boardFont(.caption)
-                    .foregroundStyle(UsageBoardTheme.secondaryText)
-                    .lineLimit(2)
-            }
-        }
-        .padding(UsageBoardMetrics.pad)
-        .frame(maxWidth: .infinity, minHeight: UsageBoardMetrics.control, alignment: .topLeading)
-        .background(
-            RoundedRectangle(cornerRadius: UsageBoardMetrics.radiusCard, style: .continuous)
-                .fill(UsageBoardTheme.card))
-        .boardHairline(radius: UsageBoardMetrics.radiusCard)
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(UsageBoardAccessibility.summary(for: self.metric))
-    }
-
-    private var caption: String? {
-        let parts = [self.metric.resetText, self.metric.detailText].compactMap { text -> String? in
-            guard let text else { return nil }
-            let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
-            return trimmed.isEmpty ? nil : trimmed
-        }
-        guard !parts.isEmpty else { return nil }
-        return parts.joined(separator: " · ")
-    }
-}
-
-private enum UsageBoardAccessibility {
-    static func summary(for metric: UsageBoardMetric) -> String {
-        guard let left = metric.percentLeft else { return metric.accessibilitySummary }
-        let note = switch UsageBoardLayout.barTone(percentLeft: left) {
-        case .healthy:
-            L("More than half left")
-        case .warning:
-            L("Under half left")
-        case .critical:
-            L("Almost out")
-        case .empty:
-            L("None left")
-        }
-        return metric.accessibilitySummary + ", " + note
-    }
-}
-
-private struct UsageBoardProgressBar: View {
-    /// Width and color both follow percent remaining. 0 draws an empty track.
-    let percentLeft: Double
-    let pacePercent: Double?
-
-    var body: some View {
-        GeometryReader { proxy in
-            let width = proxy.size.width
-            let left = min(100, max(0, self.percentLeft))
-            let tone = UsageBoardLayout.barTone(percentLeft: left)
-            ZStack(alignment: .leading) {
-                Capsule().fill(UsageBoardTheme.track)
-                if tone != .empty {
-                    Capsule()
-                        .fill(UsageBoardTheme.barFill(for: tone))
-                        .frame(width: max(0, width * left / 100))
-                }
-                if let pacePercent, tone != .empty {
-                    let pace = min(100, max(0, pacePercent))
-                    Capsule()
-                        .fill(UsageBoardTheme.primaryText)
-                        .frame(width: 1, height: UsageBoardMetrics.progress + 4)
-                        .offset(x: max(0, width * pace / 100 - 1))
-                }
-            }
-        }
-        .frame(height: UsageBoardMetrics.progress)
-        .accessibilityHidden(true)
-    }
-}
-
-private enum UsageBoardDetailGrid {
-    static func columns(width: CGFloat, count: Int) -> [GridItem] {
-        let columnCount = UsageBoardLayout.metricColumnCount(
-            detailWidth: Double(width),
-            itemCount: count)
+    private func columns(count: Int) -> [GridItem] {
+        let n = UsageBoardLayout.metricColumnCount(detailWidth: Double(self.width), itemCount: count)
         return Array(
-            repeating: GridItem(.flexible(minimum: 160), spacing: UsageBoardMetrics.gap, alignment: .top),
-            count: columnCount)
-    }
-}
-
-private struct UsageBoardStatGrid: View {
-    let lines: [UsageBoardDetailLine]
-    let width: CGFloat
-
-    var body: some View {
-        let valued = self.lines.filter { !$0.value.isEmpty }
-        let notes = self.lines.filter(\.value.isEmpty)
-        VStack(alignment: .leading, spacing: UsageBoardMetrics.gap) {
-            if !valued.isEmpty {
-                LazyVGrid(
-                    columns: UsageBoardDetailGrid.columns(width: self.width, count: valued.count),
-                    alignment: .leading,
-                    spacing: UsageBoardMetrics.gap)
-                {
-                    ForEach(valued) { line in
-                        self.tile(line)
-                    }
-                }
-            }
-            ForEach(notes) { line in
-                Text(line.label)
-                    .boardFont(.caption)
-                    .foregroundStyle(UsageBoardTheme.secondaryText)
-                    .lineLimit(2)
-                    .textSelection(.enabled)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-            }
-        }
-    }
-
-    private func tile(_ line: UsageBoardDetailLine) -> some View {
-        VStack(alignment: .leading, spacing: UsageBoardMetrics.gap) {
-            Text(line.label)
-                .boardFont(.caption)
-                .foregroundStyle(UsageBoardTheme.secondaryText)
-                .lineLimit(2)
-            Text(line.value)
-                .boardFont(.subtitle, weight: .semibold, digits: true)
-                .foregroundStyle(UsageBoardTheme.primaryText)
-                .lineLimit(2)
-                .textSelection(.enabled)
-        }
-        .padding(UsageBoardMetrics.pad)
-        .frame(maxWidth: .infinity, minHeight: UsageBoardMetrics.control, alignment: .topLeading)
-        .background(
-            RoundedRectangle(cornerRadius: UsageBoardMetrics.radiusCard, style: .continuous)
-                .fill(UsageBoardTheme.card))
-        .boardHairline(radius: UsageBoardMetrics.radiusCard)
-        .accessibilityElement(children: .combine)
-    }
-}
-
-private struct UsageBoardStatusBanner: View {
-    let text: String
-    let detail: String
-    let attention: UsageBoardAttention
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            UsageBoardStatusBadge(text: self.text, attention: self.attention)
-            if !self.detail.isEmpty, self.detail != self.text {
-                Text(self.detail)
-                    .boardFont(.body)
-                    .foregroundStyle(UsageBoardTheme.primaryText)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .textSelection(.enabled)
-            }
-        }
-        .padding(UsageBoardMetrics.pad)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(
-            RoundedRectangle(cornerRadius: UsageBoardMetrics.radiusItem, style: .continuous)
-                .fill(UsageBoardStatusText.fill(for: self.attention)))
-        .boardHairline(radius: UsageBoardMetrics.radiusItem)
-    }
-}
-
-private struct UsageBoardStatusBadge: View {
-    let text: String
-    let attention: UsageBoardAttention
-
-    var body: some View {
-        Text(self.text)
-            .boardFont(.micro)
-            .foregroundStyle(UsageBoardStatusText.foreground(for: self.attention))
-            .padding(.horizontal, UsageBoardMetrics.pad)
-            .padding(.vertical, 1)
-            .background(Capsule().fill(UsageBoardStatusText.fill(for: self.attention)))
-    }
-}
-
-private enum UsageBoardStatusText {
-    static func label(for attention: UsageBoardAttention) -> String? {
-        switch attention {
-        case .needsSignIn:
-            L("Needs sign-in")
-        case .error:
-            L("Couldn't load usage")
-        case .loading:
-            L("Refreshing")
-        case .ready:
-            nil
-        }
-    }
-
-    static func fill(for attention: UsageBoardAttention) -> Color {
-        switch attention {
-        case .needsSignIn, .loading:
-            UsageBoardTheme.signInFill
-        case .error:
-            UsageBoardTheme.errorFill
-        case .ready:
-            UsageBoardTheme.cardRaised
-        }
-    }
-
-    static func foreground(for attention: UsageBoardAttention) -> Color {
-        switch attention {
-        case .needsSignIn, .loading:
-            UsageBoardTheme.signInText
-        case .error:
-            UsageBoardTheme.errorText
-        case .ready:
-            UsageBoardTheme.secondaryText
-        }
-    }
-}
-
-private struct UsageBoardIconBadge: View {
-    let monogram: String
-    let icon: NSImage?
-
-    var body: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 4, style: .continuous)
-                .fill(UsageBoardTheme.cardRaised)
-                .boardHairline(radius: 4)
-            if let icon {
-                Image(nsImage: icon)
-                    .resizable()
-                    .renderingMode(icon.isTemplate ? .template : .original)
-                    .scaledToFit()
-                    .padding(1)
-                    .foregroundStyle(UsageBoardTheme.primaryText)
-            } else {
-                Text(self.monogram)
-                    .boardFont(.micro, weight: .semibold)
-                    .foregroundStyle(UsageBoardTheme.primaryText)
-            }
-        }
-        .frame(width: UsageBoardMetrics.icon, height: UsageBoardMetrics.icon)
-        .accessibilityHidden(true)
-    }
-}
-
-struct UsageBoardCommandButton: View {
-    let title: String
-    let systemImage: String
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: self.action) {
-            HStack(spacing: UsageBoardMetrics.gap) {
-                Image(systemName: self.systemImage)
-                    .font(.system(size: 14, weight: .regular))
-                Text(self.title)
-                    .boardFont(.caption)
-            }
-            .foregroundStyle(UsageBoardTheme.primaryText)
-            .padding(.horizontal, 10)
-            .frame(maxWidth: .infinity, minHeight: UsageBoardMetrics.control, alignment: .leading)
-            .background(
-                RoundedRectangle(cornerRadius: UsageBoardMetrics.radiusItem, style: .continuous)
-                    .fill(UsageBoardTheme.card))
-            .boardHairline(radius: UsageBoardMetrics.radiusItem)
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(UsageBoardHitButtonStyle())
-        .accessibilityLabel(self.title)
-    }
-}
-
-private struct UsageBoardSkeletonRow: View {
-    var body: some View {
-        RoundedRectangle(cornerRadius: UsageBoardMetrics.radiusItem, style: .continuous)
-            .fill(UsageBoardTheme.card)
-            .frame(height: UsageBoardMetrics.control)
-            .accessibilityHidden(true)
-    }
-}
-
-private struct UsageBoardSkeletonDetail: View {
-    var body: some View {
-        VStack(alignment: .leading, spacing: UsageBoardMetrics.gap) {
-            RoundedRectangle(cornerRadius: UsageBoardMetrics.radiusCard, style: .continuous)
-                .fill(UsageBoardTheme.card)
-                .frame(height: 36)
-            HStack(spacing: UsageBoardMetrics.gap) {
-                ForEach(0..<3, id: \.self) { _ in
-                    RoundedRectangle(cornerRadius: UsageBoardMetrics.radiusItem, style: .continuous)
-                        .fill(UsageBoardTheme.cardRaised)
-                        .frame(height: 64)
-                }
-            }
-        }
-        .accessibilityHidden(true)
+            repeating: GridItem(.flexible(minimum: 160), spacing: MacSpace.chromeGap, alignment: .top),
+            count: max(1, n))
     }
 }
 
 #if DEBUG
 #Preview("Usage board") {
     UsageBoardView(session: UsageBoardPreviewData.session())
-        .frame(width: 780, height: 460)
+        .frame(width: CGFloat(UsageBoardLayout.preferredWidth), height: CGFloat(UsageBoardLayout.preferredHeight))
 }
 #endif

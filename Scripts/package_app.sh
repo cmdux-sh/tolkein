@@ -515,6 +515,24 @@ build_widget_extension() {
   local archs="${ARCH_LIST[*]}"
 
   mkdir -p "$derived_dir"
+  # The build below skips package updates, so this derived folder's package clones only know the
+  # revisions they were first fetched at. When the pins change (a dependency bump), fetch once.
+  local resolved="$project_dir/project.xcworkspace/xcshareddata/swiftpm/Package.resolved"
+  local pins_stamp="$derived_dir/package-pins.sha256"
+  local pins_hash
+  pins_hash="$(shasum -a 256 "$resolved" | cut -d' ' -f1)"
+  if [[ ! -f "$pins_stamp" || "$(cat "$pins_stamp")" != "$pins_hash" ]]; then
+    echo "Widget package pins changed; fetching pinned packages." >&2
+    if ! xcodebuild -resolvePackageDependencies \
+      -project "$project_dir" \
+      -scheme CodexBarWidgetExtension \
+      -derivedDataPath "$derived_dir" \
+      -disableAutomaticPackageResolution >"$derived_dir/resolve.log" 2>&1; then
+      echo "ERROR: Could not fetch the widget's pinned packages; see $derived_dir/resolve.log" >&2
+      return 1
+    fi
+    echo "$pins_hash" >"$pins_stamp"
+  fi
   echo "Building CodexBarWidget Xcode extension (${xcode_conf}, ${archs})." >&2
   xcodebuild \
     -project "$project_dir" \

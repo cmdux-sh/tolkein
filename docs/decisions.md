@@ -50,3 +50,35 @@ it, and pins GitHub's host keys.
 
 Why: Arturo chose to keep the package private with a CI credential. A deploy key is scoped to one repository and
 read-only, unlike a personal access token. The package is first-party, so it needs no bundled third-party notice.
+
+## 2026-11-07: The Usage Board follows the app's appearance
+
+The Usage Board takes its colors, radii, card surface and buttons from MacDesignSystem and no longer forces dark mode. It follows light or dark like the rest of the Mac UI. Dark keeps the near-black floor; light uses white raised cards on the near-white window. The board's amber warning color stays local until MacDesignSystem has a warning token.
+
+Why: one appearance-aware look across the app. Arturo's design system already defines both appearances, so the board needs no separate dark-only palette.
+
+## 2026-11-07: The Usage Board is rebuilt from library components
+
+The first restyle only swapped token colours onto the board's own hand-built rows, cards and bars, and Arturo judged it a mess. The board is now built from MacDesignSystem 0.3.0 components, guided by its design-guide MCP:
+- The sidebar is `MacSourceList`, with each provider's logo, a short value ("42%") and a status symbol.
+- App commands are plain library buttons in a footer.
+- Usage windows are `MacMeter` and statuses are `MacStatusLabel`.
+- Overview cards are `macCard`, and only clickable providers get one.
+
+Providers that need attention share one "Needs attention" card instead of a red pill each. The board's local theme (colours, metrics, fonts) is gone.
+
+Why: Arturo asked for the board to be rebuilt with the MCP. The missing pieces (meter, status label, richer sidebar rows) were added to the library first, so other apps get them too.
+
+## 2026-11-07: The Usage Board uses the panel chrome
+
+After reviewing the rebuilt board in the running app, Arturo found that nothing was pinned at the top, provider actions formed a band of big buttons, fact labels wrapped and notes repeated facts. He also flagged button sizes, the chrome, font sizes, hierarchy, spacing and the bars. The board moves to MacDesignSystem 0.4.0:
+- `MacWindow(chrome: .panel)`: a glass rim and inset sidebar, with a pinned title row showing the selected provider, its plan and freshness.
+- Refresh and a "…" menu of provider commands sit in the title row.
+- "All providers" is the first row of the provider list.
+- App commands (Classic menu, Settings, Quit) form a small footer.
+- Facts are a `MacKeyValueList`.
+- Notes that only restate facts are dropped.
+- Meter captions are one line each.
+- When every failing provider has the same problem, the "Needs attention" card says it once.
+
+Why: Arturo chose to add the missing components and MCP rules first, then redo the board with them. The review rendered real-length data, a mostly failing provider list, and a short height that must scroll.
