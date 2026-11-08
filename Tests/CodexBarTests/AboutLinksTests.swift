@@ -82,7 +82,7 @@ struct AboutLinksTests {
         let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
             .deletingLastPathComponent().deletingLastPathComponent()
         return try String(
-            contentsOf: root.appendingPathComponent("Sources/CodexBar/Settings/PreferencesAboutSettingsPane.swift"),
+            contentsOf: root.appendingPathComponent("Sources/CodexBar/Settings/Panes/AboutSettingsPane.swift"),
             encoding: .utf8)
     }
 }
