@@ -3,36 +3,52 @@ import Foundation
 import Testing
 @testable import CodexBar
 
+@MainActor
 struct SettingsSearchTests {
-    private static let panes: [SettingsPane] = [.general, .menuBar, .menu, .integrations, .about]
-
-    private static func filtered(_ query: String) -> [SettingsPane] {
-        CodexBarLocalizationOverride.$appLanguage.withValue("en") {
-            SettingsSearch.filteredPanes(self.panes, query: query)
-        }
-    }
-
-    @Test
-    func `empty query keeps every pane in order`() {
-        #expect(Self.filtered("  ") == Self.panes)
-    }
-
-    @Test
-    func `pane titles match case insensitively`() {
-        #expect(Self.filtered("INTEGRAT") == [.integrations])
-    }
-
-    @Test
-    func `every query word must match the same pane`() {
-        #expect(Self.filtered("menu") == [.menuBar, .menu])
-        #expect(Self.filtered("menu bar") == [.menuBar])
-        #expect(Self.filtered("menu general").isEmpty)
-    }
-
     @Test
     func `matching ignores diacritics`() {
         #expect(SettingsSearch.matches(words: ["CAFE", "lo"], fields: ["Café login"]))
         #expect(!SettingsSearch.matches(words: ["cafe", "missing"], fields: ["Café login"]))
+    }
+
+    @Test
+    func `choosing the best result opens its pane and targets its row until the jump ends`() throws {
+        try CodexBarLocalizationOverride.$appLanguage.withValue("en") {
+            let providers = UsageProvider.allCases.map { provider in
+                SettingsSearchEntry.provider(provider, displayName: SettingsPane.provider(provider.instanceID).title)
+            }
+            let results = SettingsSearchResults.results(
+                for: "keychain",
+                entries: SettingsSearchIndex.entries(includingDebug: false),
+                providers: providers)
+            let best = try #require(results.settings.first)
+            #expect(best.pane == .privacy)
+            #expect(results.settings.allSatisfy { if case .provider = $0.pane { false } else { true } })
+
+            let selection = PreferencesSelection(userDefaults: InMemoryUserDefaults())
+            selection.reveal(best)
+            #expect(selection.pane == .privacy)
+            #expect(selection.searchTarget == best.id)
+
+            // A newer jump wins; ending an older one leaves it alone.
+            selection.clearSearchTarget(matching: "general/language")
+            #expect(selection.searchTarget == best.id)
+            selection.clearSearchTarget(matching: best.id)
+            #expect(selection.searchTarget == nil)
+
+            // Going back to a pane does not tint its row again.
+            selection.reveal(best)
+            selection.goBack()
+            #expect(selection.pane == .general)
+            #expect(selection.searchTarget == nil)
+
+            // Providers are found by their CLI aliases too, and only in the providers group.
+            let kilo = SettingsSearchResults.results(for: "kilo-ai", entries: [], providers: providers)
+            #expect(kilo.settings.isEmpty)
+            #expect(kilo.providers.map(\.pane) == [.provider(UsageProvider.kilo.instanceID)])
+            #expect(SettingsSearchResults.results(for: "zzqx", entries: SettingsSearchIndex.allEntries, providers: providers)
+                .isEmpty)
+        }
     }
 }
 

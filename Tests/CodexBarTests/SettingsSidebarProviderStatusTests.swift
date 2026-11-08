@@ -1,10 +1,9 @@
-import AppKit
 import CodexBarCore
-import SwiftUI
+import InternalUI
 import Testing
 @testable import CodexBar
 
-struct SettingsSidebarStatusDotTests {
+struct SettingsSidebarProviderStatusTests {
     @Test
     func `Critical status describes provider service health`() {
         CodexBarLocalizationOverride.$appLanguage.withValue("en") {
@@ -54,23 +53,85 @@ struct SettingsSidebarStatusDotTests {
         }
     }
 
-    @Test
-    func `missing service status uses the unknown color`() {
-        #expect(SettingsSidebarProviderRow.statusColor(for: nil) == .gray)
-        #expect(SettingsSidebarProviderRow.statusColor(for: nil)
-            == SettingsSidebarProviderRow.statusColor(for: .unknown))
+    @Test(arguments: [
+        (ProviderStatusIndicator.none, MacStatusTone?.none),
+        (.unknown, nil),
+        (.minor, .warning),
+        (.major, .error),
+        (.critical, .error),
+        (.maintenance, .neutral),
+    ])
+    func `service incidents show a tone and healthy or unknown status stays quiet`(
+        indicator: ProviderStatusIndicator,
+        tone: MacStatusTone?)
+    {
+        #expect(SettingsSidebarProviderStatus.tone(for: indicator) == tone)
     }
 
-    @Test(arguments: [
-        (ProviderStatusIndicator.none, Color.green),
-        (.minor, .yellow),
-        (.major, .orange),
-        (.critical, .red),
-        (.maintenance, .gray),
-        (.unknown, .gray),
-    ])
-    func `fetched service indicators retain their colors`(indicator: ProviderStatusIndicator, color: Color) {
-        #expect(SettingsSidebarProviderRow.statusColor(for: indicator) == color)
+    @Test
+    func `missing service status stays quiet like unknown`() {
+        #expect(SettingsSidebarProviderStatus.tone(for: nil) == nil)
+    }
+
+    @Test
+    func `refreshing shows a spinner before any other status`() {
+        CodexBarLocalizationOverride.$appLanguage.withValue("en") {
+            let status = SettingsSidebarProviderStatus.resolve(
+                isEnabled: true,
+                isRefreshing: true,
+                error: "Sign-in expired",
+                statusChecksEnabled: true,
+                indicator: .critical)
+            #expect(status == SettingsSidebarProviderStatus(tone: .busy, text: "Refreshing"))
+        }
+    }
+
+    @Test
+    func `a failed refresh shows an error with its message`() {
+        let status = SettingsSidebarProviderStatus.resolve(
+            isEnabled: true,
+            isRefreshing: false,
+            error: "Sign-in expired",
+            statusChecksEnabled: true,
+            indicator: .minor)
+        #expect(status == SettingsSidebarProviderStatus(tone: .error, text: "Sign-in expired"))
+    }
+
+    @Test
+    func `service incidents carry their status text for the tooltip`() {
+        CodexBarLocalizationOverride.$appLanguage.withValue("en") {
+            let status = SettingsSidebarProviderStatus.resolve(
+                isEnabled: true,
+                isRefreshing: false,
+                error: nil,
+                statusChecksEnabled: true,
+                indicator: .major)
+            #expect(status == SettingsSidebarProviderStatus(
+                tone: .error,
+                text: "Provider service status: Major outage"))
+        }
+    }
+
+    @Test
+    func `disabled providers and status checks that are off show no status`() {
+        #expect(SettingsSidebarProviderStatus.resolve(
+            isEnabled: false,
+            isRefreshing: false,
+            error: "Sign-in expired",
+            statusChecksEnabled: true,
+            indicator: .critical) == nil)
+        #expect(SettingsSidebarProviderStatus.resolve(
+            isEnabled: true,
+            isRefreshing: false,
+            error: nil,
+            statusChecksEnabled: false,
+            indicator: .critical) == nil)
+        #expect(SettingsSidebarProviderStatus.resolve(
+            isEnabled: true,
+            isRefreshing: false,
+            error: nil,
+            statusChecksEnabled: true,
+            indicator: ProviderStatusIndicator.none) == nil)
     }
 
     @Test
@@ -97,32 +158,5 @@ struct SettingsSidebarStatusDotTests {
                 statusChecksEnabled: true,
                 indicator: ProviderStatusIndicator.none) == "Codex — Provider service status: Operational")
         }
-    }
-
-    @MainActor
-    @Test
-    func `render synthetic sidebar proof when requested`() throws {
-        guard let path = ProcessInfo.processInfo.environment["CODEXBAR_SIDEBAR_SCREENSHOT_PATH"] else { return }
-        let settings = testSettingsStore(suiteName: #function, userDefaults: InMemoryUserDefaults())
-        settings.statusChecksEnabled = true
-        let store = UsageStore(
-            fetcher: UsageFetcher(environment: [:]),
-            browserDetection: BrowserDetection(cacheTTL: 0),
-            settings: settings,
-            startupBehavior: .testing,
-            environmentBase: [:])
-        let renderer = ImageRenderer(content: SettingsSidebarProviderRow(
-            provider: .codex,
-            store: store,
-            isEnabled: .constant(true))
-            .frame(width: 240)
-            .padding(16)
-            .environment(\.colorScheme, .light)
-            .background(Color(nsColor: .windowBackgroundColor)))
-        renderer.scale = 2
-        let tiff = try #require(renderer.nsImage?.tiffRepresentation)
-        let bitmap = try #require(NSBitmapImageRep(data: tiff))
-        let png = try #require(bitmap.representation(using: .png, properties: [:]))
-        try png.write(to: URL(fileURLWithPath: path))
     }
 }
