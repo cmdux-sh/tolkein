@@ -133,3 +133,12 @@ Arturo approved this structure for the rebuilt Settings window.
 The UI now says **Tolkein**, and About links to cmdux-sh/tolkein. About and Acknowledgements keep "Based on CodexBar by Peter Steinberger (MIT)", as the license requires.
 
 Why: the old Settings scattered related controls across panes, embedded a dashboard and duplicated its chrome for two OS versions. Tolkein is now its own app, so its name belongs in its UI, with the credit the MIT license asks for.
+
+## 2026-11-07: Slower agent use for the rest of the Settings rebuild
+
+Arturo asked to cut credit use while the seven Settings agents were about halfway.
+- **The seven agents were stopped** to free the Mac mini. Their work is saved as "WIP, unverified" checkpoint commits on the seven `settings-*` branches, and I finish each area directly, one at a time.
+- **Review:** one Sonnet review covers all seven areas together, instead of one review per PR.
+- **After this round:** no new agents at all; I do the remaining work directly. Builds use `-j 2` so the Mac mini stays usable.
+
+Why: seven agents compiling at once pushed the Mac mini to a load of about 400 on 10 cores and used credits fast. Checkpoint commits keep their edits; only the agents' own context is lost.
