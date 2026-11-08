@@ -187,7 +187,7 @@ private struct SyncDeviceRow: View {
                 MacBadge(L("This Mac"), tone: .accent)
             } else {
                 Button(L("Remove"), role: .destructive, action: self.remove)
-                    .buttonStyle(.mac(.destructive))
+                    .buttonStyle(.mac(.standard))
                     .disabled(!self.canRemove)
             }
         }
