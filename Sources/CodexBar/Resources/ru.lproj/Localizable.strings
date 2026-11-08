@@ -2830,3 +2830,25 @@
 "Paste the WorkBuddy User-Agent as a single request header value." = "Вставьте User-Agent WorkBuddy как одно значение заголовка запроса.";
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "Не удалось прочитать сводку платежей TypeSafe. Откройте https://console.typesafe.ai/billing, чтобы проверить доступ. Если страница открывается, сообщите об ошибке интеграции.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "Файлы cookie сеанса TypeSafe не найдены. Войдите на console.typesafe.ai/billing или вставьте заголовок Cookie.";
+
+/* Settings: Alerts, Sync */
+"settings_alerts_subtitle" = "Уведомления о входе, квоте и сбросах";
+"settings_alerts_section_sign_in" = "Вход и кредиты";
+"settings_alerts_section_quota" = "Квота";
+"settings_alerts_section_delivery" = "Способ оповещения";
+"settings_alerts_delivery_disabled" = "Включите предупреждения о порогах или темпе, чтобы выбрать способ оповещения.";
+"settings_alerts_section_menu_markers" = "Отметки в меню";
+"settings_alerts_overrides_title" = "Настройки для провайдеров";
+"settings_alerts_overrides_footer" = "На странице каждого провайдера в разделе «Провайдеры» можно задать свои пороги для сеанса и недели или отключить предупреждения.";
+"quota_warning_percent_unit" = "%";
+"quota_warning_percent_value" = "%d%%";
+"quota_warning_threshold_named" = "%1$@ %2$@";
+"settings_sync_subtitle" = "Настройки, провайдеры и использование на всех ваших Mac";
+"settings_sync_update_needed" = "Нужно обновление";
+"settings_sync_secrets_confirm_title" = "Синхронизировать ключи API, файлы cookie и токены?";
+"settings_sync_secrets_confirm_message" = "Они копируются на каждый Mac, где выполнен вход в вашу учётную запись iCloud, и защищены сквозным шифрованием iCloud.";
+"settings_sync_secrets_confirm_action" = "Включить секреты";
+"settings_sync_remove_mac_title" = "Удалить «%@»?";
+"settings_sync_remove_mac_message" = "Его запись и синхронизированное использование удаляются из iCloud. Если этот Mac всё ещё синхронизируется, он снова появится при следующей синхронизации.";
+"settings_sync_no_macs_title" = "Нет синхронизированных Mac";
+"settings_sync_no_macs_message" = "Здесь появляется каждый Mac, на котором включена синхронизация iCloud.";

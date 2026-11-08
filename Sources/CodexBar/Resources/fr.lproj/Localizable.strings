@@ -2828,3 +2828,25 @@
 "Paste the WorkBuddy User-Agent as a single request header value." = "Collez le User-Agent de WorkBuddy sous forme d’une seule valeur d’en-tête de requête.";
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "Impossible de lire le récapitulatif de facturation TypeSafe. Ouvrez https://console.typesafe.ai/billing pour vérifier l’accès ; si la page s’ouvre, signalez le problème d’intégration.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "Aucun cookie de session TypeSafe trouvé. Connectez-vous sur console.typesafe.ai/billing ou collez un en-tête Cookie.";
+
+/* Settings: Alerts, Sync */
+"settings_alerts_subtitle" = "Notifications de connexion, de quota et de réinitialisation";
+"settings_alerts_section_sign_in" = "Connexion et crédits";
+"settings_alerts_section_quota" = "Quota";
+"settings_alerts_section_delivery" = "Diffusion";
+"settings_alerts_delivery_disabled" = "Activez les alertes de seuil ou de rythme pour choisir leur mode de diffusion.";
+"settings_alerts_section_menu_markers" = "Repères du menu";
+"settings_alerts_overrides_title" = "Réglages par fournisseur";
+"settings_alerts_overrides_footer" = "La page de chaque fournisseur, dans Fournisseurs, peut définir ses propres seuils de session et hebdomadaires, ou désactiver ses alertes.";
+"quota_warning_percent_unit" = "%";
+"quota_warning_percent_value" = "%d %%";
+"quota_warning_threshold_named" = "%1$@ %2$@";
+"settings_sync_subtitle" = "Réglages, fournisseurs et utilisation sur tous vos Mac";
+"settings_sync_update_needed" = "Mise à jour requise";
+"settings_sync_secrets_confirm_title" = "Synchroniser les clés d’API, cookies et jetons ?";
+"settings_sync_secrets_confirm_message" = "Ils sont copiés sur chaque Mac connecté à votre compte iCloud, protégés par le chiffrement de bout en bout d’iCloud.";
+"settings_sync_secrets_confirm_action" = "Inclure les secrets";
+"settings_sync_remove_mac_title" = "Supprimer « %@ » ?";
+"settings_sync_remove_mac_message" = "Son enregistrement et l’utilisation synchronisée sont supprimés d’iCloud. Si ce Mac synchronise encore, il réapparaîtra lors de sa prochaine synchronisation.";
+"settings_sync_no_macs_title" = "Aucun Mac synchronisé";
+"settings_sync_no_macs_message" = "Chaque Mac qui active la synchronisation iCloud apparaît ici.";

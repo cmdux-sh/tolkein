@@ -2828,3 +2828,25 @@
 "Paste the WorkBuddy User-Agent as a single request header value." = "Klistra in WorkBuddys User-Agent som ett enda värde för förfrågningshuvudet.";
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "Det gick inte att läsa TypeSafes faktureringsöversikt. Öppna https://console.typesafe.ai/billing för att kontrollera åtkomsten. Om sidan öppnas, rapportera integrationsfelet.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "Inga sessionskakor för TypeSafe hittades. Logga in på console.typesafe.ai/billing eller klistra in ett Cookie-huvud.";
+
+/* Settings: Alerts, Sync */
+"settings_alerts_subtitle" = "Notiser om inloggning, kvot och återställningar";
+"settings_alerts_section_sign_in" = "Inloggning och krediter";
+"settings_alerts_section_quota" = "Kvot";
+"settings_alerts_section_delivery" = "Leverans";
+"settings_alerts_delivery_disabled" = "Slå på tröskel- eller taktvarningar för att välja hur de levereras.";
+"settings_alerts_section_menu_markers" = "Menymarkörer";
+"settings_alerts_overrides_title" = "Inställningar per leverantör";
+"settings_alerts_overrides_footer" = "Varje leverantörs sida under Leverantörer kan ange egna trösklar för session och vecka, eller stänga av varningarna.";
+"quota_warning_percent_unit" = "%";
+"quota_warning_percent_value" = "%d %%";
+"quota_warning_threshold_named" = "%1$@ %2$@";
+"settings_sync_subtitle" = "Inställningar, leverantörer och användning på alla dina Mac-datorer";
+"settings_sync_update_needed" = "Uppdatering krävs";
+"settings_sync_secrets_confirm_title" = "Synkronisera API-nycklar, cookies och token?";
+"settings_sync_secrets_confirm_message" = "De kopieras till alla Mac-datorer som är inloggade på ditt iCloud-konto och skyddas av totalsträckskryptering i iCloud.";
+"settings_sync_secrets_confirm_action" = "Inkludera hemligheter";
+"settings_sync_remove_mac_title" = "Ta bort ”%@”?";
+"settings_sync_remove_mac_message" = "Dess post och synkade användning raderas från iCloud. Om den Mac-datorn fortfarande synkar visas den igen nästa gång den synkar.";
+"settings_sync_no_macs_title" = "Inga synkade Mac-datorer";
+"settings_sync_no_macs_message" = "Varje Mac som slår på iCloud-synkronisering visas här.";

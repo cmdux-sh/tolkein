@@ -2831,3 +2831,25 @@
 "Paste the WorkBuddy User-Agent as a single request header value." = "Enganxa el User-Agent del WorkBuddy com un únic valor de capçalera de sol·licitud.";
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "No s'ha pogut llegir el resum de facturació de TypeSafe. Obre https://console.typesafe.ai/billing per comprovar-hi l'accés; si la pàgina s'obre, informa de l'error d'integració.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "No s'han trobat galetes de sessió de TypeSafe. Inicia sessió a console.typesafe.ai/billing o enganxa una capçalera Cookie.";
+
+/* Settings: Alerts, Sync */
+"settings_alerts_subtitle" = "Notificacions d'inici de sessió, quota i restabliments";
+"settings_alerts_section_sign_in" = "Inici de sessió i crèdits";
+"settings_alerts_section_quota" = "Quota";
+"settings_alerts_section_delivery" = "Lliurament";
+"settings_alerts_delivery_disabled" = "Activeu els avisos de llindar o de ritme per triar com arriben.";
+"settings_alerts_section_menu_markers" = "Marques del menú";
+"settings_alerts_overrides_title" = "Excepcions per proveïdor";
+"settings_alerts_overrides_footer" = "La pàgina de cada proveïdor, a Proveïdors, pot definir els seus propis llindars de sessió i setmanals, o desactivar-ne els avisos.";
+"quota_warning_percent_unit" = "%";
+"quota_warning_percent_value" = "%d%%";
+"quota_warning_threshold_named" = "%1$@ %2$@";
+"settings_sync_subtitle" = "Configuració, proveïdors i ús a tots els vostres Mac";
+"settings_sync_update_needed" = "Cal actualitzar";
+"settings_sync_secrets_confirm_title" = "Voleu sincronitzar les claus d'API, les galetes i els tokens?";
+"settings_sync_secrets_confirm_message" = "Es copien a cada Mac que hagi iniciat sessió al vostre compte d'iCloud, protegits amb el xifratge d'extrem a extrem d'iCloud.";
+"settings_sync_secrets_confirm_action" = "Incloure els secrets";
+"settings_sync_remove_mac_title" = "Voleu eliminar “%@”?";
+"settings_sync_remove_mac_message" = "Se n'eliminen de l'iCloud el registre i l'ús sincronitzat. Si aquell Mac encara sincronitza, tornarà a aparèixer la propera vegada que ho faci.";
+"settings_sync_no_macs_title" = "No hi ha cap Mac sincronitzat";
+"settings_sync_no_macs_message" = "Aquí apareix cada Mac que activa la sincronització amb l'iCloud.";
