@@ -265,6 +265,8 @@ final class StatusItemController: NSObject, NSMenuDelegate, StatusItemControllin
 
     let preferencesSelection: PreferencesSelection
     var settingsOpenHandler: (@MainActor (SettingsPane?) -> Void)?
+    /// Opens the Spend window; nil opens the app's shared one. Tests set a recorder.
+    var spendWindowOpenHandler: SpendWindowOpening?
     var animationDriver: DisplayLinkDriver?
     var animationPhase: Double = 0
     var animationPattern: LoadingPattern = .knightRider

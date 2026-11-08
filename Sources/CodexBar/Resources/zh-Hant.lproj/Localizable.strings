@@ -2807,3 +2807,12 @@
 "Paste the WorkBuddy User-Agent as a single request header value." = "將 WorkBuddy 的 User-Agent 貼上為單一請求標頭值。";
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "無法讀取 TypeSafe 帳單總覽。請開啟 https://console.typesafe.ai/billing 檢查存取權限；如果頁面可以開啟，請回報整合錯誤。";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "找不到 TypeSafe 工作階段 Cookie。請在 console.typesafe.ai/billing 登入或貼上 Cookie 標頭。";
+
+/* Settings: Costs, Spend window */
+"Local estimated cost history" = "本機預估費用歷史";
+"Open Spend window" = "開啟支出視窗";
+"Tracking" = "追蹤";
+"Time zone" = "時區";
+"Export" = "匯出";
+"Turn On" = "開啟";
+"Requires OpenCodex usage logs." = "需要 OpenCodex 使用日誌。";

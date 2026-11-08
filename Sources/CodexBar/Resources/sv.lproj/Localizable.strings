@@ -2828,3 +2828,12 @@
 "Paste the WorkBuddy User-Agent as a single request header value." = "Klistra in WorkBuddys User-Agent som ett enda värde för förfrågningshuvudet.";
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "Det gick inte att läsa TypeSafes faktureringsöversikt. Öppna https://console.typesafe.ai/billing för att kontrollera åtkomsten. Om sidan öppnas, rapportera integrationsfelet.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "Inga sessionskakor för TypeSafe hittades. Logga in på console.typesafe.ai/billing eller klistra in ett Cookie-huvud.";
+
+/* Settings: Costs, Spend window */
+"Local estimated cost history" = "Lokal historik över uppskattade kostnader";
+"Open Spend window" = "Öppna utgiftsfönstret";
+"Tracking" = "Spårning";
+"Time zone" = "Tidszon";
+"Export" = "Exportera";
+"Turn On" = "Slå på";
+"Requires OpenCodex usage logs." = "Kräver OpenCodex-användningsloggar.";
