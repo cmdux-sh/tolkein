@@ -109,3 +109,14 @@ Why: the package, its catalog app and its MCP server now share one product name.
 `.claude/settings.json` (fork-only) adds a Claude Code `PostToolUse` hook for Edit, MultiEdit and Write. It runs `internal-ui-mcp hook` from `~/.local/bin`, which checks the edited file when it is Swift that imports InternalUI. When there are findings, the hook exits 2, and Claude Code hands the report to the agent to fix. On machines without the server installed, the hook does nothing.
 
 Why: the Liner research on MCP practice found that instructions and tool descriptions only nudge agents. A hook is the one way to make the check happen every time. The Usage Board's files pass the checker today, so the hook only reports new problems.
+
+## 2026-11-07: Tolkein is its own app; the UI is rebuilt on Internal UI, starting with Settings
+
+Arturo decided that Tolkein no longer syncs with `steipete/CodexBar`: "this is a new app from now on."
+- **Upstream constraints dropped:** the earlier rules that kept merges with upstream clean no longer apply. That covers the root README, upstream's `AGENTS.md`, and keeping upstream files untouched.
+- **UI rebuild:** the UI is rebuilt in place on Internal UI. When a surface is rebuilt, the old CodexBar version of it is deleted rather than kept beside it.
+- **Order:** Settings is rebuilt first; the Spend Dashboard and the menu cards follow.
+- **Simplify:** the Settings rebuild may regroup and merge panes. Arturo sees the proposed structure before it is built.
+- **Execution:** parallel agents, one PR per area, each with offscreen snapshot tests and a Sonnet review before merging.
+
+Why: Tolkein has diverged into its own product: its own design system, macOS 15, its own Usage Board and agent rules. Keeping upstream's files mergeable no longer pays for the constraints it imposes on the UI.
