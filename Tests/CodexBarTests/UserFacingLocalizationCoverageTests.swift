@@ -117,7 +117,7 @@ struct UserFacingLocalizationCoverageTests {
             "Sources/CodexBar/Settings/PreferencesMenuPane.swift": [
                 "title: \"Stay Awake\",",
             ],
-            "Sources/CodexBar/Settings/PreferencesTransferSection.swift": [
+            "Sources/CodexBar/Settings/Panes/PrivacySettingsPane.swift": [
                 "Text(\"Portable Preferences\")",
                 "Button(\"Export…\")",
                 "Button(\"Import…\")",

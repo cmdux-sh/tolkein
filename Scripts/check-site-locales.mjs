@@ -71,7 +71,7 @@ const expectedCodes = [
 ];
 const catalogCodes = localeCatalog.map((locale) => locale.code);
 const appLanguageSource = fs.readFileSync(
-  path.join(repoRoot, "Sources/CodexBar/Settings/PreferencesGeneralPane.swift"),
+  path.join(repoRoot, "Sources/CodexBar/Settings/AppLanguage.swift"),
   "utf8",
 );
 

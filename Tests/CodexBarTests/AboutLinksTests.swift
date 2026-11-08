@@ -1,4 +1,5 @@
 import AppKit
+import InternalUI
 import SwiftUI
 import Testing
 @testable import CodexBar
@@ -7,18 +8,19 @@ import Testing
 struct AboutLinksTests {
     @Test
     func `about names Tolkein and links to its repository`() {
-        #expect(AboutPane.appName == "Tolkein")
-        #expect(AboutPane.projectHomeURL == "https://github.com/cmdux-sh/tolkein")
+        #expect(AboutSettingsPane.appName == "Tolkein")
+        #expect(AboutSettingsPane.projectHomeURL == "https://github.com/cmdux-sh/tolkein")
     }
 
     @Test
     func `about lists only the GitHub link and acknowledgements`() throws {
         let source = try Self.aboutSource()
-        let rows = source.components(separatedBy: "AboutLinkRow(").dropFirst()
-        #expect(rows.count == 1)
-        #expect(source.contains("title: L(\"link_github\")"))
-        #expect(source.contains("url: Self.projectHomeURL"))
-        #expect(source.contains("self.selection.showAcknowledgements()"))
+        let rows = source.components(separatedBy: "MacSettingsLinkRow(").dropFirst()
+        #expect(rows.count == 2)
+        #expect(source.contains("MacSettingsLinkRow(L(\"link_github\")"))
+        #expect(source.contains("MacSettingsLinkRow(L(\"link_acknowledgements\")"))
+        #expect(source.contains("URL(string: AboutSettingsPane.projectHomeURL)"))
+        #expect(source.contains("self.showsAcknowledgements = true"))
         for retired in ["link_website", "link_twitter", "link_email", "mailto:", "twitter.com", "codexbar.app"] {
             #expect(!source.contains(retired), "\(retired)")
         }
@@ -28,8 +30,8 @@ struct AboutLinksTests {
 
     @Test
     func `the CodexBar credit links to the original project`() throws {
-        #expect(AboutPane.originalProjectURL == "https://github.com/steipete/CodexBar")
-        let credit = CodexBarLocalizationOverride.$appLanguage.withValue("en") { AboutPane.creditText() }
+        #expect(AboutSettingsPane.originalProjectURL == "https://github.com/steipete/CodexBar")
+        let credit = CodexBarLocalizationOverride.$appLanguage.withValue("en") { AboutSettingsPane.creditText() }
         #expect(String(credit.characters) == "Based on CodexBar by Peter Steinberger (MIT License)")
         let expected = try #require(URL(string: "https://github.com/steipete/CodexBar"))
         #expect(credit.runs.compactMap(\.link) == [expected])
@@ -58,20 +60,18 @@ struct AboutLinksTests {
     func `about links render without opening a browser`() throws {
         guard let directory = ProcessInfo.processInfo.environment["CODEXBAR_ABOUT_WEBSITE_PROOF_DIR"] else { return }
         try CodexBarLocalizationOverride.$appLanguage.withValue("en") {
-            let url = AboutPane.projectHomeURL
-            let renderer = ImageRenderer(content: VStack(alignment: .leading, spacing: 16) {
-                AboutLinkRow(icon: "chevron.left.slash.chevron.right", title: L("link_github"), url: url)
-                Divider()
-                Text(verbatim: "Configured destination (proof annotation)").font(.caption)
-                Text(url).font(.system(.body, design: .monospaced))
-            }
-            .padding(24)
-            .frame(width: 530)
-            .environment(\.colorScheme, .light)
-            .background(Color.white))
-            renderer.scale = 2
-            let bitmap = try NSBitmapImageRep(cgImage: #require(renderer.cgImage))
-            let png = try #require(bitmap.representation(using: .png, properties: [:]))
+            let url = AboutSettingsPane.projectHomeURL
+            let png = try #require(MacSnapshot.png(
+                VStack(alignment: .leading, spacing: MacSpace.settingsSectionGap) {
+                    MacSettingsSection(L("section_links")) {
+                        MacSettingsLinkRow(L("link_github"), systemImage: "chevron.left.slash.chevron.right") {}
+                    }
+                    Text(verbatim: "Configured destination (proof annotation)").font(MacTextRole.caption.font)
+                    Text(url).font(MacTextRole.body.font).monospaced()
+                }
+                .padding(MacSpace.settingsPagePadding),
+                appearance: .light,
+                width: 530))
             let output = URL(fileURLWithPath: directory, isDirectory: true)
             try FileManager.default.createDirectory(at: output, withIntermediateDirectories: true)
             try png.write(to: output.appendingPathComponent("about.png"))
@@ -82,7 +82,7 @@ struct AboutLinksTests {
         let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
             .deletingLastPathComponent().deletingLastPathComponent()
         return try String(
-            contentsOf: root.appendingPathComponent("Sources/CodexBar/Settings/PreferencesAboutPane.swift"),
+            contentsOf: root.appendingPathComponent("Sources/CodexBar/Settings/PreferencesAboutSettingsPane.swift"),
             encoding: .utf8)
     }
 }
