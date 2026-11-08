@@ -23,7 +23,7 @@ struct UsageStoreMenuCardModelTests {
 
                 let settings = store.menuCardModel(for: .claude, context: .settings)
                 let message = try #require(store.userFacingError(for: .claude))
-                let pane = ProvidersPane(settings: store.settings, store: store)
+                let pane = ProviderSettingsPageModel(settings: store.settings, store: store)
                 let preview = try #require(pane._test_providerErrorDisplay(for: .claude)?.preview)
                 for text in [settings.subtitleText, message, preview] {
                     #expect(text.components(separatedBy: "Showing last-known usage").count == 2)

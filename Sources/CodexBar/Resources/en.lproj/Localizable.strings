@@ -2834,3 +2834,8 @@
 "Paste the WorkBuddy User-Agent as a single request header value." = "Paste the WorkBuddy User-Agent as a single request header value.";
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header.";
+
+/* Settings: Providers */
+"Sign-in & connection" = "Sign-in & connection";
+"Remove token account?" = "Remove token account?";
+"%@ and its saved credential will be removed from Tolkein." = "%@ and its saved credential will be removed from Tolkein.";

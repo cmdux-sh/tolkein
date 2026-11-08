@@ -62,7 +62,7 @@ struct OllamaManualCookieProofTests {
             Text("Ollama · synthetic empty Manual configuration").font(.headline).padding(.horizontal, 20)
             Form {
                 Section("Connection") {
-                    ProviderSettingsPickerRowView(picker: picker)
+                    ProviderSettingsPickerRow(picker: picker)
                 }
             }.formStyle(.grouped).frame(height: 150)
             Text(error.localizedDescription).font(.caption).padding(.horizontal, 20)

@@ -123,7 +123,7 @@ struct DoubaoTokenAccountTests {
         settings.updateProviderConfig(provider: .doubao) { $0.source = .cli }
         let originalSource = ProviderRegistry.resolvedSourceMode(provider: .doubao, settings: settings, account: nil)
         let store = self.store(settings)
-        let descriptor = try #require(ProvidersPane(settings: settings, store: store)
+        let descriptor = try #require(ProviderSettingsPageModel(settings: settings, store: store)
             .tokenAccountDescriptor(for: .doubao))
         #expect(descriptor.isVisible?() ?? true)
         #expect(descriptor.accounts().isEmpty)
@@ -167,12 +167,12 @@ struct DoubaoTokenAccountTests {
             settings.addTokenAccount(provider: .doubao, label: account.label, token: account.token)
         }
         let store = self.store(settings)
-        let descriptor = ProvidersPane(settings: settings, store: store).tokenAccountDescriptor(for: .doubao)
+        let descriptor = ProviderSettingsPageModel(settings: settings, store: store).tokenAccountDescriptor(for: .doubao)
         let hosting = NSHostingView(rootView: VStack(alignment: .leading, spacing: 18) {
             Text("Doubao").font(.title2.bold())
             Text("Synthetic account settings").foregroundStyle(.secondary)
             if let descriptor, descriptor.isVisible?() ?? true {
-                ProviderSettingsTokenAccountsRowView(descriptor: descriptor)
+                ProviderTokenAccountsSection(descriptor: descriptor, requestRemoval: { _ in })
             } else {
                 Text("Account editor unavailable")
             }

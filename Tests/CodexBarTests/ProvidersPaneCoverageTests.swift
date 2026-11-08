@@ -12,14 +12,14 @@ struct ProvidersPaneCoverageTests {
         let settings = Self.makeSettingsStore(suite: "ProvidersPaneCoverageTests")
         let store = Self.makeUsageStore(settings: settings)
 
-        ProvidersPaneTestHarness.exercise(settings: settings, store: store)
+        ProviderSettingsPageTestHarness.exercise(settings: settings, store: store)
     }
 
     @Test
     func `claude token account descriptor shows organization field`() throws {
         let settings = Self.makeSettingsStore(suite: "ProvidersPaneCoverageTests-claude-org-field")
         let store = Self.makeUsageStore(settings: settings)
-        let pane = ProvidersPane(settings: settings, store: store)
+        let pane = ProviderSettingsPageModel(settings: settings, store: store)
 
         let claudeDescriptor = try #require(pane._test_tokenAccountDescriptor(for: .claude))
         #expect(claudeDescriptor.showsOrganizationField)
@@ -32,7 +32,7 @@ struct ProvidersPaneCoverageTests {
     func `zai token account descriptor shows team mode controls only for zai`() throws {
         let settings = Self.makeSettingsStore(suite: "ProvidersPaneCoverageTests-zai-team-controls")
         let store = Self.makeUsageStore(settings: settings)
-        let pane = ProvidersPane(settings: settings, store: store)
+        let pane = ProviderSettingsPageModel(settings: settings, store: store)
 
         let zaiDescriptor = try #require(pane._test_tokenAccountDescriptor(for: .zai))
         #expect(zaiDescriptor.showsTeamModeControls)
@@ -45,25 +45,25 @@ struct ProvidersPaneCoverageTests {
 
     @Test
     func `zai team account add button requires organization and project`() {
-        #expect(ProviderSettingsTokenAccountsRowView.isAddDisabled(
+        #expect(ProviderTokenAccountsSection.isAddDisabled(
             label: "Team",
             token: "token",
             showsTeamModeControls: true,
             teamMode: true,
             teamContext: (organizationID: "", projectID: "proj-test")))
-        #expect(ProviderSettingsTokenAccountsRowView.isAddDisabled(
+        #expect(ProviderTokenAccountsSection.isAddDisabled(
             label: "Team",
             token: "token",
             showsTeamModeControls: true,
             teamMode: true,
             teamContext: (organizationID: "org-test", projectID: "")))
-        #expect(!ProviderSettingsTokenAccountsRowView.isAddDisabled(
+        #expect(!ProviderTokenAccountsSection.isAddDisabled(
             label: "Team",
             token: "token",
             showsTeamModeControls: true,
             teamMode: true,
             teamContext: (organizationID: "org-test", projectID: "proj-test")))
-        #expect(!ProviderSettingsTokenAccountsRowView.isAddDisabled(
+        #expect(!ProviderTokenAccountsSection.isAddDisabled(
             label: "Personal",
             token: "token",
             showsTeamModeControls: true,
@@ -73,32 +73,32 @@ struct ProvidersPaneCoverageTests {
 
     @Test
     func `zai team account draft requires complete ids before apply`() {
-        let original = ProviderSettingsTokenAccountsRowView.TeamAccountDraft(
+        let original = ProviderTokenAccountTeamDraft(
             teamMode: false,
             organizationID: "",
             projectID: "")
 
-        #expect(ProviderSettingsTokenAccountsRowView.isTeamDraftApplyDisabled(
+        #expect(ProviderTokenAccountTeamDraft.isApplyDisabled(
             draft: original,
             original: original))
-        #expect(ProviderSettingsTokenAccountsRowView.isTeamDraftApplyDisabled(
-            draft: ProviderSettingsTokenAccountsRowView.TeamAccountDraft(
+        #expect(ProviderTokenAccountTeamDraft.isApplyDisabled(
+            draft: ProviderTokenAccountTeamDraft(
                 teamMode: true,
                 organizationID: "org-test",
                 projectID: ""),
             original: original))
-        #expect(!ProviderSettingsTokenAccountsRowView.isTeamDraftApplyDisabled(
-            draft: ProviderSettingsTokenAccountsRowView.TeamAccountDraft(
+        #expect(!ProviderTokenAccountTeamDraft.isApplyDisabled(
+            draft: ProviderTokenAccountTeamDraft(
                 teamMode: true,
                 organizationID: "org-test",
                 projectID: "proj-test"),
             original: original))
-        #expect(!ProviderSettingsTokenAccountsRowView.isTeamDraftApplyDisabled(
-            draft: ProviderSettingsTokenAccountsRowView.TeamAccountDraft(
+        #expect(!ProviderTokenAccountTeamDraft.isApplyDisabled(
+            draft: ProviderTokenAccountTeamDraft(
                 teamMode: false,
                 organizationID: "",
                 projectID: ""),
-            original: ProviderSettingsTokenAccountsRowView.TeamAccountDraft(
+            original: ProviderTokenAccountTeamDraft(
                 teamMode: true,
                 organizationID: "org-test",
                 projectID: "proj-test")))
@@ -132,15 +132,21 @@ struct ProvidersPaneCoverageTests {
     func `provider reordering is inert while alphabetical sorting is enabled`() {
         let settings = Self.makeSettingsStore(suite: "ProvidersPaneCoverageTests-sorted-reorder")
         let store = Self.makeUsageStore(settings: settings)
-        let pane = ProvidersPane(settings: settings, store: store)
+        _ = store
         let original = settings.orderedProviders()
+        let move = {
+            settings.moveVisibleProviders(
+                settings.orderedFirstPartyProviders().map(\.instanceID),
+                fromOffsets: IndexSet(integer: 0),
+                toOffset: original.count)
+        }
 
         settings.providersSortedAlphabetically = true
-        pane._test_moveProviders(fromOffsets: IndexSet(integer: 0), toOffset: original.count)
+        move()
         #expect(settings.orderedProviders() == original)
 
         settings.providersSortedAlphabetically = false
-        pane._test_moveProviders(fromOffsets: IndexSet(integer: 0), toOffset: original.count)
+        move()
         #expect(settings.orderedProviders().last == original.first)
     }
 
@@ -174,7 +180,7 @@ struct ProvidersPaneCoverageTests {
                 ],
                 updatedAt: Date()),
             provider: .copilot)
-        let pane = ProvidersPane(settings: settings, store: store)
+        let pane = ProviderSettingsPageModel(settings: settings, store: store)
 
         #expect(!pane._test_menuCardModel(for: .copilot).metrics.map(\.title).contains(budgetTitle))
 
@@ -215,7 +221,7 @@ struct ProvidersPaneCoverageTests {
                 ],
                 updatedAt: now),
             provider: .claude)
-        let pane = ProvidersPane(settings: settings, store: store)
+        let pane = ProviderSettingsPageModel(settings: settings, store: store)
 
         #expect(pane._test_menuCardModel(for: .claude).metrics.contains { $0.id == "claude-routines" })
 
@@ -258,7 +264,7 @@ struct ProvidersPaneCoverageTests {
                 ],
                 updatedAt: now),
             provider: .codex)
-        let pane = ProvidersPane(settings: settings, store: store)
+        let pane = ProviderSettingsPageModel(settings: settings, store: store)
 
         #expect(pane._test_menuCardModel(for: .codex).metrics.contains {
             $0.id == CodexAdditionalRateLimitMapper.sparkWindowID
@@ -276,7 +282,7 @@ struct ProvidersPaneCoverageTests {
     @Test
     func `provider detail plan row formats open router as balance`() {
         Self.withEnglishLocalization {
-            let row = ProviderDetailView<EmptyView>.planRow(provider: .openrouter, planText: "Balance: $4.61")
+            let row = ProviderStatusFacts.planRow(provider: .openrouter, planText: "Balance: $4.61")
 
             #expect(row?.label == "Balance")
             #expect(row?.value == "$4.61")
@@ -286,7 +292,7 @@ struct ProvidersPaneCoverageTests {
     @Test
     func `provider detail plan row formats moonshot as balance`() {
         Self.withEnglishLocalization {
-            let row = ProviderDetailView<EmptyView>.planRow(provider: .moonshot, planText: "Balance: $49.58")
+            let row = ProviderStatusFacts.planRow(provider: .moonshot, planText: "Balance: $49.58")
 
             #expect(row?.label == "Balance")
             #expect(row?.value == "$49.58")
@@ -302,14 +308,14 @@ struct ProvidersPaneCoverageTests {
     ])
     func `provider balance prefix preserves empty and unprefixed values`(input: String?, expected: String?) {
         Self.withEnglishLocalization {
-            #expect(ProviderDetailView<EmptyView>.planRow(provider: .openrouter, planText: input)?.value == expected)
+            #expect(ProviderStatusFacts.planRow(provider: .openrouter, planText: input)?.value == expected)
         }
     }
 
     @Test
     func `provider detail plan row keeps plan label for non open router`() {
         Self.withEnglishLocalization {
-            let row = ProviderDetailView<EmptyView>.planRow(provider: .codex, planText: "Pro")
+            let row = ProviderStatusFacts.planRow(provider: .codex, planText: "Pro")
 
             #expect(row?.label == "Plan")
             #expect(row?.value == "Pro")
@@ -331,7 +337,7 @@ struct ProvidersPaneCoverageTests {
             pacePercent: nil,
             paceOnTop: false)
 
-        #expect(ProviderDetailView<EmptyView>.metricInlinePresentation(metric) == .status("Unavailable"))
+        #expect(ProviderSettingsUsagePresentation.metricInlinePresentation(metric) == .status("Unavailable"))
     }
 
     @Test
@@ -348,7 +354,7 @@ struct ProvidersPaneCoverageTests {
             pacePercent: nil,
             paceOnTop: false)
 
-        #expect(ProviderDetailView<EmptyView>.metricInlinePresentation(metric) == .progress)
+        #expect(ProviderSettingsUsagePresentation.metricInlinePresentation(metric) == .progress)
     }
 
     @Test
@@ -359,7 +365,7 @@ struct ProvidersPaneCoverageTests {
         CookieHeaderCache.store(provider: .opencode, cookieHeader: "auth=cache", sourceLabel: "Chrome")
         defer { CookieHeaderCache.clear(provider: .opencode) }
 
-        let pane = ProvidersPane(settings: settings, store: store)
+        let pane = ProviderSettingsPageModel(settings: settings, store: store)
         let picker = pane._test_settingsPickers(for: .opencode).first { $0.id == "opencode-cookie-source" }
 
         #expect(picker?.dynamicSubtitle?() == "Paste a Cookie header captured from the billing page.")
@@ -375,7 +381,7 @@ struct ProvidersPaneCoverageTests {
         CookieHeaderCache.store(provider: .opencodego, cookieHeader: "auth=cache", sourceLabel: "Chrome")
         defer { CookieHeaderCache.clear(provider: .opencodego) }
 
-        let pane = ProvidersPane(settings: settings, store: store)
+        let pane = ProviderSettingsPageModel(settings: settings, store: store)
         let picker = pane._test_settingsPickers(for: .opencodego).first { $0.id == "opencodego-cookie-source" }
 
         #expect(picker?.dynamicSubtitle?() == "Paste a Cookie header captured from the billing page.")
@@ -422,7 +428,7 @@ struct ProvidersPaneCoverageTests {
                 identity: nil),
             provider: .codex)
 
-        let pane = ProvidersPane(settings: settings, store: store)
+        let pane = ProviderSettingsPageModel(settings: settings, store: store)
         let model = pane._test_menuCardModel(for: .codex)
 
         #expect(model.email == "managed@example.com")

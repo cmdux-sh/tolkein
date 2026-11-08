@@ -104,12 +104,16 @@ struct UserFacingLocalizationCoverageTests {
                 "Text(\"(System)\")",
                 "Button(\"Remove\")",
             ],
-            "Sources/CodexBar/Settings/PreferencesProviderDetailView.swift": [
+            "Sources/CodexBar/Settings/ProviderPage/ProviderSettingsPage.swift": [
                 ".help(\"Refresh\")",
-                "accessibilityLabel: \"Usage used\"",
+                "MacToolButton(\"Refresh\"",
+                "Toggle(\"Enabled\"",
             ],
-            "Sources/CodexBar/Settings/PreferencesProviderErrorView.swift": [
+            "Sources/CodexBar/Settings/ProviderPage/ProviderUsageSections.swift": [
+                "accessibilityLabel: \"Usage used\"",
                 ".help(\"Copy error\")",
+                "Button(\"Copy error\")",
+                "Button(\"Restore Defaults\")",
             ],
             "Sources/CodexBar/Settings/PreferencesSpendDashboardPane.swift": [
                 "Text(\"Partial estimate\")",
@@ -143,27 +147,29 @@ struct UserFacingLocalizationCoverageTests {
                 "Text(\"Partial model breakdown\")",
                 "Text(\"No model-level history\")",
             ],
-            "Sources/CodexBar/Settings/PreferencesProviderSettingsRows.swift": [
-                "Text(self.title)",
+            "Sources/CodexBar/Settings/ProviderPage/ProviderSettingsControls.swift": [
                 "Text(self.toggle.title)",
                 "Text(self.toggle.subtitle)",
                 "Button(action.title)",
-                "Text(self.picker.title)",
+                "MacSettingsRow(self.picker.title",
                 "Text(option.title)",
-                "Text(trimmedTitle)",
-                "Text(trimmedSubtitle)",
-                "Text(self.descriptor.title)",
-                "Text(self.descriptor.subtitle)",
+                "MacSettingsRow(self.title",
+                "MacSettingsRow(self.descriptor.title",
+            ],
+            "Sources/CodexBar/Settings/ProviderPage/ProviderTokenAccountsSection.swift": [
                 "Text(\"No token accounts yet.\")",
                 "Button(\"Remove\")",
-                "TextField(\"Label\"",
+                "MacSettingsRow(\"Label\")",
                 "Button(\"Add\")",
-                "TextField(\"Org ID (optional)\"",
-                ".help(\"Optional organization ID for accounts linked to multiple Anthropic organizations.\")",
+                "MacSettingsRow(\"Org ID (optional)\"",
+                "subtitle: \"Optional organization ID for accounts linked to multiple Anthropic organizations.\"",
                 "Button(\"Open token file\")",
                 "Button(\"Reload\")",
-                "Text(\"No organizations loaded. Click Refresh after setting your API key.\")",
+            ],
+            "Sources/CodexBar/Settings/ProviderPage/ProviderConnectionSections.swift": [
+                "\"No organizations loaded. Click Refresh after setting your API key.\")",
                 "Button(\"Refresh organizations\")",
+                "Button(\"Remove\")",
             ],
             "Sources/CodexBar/Settings/PreferencesSidebar.swift": [
                 "\"Disabled —",

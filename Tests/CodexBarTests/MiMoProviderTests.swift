@@ -635,8 +635,8 @@ extension MiMoProviderTests {
     @MainActor
     func `provider detail plan row formats mimo as balance`() {
         CodexBarLocalizationOverride.$appLanguage.withValue("en") {
-            let legacyBalance = ProviderDetailView<Text>.planRow(provider: .mimo, planText: "Balance: $25.51")
-            let tokenPlan = ProviderDetailView<Text>.planRow(provider: .mimo, planText: "Standard")
+            let legacyBalance = ProviderStatusFacts.planRow(provider: .mimo, planText: "Balance: $25.51")
+            let tokenPlan = ProviderStatusFacts.planRow(provider: .mimo, planText: "Standard")
 
             #expect(legacyBalance?.label == "Balance")
             #expect(legacyBalance?.value == "$25.51")

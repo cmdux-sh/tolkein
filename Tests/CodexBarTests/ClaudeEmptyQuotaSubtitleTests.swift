@@ -17,7 +17,7 @@ struct ClaudeEmptyQuotaSubtitleTests {
         store._setSnapshotForTesting(
             UsageSnapshot(primary: nil, secondary: nil, updatedAt: Self.now),
             provider: .claude)
-        let pane = ProvidersPane(settings: settings, store: store)
+        let pane = ProviderSettingsPageModel(settings: settings, store: store)
 
         #expect(pane._test_providerSubtitle(.claude).contains("Limits not available"))
         #expect(pane._test_providerSidebarSubtitle(.claude).hasSuffix("\nLimits not available"))
@@ -39,7 +39,7 @@ struct ClaudeEmptyQuotaSubtitleTests {
                     updatedAt: Self.now),
                 updatedAt: Self.now),
             provider: .claude)
-        let pane = ProvidersPane(settings: settings, store: store)
+        let pane = ProviderSettingsPageModel(settings: settings, store: store)
 
         #expect(!pane._test_providerSubtitle(.claude).contains("Limits not available"))
         #expect(!pane._test_providerSidebarSubtitle(.claude).contains("Limits not available"))
@@ -59,7 +59,7 @@ struct ClaudeEmptyQuotaSubtitleTests {
                 secondary: nil,
                 updatedAt: Self.now),
             provider: .claude)
-        let pane = ProvidersPane(settings: settings, store: store)
+        let pane = ProviderSettingsPageModel(settings: settings, store: store)
 
         #expect(!pane._test_providerSubtitle(.claude).contains("Limits not available"))
         #expect(!pane._test_providerSidebarSubtitle(.claude).contains("Limits not available"))

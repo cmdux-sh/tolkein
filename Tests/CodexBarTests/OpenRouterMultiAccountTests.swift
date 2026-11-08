@@ -97,7 +97,7 @@ struct OpenRouterMultiAccountTests {
         let settings = Self.makeSettings(suite: "OpenRouterMultiAccountTests-settings")
         let store = try Self.makeStore(settings: settings)
         let descriptor = try #require(
-            ProvidersPane(settings: settings, store: store)._test_tokenAccountDescriptor(for: .openrouter))
+            ProviderSettingsPageModel(settings: settings, store: store)._test_tokenAccountDescriptor(for: .openrouter))
         #expect(descriptor.provider == .openrouter)
         #expect(descriptor.title == support.title)
         #expect(descriptor.isVisible?() == true)

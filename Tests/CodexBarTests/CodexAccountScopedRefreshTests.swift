@@ -926,7 +926,7 @@ struct CodexAccountScopedRefreshTests {
         store._test_codexCreditsLoaderOverride = { self.credits(remaining: 55) }
         defer { store._test_codexCreditsLoaderOverride = nil }
 
-        let pane = ProvidersPane(settings: settings, store: store)
+        let pane = ProviderSettingsPageModel(settings: settings, store: store)
         await pane._test_selectCodexVisibleAccount(id: "managed@example.com")
 
         #expect(settings.codexActiveSource == .managedAccount(id: managedAccountID))

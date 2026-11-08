@@ -49,7 +49,7 @@ struct CodexAccountsSettingsSectionTests {
         #expect(store.menuCardModel(for: .codex).providerName == "Codex")
         settings.codexUsageDataSource = .auto
         settings.hidePersonalInfo = true
-        let pane = ProvidersPane(settings: settings, store: store)
+        let pane = ProviderSettingsPageModel(settings: settings, store: store)
         let privateState = try #require(pane._test_codexAccountsSectionState())
         #expect(!privateState.systemDisplayName.contains("School"))
         #expect(store.codexAccountMenuCardModel(for: renamed, accountSnapshot: nil)?.providerName == "Codex")
@@ -106,7 +106,7 @@ struct CodexAccountsSettingsSectionTests {
             codexHomePath: "/Users/test/.codex",
             observedAt: Date())
 
-        let pane = ProvidersPane(settings: settings, store: store)
+        let pane = ProviderSettingsPageModel(settings: settings, store: store)
         let state = try #require(pane._test_codexAccountsSectionState())
         let liveAccount = try #require(state.visibleAccounts.first { $0.email == "live@example.com" })
         let managedVisibleAccount = try #require(state.visibleAccounts.first { $0.email == "managed@example.com" })
@@ -124,7 +124,7 @@ struct CodexAccountsSettingsSectionTests {
             codexHomePath: "/Users/test/.codex",
             observedAt: Date())
 
-        let pane = ProvidersPane(settings: settings, store: store)
+        let pane = ProviderSettingsPageModel(settings: settings, store: store)
         let state = try #require(pane._test_codexAccountsSectionState())
 
         #expect(state.visibleAccounts.count == 1)
@@ -144,7 +144,7 @@ struct CodexAccountsSettingsSectionTests {
             observedAt: Date(),
             identity: .providerAccount(id: "account-live"))
 
-        let pane = ProvidersPane(settings: settings, store: store)
+        let pane = ProviderSettingsPageModel(settings: settings, store: store)
         let state = try #require(pane._test_codexAccountsSectionState())
 
         #expect(state.singleVisibleAccount?.displayName == "solo@example.com — Team Alpha")
@@ -161,7 +161,7 @@ struct CodexAccountsSettingsSectionTests {
         settings._test_unreadableManagedCodexAccountStore = true
         defer { settings._test_unreadableManagedCodexAccountStore = false }
 
-        let pane = ProvidersPane(settings: settings, store: store)
+        let pane = ProviderSettingsPageModel(settings: settings, store: store)
         let state = try #require(pane._test_codexAccountsSectionState())
         let liveAccount = try #require(state.visibleAccounts.first)
 
@@ -197,7 +197,7 @@ struct CodexAccountsSettingsSectionTests {
             observedAt: Date())
         settings.codexActiveSource = .managedAccount(id: managedAccount.id)
 
-        let pane = ProvidersPane(settings: settings, store: store)
+        let pane = ProviderSettingsPageModel(settings: settings, store: store)
         await pane._test_selectCodexVisibleAccount(id: "same@example.com")
 
         #expect(settings.codexActiveSource == .liveSystem)
@@ -245,7 +245,7 @@ struct CodexAccountsSettingsSectionTests {
             identity: .emailOnly(normalizedEmail: "same@example.com"))
         settings.codexActiveSource = .liveSystem
 
-        let pane = ProvidersPane(settings: settings, store: store)
+        let pane = ProviderSettingsPageModel(settings: settings, store: store)
         let initialState = try #require(pane._test_codexAccountsSectionState())
         let managedVisibleAccount = try #require(initialState.visibleAccounts
             .first { $0.storedAccountID == managedAccount.id })
@@ -288,7 +288,7 @@ struct CodexAccountsSettingsSectionTests {
         let authTask = Task { try await coordinator.authenticateManagedAccount() }
         await runner.waitUntilStarted()
 
-        let pane = ProvidersPane(
+        let pane = ProviderSettingsPageModel(
             settings: settings,
             store: store,
             managedCodexAccountCoordinator: coordinator)
@@ -313,7 +313,7 @@ struct CodexAccountsSettingsSectionTests {
             observedAt: Date())
 
         let coordinator = Self.makeManagedCoordinator(settings: settings, email: "same@example.com")
-        let pane = ProvidersPane(
+        let pane = ProviderSettingsPageModel(
             settings: settings,
             store: store,
             managedCodexAccountCoordinator: coordinator)
@@ -335,7 +335,7 @@ struct CodexAccountsSettingsSectionTests {
             observedAt: Date())
 
         let coordinator = Self.makeManagedCoordinator(settings: settings, email: "managed@example.com")
-        let pane = ProvidersPane(
+        let pane = ProviderSettingsPageModel(
             settings: settings,
             store: store,
             managedCodexAccountCoordinator: coordinator)

@@ -2,7 +2,7 @@
 import CodexBarCore
 import SwiftUI
 
-extension ProvidersPane {
+extension ProviderSettingsPageModel {
     func _test_binding(for provider: UsageProvider) -> Binding<Bool> {
         self.binding(for: provider)
     }
@@ -13,10 +13,6 @@ extension ProvidersPane {
 
     func _test_providerSidebarSubtitle(_ provider: UsageProvider) -> String {
         self.providerSidebarSubtitle(provider)
-    }
-
-    func _test_moveProviders(fromOffsets: IndexSet, toOffset: Int) {
-        self.moveProviders(fromOffsets: fromOffsets, toOffset: toOffset)
     }
 
     func _test_settingsPickers(for provider: UsageProvider) -> [ProviderSettingsPickerDescriptor] {
@@ -91,10 +87,10 @@ extension ProvidersPane {
 }
 
 @MainActor
-enum ProvidersPaneTestHarness {
+enum ProviderSettingsPageTestHarness {
     static func exercise(settings: SettingsStore, store: UsageStore) {
         self.prepareTestState(settings: settings, store: store)
-        let pane = ProvidersPane(settings: settings, store: store)
+        let pane = ProviderSettingsPageModel(settings: settings, store: store)
         self.exercisePaneBasics(pane: pane)
 
         let descriptors = self.makeDescriptors()
@@ -124,7 +120,7 @@ enum ProvidersPaneTestHarness {
         settings.augmentCookieSource = .manual
     }
 
-    private static func exercisePaneBasics(pane: ProvidersPane) {
+    private static func exercisePaneBasics(pane: ProviderSettingsPageModel) {
         _ = pane._test_binding(for: .codex).wrappedValue
         _ = pane._test_providerSubtitle(.codex)
         _ = pane._test_providerSubtitle(.claude)
@@ -144,34 +140,27 @@ enum ProvidersPaneTestHarness {
     }
 
     private static func exerciseDetailViews(store: UsageStore, descriptors: ProviderListTestDescriptors) {
-        var isEnabled = true
-        let enabledBinding = Binding(get: { isEnabled }, set: { isEnabled = $0 })
-        let pane = ProvidersPane(settings: store.settings, store: store)
+        let pane = ProviderSettingsPageModel(settings: store.settings, store: store)
         let model = pane._test_menuCardModel(for: .codex)
-        var expanded = false
-        let expandedBinding = Binding(get: { expanded }, set: { expanded = $0 })
-
-        _ = ProviderDetailView(
+        let content = pane.pageContent()
+        _ = ProviderSettingsPage(model: pane).body
+        _ = ProviderSettingsPageSections(model: pane, content: content).body
+        _ = ProviderUsageRows(rows: ProviderSettingsUsagePresentation.rows(
             provider: .codex,
-            store: store,
-            isEnabled: enabledBinding,
-            subtitle: "Subtitle",
             model: model,
             openAIWebDiagnostic: pane._test_openAIWebDiagnostic(for: .codex),
-            settingsPickers: [descriptors.picker],
-            settingsToggles: [descriptors.toggle],
-            settingsFields: [descriptors.fieldPlain, descriptors.fieldSecure],
-            settingsTokenAccounts: descriptors.tokenAccountsEmpty,
-            errorDisplay: ProviderErrorDisplay(preview: "Preview", full: "Full"),
-            isErrorExpanded: expandedBinding,
-            onCopyError: { _ in },
-            onRefresh: {},
-            showsSupplementarySettingsContent: true,
-            supplementarySettingsContent: {
-                Section("Accounts") {
-                    Text("Supplementary")
-                }
-            }).body
+            isEnabled: true,
+            isRefreshing: false)).body
+        _ = ProviderSettingsPickerRow(picker: descriptors.picker).body
+        _ = ProviderSettingsToggleRows(toggle: descriptors.toggle).body
+        _ = ProviderSettingsFieldRow(field: descriptors.fieldPlain).body
+        _ = ProviderSettingsFieldRow(field: descriptors.fieldSecure).body
+        _ = ProviderTokenAccountsSection(descriptor: descriptors.tokenAccountsEmpty, requestRemoval: { _ in }).body
+        var expanded = false
+        _ = ProviderErrorRow(
+            display: ProviderErrorDisplay(title: "Title", preview: "Preview", full: "Full"),
+            isExpanded: Binding(get: { expanded }, set: { expanded = $0 }),
+            onCopy: {}).body
     }
 
     private static func makeDescriptors() -> ProviderListTestDescriptors {

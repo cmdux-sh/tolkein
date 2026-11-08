@@ -298,7 +298,7 @@ struct PopupLocalizationTests {
             browserDetection: BrowserDetection(cacheTTL: 0),
             settings: settings,
             startupBehavior: .testing)
-        let pane = ProvidersPane(provider: .t3chat, settings: settings, store: store)
+        let pane = ProviderSettingsPageModel(provider: .t3chat, settings: settings, store: store)
         let picker = try #require(pane._test_settingsPickers(for: .t3chat).first)
         let windsurf = try #require(pane._test_settingsPickers(for: .windsurf)
             .first { $0.id == "windsurf-cookie-source" })

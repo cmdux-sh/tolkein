@@ -173,7 +173,7 @@ private struct CopilotAllowanceProofView: View {
                     Button("Account 2") { self.select(1) }
                 }
                 if let field = self.fixture.field {
-                    ProviderSettingsFieldRowView(field: field)
+                    ProviderSettingsFieldRow(field: field)
                 }
             }.formStyle(.grouped).frame(width: 360)
             VStack(

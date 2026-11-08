@@ -125,7 +125,7 @@ private final class UsageVisibilityNativeState {
     }
 
     func model(for provider: UsageProvider) -> UsageMenuCardView.Model {
-        ProvidersPane(provider: provider, settings: self.settings, store: self.store)._test_menuCardModel(for: provider)
+        ProviderSettingsPageModel(provider: provider, settings: self.settings, store: self.store)._test_menuCardModel(for: provider)
     }
 
     func receipt(window: NSWindow) -> [String: Any] {
@@ -216,7 +216,10 @@ private struct UsageVisibilityNativeView: View {
                     .accessibilityIdentifier("proof-reload-settings")
             }
             .padding(12)
-            ProvidersPane(provider: self.state.provider, settings: self.state.settings, store: self.state.store)
+            ProviderSettingsPage(model: ProviderSettingsPageModel(
+                provider: self.state.provider,
+                settings: self.state.settings,
+                store: self.state.store))
                 .id(self.state.reloads)
         }
     }

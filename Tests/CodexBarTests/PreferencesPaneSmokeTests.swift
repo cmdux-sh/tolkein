@@ -12,7 +12,7 @@ struct PreferencesPaneSmokeTests {
         let store = Self.makeUsageStore(settings: settings)
 
         Self.buildEveryPane(settings: settings, store: store)
-        _ = ProvidersPane(settings: settings, store: store).body
+        _ = ProviderSettingsPage(model: ProviderSettingsPageModel(settings: settings, store: store)).body
         _ = SettingsSidebarView(settings: settings, store: store, selection: .constant(.general)).body
 
         settings.debugDisableKeychainAccess = false
@@ -38,7 +38,7 @@ struct PreferencesPaneSmokeTests {
         store._setErrorForTesting("Example error", provider: .codex)
 
         Self.buildEveryPane(settings: settings, store: store)
-        _ = ProvidersPane(provider: .claude, settings: settings, store: store).body
+        _ = ProviderSettingsPage(model: ProviderSettingsPageModel(provider: .claude, settings: settings, store: store)).body
         _ = SettingsSidebarView(settings: settings, store: store, selection: .constant(.provider(.codex))).body
     }
 

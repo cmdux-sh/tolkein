@@ -46,10 +46,10 @@ extension ProviderSettingsDescriptorTests {
         for stage in ["before", "after"] {
             let hosting = NSHostingView(rootView: Form {
                 Section("Antigravity · synthetic settings") {
-                    ProviderSettingsPickerRowView(picker: picker)
+                    ProviderSettingsPickerRow(picker: picker)
                 }
                 if stage == "after" {
-                    ProviderSettingsDirectoryListRowView(descriptor: directories)
+                    ProviderDirectoryListSection(descriptor: directories)
                 }
             }.formStyle(.grouped).frame(width: 740, height: 350).preferredColorScheme(.light))
             hosting.appearance = NSAppearance(named: .aqua)

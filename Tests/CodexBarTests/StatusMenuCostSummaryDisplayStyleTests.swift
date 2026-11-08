@@ -54,7 +54,7 @@ extension StatusMenuTests {
             defer { controller.releaseStatusItemsForTesting() }
 
             let model = try #require(controller.menuCardModel(for: .codex))
-            let providerDetailModel = ProvidersPane(settings: settings, store: store)
+            let providerDetailModel = ProviderSettingsPageModel(settings: settings, store: store)
                 ._test_menuCardModel(for: .codex)
             let menu = controller.makeMenu()
             controller.menuWillOpen(menu)

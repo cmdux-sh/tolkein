@@ -253,11 +253,11 @@ struct ClaudeCloudCreditsTests {
         #expect(model.hasUsageContent)
         #expect(!model.hasUsageContentAboveCloudCredits)
         #expect(model.showsOverviewSupplementalContent(compact: true))
-        #expect(!ProviderMetricsInlineView.ContentState(model: model, infoRows: []).showsPlaceholder)
+        #expect(!ProviderSettingsUsagePresentation.ContentState(model: model, infoRows: []).showsPlaceholder)
 
         let hidden = model.applyingUsageItemVisibility(
             hiddenItemIDs: [.detailSection(ClaudeCloudCreditsSnapshot.detailTitle)])
-        #expect(ProviderMetricsInlineView.ContentState(model: hidden, infoRows: []).showsPlaceholder)
+        #expect(ProviderSettingsUsagePresentation.ContentState(model: hidden, infoRows: []).showsPlaceholder)
         #expect(hidden.cloudCredits == nil)
     }
 

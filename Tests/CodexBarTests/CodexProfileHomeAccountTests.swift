@@ -102,7 +102,7 @@ struct CodexProfileHomeAccountTests {
 
         let profileASnapshot = Self.costSnapshot(cost: 12, tokens: 1200, model: "fictional-profile-a")
         fixture.store._setTokenSnapshotForTesting(profileASnapshot, provider: .codex)
-        let originalModel = ProvidersPane(settings: fixture.settings, store: fixture.store)
+        let originalModel = ProviderSettingsPageModel(settings: fixture.settings, store: fixture.store)
             ._test_menuCardModel(for: .codex)
 
         #expect(originalModel.tokenUsage?.sessionLine.contains("$12") == true)
@@ -111,7 +111,7 @@ struct CodexProfileHomeAccountTests {
 
         fixture.settings.selectDisplayedCodexVisibleAccount(fixture.secondAccount)
 
-        let switchedModel = ProvidersPane(settings: fixture.settings, store: fixture.store)
+        let switchedModel = ProviderSettingsPageModel(settings: fixture.settings, store: fixture.store)
             ._test_menuCardModel(for: .codex)
 
         #expect(fixture.store.tokenSnapshotPublications[.codex]?.snapshot == profileASnapshot)
@@ -176,7 +176,7 @@ struct CodexProfileHomeAccountTests {
         }
         await gate.waitUntilStarted()
 
-        let loadingModel = ProvidersPane(settings: fixture.settings, store: fixture.store)
+        let loadingModel = ProviderSettingsPageModel(settings: fixture.settings, store: fixture.store)
             ._test_menuCardModel(for: .codex)
         #expect(fixture.store.isTokenRefreshInFlight(for: .codex))
         #expect(loadingModel.tokenUsage == nil)
@@ -185,7 +185,7 @@ struct CodexProfileHomeAccountTests {
         await gate.complete(with: profileBSnapshot)
         await refresh.value
 
-        let completedModel = ProvidersPane(settings: fixture.settings, store: fixture.store)
+        let completedModel = ProviderSettingsPageModel(settings: fixture.settings, store: fixture.store)
             ._test_menuCardModel(for: .codex)
         #expect(fixture.store.tokenSnapshot(for: .codex) == profileBSnapshot)
         #expect(completedModel.tokenUsage?.sessionLine.contains("$34") == true)
@@ -216,7 +216,7 @@ struct CodexProfileHomeAccountTests {
             daily: [InlineCostCalendarFixture.entry("2026-08-25", cost: 3)],
             updatedAt: now)
         fixture.store._setTokenSnapshotForTesting(snapshot, provider: .codex)
-        let model = ProvidersPane(settings: fixture.settings, store: fixture.store)
+        let model = ProviderSettingsPageModel(settings: fixture.settings, store: fixture.store)
             ._test_menuCardModel(for: .codex)
         #expect(model.inlineUsageDashboard?.points.map(\.id) == ["2026-08-25"])
         #expect(model.inlineUsageDashboard?.points.map(\.value) == [3])
@@ -238,7 +238,7 @@ struct CodexProfileHomeAccountTests {
         fixture.settings.selectDisplayedCodexVisibleAccount(fixture.secondAccount)
         fixture.store.prepareCodexAccountScopedRefreshIfNeeded()
 
-        let model = ProvidersPane(settings: fixture.settings, store: fixture.store)
+        let model = ProviderSettingsPageModel(settings: fixture.settings, store: fixture.store)
             ._test_menuCardModel(for: .codex)
         #expect(fixture.store.tokenSnapshot(for: .codex) == ambientSnapshot)
         #expect(model.tokenUsage?.sessionLine.contains("$56") == true)
