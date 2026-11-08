@@ -108,10 +108,9 @@ struct CostHistoryDaysEditor: View {
     @Bindable var settings: SettingsStore
 
     static let presetDays = [1, 7, 30, 90, 365]
-    static let dayRange = 1...365
 
     static func title(days: Int) -> String {
-        String(format: L("cost_history_days_title"), days)
+        String(format: L("Last %d days"), days)
     }
 
     /// Month to date, all time and the preset rolling windows, plus the current rolling window when it is not one
@@ -138,14 +137,10 @@ struct CostHistoryDaysEditor: View {
 
         if case .rolling = self.settings.costReportingPeriod {
             MacSettingsRow(L("cost_history_rolling_days_title")) {
-                HStack(spacing: MacSpace.unit * 2) {
-                    MenuSettingsNumberField(
-                        title: L("Time range"),
-                        value: self.$settings.costUsageHistoryDays,
-                        format: .number)
-                    MacStepper(value: self.$settings.costUsageHistoryDays, in: Self.dayRange)
-                        .accessibilityLabel(Self.title(days: self.settings.costUsageHistoryDays))
-                }
+                MenuSettingsNumberField(
+                    title: L("cost_history_rolling_days_title"),
+                    value: self.$settings.costUsageHistoryDays,
+                    format: .number)
             }
             .settingsAnchor(MenuSettingsPane.SearchID.costRollingDays)
         }

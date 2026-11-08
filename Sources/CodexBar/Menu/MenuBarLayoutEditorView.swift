@@ -541,11 +541,13 @@ struct MenuBarLayoutDisplayOptions: View {
         MacSettingsRow(L("menu_bar_layout_size")) {
             MacSegmentedControl(MenuBarLayoutSize.allCases.map { ($0, $0.label) }, selection: self.$size)
                 .accessibilityLabel(L("menu_bar_layout_size"))
+                .accessibilityValue(self.size.label)
         }
         .settingsAnchor(MenuBarSettingsPane.SearchID.layoutSize)
         MacSettingsRow(L("menu_bar_layout_gap")) {
             MacSegmentedControl(MenuBarLayoutGap.allCases.map { ($0, $0.label) }, selection: self.$gap)
                 .accessibilityLabel(L("menu_bar_layout_gap"))
+                .accessibilityValue(self.gap.label)
         }
         .settingsAnchor(MenuBarSettingsPane.SearchID.layoutGap)
         MacSettingsRow(L("menu_bar_layout_vertical_adjustment")) {
