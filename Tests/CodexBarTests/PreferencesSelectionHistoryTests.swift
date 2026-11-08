@@ -11,24 +11,24 @@ struct PreferencesSelectionHistoryTests {
         #expect(!selection.canGoBack)
         #expect(!selection.canGoForward)
 
-        selection.pane = .notifications
-        selection.pane = .advanced
-        #expect(selection.backStack.map(\.pane) == [.general, .notifications])
+        selection.pane = .alerts
+        selection.pane = .privacy
+        #expect(selection.backStack.map(\.pane) == [.general, .alerts])
 
         selection.goBack()
-        #expect(selection.pane == .notifications)
+        #expect(selection.pane == .alerts)
         #expect(selection.canGoForward)
 
         selection.pane = .about
         #expect(!selection.canGoForward)
-        #expect(selection.backStack.map(\.pane) == [.general, .notifications])
+        #expect(selection.backStack.map(\.pane) == [.general, .alerts])
     }
 
     @Test
     func `back and forward walk the visited panes without rewriting history`() {
         let selection = Self.makeSelection()
-        selection.pane = .notifications
-        selection.pane = .advanced
+        selection.pane = .alerts
+        selection.pane = .privacy
 
         selection.goBack()
         selection.goBack()
@@ -37,9 +37,9 @@ struct PreferencesSelectionHistoryTests {
 
         selection.goForward()
         selection.goForward()
-        #expect(selection.pane == .advanced)
+        #expect(selection.pane == .privacy)
         #expect(!selection.canGoForward)
-        #expect(selection.backStack.map(\.pane) == [.general, .notifications])
+        #expect(selection.backStack.map(\.pane) == [.general, .alerts])
     }
 
     @Test
@@ -47,11 +47,11 @@ struct PreferencesSelectionHistoryTests {
         let selection = Self.makeSelection()
         selection.pane = .general
         #expect(!selection.canGoBack)
-        selection.pane = .notifications
-        selection.pane = .advanced
+        selection.pane = .alerts
+        selection.pane = .privacy
         selection.goBack()
-        selection.pane = .notifications
-        #expect(selection.forwardStack.map(\.pane) == [.advanced])
+        selection.pane = .alerts
+        #expect(selection.forwardStack.map(\.pane) == [.privacy])
         #expect(selection.backStack.map(\.pane) == [.general])
     }
 
@@ -59,7 +59,7 @@ struct PreferencesSelectionHistoryTests {
     func `removed panes cannot be restored with back or forward`() {
         let selection = Self.makeSelection()
         selection.pane = .debug
-        selection.pane = .advanced
+        selection.pane = .privacy
         selection.goBack()
         #expect(selection.pane == .debug)
 
@@ -78,7 +78,7 @@ struct PreferencesSelectionHistoryTests {
         selection.pane = .debug
         selection.pane = .general
         selection.pane = .debug
-        selection.pane = .advanced
+        selection.pane = .privacy
         #expect(selection.backStack.map(\.pane) == [.general, .debug, .general, .debug])
 
         selection.removeFromHistory { $0 == .debug }
@@ -86,14 +86,14 @@ struct PreferencesSelectionHistoryTests {
 
         selection.pane = .general
         selection.pane = .debug
-        selection.pane = .advanced
+        selection.pane = .privacy
         selection.goBack()
         selection.goBack()
         #expect(selection.pane == .general)
-        #expect(selection.forwardStack.map(\.pane) == [.advanced, .debug])
+        #expect(selection.forwardStack.map(\.pane) == [.privacy, .debug])
 
         selection.removeFromHistory { $0 == .debug }
-        #expect(selection.forwardStack.map(\.pane) == [.advanced])
+        #expect(selection.forwardStack.map(\.pane) == [.privacy])
     }
 
     @Test
@@ -127,13 +127,13 @@ struct PreferencesSelectionHistoryTests {
         let selection = Self.makeSelection()
         selection.pane = .about
         selection.showAcknowledgements()
-        selection.pane = .advanced
+        selection.pane = .privacy
 
         selection.goBack()
         #expect(selection.pane == .about)
         #expect(selection.destination.aboutRoute == .acknowledgements)
         selection.goForward()
-        #expect(selection.pane == .advanced)
+        #expect(selection.pane == .privacy)
         #expect(selection.destination.aboutRoute == nil)
     }
 
@@ -142,7 +142,7 @@ struct PreferencesSelectionHistoryTests {
         let selection = Self.makeSelection()
         selection.pane = .about
         selection.showAcknowledgements()
-        selection.pane = .advanced
+        selection.pane = .privacy
         selection.goBack()
 
         selection.requestAboutRoot()

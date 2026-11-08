@@ -40,7 +40,7 @@ Ollama API keys currently do not expire, but they can be revoked from the key se
 
 If Manual is selected with no header or saved cookie account, the settings row says **No cookie header pasted.**
 Use **Use automatic cookies** to return to Auto, or paste a header. The action is hidden in API-key mode and while
-Keychain access is disabled in Advanced settings. CodexBar does not switch cookie sources automatically.
+Keychain access is disabled in Privacy & Data settings. CodexBar does not switch cookie sources automatically.
 
 ## How it works
 

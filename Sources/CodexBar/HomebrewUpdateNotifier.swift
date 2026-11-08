@@ -87,7 +87,7 @@ extension HomebrewUpdateNotifier.Dependencies {
             post: { version, isCurrent, completion in
                 AppNotifications.shared.post(
                     idPrefix: "homebrew-update",
-                    title: String(format: L("CodexBar %@ is available"), version),
+                    title: String(format: L("Tolkein %@ is available"), version),
                     body: L("update_available_notification_body"),
                     soundEnabled: false,
                     identifier: Self.identifier(version: version),

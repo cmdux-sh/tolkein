@@ -28,7 +28,7 @@ public enum AiAndProviderDescriptor {
         apiKeyField: .init(
             id: "aiand-api-key",
             title: "API key",
-            subtitle: "Stored in CodexBar's config file. Create a key in the ai& console (shown once).",
+            subtitle: "Stored in Tolkein's config file. Create a key in the ai& console (shown once).",
             placeholder: "sk-…",
             action: ("aiand-open-console", "Open ai& Console", "https://console.aiand.com")),
         showsAPIDetail: true,

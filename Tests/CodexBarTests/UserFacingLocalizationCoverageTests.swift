@@ -84,7 +84,7 @@ struct UserFacingLocalizationCoverageTests {
                 ".value(\"Utilization End\"",
             ],
             "Sources/CodexBar/Providers/JetBrains/JetBrainsLoginFlow.swift": [
-                "                \"Install a JetBrains IDE with AI Assistant enabled, then refresh CodexBar.\",",
+                "                \"Install a JetBrains IDE with AI Assistant enabled, then refresh Tolkein.\",",
                 "                \"Alternatively, set a custom path in Settings.\",",
                 "title: \"No JetBrains IDE detected\"",
             ],
@@ -96,7 +96,7 @@ struct UserFacingLocalizationCoverageTests {
                 "return \"Re-auth\"",
                 "ProviderSettingsSection(title: \"Accounts\")",
                 "Text(\"Active\")",
-                "Text(\"Choose which Codex account CodexBar should follow.\")",
+                "Text(\"Choose which Codex account Tolkein should follow.\")",
                 "Text(\"Account\")",
                 "Text(\"No Codex accounts detected yet.\")",
                 "Text(\"System\")",
@@ -136,7 +136,7 @@ struct UserFacingLocalizationCoverageTests {
             ],
             "Sources/CodexBar/UsageStore/UsageStore+CredentialNotifications.swift": [
                 " needs sign-in\"",
-                "\"Open CodexBar to review the account error and sign in again.\"",
+                "\"Open Tolkein to review the account error and sign in again.\"",
             ],
             "Sources/CodexBar/SpendDashboard/SpendDashboardProviderBreakdown.swift": [
                 "Text(\"Model breakdown unavailable\")",
@@ -202,19 +202,19 @@ struct UserFacingLocalizationCoverageTests {
                 "Credential expiry",
                 "Notify once when a provider account needs you to sign in again.",
                 "Codex needs sign-in",
-                "Open CodexBar to review the account error and sign in again."),
+                "Open Tolkein to review the account error and sign in again."),
             (
                 "zh-Hans",
                 "登录凭据过期",
                 "当服务商账户需要重新登录时，发送一次通知。",
                 "Codex 需要重新登录",
-                "打开 CodexBar 查看账户错误并重新登录。"),
+                "打开 Tolkein 查看账户错误并重新登录。"),
             (
                 "zh-Hant",
                 "登入憑證過期",
                 "當服務商帳戶需要重新登入時，傳送一次通知。",
                 "Codex 需要重新登入",
-                "開啟 CodexBar 查看帳戶錯誤並重新登入。"),
+                "開啟 Tolkein 查看帳戶錯誤並重新登入。"),
         ]
         for (language, title, subtitle, alertTitle, alertBody) in translations {
             CodexBarLocalizationOverride.$appLanguage.withValue(language) {

@@ -64,7 +64,7 @@ enum HomebrewUpdateError: LocalizedError, Equatable {
         case let .recoveryFailed(details):
             details
         case let .versionUnchanged(version):
-            "Homebrew finished, but CodexBar is still version \(version). The requested update was not installed."
+            "Homebrew finished, but Tolkein is still version \(version). The requested update was not installed."
         }
     }
 }

@@ -16,7 +16,7 @@ struct GitKrakenProviderImplementation: ProviderImplementation {
             ProviderSettingsFieldDescriptor(
                 id: "gitkraken-api-token",
                 title: "GitKraken access token",
-                subtitle: "Saved in CodexBar's local config file. Or set GITKRAKEN_API_TOKEN.",
+                subtitle: "Saved in Tolkein's local config file. Or set GITKRAKEN_API_TOKEN.",
                 kind: .secure,
                 placeholder: "Token value only (without Bearer)",
                 binding: context.providerConfigBinding(.apiKey),

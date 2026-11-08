@@ -41,7 +41,7 @@ struct LocalizationSemanticContractTests {
         ("tr", "API keys", "anahtarları"),
         ("tr", "Bank cap", "üst sınırı"),
         ("uk", "Routed", "Маршрутизовано"),
-        ("ar", "CodexBar Switcher", "مبدّل"),
+        ("ar", "Tolkein Switcher", "مبدّل"),
         ("tr", "Runs out in", "kalan süre"),
         ("th", "Sonnet", "Sonnet"),
         ("ar", "Workspace spend · 30d", "يومًا"),
@@ -77,7 +77,7 @@ struct LocalizationSemanticContractTests {
         let organization = "Optional for automatic auth. Use a slug, URL, or internal org-... / org_... ID. "
             + "Manual auth may need the x-cog-org-id header from a successful Devin quota request."
         #expect(L(organization, language: "tr").contains("slug"))
-        let account = "Optional when the API key can access one account; CodexBar discovers it automatically. "
+        let account = "Optional when the API key can access one account; Tolkein discovers it automatically. "
             + "For multiple accounts, find the slug in the app.fireworks.ai home account switcher "
             + "or run firectl whoami."
         for language in ["pl", "ru"] {

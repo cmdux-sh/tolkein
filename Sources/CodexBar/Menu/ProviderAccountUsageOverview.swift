@@ -66,7 +66,7 @@ struct ProviderAccountUsageOverviewView: View {
                             .textSelection(.enabled)
                         HStack(spacing: 8) {
                             if row.isFollowed {
-                                Text(L("CodexBar follows"))
+                                Text(L("Tolkein follows"))
                             }
                             if row.isSystem {
                                 Text(L("System"))

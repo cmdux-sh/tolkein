@@ -8,7 +8,7 @@ defineProvider({
   cookieDomains: ["trae.cn", "api.trae.cn"],
   async fetchUsage(ctx) {
     const domain = ctx.browser.availability("api.trae.cn") === "manual" ? "api.trae.cn" : "trae.cn";
-    const signIn = "Sign in to Trae CN at trae.cn, then refresh CodexBar.";
+    const signIn = "Sign in to Trae CN at trae.cn, then refresh Tolkein.";
     const malformed = () => {
       throw ctx.fail.parseFailure("Trae CN usage response format changed.");
     };

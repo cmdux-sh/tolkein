@@ -2,7 +2,7 @@ import Foundation
 
 public enum OpenDesignProviderDescriptor {
     static let diagnosticMessages = [
-        "Sign in to OpenDesign, then refresh CodexBar.",
+        "Sign in to OpenDesign, then refresh Tolkein.",
         "OpenDesign usage response format changed.",
         "OpenDesign billing access was denied.",
         "OpenDesign request failed. Try again later.",

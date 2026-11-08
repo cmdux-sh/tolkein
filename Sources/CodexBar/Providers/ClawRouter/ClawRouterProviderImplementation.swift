@@ -26,7 +26,7 @@ struct ClawRouterProviderImplementation: ProviderImplementation {
             ProviderSettingsFieldDescriptor(
                 id: "clawrouter-api-key",
                 title: "API key",
-                subtitle: "Stored in the CodexBar config file. Reads monthly budget and routed usage from /v1/usage.",
+                subtitle: "Stored in the Tolkein config file. Reads monthly budget and routed usage from /v1/usage.",
                 kind: .secure,
                 placeholder: "ClawRouter key…",
                 binding: context.providerConfigBinding(.apiKey),

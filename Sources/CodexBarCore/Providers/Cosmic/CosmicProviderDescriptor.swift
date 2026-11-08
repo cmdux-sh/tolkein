@@ -16,7 +16,7 @@ public enum CosmicProviderDescriptor {
         apiKeyField: .init(
             id: "cosmic-token",
             title: "Personal Access Token",
-            subtitle: "Saved in CodexBar's local config file. Reads project usage only; bucket keys are not supported.",
+            subtitle: "Saved in Tolkein's local config file. Reads project usage only; bucket keys are not supported.",
             placeholder: "cos_…",
             action: ("cosmic-tokens", "Open Cosmic API tokens", "https://app.cosmicjs.com/account/api-tokens")),
         workspaceField: .init(

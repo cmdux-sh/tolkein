@@ -6,7 +6,7 @@ public enum ChatboxProviderDescriptor {
         "Chatbox AI denied access. Check your license.",
         "Chatbox AI is rate limiting requests. Try again later.",
         "Chatbox AI request failed. Try refreshing later.",
-        "Chatbox AI returned an unrecognized response. Update CodexBar and try again.",
+        "Chatbox AI returned an unrecognized response. Update Tolkein and try again.",
     ]
 
     public static let descriptor = Self.spec.makeDescriptor()
@@ -33,7 +33,7 @@ public enum ChatboxProviderDescriptor {
         apiKeyField: .init(
             id: "chatbox-license-key",
             title: "API key",
-            subtitle: "Stored in the CodexBar config file."),
+            subtitle: "Stored in the Tolkein config file."),
         showsAPIDetail: true,
         availability: .configuredKey)
 }

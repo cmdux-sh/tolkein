@@ -33,7 +33,7 @@ If the card says CodexBar is not allowed to read the credentials (for example af
 
 A fresh `muse login` can recreate the Keychain item without the grant, so repeat these steps if the message returns after signing in again. If the card instead says the credentials could not be read right now, unlock the login Keychain and refresh.
 
-When CLI metadata points to Keychain and access is disabled, the diagnostic names **Disable Keychain access** in **Settings → Advanced**. Inline CLI tokens still work with Keychain access disabled.
+When CLI metadata points to Keychain and access is disabled, the diagnostic names **Disable Keychain access** in **Settings → Privacy & Data**. Inline CLI tokens still work with Keychain access disabled.
 
 ## Data shown
 

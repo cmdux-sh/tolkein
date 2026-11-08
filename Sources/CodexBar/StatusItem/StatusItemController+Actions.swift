@@ -542,7 +542,7 @@ extension StatusItemController: StatusItemMenuPersistentActionDelegate {
             self.presentLoginAlert(
                 title: L("Managed Codex accounts unavailable"),
                 message: L(
-                    "CodexBar could not read managed account storage. " +
+                    "Tolkein could not read managed account storage. " +
                         "Recover the store before adding another account."))
             return
         }

@@ -16,5 +16,5 @@ public enum TavilyProviderDescriptor {
         apiKeyField: .init(
             id: "tavily-api-key",
             title: "API key",
-            subtitle: "Stored in the CodexBar config file."))
+            subtitle: "Stored in the Tolkein config file."))
 }

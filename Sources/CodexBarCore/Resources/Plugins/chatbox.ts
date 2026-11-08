@@ -59,7 +59,7 @@ defineProvider({
     }
     const fail = (): never => {
       throw ctx.fail.parseFailure(
-        message("Chatbox AI returned an unrecognized response. Update CodexBar and try again."),
+        message("Chatbox AI returned an unrecognized response. Update Tolkein and try again."),
       );
     };
     const root = decode(response.bodyText);

@@ -15,10 +15,10 @@
 "Include API keys, cookies, and tokens" = "Inclut les clés API, cookies et jetons";
 "Sync usage snapshots" = "Synchroniser les instantanés d'utilisation";
 "Show accounts from other Macs" = "Afficher les comptes d'autres Mac";
-"Requires a signed release build of CodexBar." = "Nécessite une version signée de CodexBar.";
+"Requires a signed release build of Tolkein." = "Nécessite une version signée de Tolkein.";
 "Sign in to iCloud in System Settings to enable sync." = "Connectez-vous à iCloud dans les paramètres système pour activer la synchronisation.";
 "iCloud access is restricted on this Mac." = "L'accès à iCloud est restreint sur ce Mac.";
-"Sync is paused: another Mac uses a newer version of CodexBar. Update to resume." = "La synchronisation est suspendue : un autre Mac utilise une version plus récente de CodexBar. Mise à jour pour reprendre.";
+"Sync is paused: another Mac uses a newer version of Tolkein. Update to resume." = "La synchronisation est suspendue : un autre Mac utilise une version plus récente de Tolkein. Mise à jour pour reprendre.";
 "Last successful fetch" = "Dernière récupération réussie";
 "Last successful push" = "Dernière poussée réussie";
 "Never" = "Jamais";
@@ -53,9 +53,9 @@
 "hooks_add_argument" = "Ajouter un argument";
 "hooks_delete_argument" = "Supprimer l’argument";
 
-"ollama_safari_cookie_access_hint" = "Les cookies Safari nécessitent l’accès complet au disque pour CodexBar (Réglages Système > Confidentialité et sécurité).";
+"ollama_safari_cookie_access_hint" = "Les cookies Safari nécessitent l’accès complet au disque pour Tolkein (Réglages Système > Confidentialité et sécurité).";
 "ollama_browser_cookie_decryption_denied" = "Le déchiffrement des cookies %@ a été refusé dans le Trousseau. Ouvrez la fiche du fournisseur et cliquez sur Actualiser (⌘R) pour redemander l’accès au Trousseau.";
-"ollama_browser_cookie_decryption_disabled" = "Le déchiffrement des cookies %@ est désactivé dans CodexBar ; activez l’accès au Trousseau et actualisez.";
+"ollama_browser_cookie_decryption_disabled" = "Le déchiffrement des cookies %@ est désactivé dans Tolkein ; activez l’accès au Trousseau et actualisez.";
 
 " providers" = " fournisseurs";
 "(System)" = "(Système)";
@@ -71,7 +71,7 @@
 "AI credits" = "Crédits IA";
 "Gateway requests" = "Requêtes de passerelle";
 "Future AGI cost history is not available." = "L’historique des coûts de Future AGI n’est pas disponible.";
-"Saved in CodexBar's local config file. Or set FI_API_KEY." = "Enregistrée dans le fichier de configuration local de CodexBar. Vous pouvez aussi définir FI_API_KEY.";
+"Saved in Tolkein's local config file. Or set FI_API_KEY." = "Enregistrée dans le fichier de configuration local de Tolkein. Vous pouvez aussi définir FI_API_KEY.";
 
 "API region" = "Région API";
 "API token" = "Jeton API";
@@ -105,7 +105,7 @@
 "Automatic imports browser cookies or stored sessions." = "Importe automatiquement les cookies du navigateur ou les sessions stockées.";
 "Automatic imports browser cookies." = "Importe automatiquement les cookies du navigateur.";
 "Automatically imports browser session cookie." = "Importe automatiquement le cookie de session du navigateur.";
-"Automatically opens CodexBar when you start your Mac." = "Ouvre automatiquement CodexBar lorsque vous démarrez votre Mac.";
+"Automatically opens Tolkein when you start your Mac." = "Ouvre automatiquement Tolkein lorsque vous démarrez votre Mac.";
 "Automation" = "Automatisation";
 "Average (\\(label1) + \\(label2))" = "Moyenne (\\(label1) + \\(label2))";
 "Average (\\(metadata.sessionLabel) + \\(metadata.weeklyLabel))" = "Moyenne (\\(metadata.sessionLabel) + \\(metadata.weeklyLabel))";
@@ -133,7 +133,7 @@
 "Choose up to \\(Self.maxOverviewProviders) providers" = "Choisissez jusqu'à \\(Self.maxOverviewProviders) fournisseurs";
 "Choose up to \\(count) providers" = "Choisissez jusqu'à \\(count) fournisseurs";
 "Choose what to show in the menu bar (Pace shows usage vs. expected)." = "Choisissez ce que vous voulez afficher dans la barre de menu (Pace affiche l'utilisation par rapport à celle attendue).";
-"Choose which Codex account CodexBar should follow." = "Choisissez quel compte Codex CodexBar doit suivre.";
+"Choose which Codex account Tolkein should follow." = "Choisissez quel compte Codex Tolkein doit suivre.";
 "Choose which window drives the menu bar percent." = "Choisissez quelle fenêtre gère le pourcentage de la barre de menus.";
 "Chrome" = "Chrome";
 "Claude CLI not found" = "Claude CLI introuvable";
@@ -148,9 +148,9 @@
 "Codex binary" = "Binaire Codex";
 "Codex login failed" = "Échec de la connexion au Codex";
 "Codex login timed out" = "La connexion au Codex a expiré";
-"CodexBar Lifecycle Keepalive" = "Cycle de vie de CodexBar Keepalive";
-"CodexBar can't show its menu bar icon" = "CodexBar ne peut pas afficher l'icône de sa barre de menus";
-"CodexBar could not read managed account storage. " = "CodexBar n'a pas pu lire le stockage du compte géré.";
+"Tolkein Lifecycle Keepalive" = "Cycle de vie de Tolkein Keepalive";
+"Tolkein can't show its menu bar icon" = "Tolkein ne peut pas afficher l'icône de sa barre de menus";
+"Tolkein could not read managed account storage. " = "Tolkein n'a pas pu lire le stockage du compte géré.";
 "Configure…" = "Configurer…";
 "Connected" = "Connecté";
 "Controls how much detail is logged." = "Contrôle la quantité de détails enregistrés.";
@@ -169,7 +169,7 @@
 "Local token history is unavailable or incomplete." = "L’historique local des tokens est indisponible ou incomplet.";
 "Could not add Codex account" = "Impossible d'ajouter un compte Codex";
 "Could not open Terminal for Gemini" = "Impossible d'ouvrir le terminal pour Gemini";
-"Claude OAuth credentials read failed: CodexBar's Claude OAuth cache is temporarily unavailable in macOS Keychain. Check that the login keychain is unlocked in Keychain Access, then retry Refresh." = "Impossible de lire les identifiants Claude OAuth : le cache Claude OAuth de CodexBar est temporairement indisponible dans le trousseau macOS. Vérifiez que le trousseau de session est déverrouillé dans Trousseaux d’accès, puis actualisez à nouveau.";
+"Claude OAuth credentials read failed: Tolkein's Claude OAuth cache is temporarily unavailable in macOS Keychain. Check that the login keychain is unlocked in Keychain Access, then retry Refresh." = "Impossible de lire les identifiants Claude OAuth : le cache Claude OAuth de Tolkein est temporairement indisponible dans le trousseau macOS. Vérifiez que le trousseau de session est déverrouillé dans Trousseaux d’accès, puis actualisez à nouveau.";
 "Could not start codex login" = "Impossible de démarrer la connexion à Codex";
 "Could not switch system account" = "Impossible de changer de compte système";
 "Credits" = "Crédits";
@@ -219,7 +219,7 @@
 "Hide details" = "Masquer les détails";
 "Hide personal information" = "Masquer les informations personnelles";
 "Historical tracking" = "Suivi historique";
-"How often CodexBar polls providers in the background." = "À quelle fréquence CodexBar interroge les fournisseurs en arrière-plan.";
+"How often Tolkein polls providers in the background." = "À quelle fréquence Tolkein interroge les fournisseurs en arrière-plan.";
 "Inactive" = "Inactif";
 "Install CLI" = "Installer la CLI";
 "Install the Claude CLI (npm i -g @anthropic-ai/claude-code) and try again." = "Installez la CLI Claude (npm i -g @anthropic-ai/claude-code) et réessayez.";
@@ -278,7 +278,7 @@
 "Open" = "Ouvrir";
 "Open API Keys" = "Clés API ouvertes";
 "Open Amp Settings" = "Ouvrir les paramètres de l'ampli";
-"Open Antigravity to sign in, then refresh CodexBar." = "Ouvrez Antigravity pour vous connecter, puis actualisez CodexBar.";
+"Open Antigravity to sign in, then refresh Tolkein." = "Ouvrez Antigravity pour vous connecter, puis actualisez Tolkein.";
 "Open Browser" = "Ouvrir le navigateur";
 "Open Coding Plan" = "Plan de codage ouvert";
 "Open Console" = "Ouvrir la console";
@@ -323,7 +323,7 @@
 "Progress bars fill as you consume quota (instead of showing remaining)." = "Les barres de progression se remplissent à mesure que vous consommez le quota (au lieu d'afficher le reste).";
 "Provider" = "Fournisseur";
 "Providers" = "Fournisseurs";
-"Quit CodexBar" = "Quitter CodexBar";
+"Quit Tolkein" = "Quitter Tolkein";
 "Random (default)" = "Aléatoire (par défaut)";
 "Reads local usage logs. Shows today + last 30 days cost in the menu." = "Lit les journaux d'utilisation locaux. Affiche aujourd'hui + la fenêtre d'historique sélectionnée dans le menu.";
 "Refresh" = "Actualiser";
@@ -331,8 +331,8 @@
 "Remote" = "Distant";
 "Remove" = "Supprimer";
 "Remove Codex account?" = "Supprimer le compte Codex ?";
-"Remove \\(account.email) from CodexBar? Its managed Codex home will be deleted." = "Supprimer \\(account.email) de CodexBar ? Sa maison Codex gérée sera supprimée.";
-"Remove \\(email) from CodexBar? Its managed Codex home will be deleted." = "Supprimer \\(email) de CodexBar ? Sa maison Codex gérée sera supprimée.";
+"Remove \\(account.email) from Tolkein? Its managed Codex home will be deleted." = "Supprimer \\(account.email) de Tolkein ? Sa maison Codex gérée sera supprimée.";
+"Remove \\(email) from Tolkein? Its managed Codex home will be deleted." = "Supprimer \\(email) de Tolkein ? Sa maison Codex gérée sera supprimée.";
 "Remove selected account" = "Supprimer le compte sélectionné";
 "Replace critter bars with provider branding icons and a percentage." = "Remplacez les barres de créatures par des icônes de marque du fournisseur et un pourcentage.";
 "Replay selected animation" = "Rejouer l'animation sélectionnée";
@@ -373,7 +373,7 @@
 "Store multiple Ollama Cookie headers." = "Stockez plusieurs en-têtes Ollama Cookie.";
 "Store multiple OpenCode Cookie headers." = "Stockez plusieurs en-têtes de cookies OpenCode.";
 "Store multiple OpenCode Go Cookie headers." = "Stockez plusieurs en-têtes OpenCode Go Cookie.";
-"Stored in the CodexBar config file." = "Stocké dans le fichier de configuration CodexBar.";
+"Stored in the Tolkein config file." = "Stocké dans le fichier de configuration Tolkein.";
 "Stored in ~/.codexbar/config.json. " = "Stocké dans ~/.codexbar/config.json.";
 "Stored in ~/.codexbar/config.json. Paste the key from the Synthetic dashboard." = "Stocké dans ~/.codexbar/config.json. Collez la clé du tableau de bord synthétique.";
 "Stored in ~/.codexbar/config.json. Paste your Coding Plan API key from Model Studio." = "Stocké dans ~/.codexbar/config.json. Collez la clé API de votre plan de codage depuis Model Studio.";
@@ -448,8 +448,8 @@
 "cursor_on_demand" = "À la demande : %@";
 "cursor_on_demand_with_limit" = "À la demande : %1$@ / %2$@";
 "extra_usage_format" = "Utilisation supplémentaire : %1$@ / %2$@";
-"jetbrains_detected_generate" = "Détecté : %@. Utilisez l'assistant IA une fois pour générer des données de quota, puis actualisez CodexBar.";
-"jetbrains_detected_select" = "Détecté : %@. Sélectionnez votre IDE préféré dans Paramètres, puis actualisez CodexBar.";
+"jetbrains_detected_generate" = "Détecté : %@. Utilisez l'assistant IA une fois pour générer des données de quota, puis actualisez Tolkein.";
+"jetbrains_detected_select" = "Détecté : %@. Sélectionnez votre IDE préféré dans Paramètres, puis actualisez Tolkein.";
 "last_fetch_failed_with_provider" = "La dernière récupération de %@ a échoué :";
 "last_spend" = "Dernière dépense : %@";
 "mcp_model_usage" = "%1$@ : %2$@";
@@ -459,10 +459,10 @@
 "metric_primary" = "Primaire (%@)";
 "metric_secondary" = "Secondaire (%@)";
 "metric_tertiary" = "Tertiaire (%@)";
-"multiple_workspaces_found" = "CodexBar a trouvé plusieurs espaces de travail pour %@. Veuillez choisir l'espace de travail à ajouter.";
+"multiple_workspaces_found" = "Tolkein a trouvé plusieurs espaces de travail pour %@. Veuillez choisir l'espace de travail à ajouter.";
 "ory_session_…=…; csrftoken=…" = "ory_session_…=…; csrftoken=…";
 "overview_choose_providers" = "Choisissez jusqu'à %@ fournisseurs";
-"remove_account_message" = "Supprimer %@ de CodexBar ? Sa maison Codex gérée sera supprimée.";
+"remove_account_message" = "Supprimer %@ de Tolkein ? Sa maison Codex gérée sera supprimée.";
 "version_format" = "Version %@";
 "vertex_ai_login_instructions" = "Pour suivre l'utilisation de Vertex AI, authentifiez-vous auprès de Google Cloud.\n\n1. Ouvrez le terminal\n2. Exécutez : gcloud auth application-default login\n3. Suivez les invites du navigateur pour vous connecter\n4. Définissez votre projet : gcloud config set project PROJECT_ID\n\nOuvrir le terminal maintenant ?";
 "workspaceID is set but only opencode, opencodego, and deepgram support workspaceID." = "workspaceID est défini mais seuls opencode, opencodego et deepgram prennent en charge workspaceID.";
@@ -505,7 +505,7 @@
 "language_indonesian" = "Indonésien";
 "language_polish" = "Polonais";
 "start_at_login_title" = "Lancer à l'ouverture de session";
-"start_at_login_subtitle" = "Ouvre automatiquement CodexBar au démarrage de votre Mac.";
+"start_at_login_subtitle" = "Ouvre automatiquement Tolkein au démarrage de votre Mac.";
 "show_cost_summary_subtitle" = "Lit les journaux d'utilisation locaux. Affiche le coût d'aujourd'hui et de la période sélectionnée dans le menu.";
 "cost_summary_style_title" = "Style d’affichage";
 "cost_summary_style_inline" = "Intégré seulement";
@@ -530,7 +530,7 @@
 "credential_expiry_notifications_title" = "Expiration des identifiants";
 "credential_expiry_notifications_subtitle" = "Vous avertit une seule fois lorsqu’un compte de fournisseur nécessite une nouvelle connexion.";
 "credential_expiry_notification_title" = "%@ nécessite une connexion";
-"credential_expiry_notification_body" = "Ouvrez CodexBar pour consulter l’erreur du compte et vous reconnecter.";
+"credential_expiry_notification_body" = "Ouvrez Tolkein pour consulter l’erreur du compte et vous reconnecter.";
 "session_quota_notifications_subtitle" = "Vous avertit lorsque le quota de session sur 5 heures atteint 0 % puis lorsqu'il redevient disponible.";
 "quota_depleted_title" = "Quota épuisé et rétabli";
 "quota_warning_notifications_subtitle" = "Vous avertit lorsque le quota restant (session ou hebdomadaire) franchit les seuils configurés.";
@@ -585,7 +585,7 @@
 "quota_warning_warning" = "Avertissement";
 "quota_warning_critical" = "Critique";
 "apply" = "Appliquer";
-"quit_app" = "Quitter CodexBar";
+"quit_app" = "Quitter Tolkein";
 
 /* Tab titles */
 "tab_general" = "Général";
@@ -596,6 +596,11 @@
 "tab_advanced" = "Avancé";
 "tab_about" = "À propos";
 "tab_debug" = "Débogage";
+"tab_alerts" = "Alertes";
+"tab_costs" = "Coûts";
+"tab_sync" = "Synchronisation";
+"tab_integrations" = "Intégrations";
+"tab_privacy" = "Confidentialité et données";
 
 /* Providers Pane */
 "select_a_provider" = "Sélectionner un fournisseur";
@@ -611,8 +616,8 @@
 "managed_login_missing_email" = "Connexion au Codex terminée, mais aucune adresse e-mail du compte n'était disponible. Réessayez après avoir confirmé que le compte est entièrement connecté.";
 "login_success_notification_title" = "%@ connexion réussie";
 "login_success_notification_body" = "Vous pouvez revenir à l’app ; authentification terminée.";
-"workspace_selection_cancelled" = "CodexBar a trouvé plusieurs espaces de travail, mais aucun espace de travail n'a été sélectionné.";
-"unsafe_managed_home" = "CodexBar a refusé de modifier un chemin d'accès à la maison géré inattendu : %@";
+"workspace_selection_cancelled" = "Tolkein a trouvé plusieurs espaces de travail, mais aucun espace de travail n'a été sélectionné.";
+"unsafe_managed_home" = "Tolkein a refusé de modifier un chemin d'accès à la maison géré inattendu : %@";
 "menu_bar_metric_title" = "Métrique de la barre de menus";
 "menu_bar_metric_subtitle" = "Choisissez quelle fenêtre gère le pourcentage de la barre de menus.";
 "menu_bar_metric_subtitle_deepseek" = "Affiche le solde DeepSeek dans la barre de menu.";
@@ -726,11 +731,8 @@
 /* About Pane */
 "about_tagline" = "Que vos jetons ne soient jamais épuisés : gardez un œil sur les limites des agents.";
 "link_github" = "GitHub";
-"link_website" = "Site web";
-"link_twitter" = "X/Twitter";
-"link_email" = "E-mail";
 "link_acknowledgements" = "Remerciements";
-"acknowledgements_footer" = "CodexBar s'appuie sur ces projets open source.";
+"acknowledgements_footer" = "Tolkein s'appuie sur ces projets open source.";
 "acknowledgements_others" = "%d autres";
 "acknowledgements_author" = "Auteur";
 "acknowledgements_authors" = "Auteurs";
@@ -742,10 +744,11 @@
 "check_for_updates" = "Rechercher les mises à jour…";
 "updates_unavailable" = "Mises à jour non disponibles dans cette version.";
 "copyright" = "© 2026 Peter Steinberger. Licence MIT.";
+"about_based_on_codexbar" = "Basé sur CodexBar de Peter Steinberger (licence MIT)";
 
 /* Debug Pane */
 "use_javascriptcore_plugin_engine" = "Utiliser JavaScriptCore pour les extensions de fournisseurs";
-"use_javascriptcore_plugin_engine_subtitle" = "Repli de compatibilité uniquement. Redémarrez CodexBar pour l’appliquer ; CODEXBAR_PLUGIN_ENGINE remplace ce réglage.";
+"use_javascriptcore_plugin_engine_subtitle" = "Repli de compatibilité uniquement. Redémarrez Tolkein pour l’appliquer ; CODEXBAR_PLUGIN_ENGINE remplace ce réglage.";
 "section_logging" = "Journalisation";
 "enable_file_logging" = "Activer la journalisation des fichiers";
 "enable_file_logging_subtitle" = "Écrivez les journaux dans %@ pour le débogage.";
@@ -801,7 +804,7 @@
 "login_shell_path" = "CHEMIN du shell de connexion (capture de démarrage)";
 "cleared" = "Effacé";
 "no_fetch_attempts" = "Aucune tentative de récupération pour l'instant.";
-"macOS Tahoe can block menu bar apps in System Settings → Menu Bar → Allow in the Menu Bar. CodexBar is running, but macOS may be hiding its icon. Open Menu Bar settings and turn CodexBar on." = "macOS Tahoe peut bloquer les applications de la barre de menus dans Paramètres système → Barre de menus → Autoriser dans la barre de menus. CodexBar est en cours d'exécution, mais macOS cache peut-être son icône. Ouvrez les paramètres de la barre de menu et activez CodexBar.";
+"macOS Tahoe can block menu bar apps in System Settings → Menu Bar → Allow in the Menu Bar. Tolkein is running, but macOS may be hiding its icon. Open Menu Bar settings and turn Tolkein on." = "macOS Tahoe peut bloquer les applications de la barre de menus dans Paramètres système → Barre de menus → Autoriser dans la barre de menus. Tolkein est en cours d'exécution, mais macOS cache peut-être son icône. Ouvrez les paramètres de la barre de menu et activez Tolkein.";
 
 /* Metric preferences */
 "metric_pref_automatic" = "Automatique";
@@ -844,7 +847,7 @@
 "refresh_adaptive" = "Adaptatif";
 "refresh_adaptive_agent_aware" = "Adaptatif (activité des agents)";
 "adaptive_activity_consent_title" = "Autoriser l’actualisation selon l’activité ?";
-"adaptive_activity_consent_message" = "Le mode Adaptatif selon l’activité des agents peut examiner la liste des processus locaux en cours, y compris leurs lignes de commande, pour identifier Codex et Claude, puis lire toutes les 30 secondes les métadonnées des sessions connues pendant que vous codez. Lorsque Agent Sessions est désactivé, CodexBar ne conserve en mémoire que l’heure de la dernière activité et ignore les chemins et identités des sessions. Ces données ne sont envoyées nulle part, et la détection à distance ainsi que SSH restent désactivés. Si vous refusez, CodexBar revient au mode Adaptatif normal sans analyse de l’activité locale.";
+"adaptive_activity_consent_message" = "Le mode Adaptatif selon l’activité des agents peut examiner la liste des processus locaux en cours, y compris leurs lignes de commande, pour identifier Codex et Claude, puis lire toutes les 30 secondes les métadonnées des sessions connues pendant que vous codez. Lorsque Agent Sessions est désactivé, Tolkein ne conserve en mémoire que l’heure de la dernière activité et ignore les chemins et identités des sessions. Ces données ne sont envoyées nulle part, et la détection à distance ainsi que SSH restent désactivés. Si vous refusez, Tolkein revient au mode Adaptatif normal sans analyse de l’activité locale.";
 "adaptive_activity_consent_allow" = "Autoriser l’activité locale";
 "adaptive_activity_consent_decline" = "Utiliser le mode Adaptatif normal";
 
@@ -893,7 +896,7 @@
 "Status Page" = "Page d'état";
 "Open Status Page" = "Ouvrir la page d'état";
 "Settings..." = "Réglages…";
-"About CodexBar" = "À propos de CodexBar";
+"About Tolkein" = "À propos de Tolkein";
 "Quit" = "Quitter";
 "Last %d day" = "Dernier %d jour";
 "Last %d days" = "%d derniers jours";
@@ -993,8 +996,8 @@
 "Managed by Homebrew" = "Géré par Homebrew";
 "Copy update command" = "Copier la commande de mise à jour";
 "Update to %@" = "Mettre à jour vers %@";
-"CodexBar %@ is available" = "CodexBar %@ est disponible";
-"CodexBar is up to date" = "CodexBar est à jour";
+"Tolkein %@ is available" = "Tolkein %@ est disponible";
+"Tolkein is up to date" = "Tolkein est à jour";
 "Checking for updates…" = "Recherche de mises à jour…";
 "Updating with Homebrew…" = "Mise à jour via Homebrew…";
 "Homebrew update failed. You can run this command in Terminal instead:" = "La mise à jour Homebrew a échoué. Vous pouvez exécuter cette commande dans le Terminal :";
@@ -1158,26 +1161,26 @@
 "Capacity Start" = "Capacité Début";
 "Changelog" = "Journal des modifications";
 "Choose the Moonshot/Kimi API host for international or China mainland accounts." = "Choisissez l'hôte API Moonshot/Kimi pour les comptes internationaux ou en Chine continentale.";
-"CodexBar can't replace a system account that is signed in with an API key only setup." = "CodexBar ne peut pas remplacer un compte système connecté par une configuration de clé API uniquement.";
-"CodexBar could not find saved auth for that account. Re-authenticate it and try again." = "CodexBar n'a pas pu trouver l'authentification enregistrée pour ce compte. Ré-authentifiez-le et réessayez.";
-"CodexBar could not read managed account storage. Recover the store before adding another account." = "CodexBar n'a pas pu lire le stockage du compte géré. Récupérez la boutique avant d'ajouter un autre compte.";
-"CodexBar could not read saved auth for that account. Re-authenticate it and try again." = "CodexBar n'a pas pu lire l'authentification enregistrée pour ce compte. Ré-authentifiez-le et réessayez.";
-"CodexBar could not read the current system account on this Mac." = "CodexBar n'a pas pu lire le compte système actuel sur ce Mac.";
-"CodexBar could not replace the live Codex auth on this Mac." = "CodexBar n'a pas pu remplacer l'authentification Codex en direct sur ce Mac.";
-"CodexBar could not safely preserve the current system account before switching." = "CodexBar n'a pas pu conserver en toute sécurité le compte système actuel avant le changement.";
-"CodexBar could not save the current system account before switching." = "CodexBar n'a pas pu enregistrer le compte système actuel avant de changer.";
-"CodexBar could not update managed account storage." = "CodexBar n'a pas pu mettre à jour le stockage du compte géré.";
-"CodexBar found another managed account that already uses the current system account. Resolve the duplicate account before switching." = "CodexBar a trouvé un autre compte géré qui utilise déjà le compte système actuel. Résolvez le compte en double avant de changer.";
-"CodexBar will ask macOS Keychain for “%@” so it can decrypt browser cookies and authenticate your account. Click OK to continue." = "CodexBar demandera au Trousseau macOS « %@ » afin de pouvoir décrypter les cookies du navigateur et authentifier votre compte. Cliquez sur OK pour continuer.";
-"CodexBar will ask macOS Keychain for the Claude Code OAuth token so it can fetch your Claude usage. Click OK to continue." = "CodexBar demandera au Trousseau macOS le jeton Claude Code OAuth afin de pouvoir récupérer votre utilisation de Claude. Cliquez sur OK pour continuer.";
-"CodexBar will ask macOS Keychain for your %@ cookie header so it can fetch usage. Click OK to continue." = "CodexBar demandera au Trousseau macOS votre en-tête de cookie %@ afin de pouvoir récupérer son utilisation. Cliquez sur OK pour continuer.";
-"CodexBar will ask macOS Keychain for your Claude cookie header so it can fetch Claude web usage. Click OK to continue." = "CodexBar demandera au Trousseau macOS votre en-tête de cookie Claude afin de pouvoir récupérer l'utilisation du Web de Claude. Cliquez sur OK pour continuer.";
-"CodexBar will ask macOS Keychain for your GitHub Copilot token so it can fetch usage. Click OK to continue." = "CodexBar demandera au Trousseau macOS votre jeton GitHub Copilot afin de pouvoir récupérer son utilisation. Cliquez sur OK pour continuer.";
-"CodexBar will ask macOS Keychain for your Kimi auth token so it can fetch usage. Click OK to continue." = "CodexBar demandera au Trousseau macOS votre jeton d'authentification Kimi afin de pouvoir récupérer son utilisation. Cliquez sur OK pour continuer.";
-"CodexBar will ask macOS Keychain for your MiniMax API token so it can fetch usage. Click OK to continue." = "CodexBar demandera au Trousseau macOS votre jeton API MiniMax afin de pouvoir récupérer son utilisation. Cliquez sur OK pour continuer.";
-"CodexBar will ask macOS Keychain for your OpenAI cookie header so it can fetch Codex dashboard extras. Click OK to continue." = "CodexBar demandera au Trousseau macOS votre en-tête de cookie OpenAI afin de pouvoir récupérer les extras du tableau de bord Codex. Cliquez sur OK pour continuer.";
-"CodexBar will ask macOS Keychain for your Synthetic API key so it can fetch usage. Click OK to continue." = "CodexBar demandera au Trousseau macOS votre clé API synthétique afin de pouvoir récupérer son utilisation. Cliquez sur OK pour continuer.";
-"CodexBar will ask macOS Keychain for your z.ai API token so it can fetch usage. Click OK to continue." = "CodexBar demandera au Trousseau macOS votre jeton API z.ai afin de pouvoir récupérer son utilisation. Cliquez sur OK pour continuer.";
+"Tolkein can't replace a system account that is signed in with an API key only setup." = "Tolkein ne peut pas remplacer un compte système connecté par une configuration de clé API uniquement.";
+"Tolkein could not find saved auth for that account. Re-authenticate it and try again." = "Tolkein n'a pas pu trouver l'authentification enregistrée pour ce compte. Ré-authentifiez-le et réessayez.";
+"Tolkein could not read managed account storage. Recover the store before adding another account." = "Tolkein n'a pas pu lire le stockage du compte géré. Récupérez la boutique avant d'ajouter un autre compte.";
+"Tolkein could not read saved auth for that account. Re-authenticate it and try again." = "Tolkein n'a pas pu lire l'authentification enregistrée pour ce compte. Ré-authentifiez-le et réessayez.";
+"Tolkein could not read the current system account on this Mac." = "Tolkein n'a pas pu lire le compte système actuel sur ce Mac.";
+"Tolkein could not replace the live Codex auth on this Mac." = "Tolkein n'a pas pu remplacer l'authentification Codex en direct sur ce Mac.";
+"Tolkein could not safely preserve the current system account before switching." = "Tolkein n'a pas pu conserver en toute sécurité le compte système actuel avant le changement.";
+"Tolkein could not save the current system account before switching." = "Tolkein n'a pas pu enregistrer le compte système actuel avant de changer.";
+"Tolkein could not update managed account storage." = "Tolkein n'a pas pu mettre à jour le stockage du compte géré.";
+"Tolkein found another managed account that already uses the current system account. Resolve the duplicate account before switching." = "Tolkein a trouvé un autre compte géré qui utilise déjà le compte système actuel. Résolvez le compte en double avant de changer.";
+"Tolkein will ask macOS Keychain for “%@” so it can decrypt browser cookies and authenticate your account. Click OK to continue." = "Tolkein demandera au Trousseau macOS « %@ » afin de pouvoir décrypter les cookies du navigateur et authentifier votre compte. Cliquez sur OK pour continuer.";
+"Tolkein will ask macOS Keychain for the Claude Code OAuth token so it can fetch your Claude usage. Click OK to continue." = "Tolkein demandera au Trousseau macOS le jeton Claude Code OAuth afin de pouvoir récupérer votre utilisation de Claude. Cliquez sur OK pour continuer.";
+"Tolkein will ask macOS Keychain for your %@ cookie header so it can fetch usage. Click OK to continue." = "Tolkein demandera au Trousseau macOS votre en-tête de cookie %@ afin de pouvoir récupérer son utilisation. Cliquez sur OK pour continuer.";
+"Tolkein will ask macOS Keychain for your Claude cookie header so it can fetch Claude web usage. Click OK to continue." = "Tolkein demandera au Trousseau macOS votre en-tête de cookie Claude afin de pouvoir récupérer l'utilisation du Web de Claude. Cliquez sur OK pour continuer.";
+"Tolkein will ask macOS Keychain for your GitHub Copilot token so it can fetch usage. Click OK to continue." = "Tolkein demandera au Trousseau macOS votre jeton GitHub Copilot afin de pouvoir récupérer son utilisation. Cliquez sur OK pour continuer.";
+"Tolkein will ask macOS Keychain for your Kimi auth token so it can fetch usage. Click OK to continue." = "Tolkein demandera au Trousseau macOS votre jeton d'authentification Kimi afin de pouvoir récupérer son utilisation. Cliquez sur OK pour continuer.";
+"Tolkein will ask macOS Keychain for your MiniMax API token so it can fetch usage. Click OK to continue." = "Tolkein demandera au Trousseau macOS votre jeton API MiniMax afin de pouvoir récupérer son utilisation. Cliquez sur OK pour continuer.";
+"Tolkein will ask macOS Keychain for your OpenAI cookie header so it can fetch Codex dashboard extras. Click OK to continue." = "Tolkein demandera au Trousseau macOS votre en-tête de cookie OpenAI afin de pouvoir récupérer les extras du tableau de bord Codex. Cliquez sur OK pour continuer.";
+"Tolkein will ask macOS Keychain for your Synthetic API key so it can fetch usage. Click OK to continue." = "Tolkein demandera au Trousseau macOS votre clé API synthétique afin de pouvoir récupérer son utilisation. Cliquez sur OK pour continuer.";
+"Tolkein will ask macOS Keychain for your z.ai API token so it can fetch usage. Click OK to continue." = "Tolkein demandera au Trousseau macOS votre jeton API z.ai afin de pouvoir récupérer son utilisation. Cliquez sur OK pour continuer.";
 "Could not open Cursor login in your browser." = "Impossible d'ouvrir la connexion par curseur dans votre navigateur.";
 "Could not open browser for Antigravity" = "Impossible d'ouvrir le navigateur pour Antigravity";
 "Credits used" = "Crédits utilisés";
@@ -1192,7 +1195,7 @@
 "Extra usage balance: %@" = "Solde d'utilisation supplémentaire : %@";
 "Keychain Access Required" = "Accès au Trousseau requis";
 "keychain_prompt_learn_more" = "En savoir plus…";
-"keychain_prompt_privacy_note" = "La saisie du mot de passe de connexion au Mac est gérée par macOS, pas par CodexBar. Vous pouvez désactiver l'accès au Trousseau à tout moment dans Réglages → Avancé.";
+"keychain_prompt_privacy_note" = "La saisie du mot de passe de connexion au Mac est gérée par macOS, pas par Tolkein. Vous pouvez désactiver l'accès au Trousseau à tout moment dans Réglages → Confidentialité et données.";
 "Kiro menu bar value" = "Valeur de la barre de menu Kiro";
 "Label" = "Libellé";
 "No organizations loaded. Click Refresh after setting your API key." = "Aucune organisation chargée. Cliquez sur Actualiser après avoir défini votre clé API.";
@@ -1228,7 +1231,7 @@
 "%@ is unavailable. Edit the widget to choose a provider." = "%@ n’est pas disponible. Modifiez le widget pour choisir un fournisseur.";
 "%@ web API access is disabled." = "L'accès à l'API Web %@ est désactivé.";
 "Disable %@ dashboard cookie usage." = "Désactivez l'utilisation des cookies du tableau de bord %@.";
-"Keychain access is disabled in Advanced, so browser cookie import is unavailable." = "L'accès au Trousseau est désactivé dans Advanced, donc l'importation des cookies du navigateur n'est pas disponible.";
+"Keychain access is disabled in Privacy & Data, so browser cookie import is unavailable." = "L'accès au Trousseau est désactivé dans Confidentialité et données, donc l'importation des cookies du navigateur n'est pas disponible.";
 "Manually paste an %@ from a browser session." = "Collez manuellement un %@ à partir d'une session de navigateur.";
 "Paste a Cookie header captured from %@." = "Collez un en-tête de cookie capturé à partir de %@.";
 "Paste a Cookie header from %@." = "Collez un en-tête de cookie à partir de %@.";
@@ -1256,7 +1259,7 @@
 "Service" = "Service";
 "Show or hide Kiro credits, percent, or both next to the menu bar icon." = "Affichez ou masquez les crédits Kiro, le pourcentage ou les deux à côté de l'icône de la barre de menu.";
 "Show usage for organizations you belong to. Personal account is always shown." = "Afficher l'utilisation des organisations auxquelles vous appartenez. Le compte personnel est toujours affiché.";
-"Sign in to cursor.com in your browser, then refresh Cursor in CodexBar." = "Connectez-vous à cursor.com dans votre navigateur, puis actualisez Cursor dans CodexBar.";
+"Sign in to cursor.com in your browser, then refresh Cursor in Tolkein." = "Connectez-vous à cursor.com dans votre navigateur, puis actualisez Cursor dans Tolkein.";
 "Simulated error text" = "Texte d'erreur simulé";
 "StepFun platform account (phone number or email)." = "Compte de la plateforme StepFun (numéro de téléphone ou email).";
 "Stored in ~/.codexbar/config.json." = "Stocké dans ~/.codexbar/config.json.";
@@ -1272,11 +1275,11 @@
 "Stored in ~/.codexbar/config.json. OPENAI_ADMIN_KEY is preferred; OPENAI_API_KEY still works." = "Stocké dans ~/.codexbar/config.json. OPENAI_ADMIN_KEY est préféré ; OPENAI_API_KEY fonctionne toujours.";
 "Stored in ~/.codexbar/config.json. Requires an Anthropic Admin API key." = "Stocké dans ~/.codexbar/config.json. Nécessite une clé API Anthropic Admin.";
 "Stored in ~/.codexbar/config.json. Used for /v1/quota-stats." = "Stocké dans ~/.codexbar/config.json. Utilisé pour /v1/quota-stats.";
-"Stored in ~/.codexbar/config.json. You can also provide CODEBUFF_API_KEY or let CodexBar read ~/.config/manicode/credentials.json (created by `codebuff login`)." = "Stocké dans ~/.codexbar/config.json. Vous pouvez également fournir CODEBUFF_API_KEY ou laisser CodexBar lire ~/.config/manicode/credentials.json (créé par `codebuff login`).";
+"Stored in ~/.codexbar/config.json. You can also provide CODEBUFF_API_KEY or let Tolkein read ~/.config/manicode/credentials.json (created by `codebuff login`)." = "Stocké dans ~/.codexbar/config.json. Vous pouvez également fournir CODEBUFF_API_KEY ou laisser Tolkein lire ~/.config/manicode/credentials.json (créé par `codebuff login`).";
 "Stored in ~/.codexbar/config.json. You can also provide KILO_API_KEY or ~/.local/share/kilo/auth.json (kilo.access)." = "Stocké dans ~/.codexbar/config.json. Vous pouvez également fournir KILO_API_KEY ou ~/.local/share/kilo/auth.json (kilo.access).";
 "T3 Chat cookie" = "Cookie de discussion T3";
 "Team mode" = "Mode équipe";
-"That account is no longer available in CodexBar. Refresh the account list and try again." = "Ce compte n'est plus disponible dans CodexBar. Actualisez la liste des comptes et réessayez.";
+"That account is no longer available in Tolkein. Refresh the account list and try again." = "Ce compte n'est plus disponible dans Tolkein. Actualisez la liste des comptes et réessayez.";
 "The browser login did not complete in time. Try Antigravity login again." = "La connexion au navigateur ne s'est pas terminée à temps. Essayez à nouveau de vous connecter à Antigravity.";
 "Timed out waiting for Cursor login. %@" = "Le délai d'attente pour la connexion au curseur a expiré. %@";
 "Timed out waiting for Cursor login. %@ Last error: %@" = "Le délai d'attente pour la connexion au curseur a expiré. %@ Dernière erreur : %@";
@@ -1354,11 +1357,11 @@
 
 "%@: %@" = "%@ : %@";
 "Alternatively, set a custom path in Settings." = "Vous pouvez également définir un chemin personnalisé dans Paramètres.";
-"Choose a supported browser so CodexBar can read the matching account." = "Choisissez un navigateur pris en charge pour que CodexBar puisse lire le compte correspondant.";
+"Choose a supported browser so Tolkein can read the matching account." = "Choisissez un navigateur pris en charge pour que Tolkein puisse lire le compte correspondant.";
 "Choose Cursor account" = "Choisissez le compte Cursor";
-"Choose which Cursor account CodexBar should use." = "Choisissez le compte Cursor que CodexBar doit utiliser.";
+"Choose which Cursor account Tolkein should use." = "Choisissez le compte Cursor que Tolkein doit utiliser.";
 "Finish switching to a different Cursor account in your browser, then try again." = "Terminez de passer à un autre compte Cursor dans votre navigateur, puis réessayez.";
-"Install a JetBrains IDE with AI Assistant enabled, then refresh CodexBar." = "Installez un IDE JetBrains avec AI Assistant activé, puis actualisez CodexBar.";
+"Install a JetBrains IDE with AI Assistant enabled, then refresh Tolkein." = "Installez un IDE JetBrains avec AI Assistant activé, puis actualisez Tolkein.";
 "Request quota: %@ / %@" = "Quota de requêtes : %@ / %@";
 "Sign in with Claude Code..." = "Connectez-vous avec Claude Code...";
 "Timed out waiting for Cursor account switch. %@" = "Le délai d'attente pour le changement de compte Cursor a expiré. %@";
@@ -1571,8 +1574,8 @@
 "5-hour usage" = "Utilisation sur 5 heures";
 "7-day usage" = "Utilisation sur 7 jours";
 "Total usage" = "Utilisation totale";
-"claude_oauth_keychain_access_disabled" = "L’accès au Keychain est désactivé, donc CodexBar ne peut pas lire les informations de connexion de Claude.";
-"claude_oauth_keychain_access_revoked" = "Les identifiants OAuth de Claude sont actuellement inaccessibles à CodexBar. Cliquez sur Actualiser pour réessayer d’y accéder, ou définissez la source d’utilisation de Claude sur CLI/Web.";
+"claude_oauth_keychain_access_disabled" = "L’accès au Keychain est désactivé, donc Tolkein ne peut pas lire les informations de connexion de Claude.";
+"claude_oauth_keychain_access_revoked" = "Les identifiants OAuth de Claude sont actuellement inaccessibles à Tolkein. Cliquez sur Actualiser pour réessayer d’y accéder, ou définissez la source d’utilisation de Claude sur CLI/Web.";
 "claude_showing_last_known_usage" = "Affichage de la dernière utilisation connue, capturée %@.";
 "claude_limited_usage_detail" = "Détails d’utilisation limités";
 /* Spend dashboard cost analysis */
@@ -1648,7 +1651,7 @@
 /* Overview share flow */
 "Share Usage Snapshot…" = "Partager l’aperçu de l’utilisation…";
 "Usage snapshot unavailable" = "Aperçu de l’utilisation indisponible";
-"CodexBar couldn't prepare a shareable usage snapshot. Refresh Usage & Spend and try again." = "CodexBar n’a pas pu préparer un aperçu de l’utilisation à partager. Actualisez Utilisation et dépenses, puis réessayez.";
+"Tolkein couldn't prepare a shareable usage snapshot. Refresh Usage & Spend and try again." = "Tolkein n’a pas pu préparer un aperçu de l’utilisation à partager. Actualisez Utilisation et dépenses, puis réessayez.";
 "Incomplete" = "Incomplet";
 "Est. subtotal (%@): %@" = "Sous-total estimé (%@) : %@";
 "Excluded requests with missing final usage: %d" = "Requêtes exclues sans données d’utilisation finales : %d";
@@ -1775,14 +1778,14 @@
 "Codex credits are still loading; will retry shortly." = "Codex Crédits est toujours en cours de chargement ; Je vais réessayer sous peu.";
 "Codex session expired. Sign in again." = "La session Codex a expiré. Connectez-vous à nouveau.";
 "Codex usage is temporarily unavailable. Try refreshing." = "Les données d'utilisation du Codex sont temporairement indisponibles. Essayez d'actualiser les données.";
-"CodexBar Account Usage" = "Utilisation du compte CodexBar";
-"CodexBar Burn Down" = "Burn-down des quotas CodexBar";
-"CodexBar Burn Down (Combined)" = "Burndown des quotas CodexBar (combiné)";
-"CodexBar Help" = "CodexBar Aide";
-"CodexBar History" = "Historique du CodexBar";
-"CodexBar Metric" = "CodexBar Indicateur";
-"CodexBar Switcher" = "Commutateur CodexBar";
-"CodexBar Usage" = "Utilisation du CodexBar";
+"Tolkein Account Usage" = "Utilisation du compte Tolkein";
+"Tolkein Burn Down" = "Burn-down des quotas Tolkein";
+"Tolkein Burn Down (Combined)" = "Burndown des quotas Tolkein (combiné)";
+"Tolkein Help" = "Tolkein Aide";
+"Tolkein History" = "Historique du Tolkein";
+"Tolkein Metric" = "Tolkein Indicateur";
+"Tolkein Switcher" = "Commutateur Tolkein";
+"Tolkein Usage" = "Utilisation du Tolkein";
 "Compact widget for credits or cost." = "Widget compact pour Crédits ou coût.";
 "Complete Kiro login in your browser" = "Complétez la connexion Kiro dans votre navigateur";
 "Controls when Claude OAuth may ask macOS for Keychain access." = "Contrôle quand Claude OAuth peut demander à macOS un accès au trousseau.";
@@ -1801,8 +1804,8 @@
 "Details for %@" = "Détails pour %@";
 "EST. %@" = "Estimation %@";
 "Enable Antigravity provider" = "Activer le fournisseur Antigravity";
-"Enable a provider in CodexBar → Settings → Providers." = "Activez un fournisseur dans CodexBar → Réglages → Fournisseurs.";
-"Enable account widgets in CodexBar → Settings → Menu → Widgets. Then edit this widget to choose an account." = "Activez les widgets de compte dans CodexBar → Paramètres → Menu → Widgets. Modifiez ensuite ce widget pour choisir un compte.";
+"Enable a provider in Tolkein → Settings → Providers." = "Activez un fournisseur dans Tolkein → Réglages → Fournisseurs.";
+"Enable account widgets in Tolkein → Settings → Menu → Widgets. Then edit this widget to choose an account." = "Activez les widgets de compte dans Tolkein → Paramètres → Menu → Widgets. Modifiez ensuite ce widget pour choisir un compte.";
 "Error: %@" = "Erreur : %@";
 "Examples: alt+cmd+2, shift+right. Refresh (cmd+r), Settings (cmd+,) and Quit (cmd+q) are reserved." = "Exemples : alt+cmd+2, shift+right. Actualiser (cmd+r), Paramètres (cmd+,) et Quitter (cmd+q) sont réservés.";
 "Export Preferences…" = "Préférences d’exportation…";
@@ -1819,10 +1822,10 @@
 "Gemini app" = "Application Gemini";
 "Gemini CLI" = "Gemini CLI";
 "Gemini app limits use your browser account and are separate from Gemini CLI quotas." = "Les limites de l’application Gemini concernent votre compte dans le navigateur et sont distinctes des quotas de Gemini CLI.";
-"Generated locally by CodexBar · Data through %@" = "Généré localement par CodexBar · Données au %@";
+"Generated locally by Tolkein · Data through %@" = "Généré localement par Tolkein · Données au %@";
 "GitHub cookies" = "GitHub cookies";
 "GitHub does not publish this value. Enter it to show a usage bar. Applies to the selected GitHub account." = "GitHub ne publie pas cette valeur. Entrez-le pour afficher une barre d'utilisation. S'applique au compte GitHub sélectionné.";
-"GitHub login succeeded, but CodexBar could not verify which account it belongs to. Please try again." = "La connexion à GitHub a réussi, mais CodexBar n'a pas pu vérifier à quel compte il appartient. Veuillez réessayer.";
+"GitHub login succeeded, but Tolkein could not verify which account it belongs to. Please try again." = "La connexion à GitHub a réussi, mais Tolkein n'a pas pu vérifier à quel compte il appartient. Veuillez réessayer.";
 "GitKraken access token" = "Accès GitKraken jetons";
 "Global uses api.z.ai. China mainland uses open.bigmodel.cn with a BigModel/GLM key; the two key families are not interchangeable." = "Global utilise api.z.ai. La Chine continentale utilise open.bigmodel.cn avec une clé BigModel/GLM ; les deux familles de clés ne sont pas interchangeables.";
 "Grok CLI" = "Grok CLI";
@@ -1870,8 +1873,8 @@
 "Open API docs" = "Ouvrir les documents API";
 "Open API keys" = "Ouvrir la page des clés API";
 "Open Amp Access Tokens" = "Ouvrir Amp Accéder à jetons";
-"Open CodexBar" = "Ouvrir CodexBar";
-"Open CodexBar to refresh, or edit this widget to choose another account." = "Ouvrez CodexBar pour actualiser ou modifiez ce widget pour choisir un autre compte.";
+"Open Tolkein" = "Ouvrir Tolkein";
+"Open Tolkein to refresh, or edit this widget to choose another account." = "Ouvrez Tolkein pour actualiser ou modifiez ce widget pour choisir un autre compte.";
 "Open Devin Usage" = "Ouvrez la page d'utilisation du Devin";
 "Open Fireworks" = "Ouvrir Fireworks";
 "Open GitKraken Account" = "Ouvrez la page du compte GitKraken";
@@ -1889,7 +1892,7 @@
 "OpenAI cookies are for %1$@, not %2$@." = "Les OpenAI cookies sont pour %1$@, pas pour %2$@.";
 "OpenAI cookies are for %@." = "OpenAI cookies sont pour %@.";
 "OpenAI web battery saver" = "Économiseur de batterie Web OpenAI";
-"OpenAI web dashboard refresh timed out. CodexBar will retry after the refresh cooldown." = "L'actualisation du tableau de bord Web OpenAI a expiré. CodexBar réessayera après le temps de recharge de l'actualisation.";
+"OpenAI web dashboard refresh timed out. Tolkein will retry after the refresh cooldown." = "L'actualisation du tableau de bord Web OpenAI a expiré. Tolkein réessayera après le temps de recharge de l'actualisation.";
 "OpenAI web refresh hit a network error. Check your connection, then refresh OpenAI cookies and try again." = "L'actualisation Web OpenAI a rencontré une erreur réseau. Vérifiez votre connexion, puis actualisez OpenAI cookies et réessayez.";
 "OpenAI web refresh timed out. Refresh OpenAI cookies and try again." = "L'actualisation Web OpenAI a expiré. Actualisez OpenAI cookies et réessayez.";
 "OpenAI web refresh was interrupted. Refresh OpenAI cookies and try again." = "L'actualisation Web OpenAI a été interrompue. Actualisez OpenAI cookies et réessayez.";
@@ -1898,7 +1901,7 @@
 "Optional additional key for account Activity. Only needed to use a separate Management API key from the one in the required API key field above." = "Clé supplémentaire facultative pour l'activité du compte. Il suffit d'utiliser une clé de gestion API distincte de celle indiquée dans le champ de clé API requis ci-dessus.";
 "Optional for automatic auth. Use a slug, URL, or internal org-... / org_... ID. Manual auth may need the x-cog-org-id header from a successful Devin quota request." = "Facultatif pour l'authentification automatique. Utilisez un slug, URL, ou un org-... / org_... interne ID. L'authentification manuelle peut nécessiter l'en-tête x-cog-org-id d'une demande de quota Devin réussie.";
 "Optional gk-org-id header value. Or set GITKRAKEN_ORG_ID." = "Valeur d’en-tête gk-org-id facultative. Ou définissez GITKRAKEN_ORG_ID.";
-"Optional when the API key can access one account; CodexBar discovers it automatically. For multiple accounts, find the slug in the app.fireworks.ai home account switcher or run firectl whoami." = "Facultatif lorsque la clé API peut accéder à un compte ; CodexBar le découvre automatiquement. Pour plusieurs comptes, recherchez le slug dans le sélecteur de compte personnel app.fireworks.ai ou exécutez firectl whoami.";
+"Optional when the API key can access one account; Tolkein discovers it automatically. For multiple accounts, find the slug in the app.fireworks.ai home account switcher or run firectl whoami." = "Facultatif lorsque la clé API peut accéder à un compte ; Tolkein le découvre automatiquement. Pour plusieurs comptes, recherchez le slug dans le sélecteur de compte personnel app.fireworks.ai ou exécutez firectl whoami.";
 "Optional. Defaults to the first Business or Enterprise workspace on the account." = "Facultatif. La valeur par défaut est le premier espace de travail Business ou Enterprise du compte.";
 "Optional. Defaults to the hosted ClawRouter service." = "Facultatif. La valeur par défaut est le service hébergé ClawRouter.";
 "Optional. Defaults to the hosted OpenRouter API." = "Facultatif. La valeur par défaut est le OpenRouter API hébergé.";
@@ -1966,7 +1969,7 @@
 "SUBSCRIPTIONS" = "ABONNEMENTS";
 "Save" = "Enregistrer";
 "Save display and notification preferences for your dotfiles. Accounts, credentials, login, local paths and consent stay on this Mac." = "Enregistrez les préférences d’affichage et de notification pour vos fichiers dot. Les comptes, informations d'identification, connexion, chemins locaux et consentement restent sur ce Mac.";
-"Saved in CodexBar's local config file. Or set GITKRAKEN_API_TOKEN." = "Enregistré dans le fichier de configuration local de CodexBar. Ou définissez GITKRAKEN_API_TOKEN.";
+"Saved in Tolkein's local config file. Or set GITKRAKEN_API_TOKEN." = "Enregistré dans le fichier de configuration local de Tolkein. Ou définissez GITKRAKEN_API_TOKEN.";
 "Scoped weekly" = "Quota hebdomadaire pour le périmètre sélectionné";
 "Secondary quota" = "Quota secondaire";
 "Select position %@" = "Sélectionnez la position %@";
@@ -1985,10 +1988,10 @@
 "Show workspace spend" = "Afficher les dépenses liées à l'espace de travail";
 "Shows model-specific Claude quotas, such as Fable, in desktop widgets." = "Affiche les quotas Claude spécifiques au modèle, tels que Fable, dans les widgets du bureau.";
 "Shows the hidden accounts" = "Affiche les comptes cachés";
-"Shows usage and lets you switch accounts through `cswap`. Credentials stay managed by claude-swap; CodexBar never reads them." = "Affiche l'utilisation et vous permet de changer de compte via `cswap`. Les informations d'identification restent gérées par claude-swap ; CodexBar ne les lit jamais.";
-"Shows usage from `tcr`; it does not switch accounts, because tcr picks the account for each request. Credentials stay managed by tcr; CodexBar never reads them." = "Affiche l'utilisation depuis `tcr` ; ne change pas de compte, car tcr choisit le compte pour chaque requête. Les informations d'identification restent gérées par tcr ; CodexBar ne les lit jamais.";
+"Shows usage and lets you switch accounts through `cswap`. Credentials stay managed by claude-swap; Tolkein never reads them." = "Affiche l'utilisation et vous permet de changer de compte via `cswap`. Les informations d'identification restent gérées par claude-swap ; Tolkein ne les lit jamais.";
+"Shows usage from `tcr`; it does not switch accounts, because tcr picks the account for each request. Credentials stay managed by tcr; Tolkein never reads them." = "Affiche l'utilisation depuis `tcr` ; ne change pas de compte, car tcr choisit le compte pour chaque requête. Les informations d'identification restent gérées par tcr ; Tolkein ne les lit jamais.";
 "Stay Awake" = "Empêcher la mise en veille";
-"Stored in the CodexBar config file. Reads monthly budget and routed usage from /v1/usage." = "Stocké dans le fichier de configuration CodexBar. Lit le budget mensuel et l'utilisation acheminée à partir de /v1/usage.";
+"Stored in the Tolkein config file. Reads monthly budget and routed usage from /v1/usage." = "Stocké dans le fichier de configuration Tolkein. Lit le budget mensuel et l'utilisation acheminée à partir de /v1/usage.";
 "Stored in ~/.codexbar/config.json. OPENAI_ADMIN_KEY is required for organization usage; legacy/user keys only get a best-effort balance fallback." = "Stocké dans ~/.codexbar/config.json. OPENAI_ADMIN_KEY est requis pour l’utilisation de l’organisation ; Les clés héritées/utilisateur bénéficient uniquement d’un équilibre de secours au mieux.";
 "Stored in ~/.codexbar/config.json. You can also provide FACTORY_API_KEY or ~/.factory/.env." = "Stocké dans ~/.codexbar/config.json. Vous pouvez également fournir FACTORY_API_KEY ou ~/.factory/.env.";
 "Stored in ~/.codexbar/config.json. You can also set AMP_API_KEY." = "Stocké dans ~/.codexbar/config.json. Vous pouvez également définir AMP_API_KEY.";
@@ -2003,7 +2006,7 @@
 "Switching account…" = "Changer de compte…";
 "TOP MODELS" = "MEILLEURS MODÈLES";
 "TRACKED TOKENS · %@" = "Jetons enregistrés · %@";
-"That managed account uses a workspace that differs from its saved Codex auth default. Keep it as a managed account; CodexBar will not rewrite Codex-owned auth to promote it." = "Ce compte géré utilise un espace de travail différent de son compte d'authentification par défaut Codex enregistré. Conservez-le comme compte géré ; CodexBar ne réécrira pas l'authentification appartenant à Codex pour la promouvoir.";
+"That managed account uses a workspace that differs from its saved Codex auth default. Keep it as a managed account; Tolkein will not rewrite Codex-owned auth to promote it." = "Ce compte géré utilise un espace de travail différent de son compte d'authentification par défaut Codex enregistré. Conservez-le comme compte géré ; Tolkein ne réécrira pas l'authentification appartenant à Codex pour la promouvoir.";
 "The pasted header is sent only to this tenant." = "L'en-tête collé est envoyé uniquement à ce locataire.";
 "The selected Codex profile has no verified account email." = "Le profil Codex sélectionné n’a pas d’adresse e-mail de compte vérifiée.";
 "The selected managed Codex account is unavailable." = "Le compte Codex géré sélectionné n'est pas disponible.";
@@ -2032,7 +2035,7 @@
 "Weekly (7-day)" = "Hebdomadaire (7 jours)";
 "When on, runs automatic provider, local usage, and storage refreshes no more often than every 30 minutes. Manual refresh remains available. Automatic follows the system Low Power Mode setting." = "Lorsqu'il est activé, le fournisseur automatique, l'utilisation locale et le stockage sont actualisés au maximum toutes les 30 minutes. L'actualisation manuelle reste disponible. Automatique suit le réglage du mode faible consommation du système.";
 "Without configured API credentials, install and authenticate 'arkcli' for Coding/Agent Plan usage. Existing API credentials remain authoritative." = "Sans informations d'identification API configurées, installez et authentifiez « arkcli » pour l'utilisation du plan de codage/agent. Les informations d'identification API existantes restent faisant autorité.";
-"You can close this window and return to CodexBar." = "Vous pouvez fermer cette fenêtre et revenir à CodexBar.";
+"You can close this window and return to Tolkein." = "Vous pouvez fermer cette fenêtre et revenir à Tolkein.";
 "You can close this window and try again." = "Vous pouvez fermer cette fenêtre et réessayer.";
 "ZoomMate capture" = "Capture ZoomMate";
 "a1.small-equivalent hours" = "Heures équivalentes à a1.small";
@@ -2100,7 +2103,7 @@
 "Premium weekly" = "Utilisation hebdomadaire premium Quota";
 "DevPass cost history is not available." = "L’historique des coûts DevPass n’est pas disponible.";
 "DevPass API key" = "Clé DevPass API";
-"Saved in CodexBar's local config file. Or set DEVPASS_API_KEY." = "Enregistré dans le fichier de configuration local de CodexBar. Ou définissez DEVPASS_API_KEY.";
+"Saved in Tolkein's local config file. Or set DEVPASS_API_KEY." = "Enregistré dans le fichier de configuration local de Tolkein. Ou définissez DEVPASS_API_KEY.";
 "Regular LLM Gateway API key" = "Clé API de passerelle LLM régulière";
 "Memory" = "Utilisation de la mémoire";
 "llmman cost summary is not supported." = "Le récapitulatif des coûts llmman n’est pas pris en charge.";
@@ -2129,7 +2132,7 @@
 "ClawRouter spend is reported by its usage API." = "Les dépenses de ClawRouter sont fournies par son API d’utilisation.";
 "Vercel AI Gateway cost history is not available." = "L’historique des coûts Vercel AI Gateway n’est pas disponible.";
 "Vercel AI Gateway API key" = "Clé Vercel AI Gateway API";
-"Saved in CodexBar's local config file. Or set AI_GATEWAY_API_KEY." = "Enregistré dans le fichier de configuration local de CodexBar. Ou définissez AI_GATEWAY_API_KEY.";
+"Saved in Tolkein's local config file. Or set AI_GATEWAY_API_KEY." = "Enregistré dans le fichier de configuration local de Tolkein. Ou définissez AI_GATEWAY_API_KEY.";
 "Savings" = "Économies";
 "Reviews" = "Avis";
 "Review count and billing period from CodeRabbit." = "Vérifiez le nombre et la période de facturation à partir de CodeRabbit.";
@@ -2152,7 +2155,7 @@
 "ClinePass cost history is not available via the usage-limits API." = "L’historique des coûts ClinePass n’est pas disponible via les limites d’utilisation API.";
 "Paste an API key, or run cline auth. Reads the existing Cline session without copying it." = "Collez une clé API ou exécutez cline auth. Lit la session Cline existante sans la copier.";
 "ClinePass API key..." = "ClinePass API clé...";
-"DeepInfra per-request cost history is not available in CodexBar." = "L’historique des coûts par demande DeepInfra n’est pas disponible dans CodexBar.";
+"DeepInfra per-request cost history is not available in Tolkein." = "L’historique des coûts par demande DeepInfra n’est pas disponible dans Tolkein.";
 "Store multiple DeepInfra API keys." = "Stockez plusieurs clés DeepInfra API.";
 "Claude credentials" = "Identifiants Claude";
 "Store Claude sessionKey cookies, OAuth tokens, or Anthropic Admin API keys." = "Stockez les clés Claude sessionKey cookies, OAuth jetons ou Anthropic Admin API.";
@@ -2160,7 +2163,7 @@
 "4-hour quota" = "4 heures Quota";
 "Monthly quota" = "Mensuel Quota";
 "Subscription usage from the Chutes API." = "Utilisation de l'abonnement à partir du Chutes API.";
-"Chutes cost history is not available from CodexBar." = "L’historique des coûts Chutes n’est pas disponible à partir de CodexBar.";
+"Chutes cost history is not available from Tolkein." = "L’historique des coûts Chutes n’est pas disponible à partir de Tolkein.";
 "Stored in ~/.codexbar/config.json. Paste a Chutes API key." = "Stocké dans ~/.codexbar/config.json. Collez une clé Chutes API.";
 "chutes key..." = "Clé API Chutes...";
 "Spend" = "Dépenses";
@@ -2194,7 +2197,7 @@
 "Base" = "Socle";
 "T3 Chat cost summary is not supported." = "Le récapitulatif des coûts T3 Chat n’est pas pris en charge.";
 "Model quota" = "Modèle Quota";
-"Helmcode per-request cost history is not available in CodexBar." = "L’historique des coûts par demande Helmcode n’est pas disponible dans CodexBar.";
+"Helmcode per-request cost history is not available in Tolkein." = "L’historique des coûts par demande Helmcode n’est pas disponible dans Tolkein.";
 "Copy the Cookie request header from your tenant's dashboard. cURL captures are not supported." = "Copiez l'en-tête de demande Cookie à partir du tableau de bord de votre locataire. Les captures cURL ne sont pas prises en charge.";
 "Store multiple IBM Bob API keys." = "Stockez plusieurs clés IBM Bob API.";
 "Monthly Bobcoins" = "Bobcoins mensuels";
@@ -2206,7 +2209,7 @@
 "xai-..." = "xai-...";
 "Team ID" = "Équipe ID";
 "Vercel access token" = "Jeton d'accès Vercel";
-"Optional. Shows your personal budget instead of team credits. Saved in CodexBar's local config file. Or set VERCEL_ACCESS_TOKEN." = "Facultatif. Affiche votre budget personnel au lieu des crédits de l'équipe. Enregistré dans le fichier de configuration local de CodexBar. Ou définissez VERCEL_ACCESS_TOKEN.";
+"Optional. Shows your personal budget instead of team credits. Saved in Tolkein's local config file. Or set VERCEL_ACCESS_TOKEN." = "Facultatif. Affiche votre budget personnel au lieu des crédits de l'équipe. Enregistré dans le fichier de configuration local de Tolkein. Ou définissez VERCEL_ACCESS_TOKEN.";
 "Open Vercel tokens" = "Ouvrir les jetons Vercel";
 "Required with a Vercel access token. Or set VERCEL_TEAM_ID." = "Requis avec un jeton d'accès Vercel. Ou définissez VERCEL_TEAM_ID.";
 "Required. Shown in the xAI Console URL and team settings." = "Obligatoire. Affiché dans la console xAI URL et les paramètres d'équipe.";
@@ -2257,13 +2260,13 @@
 "__raycast_session=…; csrf_token=…" = "__raycast_session=…; csrf_token=…";
 "Open Raycast Account" = "Ouvrir un compte Raycast";
 "ai& spend is summed from the request logs API." = "Les dépenses ai et sont additionnées à partir des journaux de demandes API.";
-"Stored in CodexBar's config file. Create a key in the ai& console (shown once)." = "Stocké dans le fichier de configuration de CodexBar. Créez une clé dans la console ai& (affichée une fois).";
+"Stored in Tolkein's config file. Create a key in the ai& console (shown once)." = "Stocké dans le fichier de configuration de Tolkein. Créez une clé dans la console ai& (affichée une fois).";
 "sk-…" = "sk-…";
 "Store multiple Venice API keys." = "Stockez plusieurs clés Venice API.";
 "Venice per-day cost history is not available via API." = "L’historique des coûts journaliers Venice n’est pas disponible via API.";
 "Atlas Cloud cost history is not available." = "L’historique des coûts Atlas Cloud n’est pas disponible.";
 "Atlas Cloud API key" = "Clé Atlas Cloud API";
-"Saved in CodexBar's local config file. Or set ATLASCLOUD_API_KEY." = "Enregistré dans le fichier de configuration local de CodexBar. Ou définissez ATLASCLOUD_API_KEY.";
+"Saved in Tolkein's local config file. Or set ATLASCLOUD_API_KEY." = "Enregistré dans le fichier de configuration local de Tolkein. Ou définissez ATLASCLOUD_API_KEY.";
 "Five-hour quota" = "Cinq heures Quota";
 "Weekly tokens" = "Hebdomadaire jetons";
 "Weekly token quota regenerates continuously." = "Chaque semaine, le jetons Quota se régénère en continu.";
@@ -2274,7 +2277,7 @@
 "Daily free tokens" = "Gratuit quotidiennement jetons";
 "xKiro cost history is not available." = "L’historique des coûts xKiro n’est pas disponible.";
 "xKiro API key" = "Clé xKiro API";
-"Saved in CodexBar's local config file. Or set XKIRO_API_KEY. Reads free-token usage only." = "Enregistré dans le fichier de configuration local de CodexBar. Ou définissez XKIRO_API_KEY. Lit uniquement l'utilisation gratuite-jetons.";
+"Saved in Tolkein's local config file. Or set XKIRO_API_KEY. Reads free-token usage only." = "Enregistré dans le fichier de configuration local de Tolkein. Ou définissez XKIRO_API_KEY. Lit uniquement l'utilisation gratuite-jetons.";
 "Store multiple Hugging Face access tokens." = "Stockez plusieurs accès Hugging Face jetons.";
 "Paste access token…" = "Coller l’accès jetons…";
 "Inference" = "Inférence";
@@ -2345,7 +2348,7 @@
 "Subscription kWh and prepaid USD balance." = "Abonnement kWh et solde prépayé en USD.";
 "Neuralwatt token cost history is not available via the quota API." = "L’historique des coûts Neuralwatt jetons n’est pas disponible via le Quota API.";
 "Store multiple Neuralwatt API keys." = "Stockez plusieurs clés Neuralwatt API.";
-"Stored in the CodexBar config file. Manage keys from the Neuralwatt dashboard." = "Stocké dans le fichier de configuration CodexBar. Gérez les clés depuis le tableau de bord Neuralwatt.";
+"Stored in the Tolkein config file. Manage keys from the Neuralwatt dashboard." = "Stocké dans le fichier de configuration Tolkein. Gérez les clés depuis le tableau de bord Neuralwatt.";
 
 // Additional localized settings, provider controls, sharing, and widgets.
 "Monthly allowances" = "Allocations mensuelles";
@@ -2419,7 +2422,7 @@
 "Speed range needs 4 completed turns." = "La plage de vitesse nécessite 4 tours de dialogue terminés.";
 "All accounts" = "Tous les comptes";
 "Refresh all accounts" = "Actualiser tous les comptes";
-"CodexBar follows" = "CodexBar suit";
+"Tolkein follows" = "Tolkein suit";
 "%@ accounts" = "%@ comptes";
 "Refreshes up to %@ accounts at a time." = "Actualise jusqu’à %@ comptes à la fois.";
 "Each account has its own limits. Viewing usage does not switch accounts." = "Chaque compte a ses propres limites. Consulter l’utilisation ne change pas de compte.";
@@ -2527,21 +2530,21 @@
 "Monthly AI tokens" = "Jetons IA mensuels";
 "Aerostack cost history is not available." = "L’historique des coûts de Aerostack n’est pas disponible.";
 "Account JWT" = "JWT du compte";
-"Saved in CodexBar's local config file. Replace when expired; CodexBar does not refresh it." = "Enregistré dans le fichier de configuration local de CodexBar. Remplacez-le à son expiration ; CodexBar ne le renouvelle pas.";
+"Saved in Tolkein's local config file. Replace when expired; Tolkein does not refresh it." = "Enregistré dans le fichier de configuration local de Tolkein. Remplacez-le à son expiration ; Tolkein ne le renouvelle pas.";
 "Account JWT, not an Agent Endpoint key" = "JWT du compte, pas une clé Agent Endpoint";
 "Input tokens" = "Jetons d’entrée";
 "Output tokens" = "Jetons de sortie";
 "Cosmic AI cost history is not available." = "L’historique des coûts de Cosmic AI n’est pas disponible.";
 "Personal Access Token" = "Jeton d’accès personnel";
-"Saved in CodexBar's local config file. Reads project usage only; bucket keys are not supported." = "Enregistré dans le fichier de configuration local de CodexBar. Lit uniquement l’utilisation du projet ; les clés de bucket ne sont pas prises en charge.";
+"Saved in Tolkein's local config file. Reads project usage only; bucket keys are not supported." = "Enregistré dans le fichier de configuration local de Tolkein. Lit uniquement l’utilisation du projet ; les clés de bucket ne sont pas prises en charge.";
 "cos_…" = "cos_…";
 "Required. Usage covers this project only. Or set COSMIC_PROJECT_ID." = "Obligatoire. L’utilisation concerne uniquement ce projet. Ou définissez COSMIC_PROJECT_ID.";
 "Sail Research cost history is not available." = "L’historique des coûts de Sail Research n’est pas disponible.";
 "Sail Research API key" = "Clé API de Sail Research";
-"Saved in CodexBar's local config file. Or set SAIL_API_KEY." = "Enregistré dans le fichier de configuration local de CodexBar. Ou définissez SAIL_API_KEY.";
+"Saved in Tolkein's local config file. Or set SAIL_API_KEY." = "Enregistré dans le fichier de configuration local de Tolkein. Ou définissez SAIL_API_KEY.";
 "Sofya cost history is not available." = "L’historique des coûts de Sofya n’est pas disponible.";
 "Sofya API key" = "Clé API de Sofya";
-"Saved in CodexBar's local config file. Or set SOFYA_API_KEY." = "Enregistré dans le fichier de configuration local de CodexBar. Ou définissez SOFYA_API_KEY.";
+"Saved in Tolkein's local config file. Or set SOFYA_API_KEY." = "Enregistré dans le fichier de configuration local de Tolkein. Ou définissez SOFYA_API_KEY.";
 "Pace sign" = "Signe du rythme";
 "Ahead of pace is +" = "Au-dessus du rythme : +";
 "Reserve is +" = "Réserve : +";
@@ -2572,7 +2575,7 @@
 "Also restores the provider order in the menu bar. Can be undone." = "Rétablit aussi l’ordre des fournisseurs dans la barre des menus. Cette action peut être annulée.";
 "Local Codex details; excluded from combined totals." = "Détails Codex locaux ; exclus des totaux combinés.";
 
-"Stored in the CodexBar config file. You can also set COMMAND_CODE_API_KEY." = "Stored in the CodexBar config file. You can also set COMMAND_CODE_API_KEY.";
+"Stored in the Tolkein config file. You can also set COMMAND_CODE_API_KEY." = "Stored in the Tolkein config file. You can also set COMMAND_CODE_API_KEY.";
 /* OpenAI organization rate limits and live usage */
 "%@ tokens · %@ requests" = "%@ jetons · %@ requêtes";
 "15m" = "15 min";
@@ -2658,7 +2661,7 @@
 "Daily spend · %@" = "Dépenses quotidiennes · %@";
 "Applies to the selected token account “%@”. Each account keeps its own limits." = "S’applique au compte de jeton sélectionné « %@ ». Chaque compte conserve ses propres limites.";
 "Applies to the OpenAI API key, not to token accounts." = "S’applique à la clé API OpenAI, pas aux comptes de jeton.";
-"CodexBar will ask macOS Keychain for the Muse Code login token so it can fetch your Muse Code subscription usage. Click OK to continue." = "CodexBar demandera au Trousseau macOS le jeton de connexion Muse Code afin de pouvoir récupérer votre utilisation d'abonnement Muse Code. Cliquez sur OK pour continuer.";
+"Tolkein will ask macOS Keychain for the Muse Code login token so it can fetch your Muse Code subscription usage. Click OK to continue." = "Tolkein demandera au Trousseau macOS le jeton de connexion Muse Code afin de pouvoir récupérer votre utilisation d'abonnement Muse Code. Cliquez sur OK pour continuer.";
 /* Claude Platform provider */
 "API credit" = "Crédit API";
 "Purchased credit" = "Crédit acheté";
@@ -2682,7 +2685,7 @@
 "http_server_plain_http" = "Autoriser HTTP non chiffré en dehors de ce Mac";
 "http_server_dashboard" = "Tableau de bord";
 "http_server_wildcard" = "Sur les autres appareils, remplacez 0.0.0.0 par l’adresse IPv4 VPN ou Tailscale de ce Mac.";
-"http_server_footer" = "Désactivé par défaut. Démarre avec CodexBar et s’arrête à sa fermeture. Les réglages et le jeton restent sur ce Mac et sont exclus de la synchronisation et des exports. Gardez le Mac éveillé pour l’accès à distance.";
+"http_server_footer" = "Désactivé par défaut. Démarre avec Tolkein et s’arrête à sa fermeture. Les réglages et le jeton restent sur ce Mac et sont exclus de la synchronisation et des exports. Gardez le Mac éveillé pour l’accès à distance.";
 /* Claude desktop cookie source */
 "Claude desktop app" = "Application de bureau Claude";
 "Use Claude desktop app cookies" = "Utiliser les cookies de l’application de bureau Claude";
@@ -2706,7 +2709,7 @@
 
 "Trae CN" = "Trae CN";
 "Show Trae CN usage" = "Afficher l’utilisation de Trae CN";
-"Sign in to Trae CN at trae.cn, then refresh CodexBar." = "Connectez-vous à Trae CN sur trae.cn, puis actualisez CodexBar.";
+"Sign in to Trae CN at trae.cn, then refresh Tolkein." = "Connectez-vous à Trae CN sur trae.cn, puis actualisez Tolkein.";
 "Trae CN usage response format changed." = "Le format de la réponse d’utilisation de Trae CN a changé.";
 "Trae CN request failed. Try refreshing later." = "La requête Trae CN a échoué. Réessayez d’actualiser plus tard.";
 "Use --provider copilot." = "Utilisez --provider copilot.";
@@ -2743,14 +2746,14 @@
 "Chatbox AI denied access. Check your license." = "Chatbox AI a refusé l’accès. Vérifiez votre licence.";
 "Chatbox AI is rate limiting requests. Try again later." = "Chatbox AI limite la fréquence des requêtes. Réessayez plus tard.";
 "Chatbox AI request failed. Try refreshing later." = "La requête Chatbox AI a échoué. Réessayez d’actualiser plus tard.";
-"Chatbox AI returned an unrecognized response. Update CodexBar and try again." = "Chatbox AI a renvoyé une réponse inconnue. Mettez CodexBar à jour et réessayez.";
+"Chatbox AI returned an unrecognized response. Update Tolkein and try again." = "Chatbox AI a renvoyé une réponse inconnue. Mettez Tolkein à jour et réessayez.";
 
 /* abliteration.ai */
 "abliteration.ai" = "abliteration.ai";
 "Show abliteration.ai usage" = "Afficher l’utilisation d’abliteration.ai";
 "abliteration.ai is rate limiting requests. Try again later." = "abliteration.ai limite la fréquence des requêtes. Réessayez plus tard.";
 "abliteration.ai request failed. Try refreshing later." = "La requête abliteration.ai a échoué. Réessayez d’actualiser plus tard.";
-"abliteration.ai returned an unrecognized response. Update CodexBar and try again." = "abliteration.ai a renvoyé une réponse inconnue. Mettez CodexBar à jour et réessayez.";
+"abliteration.ai returned an unrecognized response. Update Tolkein and try again." = "abliteration.ai a renvoyé une réponse inconnue. Mettez Tolkein à jour et réessayez.";
 "Check your API key in Settings." = "Vérifiez votre clé API dans les réglages.";
 "Kimi Code" = "Kimi Code";
 
@@ -2779,7 +2782,7 @@
 /* OpenDesign */
 "OpenDesign" = "OpenDesign";
 "Show OpenDesign usage" = "Afficher l’utilisation d’OpenDesign";
-"Sign in to OpenDesign, then refresh CodexBar." = "Connectez-vous à OpenDesign, puis actualisez CodexBar.";
+"Sign in to OpenDesign, then refresh Tolkein." = "Connectez-vous à OpenDesign, puis actualisez Tolkein.";
 "OpenDesign usage response format changed." = "Le format de la réponse d’utilisation d’OpenDesign a changé.";
 "OpenDesign billing access was denied." = "L’accès à la facturation d’OpenDesign a été refusé.";
 "OpenDesign request failed. Try again later." = "La requête OpenDesign a échoué. Réessayez plus tard.";
@@ -2815,7 +2818,7 @@
 "Show SiliconFlow usage" = "Afficher l’utilisation de SiliconFlow";
 "SiliconFlow is rate limiting requests. Try again later." = "SiliconFlow limite la fréquence des requêtes. Réessayez plus tard.";
 "SiliconFlow request failed. Try refreshing later." = "La requête SiliconFlow a échoué. Réessayez d’actualiser plus tard.";
-"SiliconFlow returned an unrecognized response. Update CodexBar and try again." = "SiliconFlow a renvoyé une réponse inconnue. Mettez CodexBar à jour et réessayez.";
+"SiliconFlow returned an unrecognized response. Update Tolkein and try again." = "SiliconFlow a renvoyé une réponse inconnue. Mettez Tolkein à jour et réessayez.";
 "Claude Platform session validated and saved." = "La session Claude Platform a été validée et enregistrée.";
 "Use %@ or %@." = "Utilisez %@ ou %@.";
 "Sign in at %@. Supply its Cookie header containing sessionKey privately to %@. Then run %@." = "Connectez-vous à %@. Transmettez de manière privée son en-tête Cookie contenant sessionKey à %@. Exécutez ensuite %@.";

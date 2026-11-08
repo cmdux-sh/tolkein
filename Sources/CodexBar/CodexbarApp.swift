@@ -114,7 +114,7 @@ struct CodexBarApp: App {
         }
         .commands {
             CommandGroup(replacing: .appInfo) {
-                Button(L("About CodexBar")) {
+                Button(L("About Tolkein")) {
                     self.appDelegate.openSettings(pane: .about)
                 }
             }
@@ -125,8 +125,8 @@ struct CodexBarApp: App {
                 .keyboardShortcut(",", modifiers: .command)
             }
             CommandGroup(replacing: .help) {
-                Button(L("CodexBar Help")) {
-                    guard let url = URL(string: "https://github.com/steipete/CodexBar/blob/main/README.md")
+                Button(L("Tolkein Help")) {
+                    guard let url = URL(string: "https://github.com/cmdux-sh/tolkein/blob/main/README.md")
                     else { return }
                     NSWorkspace.shared.open(url)
                 }

@@ -17,7 +17,7 @@ public enum DevPassProviderDescriptor {
         apiKeyField: .init(
             id: "devpass-api-key",
             title: "DevPass API key",
-            subtitle: "Saved in CodexBar's local config file. Or set DEVPASS_API_KEY.",
+            subtitle: "Saved in Tolkein's local config file. Or set DEVPASS_API_KEY.",
             placeholder: "Regular LLM Gateway API key",
             action: ("devpass-dashboard", "Open DevPass", "https://devpass.llmgateway.io/dashboard")))
 }

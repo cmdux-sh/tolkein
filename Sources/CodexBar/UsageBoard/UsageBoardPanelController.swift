@@ -69,7 +69,7 @@ final class UsageBoardPanelController {
         panel.hasShadow = true
         panel.hidesOnDeactivate = false
         panel.isMovable = false
-        panel.title = "CodexBar"
+        panel.title = "Tolkein"
         panel.alphaValue = 0
 
         let hosting = UsageBoardHostingView(rootView: UsageBoardView(session: self.session))

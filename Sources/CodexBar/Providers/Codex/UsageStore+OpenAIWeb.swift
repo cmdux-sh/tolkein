@@ -661,7 +661,7 @@ extension UsageStore {
             logger("OpenAI web refresh timed out; skipping immediate background retry.")
             await self.applyOpenAIDashboardFailure(
                 message: L(
-                    "OpenAI web dashboard refresh timed out. CodexBar will retry after the refresh cooldown."),
+                    "OpenAI web dashboard refresh timed out. Tolkein will retry after the refresh cooldown."),
                 expectedGuard: context.expectedGuard,
                 refreshTaskToken: context.refreshTaskToken,
                 routingTargetEmail: context.targetEmail)

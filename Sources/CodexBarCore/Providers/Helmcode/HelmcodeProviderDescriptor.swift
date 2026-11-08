@@ -11,7 +11,7 @@ public enum HelmcodeProviderDescriptor {
         dashboardURL: "https://cloud.helmcode.com/dashboard",
         color: .init(hex: 0x4934E1),
         confetti: [0x4934E1, 0x8B7CF6],
-        noDataMessage: "Helmcode per-request cost history is not available in CodexBar.",
+        noDataMessage: "Helmcode per-request cost history is not available in Tolkein.",
         presentation: ProviderUsagePresentation(
             costPresenter: { _ in ProviderCostPresentation(menuCardStyle: .prepaidCredits) },
             extraRateWindowSelector: { $0.extraRateWindows ?? [] },

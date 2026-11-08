@@ -45,8 +45,8 @@ struct KeychainPromptCoordinatorTests {
 
         #expect(model.title == "Keychain Access Required")
         #expect(model.message.contains("Chrome Safe Storage"))
-        #expect(model.message.contains("macOS—not CodexBar—handles any Mac login password entry"))
-        #expect(model.message.contains("Settings → Advanced"))
+        #expect(model.message.contains("macOS—not Tolkein—handles any Mac login password entry"))
+        #expect(model.message.contains("Settings → Privacy & Data"))
         #expect(model.primaryButtonTitle == "OK")
         #expect(model.learnMoreButtonTitle == "Learn More…")
         #expect(model.documentationURL.hasSuffix("/docs/keychain-prompts.md"))

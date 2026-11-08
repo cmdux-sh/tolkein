@@ -64,7 +64,7 @@ struct AcknowledgementsView: View {
                     AcknowledgementRow(acknowledgement: acknowledgement)
                 }
             } footer: {
-                Text(L("acknowledgements_footer"))
+                Text(AttributedString(L("acknowledgements_footer") + "\n") + AboutPane.creditText())
                     .frame(maxWidth: .infinity)
                     .multilineTextAlignment(.center)
             }

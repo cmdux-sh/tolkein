@@ -64,36 +64,44 @@ struct SettingsSidebarView: View {
         }
     }
 
-    private static let appPanes: [SettingsSidebarAppPane] = [
-        SettingsSidebarAppPane(pane: .general, systemImage: "gearshape.fill", color: .gray),
-        SettingsSidebarAppPane(pane: .iCloudSync, systemImage: "icloud.fill", color: .blue),
-        SettingsSidebarAppPane(pane: .usageSpend, systemImage: "chart.bar.fill", color: .green),
-        SettingsSidebarAppPane(pane: .notifications, systemImage: "bell.badge.fill", color: .red),
-        SettingsSidebarAppPane(pane: .menuBar, systemImage: "menubar.rectangle", color: .blue),
-        SettingsSidebarAppPane(pane: .menu, systemImage: "filemenu.and.selection", color: .teal),
-        SettingsSidebarAppPane(pane: .advanced, systemImage: "slider.horizontal.3", color: .purple),
-        SettingsSidebarAppPane(pane: .hooks, systemImage: "bolt.horizontal.circle.fill", color: .orange),
-        SettingsSidebarAppPane(pane: .plugins, systemImage: "puzzlepiece.extension.fill", color: .indigo),
-        SettingsSidebarAppPane(pane: .about, systemImage: "info.circle.fill", color: .green),
-        SettingsSidebarAppPane(pane: .debug, systemImage: "ladybug.fill", color: .red),
-    ]
-
-    private var availableAppPanes: [SettingsSidebarAppPane] {
-        Self.appPanes.filter { $0.pane != .debug || self.settings.debugMenuEnabled }
+    /// Chip colours for the fixed panes; the symbols come from `SettingsPane.systemImage`.
+    static func chipColor(for pane: SettingsPane) -> Color {
+        switch pane {
+        case .general: .gray
+        case .menuBar: .blue
+        case .menu: .teal
+        case .alerts: .red
+        case .costs: .green
+        case .sync: .cyan
+        case .integrations: .orange
+        case .privacy: .purple
+        case .about: .green
+        case .debug: .red
+        case .plugins: .indigo
+        case .provider: .gray
+        }
     }
 
-    private var filteredAppPanes: [SettingsSidebarAppPane] {
-        let matching = Set(SettingsSearch.filteredPanes(self.availableAppPanes.map(\.pane), query: self.searchText))
-        return self.availableAppPanes.filter { matching.contains($0.pane) }
+    private var availableAppPanes: [SettingsPane] {
+        SettingsPane.appPanes.filter { $0 != .debug || self.settings.debugMenuEnabled }
+    }
+
+    private var filteredAppPanes: [SettingsPane] {
+        SettingsSearch.filteredPanes(self.availableAppPanes, query: self.searchText)
+    }
+
+    /// Plugins is the last row of the Providers section; it follows the search but not the provider filters.
+    private var showsPluginsRow: Bool {
+        !SettingsSearch.filteredPanes([.plugins], query: self.searchText).isEmpty
     }
 
     private var appPanesSection: some View {
         Section {
-            ForEach(self.filteredAppPanes, id: \.pane) { item in
-                if item.pane == .about {
+            ForEach(self.filteredAppPanes, id: \.self) { pane in
+                if pane == .about {
                     SettingsSidebarAboutRow(onSelect: self.onSelectAbout)
                 } else {
-                    SettingsSidebarPaneRow(pane: item.pane, systemImage: item.systemImage, color: item.color)
+                    SettingsSidebarPaneRow(pane: pane)
                 }
             }
         }
@@ -114,7 +122,13 @@ struct SettingsSidebarView: View {
                 }
             }
 
-            if visibleProviders.isEmpty, self.filteredAppPanes.isEmpty || !self.hasSearchQuery {
+            if self.showsPluginsRow {
+                SettingsSidebarPaneRow(pane: .plugins)
+            }
+
+            if visibleProviders.isEmpty,
+               (self.filteredAppPanes.isEmpty && !self.showsPluginsRow) || !self.hasSearchQuery
+            {
                 Text(self.hasSearchQuery ? L("No matching settings or providers") : L("No matching providers"))
                     .font(.caption)
                     .foregroundStyle(.secondary)
@@ -193,21 +207,13 @@ struct SettingsSidebarView: View {
     }
 }
 
-private struct SettingsSidebarAppPane: Hashable {
-    let pane: SettingsPane
-    let systemImage: String
-    let color: Color
-}
-
 @MainActor
 private struct SettingsSidebarPaneRow: View {
     let pane: SettingsPane
-    let systemImage: String
-    let color: Color
 
     var body: some View {
         HStack(spacing: 8) {
-            SettingsIconChip(systemImage: self.systemImage, color: self.color)
+            SettingsIconChip(systemImage: self.pane.systemImage, color: SettingsSidebarView.chipColor(for: self.pane))
             Text(self.pane.title)
         }
         .tag(self.pane)
@@ -227,7 +233,9 @@ private struct SettingsSidebarAboutRow: View {
                     .frame(width: SettingsIconChip.side, height: SettingsIconChip.side)
                     .accessibilityHidden(true)
             } else {
-                SettingsIconChip(systemImage: "info.circle.fill", color: .green)
+                SettingsIconChip(
+                    systemImage: SettingsPane.about.systemImage,
+                    color: SettingsSidebarView.chipColor(for: .about))
             }
             Text(SettingsPane.about.title)
         }

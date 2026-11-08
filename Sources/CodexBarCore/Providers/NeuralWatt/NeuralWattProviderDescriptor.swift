@@ -2,7 +2,7 @@ import Foundation
 
 public enum NeuralWattProviderDescriptor {
     private static let missingCredentialMessage =
-        "Missing Neuralwatt API key. Set apiKey in the CodexBar config file or NEURALWATT_API_KEY."
+        "Missing Neuralwatt API key. Set apiKey in the Tolkein config file or NEURALWATT_API_KEY."
     public static let descriptor: ProviderDescriptor = Self.spec.makeDescriptor()
     public static let spec = PluginProviderSpec(
         id: .neuralwatt,
@@ -44,7 +44,7 @@ public enum NeuralWattProviderDescriptor {
         apiKeyField: .init(
             id: "neuralwatt-api-key",
             title: "API key",
-            subtitle: "Stored in the CodexBar config file. Manage keys from the Neuralwatt dashboard.",
+            subtitle: "Stored in the Tolkein config file. Manage keys from the Neuralwatt dashboard.",
             placeholder: "sk-..."),
         showsAPIDetail: true,
         availability: .configuredKeyOrAccount,

@@ -17,5 +17,5 @@ public enum XKiroProviderDescriptor {
         apiKeyField: .init(
             id: "xkiro-api-key",
             title: "xKiro API key",
-            subtitle: "Saved in CodexBar's local config file. Or set XKIRO_API_KEY. Reads free-token usage only."))
+            subtitle: "Saved in Tolkein's local config file. Or set XKIRO_API_KEY. Reads free-token usage only."))
 }

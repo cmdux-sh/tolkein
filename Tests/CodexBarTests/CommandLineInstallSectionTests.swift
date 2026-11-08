@@ -2,10 +2,10 @@ import Testing
 @testable import CodexBar
 
 @MainActor
-struct PreferencesAdvancedPaneTests {
+struct CommandLineInstallSectionTests {
     @Test
     func `cli install status reports skipped protected directories alongside successful installs`() {
-        let status = AdvancedPane.cliInstallStatus(
+        let status = CommandLineInstallSection.cliInstallStatus(
             installed: ["Installed: /opt/homebrew/bin"],
             conflicts: [],
             failures: ["No write access: /usr/local/bin"])
@@ -15,7 +15,7 @@ struct PreferencesAdvancedPaneTests {
 
     @Test
     func `cli install status keeps an existing earlier path conflict alongside a later successful install`() {
-        let status = AdvancedPane.cliInstallStatus(
+        let status = CommandLineInstallSection.cliInstallStatus(
             installed: ["Installed: /opt/homebrew/bin"],
             conflicts: ["Exists: /usr/local/bin"],
             failures: [])
@@ -25,7 +25,7 @@ struct PreferencesAdvancedPaneTests {
 
     @Test
     func `cli install status falls back to failures when nothing installed`() {
-        let status = AdvancedPane.cliInstallStatus(
+        let status = CommandLineInstallSection.cliInstallStatus(
             installed: [],
             conflicts: ["Exists: /opt/homebrew/bin"],
             failures: ["No write access: /usr/local/bin"])
@@ -35,7 +35,7 @@ struct PreferencesAdvancedPaneTests {
 
     @Test
     func `cli install status falls back to failures when there are no successes or conflicts`() {
-        let status = AdvancedPane.cliInstallStatus(
+        let status = CommandLineInstallSection.cliInstallStatus(
             installed: [],
             conflicts: [],
             failures: ["Failed: /opt/homebrew/bin", "No write access: /usr/local/bin"])

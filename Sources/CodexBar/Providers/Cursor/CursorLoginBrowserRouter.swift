@@ -88,7 +88,7 @@ enum CursorLoginBrowserRouter {
 
         let alert = NSAlert()
         alert.messageText = L("Open Browser")
-        alert.informativeText = L("Choose a supported browser so CodexBar can read the matching account.")
+        alert.informativeText = L("Choose a supported browser so Tolkein can read the matching account.")
         alert.accessoryView = popup
         alert.addButton(withTitle: L("Open Browser"))
         alert.addButton(withTitle: L("Cancel"))

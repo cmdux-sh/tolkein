@@ -220,7 +220,7 @@ show an incident indicator.
 - Inline spend and usage charts for API-backed providers such as OpenAI, Claude Admin API, OpenRouter, LiteLLM, z.ai, MiniMax, Mistral, and AWS Bedrock.
 - Codex and Claude Plan Usage menus show a quota burndown from recorded snapshots, with the capture time and an even-use guide. The existing utilization history remains below it, and the line fills in as the app collects samples.
 - Configurable cost-usage scans for Codex + Claude, plus reused chart UI for supported provider histories. Codex history uses a WAL-enabled SQLite store capped at 25,000 retained session entries and 256 MiB.
-- A persistent Settings → Usage & Spend view for local estimates, grouped by native currency and provider. Each provider shows its accounts or history sources alongside its model breakdown; project/session views and daily/hourly trends share compact selectors. Incomplete history stays labeled, and source, privacy, export, and sharing controls remain available.
+- A persistent Settings → Costs view for local estimates, grouped by native currency and provider. Each provider shows its accounts or history sources alongside its model breakdown; project/session views and daily/hourly trends share compact selectors. Incomplete history stays labeled, and source, privacy, export, and sharing controls remain available.
 - Provider status polling with incident badges in the menu and icon overlay.
 - Merge Icons mode to combine providers into one status item + switcher. With **Icon + Percent** and two enabled built-in providers, choose **Stacked** to show their first layout lines together. Automatic rows follow provider order and reserve explicit choices; disabling a selected provider uses a fallback and restores the saved choice when re-enabled. The dropdown menu stays available, and each provider keeps its own layout settings.
 - Display controls for provider icons, labels, bars, reset-time style, and highest-usage auto-selection.
@@ -240,7 +240,7 @@ Wondering if CodexBar scans your disk? It doesn’t crawl your filesystem; it re
 - **Keychain access (prompted by macOS)**:
   Chromium cookie import needs the browser’s Safe Storage item, and an explicitly enabled Claude OAuth repair may
   read Claude Code’s own Keychain item. Background CodexBar paths fail or skip instead of requesting authorization;
-  a user-initiated import or repair can still show the macOS prompt. **Settings → Advanced → Disable Keychain
+  a user-initiated import or repair can still show the macOS prompt. **Settings → Privacy & Data → Disable Keychain
   access** blocks CodexBar-owned Keychain operations and browser decryption, but cannot constrain provider-owned CLIs
   that CodexBar launches. Manual cookie headers, API keys, and file-backed sources remain alternatives where
   supported. See [Keychain prompts](docs/keychain-prompts.md) for Allow Once vs. Always Allow, recurring grants, and

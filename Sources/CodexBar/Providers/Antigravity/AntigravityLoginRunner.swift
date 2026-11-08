@@ -389,7 +389,7 @@ private final class AntigravityLoopbackServer: @unchecked Sendable {
         let status = success ? "200 OK" : "400 Bad Request"
         let title = success ? L("Login Successful") : L("Login Failed")
         let detail = success
-            ? L("You can close this window and return to CodexBar.")
+            ? L("You can close this window and return to Tolkein.")
             : L("You can close this window and try again.")
         let html = """
         <html>

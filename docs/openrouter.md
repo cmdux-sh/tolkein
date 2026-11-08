@@ -35,7 +35,7 @@ If the primary field is empty, CodexBar reports a missing credential and asks yo
 ### CLI config
 
 To monitor multiple OpenRouter accounts, add labeled API keys in the same provider settings. CodexBar fetches each
-key independently. Choose the segmented account switcher or stacked account cards under Settings → Display.
+key independently. Choose the segmented account switcher or stacked account cards under Settings → Menu.
 
 ```bash
 printf '%s' "$OPENROUTER_API_KEY" | codexbar config set-api-key --provider openrouter --stdin

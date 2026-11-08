@@ -10,7 +10,7 @@ struct AgentSessionPowerAssertion: Sendable {
         let result = IOPMAssertionCreateWithName(
             kIOPMAssertPreventUserIdleSystemSleep as CFString,
             IOPMAssertionLevel(kIOPMAssertionLevelOn),
-            "CodexBar: local agent session is live" as CFString,
+            "Tolkein: local agent session is live" as CFString,
             &assertion)
         return result == kIOReturnSuccess ? assertion : nil
     }, release: { _ = IOPMAssertionRelease($0) })

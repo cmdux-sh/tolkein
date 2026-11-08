@@ -3,19 +3,39 @@ import CodexBarCore
 import SwiftUI
 
 /// Sidebar destinations of the settings window: fixed app panes plus one entry per provider.
+///
+/// The sidebar lists the app panes in `appPanes` order, then the Providers section: one row per provider
+/// followed by Plugins. `SettingsPaneRouter` maps each case to its pane view.
 enum SettingsPane: Hashable {
     case general
-    case iCloudSync
-    case usageSpend
-    case notifications
     case menuBar
     case menu
-    case advanced
-    case hooks
-    case plugins
+    case alerts
+    case costs
+    case sync
+    case integrations
+    case privacy
     case about
     case debug
+    case plugins
     case provider(ProviderInstanceID)
+
+    /// App panes in sidebar order. Debug is listed last and shown only while the debug-settings switch is on.
+    static let appPanes: [SettingsPane] = [
+        .general,
+        .menuBar,
+        .menu,
+        .alerts,
+        .costs,
+        .sync,
+        .integrations,
+        .privacy,
+        .about,
+        .debug,
+    ]
+
+    /// Every pane that is not a provider: the app panes, then Plugins (the last row of the Providers section).
+    static let fixedPanes: [SettingsPane] = appPanes + [.plugins]
 
     static let windowWidth: CGFloat = 880
     static let windowHeight: CGFloat = 620
@@ -30,20 +50,38 @@ enum SettingsPane: Hashable {
     var title: String {
         switch self {
         case .general: L("tab_general")
-        case .iCloudSync: L("iCloud Sync")
-        case .usageSpend: L("tab_usage_spend")
-        case .notifications: L("tab_notifications")
         case .menuBar: L("tab_menu_bar")
         case .menu: L("tab_menu")
-        case .advanced: L("tab_advanced")
-        case .hooks: L("tab_hooks")
-        case .plugins: L("Plugins")
+        case .alerts: L("tab_alerts")
+        case .costs: L("tab_costs")
+        case .sync: L("tab_sync")
+        case .integrations: L("tab_integrations")
+        case .privacy: L("tab_privacy")
         case .about: L("tab_about")
         case .debug: L("tab_debug")
+        case .plugins: L("Plugins")
         case let .provider(instanceID):
             instanceID.firstPartyProvider
                 .map { ProviderDescriptorRegistry.descriptor(for: $0).metadata.displayName }
                 ?? instanceID.rawValue
+        }
+    }
+
+    /// SF Symbol for the pane's sidebar row. Provider rows draw the provider's brand icon instead.
+    var systemImage: String {
+        switch self {
+        case .general: "gearshape.fill"
+        case .menuBar: "menubar.rectangle"
+        case .menu: "filemenu.and.selection"
+        case .alerts: "bell.badge.fill"
+        case .costs: "chart.bar.fill"
+        case .sync: "icloud.fill"
+        case .integrations: "point.3.filled.connected.trianglepath.dotted"
+        case .privacy: "hand.raised.fill"
+        case .about: "info.circle.fill"
+        case .debug: "ladybug.fill"
+        case .plugins: "puzzlepiece.extension.fill"
+        case .provider: "circle.dotted"
         }
     }
 }
@@ -158,7 +196,7 @@ struct PreferencesView: View {
 
     private var showsToolbarTitle: Bool {
         switch self.selection.pane {
-        case .usageSpend: false
+        case .costs: false
         case let .provider(instanceID): instanceID.firstPartyProvider == nil
         default: true
         }
@@ -240,43 +278,20 @@ struct PreferencesView: View {
         }
     }
 
-    @ViewBuilder
     private var detailView: some View {
-        switch self.selection.pane {
-        case .general:
-            GeneralPane(settings: self.settings)
-        case .iCloudSync:
-            ICloudSyncPane(settings: self.settings, state: self.cloudSyncState)
-        case .usageSpend:
-            SpendDashboardPane(settings: self.settings, store: self.store)
-        case .notifications:
-            NotificationsPane(settings: self.settings)
-        case .menuBar:
-            MenuBarPane(settings: self.settings, store: self.store)
-        case .menu:
-            MenuPane(settings: self.settings, store: self.store)
-        case .advanced:
-            AdvancedPane(settings: self.settings, store: self.store)
-        case .hooks:
-            HooksPane(settings: self.settings)
-        case .plugins:
-            PluginsPane(settings: self.settings, store: self.store)
-        case .about:
-            AboutPane(updater: self.updater, selection: self.selection)
-        case .debug:
-            DebugPane(settings: self.settings, store: self.store)
-        case let .provider(instanceID):
-            if let provider = instanceID.firstPartyProvider {
-                ProvidersPane(
-                    provider: provider,
-                    settings: self.settings,
-                    store: self.store,
-                    managedCodexAccountCoordinator: self.managedCodexAccountCoordinator,
-                    codexAccountPromotionCoordinator: self.codexAccountPromotionCoordinator,
-                    runProviderLoginFlow: self.runProviderLoginFlow)
-                    .id(instanceID)
-            }
-        }
+        SettingsPaneRouter(pane: self.selection.pane, context: self.paneContext)
+    }
+
+    private var paneContext: SettingsPaneContext {
+        SettingsPaneContext(
+            settings: self.settings,
+            store: self.store,
+            cloudSyncState: self.cloudSyncState,
+            updater: self.updater,
+            selection: self.selection,
+            managedCodexAccountCoordinator: self.managedCodexAccountCoordinator,
+            codexAccountPromotionCoordinator: self.codexAccountPromotionCoordinator,
+            runProviderLoginFlow: self.runProviderLoginFlow)
     }
 
     private func ensureValidSelection() {

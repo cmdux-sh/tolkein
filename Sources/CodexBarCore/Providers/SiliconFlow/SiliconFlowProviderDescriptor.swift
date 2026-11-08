@@ -7,7 +7,7 @@ public enum SiliconFlowProviderDescriptor {
         "SiliconFlow refused the balance query. Check the balance in the SiliconFlow console.",
         "SiliconFlow request failed. Try refreshing later.",
         "SiliconFlow is rate limiting requests. Try again later.",
-        "SiliconFlow returned an unrecognized response. Update CodexBar and try again.",
+        "SiliconFlow returned an unrecognized response. Update Tolkein and try again.",
     ]
 
     public static let descriptor = Self.spec.makeDescriptor()
@@ -50,7 +50,7 @@ public enum SiliconFlowProviderDescriptor {
         apiKeyField: .init(
             id: "siliconflow-api-key",
             title: "API key",
-            subtitle: "Stored in the CodexBar config file.",
+            subtitle: "Stored in the Tolkein config file.",
             placeholder: "Paste API key…",
             action: ("siliconflow-dashboard", "Open regional API keys", "https://cloud.siliconflow.cn/account/ak")),
         endpoint: .init(

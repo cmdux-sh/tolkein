@@ -4,39 +4,39 @@ import SweetCookieKit
 
 private enum KeychainPromptMessage {
     static let providerCookie =
-        "CodexBar will ask macOS Keychain for your %@ cookie header " +
+        "Tolkein will ask macOS Keychain for your %@ cookie header " +
         "so it can fetch usage. Click OK to continue."
 
     static let browserCookie =
-        "CodexBar will ask macOS Keychain for “%@” so it can decrypt browser cookies " +
+        "Tolkein will ask macOS Keychain for “%@” so it can decrypt browser cookies " +
         "and authenticate your account. Click OK to continue."
 
     static let claudeOAuth =
-        "CodexBar will ask macOS Keychain for the Claude Code OAuth token " +
+        "Tolkein will ask macOS Keychain for the Claude Code OAuth token " +
         "so it can fetch your Claude usage. Click OK to continue."
     static let museToken =
-        "CodexBar will ask macOS Keychain for the Muse Code login token " +
+        "Tolkein will ask macOS Keychain for the Muse Code login token " +
         "so it can fetch your Muse Code subscription usage. Click OK to continue."
     static let codexCookie =
-        "CodexBar will ask macOS Keychain for your OpenAI cookie header " +
+        "Tolkein will ask macOS Keychain for your OpenAI cookie header " +
         "so it can fetch Codex dashboard extras. Click OK to continue."
     static let claudeCookie =
-        "CodexBar will ask macOS Keychain for your Claude cookie header " +
+        "Tolkein will ask macOS Keychain for your Claude cookie header " +
         "so it can fetch Claude web usage. Click OK to continue."
     static let zaiToken =
-        "CodexBar will ask macOS Keychain for your z.ai API token " +
+        "Tolkein will ask macOS Keychain for your z.ai API token " +
         "so it can fetch usage. Click OK to continue."
     static let syntheticToken =
-        "CodexBar will ask macOS Keychain for your Synthetic API key " +
+        "Tolkein will ask macOS Keychain for your Synthetic API key " +
         "so it can fetch usage. Click OK to continue."
     static let copilotToken =
-        "CodexBar will ask macOS Keychain for your GitHub Copilot token " +
+        "Tolkein will ask macOS Keychain for your GitHub Copilot token " +
         "so it can fetch usage. Click OK to continue."
     static let kimiToken =
-        "CodexBar will ask macOS Keychain for your Kimi auth token " +
+        "Tolkein will ask macOS Keychain for your Kimi auth token " +
         "so it can fetch usage. Click OK to continue."
     static let minimaxToken =
-        "CodexBar will ask macOS Keychain for your MiniMax API token " +
+        "Tolkein will ask macOS Keychain for your MiniMax API token " +
         "so it can fetch usage. Click OK to continue."
 }
 

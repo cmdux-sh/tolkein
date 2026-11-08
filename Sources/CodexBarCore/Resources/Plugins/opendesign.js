@@ -15,7 +15,7 @@ defineProvider({
     const domain = "amr-api.open-design.ai";
     const messages = JSON.parse(ctx.settings.get("MESSAGES") || "{}");
     const message = (key) => messages[key] || key;
-    const signIn = message("Sign in to OpenDesign, then refresh CodexBar.");
+    const signIn = message("Sign in to OpenDesign, then refresh Tolkein.");
     const expired = ctx.fail.authenticationExpired(signIn);
     const malformed = () => {
       throw ctx.fail.parseFailure(message("OpenDesign usage response format changed."));

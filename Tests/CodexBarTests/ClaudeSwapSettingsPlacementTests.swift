@@ -70,7 +70,7 @@ struct ClaudeSwapSettingsPlacementTests {
         #expect(fixture.settings.claudeSwapSource == .claudeSwap)
         #expect(toggle.title == "Read accounts from claude-swap")
         #expect(toggle.subtitle == "Shows usage and lets you switch accounts through `cswap`. " +
-            "Credentials stay managed by claude-swap; CodexBar never reads them.")
+            "Credentials stay managed by claude-swap; Tolkein never reads them.")
         #expect(field.title == "claude-swap executable")
         #expect(field.subtitle == "Path to the cswap executable (github.com/realiti4/claude-swap).")
         #expect(field.placeholder == "~/.local/bin/cswap")
@@ -90,7 +90,7 @@ struct ClaudeSwapSettingsPlacementTests {
         let field = try #require(toggle.inlineFields.first)
 
         #expect(toggle.subtitle == "Shows usage from `tcr`; it does not switch accounts, because tcr picks " +
-            "the account for each request. Credentials stay managed by tcr; CodexBar never reads them.")
+            "the account for each request. Credentials stay managed by tcr; Tolkein never reads them.")
         #expect(field.title == "tcr executable")
         #expect(field.subtitle == "Path to the tcr executable (github.com/dhkts1/teamclaude-rs).")
         #expect(field.placeholder == "/Applications/TcrBar.app/Contents/MacOS/tcr")

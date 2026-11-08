@@ -115,7 +115,7 @@ enum CursorLoginAccountSelector {
 
         let alert = NSAlert()
         alert.messageText = L("Choose Cursor account")
-        alert.informativeText = L("Choose which Cursor account CodexBar should use.")
+        alert.informativeText = L("Choose which Cursor account Tolkein should use.")
         alert.alertStyle = .informational
         alert.accessoryView = popup
         alert.addButton(withTitle: L("Use Account"))

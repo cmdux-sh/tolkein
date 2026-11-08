@@ -19,5 +19,5 @@ public enum SailResearchProviderDescriptor {
         apiKeyField: .init(
             id: "sailresearch-api-key",
             title: "Sail Research API key",
-            subtitle: "Saved in CodexBar's local config file. Or set SAIL_API_KEY."))
+            subtitle: "Saved in Tolkein's local config file. Or set SAIL_API_KEY."))
 }
