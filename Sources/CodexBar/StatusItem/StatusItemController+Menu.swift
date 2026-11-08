@@ -591,9 +591,7 @@ extension StatusItemController {
                     spendSummary.pricingCoverageText,
                     spendSummary.provenanceText,
                 ].joined(separator: "|"),
-                onClick: { [weak self] in
-                    self?.openSpendWindow(.dashboard)
-                })
+                onClick: { [weak self] in self?.openSpendWindow(.dashboard) })
             // Also wired as a menu action, for keyboard activation and accessibility presses.
             summaryItem.target = self
             summaryItem.action = #selector(self.showSpendWindow(_:))

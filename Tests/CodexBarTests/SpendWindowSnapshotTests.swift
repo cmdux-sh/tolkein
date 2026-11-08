@@ -261,7 +261,11 @@ struct SpendWindowSnapshotTests {
             SpendDashboardModel.ProviderInput(
                 provider: .opencode,
                 displayName: "OpenCode",
-                snapshot: self.snapshot(entries: openCodeDaily, now: now, sessions: self.sessions(now: now), hourly: hours)),
+                snapshot: self.snapshot(
+                    entries: openCodeDaily,
+                    now: now,
+                    sessions: self.sessions(now: now),
+                    hourly: hours)),
             SpendDashboardModel.ProviderInput(
                 provider: .claude,
                 displayName: "Claude · personal",
@@ -279,7 +283,7 @@ struct SpendWindowSnapshotTests {
                 ? "Rebuild the Settings window on Internal UI and move the dashboard into its own window"
                 : "Session \(index)"
             let lastActivity: Date = now.addingTimeInterval(Double(-index) * 5400)
-            let cost: Double = 9.6 / Double(index)
+            let cost = 9.6 / Double(index)
             return CostUsageSessionBreakdown(
                 sessionID: String(format: "session-%02d", index),
                 lastActivity: lastActivity,
