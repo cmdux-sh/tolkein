@@ -109,3 +109,27 @@ Why: the package, its catalog app and its MCP server now share one product name.
 `.claude/settings.json` (fork-only) adds a Claude Code `PostToolUse` hook for Edit, MultiEdit and Write. It runs `internal-ui-mcp hook` from `~/.local/bin`, which checks the edited file when it is Swift that imports InternalUI. When there are findings, the hook exits 2, and Claude Code hands the report to the agent to fix. On machines without the server installed, the hook does nothing.
 
 Why: the Liner research on MCP practice found that instructions and tool descriptions only nudge agents. A hook is the one way to make the check happen every time. The Usage Board's files pass the checker today, so the hook only reports new problems.
+
+## 2026-11-07: Tolkein is its own app; the UI is rebuilt on Internal UI, starting with Settings
+
+Arturo decided that Tolkein no longer syncs with `steipete/CodexBar`: "this is a new app from now on."
+- **Upstream constraints dropped:** the earlier rules that kept merges with upstream clean no longer apply. That covers the root README, upstream's `AGENTS.md`, and keeping upstream files untouched.
+- **UI rebuild:** the UI is rebuilt in place on Internal UI. When a surface is rebuilt, the old CodexBar version of it is deleted rather than kept beside it.
+- **Order:** Settings is rebuilt first; the Spend Dashboard and the menu cards follow.
+- **Simplify:** the Settings rebuild may regroup and merge panes. Arturo sees the proposed structure before it is built.
+- **Execution:** parallel agents, one PR per area, each with offscreen snapshot tests and a Sonnet review before merging.
+
+Why: Tolkein has diverged into its own product: its own design system, macOS 15, its own Usage Board and agent rules. Keeping upstream's files mergeable no longer pays for the constraints it imposes on the UI.
+
+## 2026-11-07: The new Settings structure, and the Tolkein name in the UI
+
+Arturo approved this structure for the rebuilt Settings window.
+- **App panes:** General, Menu Bar, Menu, Alerts (was Notifications, now with every quota-warning control), Costs (was Usage & Spend), Sync, Integrations (HTTP server, CLI, Hooks), Privacy & Data, About, and Debug behind its switch.
+- **Providers:** the list has search plus All and Enabled filter chips, Plugins sit under Providers, and every provider page has the same fixed sections.
+- **The spend dashboard** leaves Settings for its own Spend window.
+- **One layout** serves macOS 15 and 26, and search finds individual settings.
+- **Behaviour is unchanged:** every setting, stored value and behaviour stays; only placement and look change.
+
+The UI now says **Tolkein**, and About links to cmdux-sh/tolkein. About and Acknowledgements keep "Based on CodexBar by Peter Steinberger (MIT)", as the license requires.
+
+Why: the old Settings scattered related controls across panes, embedded a dashboard and duplicated its chrome for two OS versions. Tolkein is now its own app, so its name belongs in its UI, with the credit the MIT license asks for.
