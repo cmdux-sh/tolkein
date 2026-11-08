@@ -146,7 +146,7 @@ Manual option:
 - Manual cookie headers from `~/.config/codexbar/config.json` (or legacy `~/.codexbar/config.json`) work on Linux.
 
 ## Local storage footprint
-When **Settings → Advanced → Track provider local storage** is enabled on macOS, CodexBar measures:
+When **Settings → Privacy & Data → Show provider storage usage** is enabled on macOS, CodexBar measures:
 - `~/Library/Application Support/Cursor`
 - `~/Library/Application Support/Caches/cursor-updater`
 - `~/.cursor`

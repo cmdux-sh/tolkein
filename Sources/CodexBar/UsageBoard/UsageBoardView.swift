@@ -22,7 +22,7 @@ struct UsageBoardView: View {
             self.title,
             subtitle: self.subtitle,
             chrome: .panel,
-            sidebarTitle: "CodexBar",
+            sidebarTitle: "Tolkein",
             sidebarWidth: CGFloat(UsageBoardLayout.sidebarWidth))
         {
             UsageBoardSidebar(session: self.session)

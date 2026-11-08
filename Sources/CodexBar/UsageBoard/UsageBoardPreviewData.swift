@@ -148,7 +148,7 @@ enum UsageBoardPreviewData {
             name: "Cursor",
             planText: nil,
             email: "",
-            subtitle: "Sign in to cursor.com in your browser, then refresh Cursor in CodexBar.",
+            subtitle: "Sign in to cursor.com in your browser, then refresh Cursor in Tolkein.",
             isLoading: false,
             isError: true,
             metrics: [],

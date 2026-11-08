@@ -61,7 +61,7 @@ Usage source picker:
   `GET https://chatgpt.com/backend-api/wham/rate-limit-reset-credits` using the same account-scoped OAuth context;
   the CLI requests it only when optional credits are included.
 - The menu and provider settings list every still-available expiry. The optional credits setting continues to
-  control the existing one-time summary within three days of expiry. Settings → Notifications → **Codex reset
+  control the existing one-time summary within three days of expiry. Settings → Alerts → **Codex reset
   credit expiry** adds reminders at 1 day and 1 hour before expiry. This separate toggle is off by default on
   both new and existing installations; upgrading does not alter the summary behavior or its saved receipts.
   Reminders run only when usage refreshes, with bounded hashed receipts in the existing local receipt store.
@@ -346,7 +346,7 @@ and stable account numbers distinguish rows while usable workspace labels remain
   install paths. Nonempty `NODE_OPTIONS` still prevents inspection, so discovery cannot run a working-directory interpreter
   or preload hook before assessing the payload; bundled fallbacks remain available.
 - If managed Codex account login still reports a missing executable, turn on **Show debug settings** in
-  **Settings > Advanced**, then check **Settings > Debug > CLI Paths**. When no Codex binary appears there, confirm
+  **Settings > Privacy & Data**, then check **Settings > Debug > CLI Paths**. When no Codex binary appears there, confirm
   `codex --version` works in Terminal, check `which -a codex` for stale duplicate installs, then run
   `npm install -g --include=optional @openai/codex@latest` before retrying Add Account.
 
@@ -739,7 +739,7 @@ to the combined totals. Bounded refreshes retain the last complete detail snapsh
 cache identity, history window, and bucket time zone; a completed empty scan clears the old rows. This retention
 does not add another persisted history format.
 
-Settings → Usage & Spend performs a separate fixed 30-day scan for every visible Codex account. Each request freezes
+Settings → Costs performs a separate fixed 30-day scan for every visible Codex account. Each request freezes
 the account source, exact Codex home, authentication fingerprint, and cache identity before scanning. A missing or
 invalid home is omitted; it never falls back to ambient `~/.codex` or to the global Codex token snapshot.
 
@@ -756,7 +756,7 @@ their current rows, prices, roots, dates, and time zone without retaining anothe
 
 ## Upcoming weekly reset warnings
 
-Settings → Notifications → **Upcoming reset warnings** is off by default. When enabled, accepted Codex usage
+Settings → Alerts → **Upcoming reset warnings** is off by default. When enabled, accepted Codex usage
 refreshes warn at 24 hours and 1 hour before a reported weekly reset while quota remains. A late first refresh
 sends only the closest reminder; earlier stages are consumed rather than replayed. Account-scoped receipts
 survive app restarts. An account must be identified; missing reset times, expired windows, and exhausted quota

@@ -19,6 +19,6 @@ public enum SofyaProviderDescriptor {
         apiKeyField: .init(
             id: "sofya-api-key",
             title: "Sofya API key",
-            subtitle: "Saved in CodexBar's local config file. Or set SOFYA_API_KEY.",
+            subtitle: "Saved in Tolkein's local config file. Or set SOFYA_API_KEY.",
             action: ("sofya-dashboard", "Open Sofya", "https://sofya.co/dashboard")))
 }

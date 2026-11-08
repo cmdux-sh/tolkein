@@ -197,7 +197,7 @@ extension StatusItemController {
                 NSApp.activate(ignoringOtherApps: true)
                 self.presentLoginAlert(
                     title: L("Usage snapshot unavailable"),
-                    message: L("CodexBar couldn't prepare a shareable usage snapshot. "
+                    message: L("Tolkein couldn't prepare a shareable usage snapshot. "
                         + "Refresh Usage & Spend and try again."))
             }
         }

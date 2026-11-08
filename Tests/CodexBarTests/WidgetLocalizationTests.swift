@@ -50,7 +50,7 @@ struct WidgetLocalizationTests {
             try WidgetLocalizationOverride.$language.withValue(language.rawValue) {
                 for key in [
                     "Choose an account",
-                    "Enable a provider in CodexBar → Settings → Providers.",
+                    "Enable a provider in Tolkein → Settings → Providers.",
                     "Credits left",
                     "No data",
                 ] {

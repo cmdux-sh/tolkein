@@ -19,5 +19,5 @@ public enum LinkupProviderDescriptor {
         apiKeyField: .init(
             id: "linkup-api-key",
             title: "API key",
-            subtitle: "Stored in the CodexBar config file."))
+            subtitle: "Stored in the Tolkein config file."))
 }

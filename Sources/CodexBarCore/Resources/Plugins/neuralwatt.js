@@ -24,7 +24,7 @@ defineProvider({
     }
     if (response.status === 401 || response.status === 403) {
       throw ctx.fail.missingCredential(
-        "Missing Neuralwatt API key. Set apiKey in the CodexBar config file or NEURALWATT_API_KEY.",
+        "Missing Neuralwatt API key. Set apiKey in the Tolkein config file or NEURALWATT_API_KEY.",
       );
     }
     if (response.status !== 200) throw ctx.fail.apiFailure(`Neuralwatt API error: HTTP ${response.status}`);

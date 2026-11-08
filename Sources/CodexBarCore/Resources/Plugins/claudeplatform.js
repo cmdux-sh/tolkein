@@ -25,7 +25,7 @@ defineProvider({
 
     const invalid = (field) => {
       throw ctx.fail.parseFailure(
-        `Could not parse Claude Console ${field}. The Console response format may have changed; update CodexBar or report this.`,
+        `Could not parse Claude Console ${field}. The Console response format may have changed; update Tolkein or report this.`,
       );
     };
     const object = (value, field) =>

@@ -558,7 +558,7 @@ struct WidgetEmptyState: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
-            Text(W("Open CodexBar"))
+            Text(W("Open Tolkein"))
                 .font(.subheadline.weight(.semibold))
             Text(self.message)
                 .font(.caption)

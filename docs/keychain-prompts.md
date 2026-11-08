@@ -111,7 +111,7 @@ applications.” In Keychain Access, adding only the installed, stably signed `C
 
 ## Disable CodexBar Keychain access
 
-Open **CodexBar → Settings → Advanced** and enable **Disable Keychain access**. The stored setting is applied
+Open **CodexBar → Settings → Privacy & Data** and enable **Disable Keychain access**. The stored setting is applied
 immediately; relaunching is useful when diagnosing another already-running copy.
 
 Startup resolves the local preference, falling back to the current shared app-group preference only when no local

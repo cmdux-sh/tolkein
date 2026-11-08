@@ -34,7 +34,7 @@ extension ManagedCodexAccountServiceError {
         case .missingEmail:
             L("managed_login_missing_email")
         case .savedAccountConflict:
-            L("CodexBar could not update managed account storage.")
+            L("Tolkein could not update managed account storage.")
         case .workspaceSelectionCancelled:
             L("workspace_selection_cancelled")
         case let .unsafeManagedHome(path):

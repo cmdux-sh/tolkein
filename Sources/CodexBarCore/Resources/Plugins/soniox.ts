@@ -7,7 +7,7 @@ defineProvider({
   async fetchUsage(ctx) {
     const invalid = (field: string): never => {
       throw ctx.fail.parseFailure(
-        `Soniox returned invalid billing data: ${field}. Refresh to try again. If this persists, update CodexBar or report the issue.`,
+        `Soniox returned invalid billing data: ${field}. Refresh to try again. If this persists, update Tolkein or report the issue.`,
       );
     };
     const money = (value: unknown, field: string, signed = false): number => {
@@ -38,7 +38,7 @@ defineProvider({
       }
       if (response.status !== 200) {
         throw ctx.fail.apiFailure(
-          `Soniox billing request failed (HTTP ${response.status}). Refresh to try again. If this persists, update CodexBar or report the issue.`,
+          `Soniox billing request failed (HTTP ${response.status}). Refresh to try again. If this persists, update Tolkein or report the issue.`,
         );
       }
       let data: unknown;

@@ -90,7 +90,7 @@ struct CopilotLoginFlow {
                         let err = NSAlert()
                         err.messageText = L("Could Not Identify GitHub Account")
                         err.informativeText = L(
-                            "GitHub login succeeded, but CodexBar could not verify which " +
+                            "GitHub login succeeded, but Tolkein could not verify which " +
                                 "account it belongs to. Please try again.")
                         err.runModal()
                         return

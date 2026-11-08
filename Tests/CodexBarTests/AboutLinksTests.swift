@@ -22,7 +22,17 @@ struct AboutLinksTests {
         for retired in ["link_website", "link_twitter", "link_email", "mailto:", "twitter.com", "codexbar.app"] {
             #expect(!source.contains(retired), "\(retired)")
         }
-        #expect(!source.contains("steipete/CodexBar"))
+        // The only link to the original project is the MIT credit.
+        #expect(source.components(separatedBy: "steipete/CodexBar").count == 2)
+    }
+
+    @Test
+    func `the CodexBar credit links to the original project`() throws {
+        #expect(AboutPane.originalProjectURL == "https://github.com/steipete/CodexBar")
+        let credit = CodexBarLocalizationOverride.$appLanguage.withValue("en") { AboutPane.creditText() }
+        #expect(String(credit.characters) == "Based on CodexBar by Peter Steinberger (MIT License)")
+        let expected = try #require(URL(string: "https://github.com/steipete/CodexBar"))
+        #expect(credit.runs.compactMap(\.link) == [expected])
     }
 
     @Test

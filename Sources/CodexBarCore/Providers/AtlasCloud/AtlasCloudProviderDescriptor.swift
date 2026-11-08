@@ -19,5 +19,5 @@ public enum AtlasCloudProviderDescriptor {
         apiKeyField: .init(
             id: "atlascloud-api-key",
             title: "Atlas Cloud API key",
-            subtitle: "Saved in CodexBar's local config file. Or set ATLASCLOUD_API_KEY."))
+            subtitle: "Saved in Tolkein's local config file. Or set ATLASCLOUD_API_KEY."))
 }

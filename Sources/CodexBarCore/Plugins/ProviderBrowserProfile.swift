@@ -78,7 +78,7 @@ public struct ProviderBrowserProfile: Sendable, Equatable {
             if Self.safariStoreAccessDenied(selection, homeDirectories: homeDirectories, listDirectory: listDirectory) {
                 throw ProviderFetchClassifiedError(
                     kind: .permissionDenied,
-                    message: "Cannot read Safari cookies. Check Full Disk Access for CodexBar.")
+                    message: "Cannot read Safari cookies. Check Full Disk Access for Tolkein.")
             }
             throw ProviderFetchClassifiedError(
                 kind: .missingCredential, message: "The selected browser profile has no discoverable cookie store.")
@@ -165,7 +165,7 @@ public struct ProviderBrowserProfile: Sendable, Equatable {
             throw ProviderFetchClassifiedError(
                 kind: .permissionDenied,
                 message: browser == .safari
-                    ? "Cannot read Safari cookies. Check Full Disk Access for CodexBar."
+                    ? "Cannot read Safari cookies. Check Full Disk Access for Tolkein."
                     : "Cannot decrypt the selected profile. Check browser Keychain access.")
         }
         #else

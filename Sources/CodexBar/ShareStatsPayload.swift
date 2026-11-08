@@ -471,7 +471,7 @@ enum ShareStatsFormatting {
                 return "\(model.modelName) (\(model.providerName)): \(metrics.joined(separator: " · "))"
             })
         }
-        lines.append(L("Generated locally by CodexBar · Data through %@", self.dataThrough(payload)))
+        lines.append(L("Generated locally by Tolkein · Data through %@", self.dataThrough(payload)))
         return lines.joined(separator: "\n")
     }
 }

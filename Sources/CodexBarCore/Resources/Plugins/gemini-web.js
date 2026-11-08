@@ -41,7 +41,7 @@ defineProvider({
       `https://${domain}/_/BardChatUi/graphql/schemas/GEMINI_WEB_GRAPHQL/executeQuery` +
       `?query_signature=${encodeURIComponent(signature)}&variables=${encodeURIComponent(variables)}`;
     const invalid = () => {
-      throw ctx.fail.parseFailure("Gemini app usage response changed. Update CodexBar or report this.");
+      throw ctx.fail.parseFailure("Gemini app usage response changed. Update Tolkein or report this.");
     };
     const object = (value) =>
       value !== null && typeof value === "object" && !Array.isArray(value) ? value : undefined;

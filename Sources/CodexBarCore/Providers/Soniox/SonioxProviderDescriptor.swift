@@ -31,7 +31,7 @@ public enum SonioxProviderDescriptor {
         apiKeyField: .init(
             id: "soniox-organization-api-key",
             title: "API key",
-            subtitle: "Stored in the CodexBar config file.",
+            subtitle: "Stored in the Tolkein config file.",
             action: (
                 id: "soniox-api-key-guide",
                 title: "Open API Keys",

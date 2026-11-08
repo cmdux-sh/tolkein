@@ -16,7 +16,7 @@ public enum FutureAGIProviderDescriptor {
         apiKeyField: .init(
             id: "futureagi-api-key",
             title: "API key",
-            subtitle: "Saved in CodexBar's local config file. Or set FI_API_KEY."))
+            subtitle: "Saved in Tolkein's local config file. Or set FI_API_KEY."))
 
     public static let descriptor = Self.spec.makeDescriptor(fetchPlan: ProviderFetchPlan(
         sourceModes: [.auto, .api],

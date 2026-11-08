@@ -17,7 +17,7 @@ public enum AerostackProviderDescriptor {
         apiKeyField: .init(
             id: "aerostack-token",
             title: "Account JWT",
-            subtitle: "Saved in CodexBar's local config file. Replace when expired; CodexBar does not refresh it.",
+            subtitle: "Saved in Tolkein's local config file. Replace when expired; Tolkein does not refresh it.",
             placeholder: "Account JWT, not an Agent Endpoint key"),
         availability: .configuredKey)
 }

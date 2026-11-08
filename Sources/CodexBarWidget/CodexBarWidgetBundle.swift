@@ -25,7 +25,7 @@ struct CodexBarSwitcherWidget: Widget {
         { entry in
             CodexBarSwitcherWidgetView(entry: entry)
         }
-        .configurationDisplayName(Text(W("CodexBar Switcher")))
+        .configurationDisplayName(Text(W("Tolkein Switcher")))
         .description(Text(W("Usage widget with a provider switcher.")))
         .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
     }
@@ -42,7 +42,7 @@ struct CodexBarUsageWidget: Widget {
         { entry in
             CodexBarUsageWidgetView(entry: entry)
         }
-        .configurationDisplayName(Text(W("CodexBar Usage")))
+        .configurationDisplayName(Text(W("Tolkein Usage")))
         .description(Text(W("Session and weekly usage with credits and costs.")))
         .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
     }
@@ -59,7 +59,7 @@ struct CodexBarHistoryWidget: Widget {
         { entry in
             CodexBarHistoryWidgetView(entry: entry)
         }
-        .configurationDisplayName(Text(W("CodexBar History")))
+        .configurationDisplayName(Text(W("Tolkein History")))
         .description(Text(W("Usage history chart with recent totals.")))
         .supportedFamilies([.systemMedium, .systemLarge])
     }
@@ -76,7 +76,7 @@ struct CodexBarCompactWidget: Widget {
         { entry in
             CodexBarCompactWidgetView(entry: entry)
         }
-        .configurationDisplayName(Text(W("CodexBar Metric")))
+        .configurationDisplayName(Text(W("Tolkein Metric")))
         .description(Text(W("Compact widget for credits or cost.")))
         .supportedFamilies([.systemSmall])
     }
@@ -97,7 +97,7 @@ struct CodexBarBurnDownWidget: Widget {
         { entry in
             BurnDownWidgetView(entry: entry)
         }
-        .configurationDisplayName(Text(W("CodexBar Burn Down")))
+        .configurationDisplayName(Text(W("Tolkein Burn Down")))
         .description(Text(W("Remaining budget compared with an ideal steady burn rate.")))
         .supportedFamilies([.systemMedium])
         .containerBackgroundRemovable(BurnDownWidgetBackgroundConfiguration.isRemovable)
@@ -115,7 +115,7 @@ struct CodexBarCombinedBurnDownWidget: Widget {
         { entry in
             CombinedBurnDownWidgetView(entry: entry)
         }
-        .configurationDisplayName(Text(W("CodexBar Burn Down (Combined)")))
+        .configurationDisplayName(Text(W("Tolkein Burn Down (Combined)")))
         .description(Text(W("Two quota burn-down charts in one tile.")))
         .supportedFamilies([.systemMedium])
         .containerBackgroundRemovable(BurnDownWidgetBackgroundConfiguration.isRemovable)

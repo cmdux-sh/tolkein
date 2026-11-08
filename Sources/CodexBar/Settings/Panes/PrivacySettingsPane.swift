@@ -25,13 +25,16 @@ extension PrivacySettingsPane {
         let privacy = L("section_privacy")
         let keychain = L("section_keychain_access")
         let diagnostics = L("section_diagnostics")
+        let storageTitle = L("show_provider_storage_usage_title")
+        let keychainTitle = L("disable_keychain_access_title")
         let portablePreferences = L("Portable preferences")
+        let advanced = SettingsSearchEntry.formerAdvancedKeyword
         return [
-            .paneTitle(pane, keywords: L("tab_advanced")),
-            pane.searchEntry("hidePersonalInfo", L("hide_personal_info_title"), keywords: privacy),
-            pane.searchEntry("keychainAccess", L("disable_keychain_access_title"), keywords: privacy, keychain),
-            pane.searchEntry("storageFootprints", L("show_provider_storage_usage_title"), keywords: diagnostics),
-            pane.searchEntry("debugSettings", L("show_debug_settings_title"), keywords: diagnostics),
+            .paneTitle(pane, keywords: advanced),
+            pane.searchEntry("hidePersonalInfo", L("hide_personal_info_title"), keywords: privacy, advanced),
+            pane.searchEntry("keychainAccess", keychainTitle, keywords: privacy, keychain, advanced),
+            pane.searchEntry("storageFootprints", storageTitle, keywords: diagnostics, advanced),
+            pane.searchEntry("debugSettings", L("show_debug_settings_title"), keywords: diagnostics, advanced),
             pane.searchEntry("exportPreferences", L("Export Preferences…"), keywords: portablePreferences),
             pane.searchEntry("importPreferences", L("Import Preferences…"), keywords: portablePreferences),
             pane.searchEntry("switcherShortcuts", L("Provider Switcher Shortcuts…"), keywords: portablePreferences),

@@ -45,7 +45,7 @@ struct FireworksProviderImplementation: ProviderImplementation {
             ProviderSettingsFieldDescriptor(
                 id: "fireworks-account-slug",
                 title: "Account slug",
-                subtitle: "Optional when the API key can access one account; CodexBar discovers it automatically. "
+                subtitle: "Optional when the API key can access one account; Tolkein discovers it automatically. "
                     + "For multiple accounts, find the slug in the app.fireworks.ai home account switcher or run "
                     + "firectl whoami.",
                 kind: .plain,

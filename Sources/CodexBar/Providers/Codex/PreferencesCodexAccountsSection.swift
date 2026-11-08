@@ -138,7 +138,7 @@ struct CodexAccountsSectionView: View {
             if let selection = self.activeSelectionBinding {
                 VStack(alignment: .leading, spacing: 6) {
                     HStack(alignment: .firstTextBaseline, spacing: 10) {
-                        Text(L("CodexBar follows"))
+                        Text(L("Tolkein follows"))
                             .font(.subheadline.weight(.semibold))
                             .frame(width: ProviderSettingsMetrics.pickerLabelWidth, alignment: .leading)
 
@@ -154,7 +154,7 @@ struct CodexAccountsSectionView: View {
                         Spacer(minLength: 0)
                     }
 
-                    Text(L("Choose which Codex account CodexBar should follow."))
+                    Text(L("Choose which Codex account Tolkein should follow."))
                         .font(.footnote)
                         .foregroundStyle(.secondary)
 

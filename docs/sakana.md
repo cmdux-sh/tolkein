@@ -46,7 +46,7 @@ Alternatively, set the environment variable `SAKANA_COOKIE` to the raw cookie he
 
 ## Pay-as-you-go credits
 
-Prepaid PAYG credit for `fugu` and `fugu-ultra` is separate from subscription quotas. Enable **Settings → Advanced → Show optional credits and extra usage** to fetch `GET https://console.sakana.ai/billing?tab=payAsYouGo` alongside the subscription request, using the same cookie. The default `/billing` HTML omits this tab. Turning the setting off (`context.includeOptionalUsage: false`) skips the request and immediately hides cached PAYG values in both menu cards and text descriptors, without a refetch.
+Prepaid PAYG credit for `fugu` and `fugu-ultra` is separate from subscription quotas. Enable **Settings → Menu → Show optional credits, spending & billing details** to fetch `GET https://console.sakana.ai/billing?tab=payAsYouGo` alongside the subscription request, using the same cookie. The default `/billing` HTML omits this tab. Turning the setting off (`context.includeOptionalUsage: false`) skips the request and immediately hides cached PAYG values in both menu cards and text descriptors, without a refetch.
 
 - **Credit balance**: parsed from the `<h2>Credit balance</h2>` card's adjacent `tabular-nums` amount.
 - **Recent usage total**: parsed from the `Usage` chart header's `Total: $…` text, covering whatever date range is

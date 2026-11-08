@@ -14,7 +14,7 @@ public enum ChutesProviderDescriptor {
         color: ProviderColor(hex: 0x3184FF),
         confetti: [0x121212, 0xFFFFFF, 0x63D297],
         widgetColor: ProviderColor(hex: 0x18A058),
-        noDataMessage: "Chutes cost history is not available from CodexBar.",
+        noDataMessage: "Chutes cost history is not available from Tolkein.",
         environmentKey: ChutesSettingsReader.apiKeyEnvironmentKey,
         presentation: ProviderUsagePresentation(
             primaryBindingQuotaLanes: [.secondary],

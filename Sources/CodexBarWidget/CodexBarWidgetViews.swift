@@ -220,7 +220,7 @@ enum CompactMetricFormatter {
 enum WidgetEmptyStateCopy {
     static func message(provider: UsageProvider, snapshot: WidgetSnapshot) -> String {
         guard !snapshot.enabledProviders.isEmpty else {
-            return W("Enable a provider in CodexBar → Settings → Providers.")
+            return W("Enable a provider in Tolkein → Settings → Providers.")
         }
         guard !snapshot.enabledProviders.contains(provider.instanceID) else { return W("No data") }
         let name = ProviderDefaults.metadata[provider]?.displayName ?? provider.rawValue.capitalized
@@ -229,7 +229,7 @@ enum WidgetEmptyStateCopy {
 
     static func switcherMessage(provider: UsageProvider, snapshot: WidgetSnapshot) -> String {
         snapshot.enabledProviders.contains(provider.instanceID)
-            ? W("No data") : W("Enable a provider in CodexBar → Settings → Providers.")
+            ? W("No data") : W("Enable a provider in Tolkein → Settings → Providers.")
     }
 }
 

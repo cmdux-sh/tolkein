@@ -76,7 +76,7 @@ struct ClaudeProviderImplementation: ProviderImplementation {
     @MainActor
     func settingsToggles(context: ProviderSettingsContext) -> [ProviderSettingsToggleDescriptor] {
         let subtitle = if context.settings.debugDisableKeychainAccess {
-            "Inactive while \"Disable Keychain access\" is enabled in Advanced."
+            "Inactive while \"Disable Keychain access\" is enabled in Privacy & Data."
         } else {
             "Never allow Claude OAuth credential reads to show macOS Keychain prompts."
         }
@@ -143,7 +143,7 @@ struct ClaudeProviderImplementation: ProviderImplementation {
                 title: "Allow reading Claude Code's credentials",
                 subtitle: [
                     "Reads Claude Code's Keychain item for OAuth usage; macOS may ask for permission.",
-                    "Off: CodexBar never touches Claude Code's credentials and uses the Claude CLI instead.",
+                    "Off: Tolkein never touches Claude Code's credentials and uses the Claude CLI instead.",
                 ].joined(separator: " "),
                 binding: context.binding(\.claudeOAuthDirectKeychainReadAllowed),
                 statusText: nil,
@@ -236,7 +236,7 @@ struct ClaudeProviderImplementation: ProviderImplementation {
         ]
         let keychainPromptPolicySubtitle: () -> String? = {
             if context.settings.debugDisableKeychainAccess {
-                return "Global Keychain access is disabled in Advanced, so this setting is currently inactive."
+                return "Global Keychain access is disabled in Privacy & Data, so this setting is currently inactive."
             }
             return "Choosing \"Never prompt\" can make OAuth unavailable; use Web/CLI when needed."
         }
@@ -450,7 +450,7 @@ private struct ClaudeSwapSetupText {
             self.subtitle = "Path to the cswap executable (github.com/realiti4/claude-swap)."
             self.placeholder = "~/.local/bin/cswap"
             self.toggleSubtitle = "Shows usage and lets you switch accounts through `cswap`. " +
-                "Credentials stay managed by claude-swap; CodexBar never reads them."
+                "Credentials stay managed by claude-swap; Tolkein never reads them."
             self.missingPathStatus = L("Set the cswap executable path below.")
         case .tcr:
             // tcr picks the account for each request, so its list never offers a switch.
@@ -458,7 +458,7 @@ private struct ClaudeSwapSetupText {
             self.subtitle = "Path to the tcr executable (github.com/dhkts1/teamclaude-rs)."
             self.placeholder = "/Applications/TcrBar.app/Contents/MacOS/tcr"
             self.toggleSubtitle = "Shows usage from `tcr`; it does not switch accounts, because tcr picks " +
-                "the account for each request. Credentials stay managed by tcr; CodexBar never reads them."
+                "the account for each request. Credentials stay managed by tcr; Tolkein never reads them."
             self.missingPathStatus = L("Set the tcr executable path below.")
         }
     }

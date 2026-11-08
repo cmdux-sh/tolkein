@@ -25,11 +25,13 @@ extension IntegrationsSettingsPane {
         let httpServer = L("http_server_title")
         let hooks = L("tab_hooks")
         let commandLine = L("section_command_line")
+        let cliSubtitle = L("install_cli_subtitle")
+        let advanced = SettingsSearchEntry.formerAdvancedKeyword
         return [
-            .paneTitle(pane),
-            pane.searchEntry("httpServer", httpServer, keywords: L("http_server_enable")),
-            pane.searchEntry("httpServerToken", L("http_server_token"), keywords: httpServer),
-            pane.searchEntry("installCLI", L("install_cli"), keywords: commandLine, L("install_cli_subtitle")),
+            .paneTitle(pane, keywords: advanced),
+            pane.searchEntry("httpServer", httpServer, keywords: L("http_server_enable"), advanced),
+            pane.searchEntry("httpServerToken", L("http_server_token"), keywords: httpServer, advanced),
+            pane.searchEntry("installCLI", L("install_cli"), keywords: commandLine, cliSubtitle, advanced),
             pane.searchEntry("hooks", L("hooks_enable_title"), keywords: hooks, L("hooks_enable_subtitle")),
             pane.searchEntry("hookRules", L("hooks_rules_header"), keywords: hooks),
         ]

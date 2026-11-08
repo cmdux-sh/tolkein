@@ -375,7 +375,7 @@ Quota values, account ownership, and family selection remain unchanged.
   represent different cadences. Unknown or missing summary cadences remain unavailable; snapshots without summary
   rows retain the standard cadence fallback. Automatic selection, its exhausted-quota option, and explicit family
   metrics retain their existing selection policies.
-- To pin both weekly allowances, open **Settings → Display → Menu Bar → Layout**, select **Antigravity**,
+- To pin both weekly allowances, open **Settings → Menu Bar → Layout**, select **Antigravity**,
   and add **Gemini weekly %** and **Claude/GPT weekly %** from Usage. Add a **Line break** between them for
   a stacked display. These choices appear when the corresponding known quota-summary windows are available;
   a missing or unknown family allowance hides only its token, without substituting its session quota or the

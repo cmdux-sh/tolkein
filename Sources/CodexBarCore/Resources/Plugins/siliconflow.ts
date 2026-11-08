@@ -34,7 +34,7 @@ defineProvider({
     if (response.status !== 200) throw ctx.fail.apiFailure(tryLater);
     const fail = (): never => {
       throw ctx.fail.parseFailure(
-        message("SiliconFlow returned an unrecognized response. Update CodexBar and try again."),
+        message("SiliconFlow returned an unrecognized response. Update Tolkein and try again."),
       );
     };
     const record = (value: unknown): Record<string, unknown> | undefined =>

@@ -21,12 +21,12 @@ public enum ExaProviderDescriptor {
         apiKeyField: .init(
             id: "exa-service-key",
             title: "API key",
-            subtitle: "Stored in the CodexBar config file."),
+            subtitle: "Stored in the Tolkein config file."),
         workspaceField: .init(
             environmentKey: "EXA_API_KEY_ID",
             field: .init(
                 id: "exa-api-key-id",
                 title: "Scope",
-                subtitle: "Stored in the CodexBar config file.",
+                subtitle: "Stored in the Tolkein config file.",
                 placeholder: nil)))
 }

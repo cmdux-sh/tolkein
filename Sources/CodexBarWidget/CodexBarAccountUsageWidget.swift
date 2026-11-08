@@ -14,7 +14,7 @@ struct CodexBarAccountUsageWidget: Widget {
         { entry in
             CodexBarAccountUsageWidgetView(entry: entry)
         }
-        .configurationDisplayName(Text(W("CodexBar Account Usage")))
+        .configurationDisplayName(Text(W("Tolkein Account Usage")))
         .description(Text(W("Usage limits and reset countdowns for one saved account.")))
         .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
     }
@@ -135,7 +135,7 @@ struct CodexBarAccountUsageWidgetView: View {
             self.notice(
                 title: W("Choose an account"),
                 message: W(
-                    "Enable account widgets in CodexBar → Settings → Menu → Widgets. "
+                    "Enable account widgets in Tolkein → Settings → Menu → Widgets. "
                         + "Then edit this widget to choose an account."))
         } else if let usage = self.entry.usageEntry.snapshot.entries.first(where: {
             $0.provider == self.entry.usageEntry.provider.instanceID
@@ -160,7 +160,7 @@ struct CodexBarAccountUsageWidgetView: View {
         } else {
             self.notice(
                 title: W("Account unavailable"),
-                message: W("Open CodexBar to refresh, or edit this widget to choose another account."))
+                message: W("Open Tolkein to refresh, or edit this widget to choose another account."))
         }
     }
 
@@ -194,7 +194,7 @@ struct CodexBarAccountsWidget: Widget {
         { entry in
             CodexBarAccountsWidgetView(entry: entry)
         }
-        .configurationDisplayName(Text(W("%@ %@", "CodexBar", W("Accounts"))))
+        .configurationDisplayName(Text(W("%@ %@", "Tolkein", W("Accounts"))))
         .description(Text(W("Account Usage")))
         .supportedFamilies([.systemMedium, .systemLarge])
     }
@@ -262,7 +262,7 @@ struct AccountsOverviewTile: View {
                     ?? self.entry.snapshot.generatedAt,
                 size: .medium)
             if overview.rows.isEmpty {
-                WidgetEmptyState(message: W("Open CodexBar"))
+                WidgetEmptyState(message: W("Open Tolkein"))
             }
             ForEach(overview.rows) { row in
                 self.accountRow(row)

@@ -28,7 +28,7 @@ struct WidgetEmptyStateCopyTests {
             from: Data(#"{"version":1,"generatedAt":0,"entries":[],"usageBarsShowUsed":true}"#.utf8))
         for snapshot in [legacy, WidgetPreviewData.emptySnapshot()] {
             #expect(WidgetEmptyStateCopy.message(provider: .codex, snapshot: snapshot) ==
-                W("Enable a provider in CodexBar → Settings → Providers."))
+                W("Enable a provider in Tolkein → Settings → Providers."))
         }
     }
 
@@ -37,7 +37,7 @@ struct WidgetEmptyStateCopyTests {
         let snapshot = WidgetSnapshot(entries: [], enabledProviders: [.grok], generatedAt: Date())
         let resolved = try #require(CodexBarSwitcherTimelineProvider.supportedProviders(from: snapshot).first)
         #expect(WidgetEmptyStateCopy.switcherMessage(provider: resolved, snapshot: snapshot) ==
-            W("Enable a provider in CodexBar → Settings → Providers."))
+            W("Enable a provider in Tolkein → Settings → Providers."))
         #expect(WidgetEmptyStateCopy.switcherMessage(provider: .grok, snapshot: snapshot) == W("No data"))
     }
 }

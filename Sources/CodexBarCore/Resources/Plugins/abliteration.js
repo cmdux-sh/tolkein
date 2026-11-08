@@ -43,7 +43,7 @@ defineProvider({
       throw ctx.fail.apiFailure(message("abliteration.ai request failed. Try refreshing later."));
     const fail = () => {
       throw ctx.fail.parseFailure(
-        message("abliteration.ai returned an unrecognized response. Update CodexBar and try again."),
+        message("abliteration.ai returned an unrecognized response. Update Tolkein and try again."),
       );
     };
     const record = (value) => (value && typeof value === "object" && !Array.isArray(value) ? value : undefined);

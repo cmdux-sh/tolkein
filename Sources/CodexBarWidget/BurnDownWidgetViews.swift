@@ -35,7 +35,7 @@ struct BurnDownWidgetView: View {
 struct BurnDownEmptyState: View {
     var body: some View {
         VStack(spacing: 6) {
-            Text(W("Open CodexBar"))
+            Text(W("Open Tolkein"))
                 .font(.body)
                 .fontWeight(.semibold)
             Text(W("No data"))

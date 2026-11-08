@@ -19,7 +19,7 @@ struct VercelProviderImplementation: ProviderImplementation {
                 id: "vercel-access-token",
                 title: "Vercel access token",
                 subtitle: "Optional. Shows your personal budget instead of team credits. "
-                    + "Saved in CodexBar's local config file. Or set VERCEL_ACCESS_TOKEN.",
+                    + "Saved in Tolkein's local config file. Or set VERCEL_ACCESS_TOKEN.",
                 kind: .secure,
                 placeholder: nil,
                 binding: context.providerConfigSecretBinding(key: "VERCEL_ACCESS_TOKEN", logField: "accessToken"),

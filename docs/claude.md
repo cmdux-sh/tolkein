@@ -126,7 +126,7 @@ If Claude works in Chrome but CodexBar cannot import its browser session:
 1. Open `https://claude.ai` in Chrome and confirm the intended account is signed in.
 2. In Settings → Providers → Claude, select **Web API (cookies)** and leave the cookie source on **Auto**.
    This uses the browser session for session, weekly, and available model-specific quotas.
-3. In Settings → Advanced, confirm **Disable Keychain access** is off. Chromium cookie decryption needs
+3. In Settings → Privacy & Data, confirm **Disable Keychain access** is off. Chromium cookie decryption needs
    the browser's Safe Storage Keychain item; Claude's OAuth prompt policy controls a different credential.
 4. Explicitly retry the import from Terminal:
 

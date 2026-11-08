@@ -68,7 +68,7 @@ struct AboutPane: View {
             } header: {
                 Text(L("section_links"))
             } footer: {
-                Text(verbatim: L("about_based_on_codexbar") + "\n" + L("copyright"))
+                Text(Self.creditText() + AttributedString("\n" + L("copyright")))
                     .frame(maxWidth: .infinity)
                     .multilineTextAlignment(.center)
             }
@@ -197,6 +197,15 @@ extension AboutPane {
     static let appName = "Tolkein"
     /// About's only external link; the app icon opens it too.
     static let projectHomeURL = "https://github.com/cmdux-sh/tolkein"
+    /// The project Tolkein is based on, linked from the MIT credit line.
+    static let originalProjectURL = "https://github.com/steipete/CodexBar"
+
+    /// "Based on CodexBar by Peter Steinberger (MIT License)", linked to the original project.
+    static func creditText() -> AttributedString {
+        var credit = AttributedString(L("about_based_on_codexbar"))
+        credit.link = URL(string: Self.originalProjectURL)
+        return credit
+    }
 }
 
 enum AboutRoute: Hashable {

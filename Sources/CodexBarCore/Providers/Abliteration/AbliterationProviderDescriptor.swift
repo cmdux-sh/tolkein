@@ -5,7 +5,7 @@ public enum AbliterationProviderDescriptor {
         "Check your API key in Settings.",
         "abliteration.ai is rate limiting requests. Try again later.",
         "abliteration.ai request failed. Try refreshing later.",
-        "abliteration.ai returned an unrecognized response. Update CodexBar and try again.",
+        "abliteration.ai returned an unrecognized response. Update Tolkein and try again.",
     ]
 
     public static let descriptor = Self.spec.makeDescriptor()
@@ -40,7 +40,7 @@ public enum AbliterationProviderDescriptor {
         apiKeyField: .init(
             id: "abliteration-api-key",
             title: "API key",
-            subtitle: "Stored in the CodexBar config file."),
+            subtitle: "Stored in the Tolkein config file."),
         showsAPIDetail: true,
         availability: .configuredKey)
 }

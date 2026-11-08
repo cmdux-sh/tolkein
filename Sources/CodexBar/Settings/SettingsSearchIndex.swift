@@ -18,6 +18,15 @@ extension SettingsSearchEntry {
     }
 }
 
+extension SettingsSearchEntry {
+    /// The retired Advanced pane's name, localized and in English, so searching "Advanced" still finds the settings
+    /// that moved to Privacy & Data and Integrations.
+    static var formerAdvancedKeyword: String {
+        let localized = L("tab_advanced")
+        return localized == "Advanced" ? localized : "\(localized) Advanced"
+    }
+}
+
 extension SettingsPane {
     /// An entry for one setting on this pane. `setting` only needs to be unique within the pane.
     func searchEntry(_ setting: String, _ title: String, keywords: String...) -> SettingsSearchEntry {

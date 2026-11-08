@@ -13,7 +13,7 @@ struct ClaudeOAuthRotationErrorTests {
             previousKeychainGrantRecorded: true,
             loggedInProfilePresent: true)
 
-        #expect(error.localizedDescription == "Claude OAuth credentials are currently unavailable to CodexBar. "
+        #expect(error.localizedDescription == "Claude OAuth credentials are currently unavailable to Tolkein. "
             + "Click Refresh to retry access, or switch Claude Usage source to CLI/Web.")
     }
 

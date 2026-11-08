@@ -67,7 +67,7 @@ struct CommandCodeProviderImplementation: ProviderImplementation {
             ProviderSettingsFieldDescriptor(
                 id: "commandcode-api-key",
                 title: "API key",
-                subtitle: "Stored in the CodexBar config file. You can also set COMMAND_CODE_API_KEY.",
+                subtitle: "Stored in the Tolkein config file. You can also set COMMAND_CODE_API_KEY.",
                 kind: .secure,
                 placeholder: "API key",
                 binding: context.binding(\.commandcodeAPIKey),

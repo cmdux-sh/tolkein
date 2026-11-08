@@ -495,7 +495,7 @@ final class CursorLoginRunner {
                 lastError.localizedDescription)
         }
 
-        let hint = L("Sign in to cursor.com in your browser, then refresh Cursor in CodexBar.")
+        let hint = L("Sign in to cursor.com in your browser, then refresh Cursor in Tolkein.")
         guard let lastError else {
             return String(format: L("Timed out waiting for Cursor login. %@"), hint)
         }

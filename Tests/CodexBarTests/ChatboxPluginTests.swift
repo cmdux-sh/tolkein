@@ -406,7 +406,7 @@ struct ChatboxPluginTests {
             case .rateLimited:
                 "Chatbox AI is rate limiting requests. Try again later. (HTTP 429)"
             case .parseFailure:
-                "Chatbox AI returned an unrecognized response. Update CodexBar and try again."
+                "Chatbox AI returned an unrecognized response. Update Tolkein and try again."
             default:
                 "Chatbox AI request failed. Try refreshing later. (HTTP \(status))"
             }

@@ -29,7 +29,7 @@ public enum TinyApiProviderDescriptor {
             field: .init(
                 id: "tinyapi-cookie",
                 title: "Cookie header",
-                subtitle: "Stored in the CodexBar config file.",
+                subtitle: "Stored in the Tolkein config file.",
                 placeholder: "Cookie: …"),
             picker: .init(
                 id: "tinyapi-cookie-source",

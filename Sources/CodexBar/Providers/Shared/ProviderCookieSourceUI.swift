@@ -45,7 +45,7 @@ enum ProviderCookieSourceUI {
     }
 
     static let keychainDisabledPrefixKey =
-        "Keychain access is disabled in Advanced, so browser cookie import is unavailable."
+        "Keychain access is disabled in Privacy & Data, so browser cookie import is unavailable."
 
     @MainActor
     static func cachedTrailingText(provider: UsageProvider, scope: CookieHeaderCache.Scope? = nil) -> String? {

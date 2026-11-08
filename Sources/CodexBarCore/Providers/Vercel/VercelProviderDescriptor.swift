@@ -35,7 +35,7 @@ public enum VercelProviderDescriptor {
         apiKeyField: .init(
             id: "vercel-api-key",
             title: "Vercel AI Gateway API key",
-            subtitle: "Saved in CodexBar's local config file. Or set AI_GATEWAY_API_KEY."),
+            subtitle: "Saved in Tolkein's local config file. Or set AI_GATEWAY_API_KEY."),
         workspaceField: .init(
             environmentKey: Self.teamKey,
             field: .init(

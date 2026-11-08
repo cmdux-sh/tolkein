@@ -1,4 +1,5 @@
 import CodexBarCore
+import Foundation
 import Testing
 @testable import CodexBar
 
@@ -156,6 +157,82 @@ struct SettingsSearchIndexTests {
             #expect(SettingsSearchIndex.ranked(entries, query: "language").first?.pane == .general)
             #expect(SettingsSearchIndex.ranked(entries, query: "hooks").first?.pane == .integrations)
             #expect(SettingsSearchIndex.ranked(entries, query: "export preferences").first?.pane == .privacy)
+        }
+    }
+
+    @Test
+    func `every localization key in the pane entry lists resolves`() throws {
+        let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
+            .deletingLastPathComponent().deletingLastPathComponent()
+        let panes = root.appendingPathComponent("Sources/CodexBar/Settings/Panes")
+        let english = try #require(NSDictionary(contentsOf: root.appendingPathComponent(
+            "Sources/CodexBar/Resources/en.lproj/Localizable.strings")) as? [String: String])
+        let keyPattern = try NSRegularExpression(pattern: #"\bL\("((?:[^"\\]|\\.)*)"\)"#)
+        var keys: Set<String> = []
+        for file in try FileManager.default.contentsOfDirectory(at: panes, includingPropertiesForKeys: nil) {
+            let source = try String(contentsOf: file, encoding: .utf8)
+            let range = NSRange(source.startIndex..., in: source)
+            for match in keyPattern.matches(in: source, range: range) {
+                let key = try #require(Range(match.range(at: 1), in: source))
+                keys.insert(String(source[key]))
+            }
+        }
+        #expect(keys.count > 80)
+        CodexBarLocalizationOverride.$appLanguage.withValue("en") {
+            for key in keys.sorted() {
+                #expect(english[key] != nil, "missing English entry for \(key)")
+                // Identifier-style keys fall back to themselves when missing; English-text keys resolve to their text.
+                if key.range(of: #"^[a-z0-9_]+$"#, options: .regularExpression) != nil {
+                    #expect(L(key) != key, "\(key) does not resolve")
+                }
+            }
+        }
+    }
+
+    @Test
+    func `entry titles and keywords are resolved strings`() throws {
+        let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
+            .deletingLastPathComponent().deletingLastPathComponent()
+        let resources = root.appendingPathComponent("Sources/CodexBar/Resources")
+        for language in ["en", "de"] {
+            let catalog = try #require(NSDictionary(contentsOf: resources.appendingPathComponent(
+                "\(language).lproj/Localizable.strings")) as? [String: String])
+            let values = Set(catalog.values)
+            CodexBarLocalizationOverride.$appLanguage.withValue(language) {
+                for entry in SettingsSearchIndex.allEntries {
+                    // Provider entries use provider display names and identifiers, not catalog strings.
+                    if case .provider = entry.pane { continue }
+                    #expect(values.contains(entry.title), "\(language): \(entry.id) title \(entry.title)")
+                    let keywords = entry.keywords.filter { $0 != SettingsSearchEntry.formerAdvancedKeyword }
+                    for keyword in keywords {
+                        #expect(values.contains(keyword), "\(language): \(entry.id) keyword \(keyword)")
+                    }
+                }
+            }
+        }
+    }
+
+    @Test
+    func `searching Advanced still finds the settings that moved out of it`() {
+        let moved = [
+            "privacy",
+            "privacy/hidePersonalInfo",
+            "privacy/keychainAccess",
+            "privacy/storageFootprints",
+            "privacy/debugSettings",
+            "integrations",
+            "integrations/httpServer",
+            "integrations/httpServerToken",
+            "integrations/installCLI",
+        ]
+        for language in ["en", "de"] {
+            CodexBarLocalizationOverride.$appLanguage.withValue(language) {
+                let entries = SettingsSearchIndex.allEntries
+                let found = Set(SettingsSearchIndex.ranked(entries, query: "advanced").map(\.id))
+                #expect(found.isSuperset(of: moved), "\(language): \(Set(moved).subtracting(found))")
+                let localized = Set(SettingsSearchIndex.ranked(entries, query: L("tab_advanced")).map(\.id))
+                #expect(localized.isSuperset(of: moved), "\(language): \(Set(moved).subtracting(localized))")
+            }
         }
     }
 

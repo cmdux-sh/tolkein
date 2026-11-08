@@ -14,7 +14,7 @@ public enum DeepInfraProviderDescriptor {
         statusLinkURL: "https://status.deepinfra.com",
         color: .init(hex: 0x2A3275),
         confetti: [0x2A3275, 0x747FDE, 0xFFFFFF],
-        noDataMessage: "DeepInfra per-request cost history is not available in CodexBar.",
+        noDataMessage: "DeepInfra per-request cost history is not available in Tolkein.",
         environmentKey: "DEEPINFRA_API_KEY",
         environmentAliases: ["DEEPINFRA_TOKEN"],
         missingCredentialMessage: { _ in "Missing DeepInfra API key." },
