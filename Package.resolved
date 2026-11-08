@@ -1,5 +1,5 @@
 {
-  "originHash" : "0e57521a66610d0e9aeca4bb2d26f4e7ec8c0a5f622c5d0e3715496063c3218d",
+  "originHash" : "bccf71d20d057f5b0305f52737a2aa9f5e3d777a0ec2d04477820967e0d7d92f",
   "pins" : [
     {
       "identity" : "commander",
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/cmdux-sh/internal-ui.git",
       "state" : {
-        "revision" : "da92eca8da47d0f1fcc96a28f215bf4e73f8350e",
-        "version" : "0.10.0"
+        "revision" : "c747de1371f1a7aefc4bc536e0d82b06553db1e4",
+        "version" : "0.11.0"
       }
     },
     {
