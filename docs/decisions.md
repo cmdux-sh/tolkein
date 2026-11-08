@@ -120,3 +120,16 @@ Arturo decided that Tolkein no longer syncs with `steipete/CodexBar`: "this is a
 - **Execution:** parallel agents, one PR per area, each with offscreen snapshot tests and a Sonnet review before merging.
 
 Why: Tolkein has diverged into its own product: its own design system, macOS 15, its own Usage Board and agent rules. Keeping upstream's files mergeable no longer pays for the constraints it imposes on the UI.
+
+## 2026-11-07: The new Settings structure, and the Tolkein name in the UI
+
+Arturo approved this structure for the rebuilt Settings window.
+- **App panes:** General, Menu Bar, Menu, Alerts (was Notifications, now with every quota-warning control), Costs (was Usage & Spend), Sync, Integrations (HTTP server, CLI, Hooks), Privacy & Data, About, and Debug behind its switch.
+- **Providers:** the list has search plus All and Enabled filter chips, Plugins sit under Providers, and every provider page has the same fixed sections.
+- **The spend dashboard** leaves Settings for its own Spend window.
+- **One layout** serves macOS 15 and 26, and search finds individual settings.
+- **Behaviour is unchanged:** every setting, stored value and behaviour stays; only placement and look change.
+
+The UI now says **Tolkein**, and About links to cmdux-sh/tolkein. About and Acknowledgements keep "Based on CodexBar by Peter Steinberger (MIT)", as the license requires.
+
+Why: the old Settings scattered related controls across panes, embedded a dashboard and duplicated its chrome for two OS versions. Tolkein is now its own app, so its name belongs in its UI, with the credit the MIT license asks for.
