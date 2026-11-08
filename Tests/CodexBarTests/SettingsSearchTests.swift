@@ -23,7 +23,13 @@ struct SettingsSearchTests {
                 providers: providers)
             let best = try #require(results.settings.first)
             #expect(best.pane == .privacy)
-            #expect(results.settings.allSatisfy { if case .provider = $0.pane { false } else { true } })
+            #expect(results.settings.allSatisfy {
+                if case .provider = $0.pane {
+                    false
+                } else {
+                    true
+                }
+            })
 
             let selection = PreferencesSelection(userDefaults: InMemoryUserDefaults())
             selection.reveal(best)
@@ -46,7 +52,10 @@ struct SettingsSearchTests {
             let kilo = SettingsSearchResults.results(for: "kilo-ai", entries: [], providers: providers)
             #expect(kilo.settings.isEmpty)
             #expect(kilo.providers.map(\.pane) == [.provider(UsageProvider.kilo.instanceID)])
-            #expect(SettingsSearchResults.results(for: "zzqx", entries: SettingsSearchIndex.allEntries, providers: providers)
+            #expect(SettingsSearchResults.results(
+                for: "zzqx",
+                entries: SettingsSearchIndex.allEntries,
+                providers: providers)
                 .isEmpty)
         }
     }

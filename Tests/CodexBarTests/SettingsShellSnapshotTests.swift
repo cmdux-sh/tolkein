@@ -131,7 +131,10 @@ private struct PlaceholderPane: View {
     var body: some View {
         MacSettingsPage("General", subtitle: "Placeholder pane for the window shell snapshot") {
             MacSettingsSection("System") {
-                MacSettingsToggleRow("Start at login", subtitle: "Opens in the menu bar when you log in.", isOn: self.$launchAtLogin)
+                MacSettingsToggleRow(
+                    "Start at login",
+                    subtitle: "Opens in the menu bar when you log in.",
+                    isOn: self.$launchAtLogin)
                 MacSettingsRow("Language") {
                     Text("System")
                 }

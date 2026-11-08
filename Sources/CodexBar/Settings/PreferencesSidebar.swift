@@ -314,7 +314,9 @@ private struct SettingsSidebarProviderTools: View {
             MacFilterChips(SettingsSidebarProviderFilter.chips, selection: self.$filter, label: L("tab_providers"))
             Spacer(minLength: 0)
             MacToolMenu(L("Provider sorting"), systemImage: "arrow.up.arrow.down") {
-                Toggle(L("Sort providers alphabetically (enabled first)"), isOn: self.$settings.providersSortedAlphabetically)
+                Toggle(
+                    L("Sort providers alphabetically (enabled first)"),
+                    isOn: self.$settings.providersSortedAlphabetically)
                 Divider()
                 Button(L("Restore default order"), action: self.onRestore)
                     .disabled(!self.settings.canRestoreDefaultProviderOrder)

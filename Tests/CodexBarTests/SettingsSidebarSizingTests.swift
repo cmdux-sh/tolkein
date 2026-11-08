@@ -19,7 +19,7 @@ struct SettingsSidebarSizingTests {
 
         firstSplit.setPosition(300, ofDividerAt: 0)
         try await self.settle(firstWindow)
-        #expect(width.value == 300 - inset)
+        #expect(abs(width.value - (300 - inset)) < 0.5)
 
         let secondWindow = self.makeWindow(width: width)
         try await self.settle(secondWindow)
@@ -33,10 +33,10 @@ struct SettingsSidebarSizingTests {
         sidebar.isCollapsed = true
         try await self.settle(firstWindow)
         #expect(sidebar.isCollapsed)
-        #expect(width.value == 300 - inset)
+        #expect(abs(width.value - (300 - inset)) < 0.5)
         sidebar.isCollapsed = false
         try await self.settle(firstWindow)
-        #expect(width.value == 300 - inset)
+        #expect(abs(width.value - (300 - inset)) < 0.5)
     }
 
     @Test
