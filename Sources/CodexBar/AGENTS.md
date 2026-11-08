@@ -9,7 +9,9 @@ any UI change here, before writing code:
 2. **Pieces:** `find_component` for each need, then `get_guide` on the page. Use library components and
    `MacColor`/`MacSpace`/`MacSize`/`MacRadius`/`MacTextRole`/`MacSpring` tokens only. No app-local theme enums,
    no forced dark mode, no fixed AppKit layer colours.
-3. **Check:** `check_swiftui` every SwiftUI file you change, and fix every finding.
+3. **Check:** `check_swiftui` every SwiftUI file you change, and fix every finding. In Claude Code, a hook in
+   `.claude/settings.json` runs the same checker after every edit to a file that imports InternalUI and reports
+   findings back (`internal-ui-mcp hook`); fix them before moving on, including any that were already there.
 4. **Review:** render the screen in light and dark, with real-length stress data, every state, and a short
    height that must scroll. For the Usage Board:
    `CODEXBAR_SNAPSHOT_DIR=/tmp/tolkein-snapshots swift test --filter UsageBoardSnapshotTests`
