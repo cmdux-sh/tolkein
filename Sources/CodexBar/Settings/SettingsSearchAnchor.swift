@@ -1,17 +1,10 @@
 import InternalUI
 import SwiftUI
 
-/// The `SettingsSearchEntry.id` that search is jumping to, if any. The settings window sets it when a
-/// search result is chosen; rows marked with `.settingsAnchor(_:)` scroll into view and highlight.
-private struct SettingsSearchTargetKey: EnvironmentKey {
-    static let defaultValue: String? = nil
-}
-
 extension EnvironmentValues {
-    var settingsSearchTarget: String? {
-        get { self[SettingsSearchTargetKey.self] }
-        set { self[SettingsSearchTargetKey.self] = newValue }
-    }
+    /// The `SettingsSearchEntry.id` that search is jumping to, if any. The settings window sets it when a
+    /// search result is chosen; rows marked with `.settingsAnchor(_:)` scroll into view and highlight.
+    @Entry var settingsSearchTarget: String?
 }
 
 extension View {
@@ -29,7 +22,7 @@ private struct SettingsAnchorModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .id(id)
-            .macSettingsHighlight(target == id)
+            .id(self.id)
+            .macSettingsHighlight(self.target == self.id)
     }
 }
