@@ -2831,3 +2831,17 @@
 "Paste the WorkBuddy User-Agent as a single request header value." = "Tempel User-Agent WorkBuddy sebagai satu nilai header permintaan.";
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "Ringkasan penagihan TypeSafe tidak dapat dibaca. Buka https://console.typesafe.ai/billing untuk memeriksa akses; jika halaman terbuka, laporkan kegagalan integrasi.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "Cookie sesi TypeSafe tidak ditemukan. Masuk di console.typesafe.ai/billing atau tempel header Cookie.";
+
+/* Settings: Menu Bar, Menu */
+"settings_menu_bar_subtitle" = "Tampilan ikon bar menu dan apa yang ditampilkannya";
+"settings_menu_subtitle" = "Apa yang ditampilkan menu saat dibuka";
+"settings_reason_requires_style" = "Memerlukan gaya “%@”";
+"settings_reason_requires_setting" = "Aktifkan “%@” terlebih dahulu";
+"settings_reason_two_providers" = "Memerlukan setidaknya dua penyedia aktif";
+"settings_reason_stacked_source" = "Tidak dipakai oleh gaya “%@”, yang memilih baris atas dan bawahnya sendiri";
+"settings_reason_brand_icons" = "Ikon merek tidak beranimasi. Gunakan gaya “%1$@” atau “%2$@”.";
+"settings_color_pace_subtitle" = "Hijau saat penggunaan lebih lambat dari laju perkiraan, merah saat lebih cepat (risiko kuota habis lebih awal). Berlaku untuk token laju di tata letak.";
+"settings_reason_work_days_automatic" = "Pilih jumlah hari kerja. Otomatis tidak menampilkan tanda hari kerja.";
+"agent_sessions_hosts_help" = "Host SSH lain untuk dicek sesi agennya, ditulis sebagai user@host dan dipisahkan koma.";
+"menu_bar_layout_override_subtitle" = "Memakai tata letak tersimpannya sendiri";
+"cost_history_rolling_days_title" = "Hari bergulir";

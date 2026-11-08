@@ -2826,3 +2826,17 @@
 "Paste the WorkBuddy User-Agent as a single request header value." = "Plak de User-Agent van WorkBuddy als één waarde voor de aanvraagheader.";
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "Het factureringsoverzicht van TypeSafe kon niet worden gelezen. Open https://console.typesafe.ai/billing om de toegang te controleren. Als de pagina opent, meld dan de integratiefout.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "Geen TypeSafe-sessiecookies gevonden. Meld je aan op console.typesafe.ai/billing of plak een Cookie-header.";
+
+/* Settings: Menu Bar, Menu */
+"settings_menu_bar_subtitle" = "Hoe het menubalkpictogram eruitziet en wat het toont";
+"settings_menu_subtitle" = "Wat het menu toont wanneer je het opent";
+"settings_reason_requires_style" = "Vereist de stijl ‘%@’";
+"settings_reason_requires_setting" = "Schakel eerst ‘%@’ in";
+"settings_reason_two_providers" = "Vereist minstens twee ingeschakelde providers";
+"settings_reason_stacked_source" = "Niet gebruikt door de stijl ‘%@’, die zijn eigen bovenste en onderste rij kiest";
+"settings_reason_brand_icons" = "Merkpictogrammen bewegen niet. Gebruik de stijl ‘%1$@’ of ‘%2$@’.";
+"settings_color_pace_subtitle" = "Groen als het verbruik achterloopt op het verwachte tempo, rood als het voorloopt (risico op vroegtijdige uitputting). Geldt voor de tempotokens in de indeling.";
+"settings_reason_work_days_automatic" = "Kies een aantal werkdagen. Bij Automatisch worden geen werkdagmarkeringen getoond.";
+"agent_sessions_hosts_help" = "Extra SSH-hosts om op agentsessies te controleren, geschreven als user@host en gescheiden door komma’s.";
+"menu_bar_layout_override_subtitle" = "Gebruikt een eigen opgeslagen indeling";
+"cost_history_rolling_days_title" = "Voortschrijdende dagen";

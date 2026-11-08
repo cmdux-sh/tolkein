@@ -2828,3 +2828,17 @@
 "Paste the WorkBuddy User-Agent as a single request header value." = "Klistra in WorkBuddys User-Agent som ett enda värde för förfrågningshuvudet.";
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "Det gick inte att läsa TypeSafes faktureringsöversikt. Öppna https://console.typesafe.ai/billing för att kontrollera åtkomsten. Om sidan öppnas, rapportera integrationsfelet.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "Inga sessionskakor för TypeSafe hittades. Logga in på console.typesafe.ai/billing eller klistra in ett Cookie-huvud.";
+
+/* Settings: Menu Bar, Menu */
+"settings_menu_bar_subtitle" = "Hur menyradssymbolen ser ut och vad den visar";
+"settings_menu_subtitle" = "Vad menyn visar när du öppnar den";
+"settings_reason_requires_style" = "Kräver stilen ”%@”";
+"settings_reason_requires_setting" = "Aktivera ”%@” först";
+"settings_reason_two_providers" = "Kräver minst två aktiverade leverantörer";
+"settings_reason_stacked_source" = "Används inte av stilen ”%@”, som väljer sin övre och nedre rad själv";
+"settings_reason_brand_icons" = "Varumärkesikoner animeras inte. Använd stilen ”%1$@” eller ”%2$@”.";
+"settings_color_pace_subtitle" = "Grönt när förbrukningen ligger under förväntad takt, rött när den ligger över (risk att kvoten tar slut i förtid). Gäller taktbrickorna i layouten.";
+"settings_reason_work_days_automatic" = "Välj ett antal arbetsdagar. Med Automatiskt visas inga arbetsdagsmarkeringar.";
+"agent_sessions_hosts_help" = "Fler SSH-värdar att söka efter agentsessioner på, skrivna som user@host och åtskilda med kommatecken.";
+"menu_bar_layout_override_subtitle" = "Använder en egen sparad layout";
+"cost_history_rolling_days_title" = "Rullande dagar";

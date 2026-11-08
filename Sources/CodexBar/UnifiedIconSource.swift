@@ -1,3 +1,4 @@
+import InternalUI
 import SwiftUI
 
 enum UnifiedIconSource: String, CaseIterable, Sendable {
@@ -14,16 +15,22 @@ enum UnifiedIconSource: String, CaseIterable, Sendable {
     }
 }
 
+/// The combined icon's source as a settings row: which provider the single merged icon follows.
 struct UnifiedIconSourcePicker: View {
     @Binding var selection: UnifiedIconSource
+    /// Shown while the row is disabled, saying why.
+    var disabledReason: String?
 
     var body: some View {
-        SettingsMenuPicker(
-            selection: self.$selection,
-            options: MenuBarSettingsMenuOptions.unifiedIconSources,
-            label: {
-                SettingsRowLabel(L("merged_icon_source_title"), subtitle: L("merged_icon_source_subtitle"))
-            },
-            optionLabel: { Text($0.label) })
+        MacSettingsRow(
+            L("merged_icon_source_title"),
+            subtitle: L("merged_icon_source_subtitle"),
+            disabledReason: self.disabledReason)
+        {
+            MacPopUpButton(
+                MenuBarSettingsMenuOptions.unifiedIconSources.map { ($0, $0.label) },
+                selection: self.$selection)
+                .accessibilityLabel(L("merged_icon_source_title"))
+        }
     }
 }

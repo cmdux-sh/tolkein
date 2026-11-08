@@ -2829,3 +2829,17 @@
 "Paste the WorkBuddy User-Agent as a single request header value." = "WorkBuddy の User-Agent を単一のリクエストヘッダー値として貼り付けてください。";
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "TypeSafeの請求概要を読み取れませんでした。https://console.typesafe.ai/billing を開いてアクセスを確認してください。ページが開く場合は、連携の不具合を報告してください。";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "TypeSafeのセッションCookieが見つかりません。console.typesafe.ai/billing にサインインするか、Cookieヘッダーを貼り付けてください。";
+
+/* Settings: Menu Bar, Menu */
+"settings_menu_bar_subtitle" = "メニューバーアイコンの見た目と表示内容";
+"settings_menu_subtitle" = "メニューを開いたときに表示する内容";
+"settings_reason_requires_style" = "「%@」スタイルが必要です";
+"settings_reason_requires_setting" = "先に「%@」をオンにしてください";
+"settings_reason_two_providers" = "有効なプロバイダが 2 つ以上必要です";
+"settings_reason_stacked_source" = "「%@」スタイルでは上段と下段を個別に選ぶため使用されません";
+"settings_reason_brand_icons" = "ブランドアイコンはアニメーションしません。「%1$@」または「%2$@」スタイルを使用してください。";
+"settings_color_pace_subtitle" = "想定より使用が遅い場合は緑、速い場合は赤（上限に早く達するおそれ）で表示します。レイアウト内のペーストークンに適用されます。";
+"settings_reason_work_days_automatic" = "作業日の日数を選択してください。「自動」では稼働日の目盛りは表示されません。";
+"agent_sessions_hosts_help" = "エージェントのセッションを確認する追加の SSH ホスト。user@host の形式でカンマ区切りで入力します。";
+"menu_bar_layout_override_subtitle" = "独自に保存したレイアウトを使用";
+"cost_history_rolling_days_title" = "ローリング日数";

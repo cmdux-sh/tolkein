@@ -2828,3 +2828,17 @@
 "Paste the WorkBuddy User-Agent as a single request header value." = "Collez le User-Agent de WorkBuddy sous forme d’une seule valeur d’en-tête de requête.";
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "Impossible de lire le récapitulatif de facturation TypeSafe. Ouvrez https://console.typesafe.ai/billing pour vérifier l’accès ; si la page s’ouvre, signalez le problème d’intégration.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "Aucun cookie de session TypeSafe trouvé. Connectez-vous sur console.typesafe.ai/billing ou collez un en-tête Cookie.";
+
+/* Settings: Menu Bar, Menu */
+"settings_menu_bar_subtitle" = "L’apparence de l’icône de la barre des menus et ce qu’elle affiche";
+"settings_menu_subtitle" = "Ce que le menu affiche à l’ouverture";
+"settings_reason_requires_style" = "Nécessite le style « %@ »";
+"settings_reason_requires_setting" = "Activez d’abord « %@ »";
+"settings_reason_two_providers" = "Nécessite au moins deux fournisseurs activés";
+"settings_reason_stacked_source" = "Non utilisé par le style « %@ », qui choisit ses lignes du haut et du bas";
+"settings_reason_brand_icons" = "Les icônes de marque ne s’animent pas. Utilisez le style « %1$@ » ou « %2$@ ».";
+"settings_color_pace_subtitle" = "Vert si la consommation est inférieure au rythme prévu, rouge si elle est supérieure (risque d’épuisement anticipé). S’applique aux jetons de rythme de la disposition.";
+"settings_reason_work_days_automatic" = "Choisissez un nombre de jours ouvrés. En mode Automatique, aucun repère de jour ouvré n’est affiché.";
+"agent_sessions_hosts_help" = "Autres hôtes SSH où chercher des sessions d’agents, au format user@host et séparés par des virgules.";
+"menu_bar_layout_override_subtitle" = "Utilise sa propre disposition enregistrée";
+"cost_history_rolling_days_title" = "Jours glissants";

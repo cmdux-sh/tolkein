@@ -2830,3 +2830,17 @@
 "Paste the WorkBuddy User-Agent as a single request header value." = "Dán User-Agent của WorkBuddy dưới dạng một giá trị tiêu đề yêu cầu duy nhất.";
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "Không thể đọc tổng quan thanh toán TypeSafe. Mở https://console.typesafe.ai/billing để kiểm tra quyền truy cập; nếu trang mở được, hãy báo cáo lỗi tích hợp.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "Không tìm thấy cookie phiên TypeSafe. Đăng nhập tại console.typesafe.ai/billing hoặc dán tiêu đề Cookie.";
+
+/* Settings: Menu Bar, Menu */
+"settings_menu_bar_subtitle" = "Biểu tượng thanh menu trông thế nào và hiển thị gì";
+"settings_menu_subtitle" = "Menu hiển thị gì khi bạn mở";
+"settings_reason_requires_style" = "Cần kiểu “%@”";
+"settings_reason_requires_setting" = "Hãy bật “%@” trước";
+"settings_reason_two_providers" = "Cần ít nhất hai nhà cung cấp đang bật";
+"settings_reason_stacked_source" = "Không dùng với kiểu “%@”, vốn tự chọn dòng trên và dòng dưới";
+"settings_reason_brand_icons" = "Biểu tượng thương hiệu không có hoạt ảnh. Hãy dùng kiểu “%1$@” hoặc “%2$@”.";
+"settings_color_pace_subtitle" = "Xanh khi mức sử dụng chậm hơn nhịp dự kiến, đỏ khi nhanh hơn (nguy cơ hết hạn mức sớm). Áp dụng cho các thẻ nhịp trong bố cục.";
+"settings_reason_work_days_automatic" = "Hãy chọn số ngày làm việc. Chế độ Tự động không hiển thị vạch ngày làm việc.";
+"agent_sessions_hosts_help" = "Các máy chủ SSH khác để tìm phiên của tác tử, viết theo dạng user@host và phân tách bằng dấu phẩy.";
+"menu_bar_layout_override_subtitle" = "Dùng bố cục riêng đã lưu";
+"cost_history_rolling_days_title" = "Số ngày cuộn";

@@ -114,7 +114,7 @@ struct UserFacingLocalizationCoverageTests {
             "Sources/CodexBar/Settings/PreferencesSpendDashboardPane.swift": [
                 "Text(\"Partial estimate\")",
             ],
-            "Sources/CodexBar/Settings/PreferencesMenuPane.swift": [
+            "Sources/CodexBar/Settings/Panes/MenuSettingsPane+AgentSessions.swift": [
                 "title: \"Stay Awake\",",
             ],
             "Sources/CodexBar/Settings/PreferencesTransferSection.swift": [

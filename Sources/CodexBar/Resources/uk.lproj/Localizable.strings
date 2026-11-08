@@ -2830,3 +2830,17 @@
 "Paste the WorkBuddy User-Agent as a single request header value." = "Вставте User-Agent WorkBuddy як одне значення заголовка запиту.";
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "Не вдалося прочитати огляд платежів TypeSafe. Відкрийте https://console.typesafe.ai/billing, щоб перевірити доступ. Якщо сторінка відкривається, повідомте про помилку інтеграції.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "Файли cookie сеансу TypeSafe не знайдено. Увійдіть на console.typesafe.ai/billing або вставте заголовок Cookie.";
+
+/* Settings: Menu Bar, Menu */
+"settings_menu_bar_subtitle" = "Як виглядає значок у рядку меню і що він показує";
+"settings_menu_subtitle" = "Що показує меню, коли ви його відкриваєте";
+"settings_reason_requires_style" = "Потрібен стиль «%@»";
+"settings_reason_requires_setting" = "Спершу увімкніть «%@»";
+"settings_reason_two_providers" = "Потрібно щонайменше два ввімкнені постачальники";
+"settings_reason_stacked_source" = "Не використовується стилем «%@», який сам вибирає верхній і нижній рядки";
+"settings_reason_brand_icons" = "Значки брендів не анімуються. Використайте стиль «%1$@» або «%2$@».";
+"settings_color_pace_subtitle" = "Зелений — витрати нижчі за очікуваний темп, червоний — вищі (ризик дострокового вичерпання квоти). Застосовується до елементів темпу в компонуванні.";
+"settings_reason_work_days_automatic" = "Виберіть кількість робочих днів. У режимі «Автоматично» позначки робочих днів не показуються.";
+"agent_sessions_hosts_help" = "Додаткові хости SSH для пошуку сеансів агентів у форматі user@host, через кому.";
+"menu_bar_layout_override_subtitle" = "Використовує власне збережене компонування";
+"cost_history_rolling_days_title" = "Ковзні дні";

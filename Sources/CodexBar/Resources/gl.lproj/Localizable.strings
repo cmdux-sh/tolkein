@@ -2828,3 +2828,17 @@
 "Paste the WorkBuddy User-Agent as a single request header value." = "Pega o User-Agent de WorkBuddy como un único valor de cabeceira da solicitude.";
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "Non se puido ler o resumo de facturación de TypeSafe. Abre https://console.typesafe.ai/billing para comprobar o acceso; se a páxina se abre, informa do fallo de integración.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "Non se atoparon cookies de sesión de TypeSafe. Inicia sesión en console.typesafe.ai/billing ou pega unha cabeceira Cookie.";
+
+/* Settings: Menu Bar, Menu */
+"settings_menu_bar_subtitle" = "Como se ve a icona da barra de menús e que amosa";
+"settings_menu_subtitle" = "Que amosa o menú ao abrilo";
+"settings_reason_requires_style" = "Require o estilo «%@»";
+"settings_reason_requires_setting" = "Activa primeiro «%@»";
+"settings_reason_two_providers" = "Precísanse polo menos dous provedores activados";
+"settings_reason_stacked_source" = "Non se usa co estilo «%@», que escolle as súas filas superior e inferior";
+"settings_reason_brand_icons" = "As iconas de marca non se animan. Usa o estilo «%1$@» ou «%2$@».";
+"settings_color_pace_subtitle" = "Verde cando o uso vai por debaixo do ritmo previsto, vermello cando vai por riba (risco de esgotar a cota antes de tempo). Aplícase ás fichas de ritmo da disposición.";
+"settings_reason_work_days_automatic" = "Escolle un número de días laborables. Con Automático non se amosan marcas de días laborables.";
+"agent_sessions_hosts_help" = "Outros hosts SSH nos que buscar sesións de axentes, escritos como user@host e separados por comas.";
+"menu_bar_layout_override_subtitle" = "Usa a súa propia disposición gardada";
+"cost_history_rolling_days_title" = "Días móbiles";

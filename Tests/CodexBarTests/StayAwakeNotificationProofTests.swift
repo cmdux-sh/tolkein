@@ -12,9 +12,9 @@ struct StayAwakeNotificationProofTests {
         let settings = testSettingsStore(suiteName: #function, userDefaults: InMemoryUserDefaults())
         let output = URL(fileURLWithPath: directory, isDirectory: true)
         try FileManager.default.createDirectory(at: output, withIntermediateDirectories: true)
-        try self.capture(Form {
-            AgentSessionsSettingsSection(settings: settings)
-        }.formStyle(.grouped).toggleStyle(.switch), to: output.appendingPathComponent("sessions.png"))
+        try self.capture(
+            AgentSessionsSettingsSection(settings: settings).padding(20),
+            to: output.appendingPathComponent("sessions.png"))
         try self.capture(NotificationsPane(settings: settings), to: output.appendingPathComponent("notifications.png"))
     }
 

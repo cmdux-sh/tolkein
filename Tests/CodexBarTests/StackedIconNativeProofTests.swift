@@ -61,7 +61,7 @@ final class StackedIconNativeProofTests: XCTestCase {
         window.isReleasedWhenClosed = false
         let claudeMetadata = try XCTUnwrap(ProviderRegistry.shared.metadata[.claude])
         let view = VStack(spacing: 0) {
-            MenuBarPane(settings: settings, store: store)
+            MenuBarSettingsPane(settings: settings, store: store)
             HStack {
                 Text("Synthetic data only").foregroundStyle(.secondary)
                 Button("Change Claude usage") {

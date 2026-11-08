@@ -2797,3 +2797,17 @@
 "Paste the WorkBuddy User-Agent as a single request header value." = "WorkBuddy User-Agent를 단일 요청 헤더 값으로 붙여넣으세요.";
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "TypeSafe 청구 개요를 읽을 수 없습니다. https://console.typesafe.ai/billing 을 열어 접근할 수 있는지 확인하세요. 페이지가 열리면 연동 오류를 신고하세요.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "TypeSafe 세션 쿠키를 찾을 수 없습니다. console.typesafe.ai/billing 에 로그인하거나 Cookie 헤더를 붙여 넣으세요.";
+
+/* Settings: Menu Bar, Menu */
+"settings_menu_bar_subtitle" = "메뉴 막대 아이콘의 모양과 표시 내용";
+"settings_menu_subtitle" = "메뉴를 열었을 때 표시할 내용";
+"settings_reason_requires_style" = "“%@” 스타일이 필요합니다";
+"settings_reason_requires_setting" = "먼저 “%@”을(를) 켜세요";
+"settings_reason_two_providers" = "활성화된 공급자가 두 개 이상 필요합니다";
+"settings_reason_stacked_source" = "위쪽 행과 아래쪽 행을 따로 선택하는 “%@” 스타일에서는 사용되지 않습니다";
+"settings_reason_brand_icons" = "브랜드 아이콘은 애니메이션되지 않습니다. “%1$@” 또는 “%2$@” 스타일을 사용하세요.";
+"settings_color_pace_subtitle" = "사용량이 예상 속도보다 낮으면 초록색, 높으면 빨간색(조기 소진 위험)으로 표시합니다. 레이아웃의 페이스 토큰에 적용됩니다.";
+"settings_reason_work_days_automatic" = "근무일 수를 선택하세요. 자동에서는 근무일 눈금이 표시되지 않습니다.";
+"agent_sessions_hosts_help" = "에이전트 세션을 확인할 추가 SSH 호스트입니다. user@host 형식으로 쉼표로 구분해 입력하세요.";
+"menu_bar_layout_override_subtitle" = "자체 저장된 레이아웃 사용";
+"cost_history_rolling_days_title" = "롤링 일수";
