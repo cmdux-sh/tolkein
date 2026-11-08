@@ -1,9 +1,9 @@
-@testable import CodexBarCore
 import Foundation
 import InternalUI
 import SwiftUI
 import Testing
 @testable import CodexBar
+@testable import CodexBarCore
 
 /// Renders provider pages in light and dark with real-length synthetic data: long account labels, three token
 /// accounts, an error and many options. Each page renders at the settings detail width and a short
@@ -60,7 +60,8 @@ struct ProviderSettingsPageSnapshotTests {
             ProviderSettingsPageSections(model: page, content: page.pageContent())
         }
         .padding(MacSpace.settingsPagePadding)
-        .frame(width: Self.width, alignment: .topLeading)
+        .frame(width: self.width, alignment: .topLeading)
+        .fixedSize(horizontal: false, vertical: true)
     }
 
     // MARK: - Fixtures
@@ -78,7 +79,10 @@ struct ProviderSettingsPageSnapshotTests {
         case .claude:
             settings.claudeCookieSource = .manual
             for label in Self.longLabels {
-                settings.addTokenAccount(provider: .claude, label: label, token: "sk-ant-sid01-synthetic-\(label.count)")
+                settings.addTokenAccount(
+                    provider: .claude,
+                    label: label,
+                    token: "sk-ant-sid01-synthetic-\(label.count)")
             }
             store._setErrorForTesting(
                 "Claude returned HTTP 429 for the usage endpoint after three retries. The session key for "

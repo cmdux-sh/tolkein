@@ -167,7 +167,8 @@ struct DoubaoTokenAccountTests {
             settings.addTokenAccount(provider: .doubao, label: account.label, token: account.token)
         }
         let store = self.store(settings)
-        let descriptor = ProviderSettingsPageModel(settings: settings, store: store).tokenAccountDescriptor(for: .doubao)
+        let descriptor = ProviderSettingsPageModel(settings: settings, store: store)
+            .tokenAccountDescriptor(for: .doubao)
         let hosting = NSHostingView(rootView: VStack(alignment: .leading, spacing: 18) {
             Text("Doubao").font(.title2.bold())
             Text("Synthetic account settings").foregroundStyle(.secondary)

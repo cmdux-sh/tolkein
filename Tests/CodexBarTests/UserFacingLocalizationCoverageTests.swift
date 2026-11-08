@@ -167,7 +167,7 @@ struct UserFacingLocalizationCoverageTests {
                 "Button(\"Reload\")",
             ],
             "Sources/CodexBar/Settings/ProviderPage/ProviderConnectionSections.swift": [
-                "\"No organizations loaded. Click Refresh after setting your API key.\")",
+                "ProviderSettingsCaptionRow(\"No organizations loaded. Click Refresh after setting your API key.\")",
                 "Button(\"Refresh organizations\")",
                 "Button(\"Remove\")",
             ],

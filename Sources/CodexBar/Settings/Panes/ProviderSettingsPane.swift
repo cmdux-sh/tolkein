@@ -49,7 +49,11 @@ extension ProviderSettingsPane {
                 keywords: [provider.rawValue])
             let sections = ProviderSettingsPageSection.searchable.compactMap { section in
                 section.searchEntryID(for: provider).map { id in
-                    SettingsSearchEntry(id: id, pane: pane, title: section.title, keywords: [pane.title, provider.rawValue])
+                    SettingsSearchEntry(
+                        id: id,
+                        pane: pane,
+                        title: section.title,
+                        keywords: [pane.title, provider.rawValue])
                 }
             }
             return [page] + sections

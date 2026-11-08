@@ -76,7 +76,10 @@ struct ProviderSettingsPageSections: View {
                 case .connection:
                     ProviderConnectionSections(content: self.content, model: self.model)
                 case .display:
-                    ProviderDisplaySection(content: self.content, settings: self.model.settings, store: self.model.store)
+                    ProviderDisplaySection(
+                        content: self.content,
+                        settings: self.model.settings,
+                        store: self.model.store)
                 case .alerts:
                     ProviderQuotaWarningSettingsView(provider: provider, settings: self.model.settings)
                 case .options:

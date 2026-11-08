@@ -290,7 +290,8 @@ struct ClinePassMultiAccountTests {
         settings.addTokenAccount(provider: .clinepass, label: "Personal", token: "fixture-personal-key")
         settings.addTokenAccount(provider: .clinepass, label: "Work", token: "fixture-work-key")
         let store = Self.makeStore(settings: settings)
-        let descriptor = ProviderSettingsPageModel(settings: settings, store: store).tokenAccountDescriptor(for: .clinepass)
+        let descriptor = ProviderSettingsPageModel(settings: settings, store: store)
+            .tokenAccountDescriptor(for: .clinepass)
         let hosting = NSHostingView(rootView: VStack(alignment: .leading, spacing: 18) {
             Text("ClinePass").font(.title2.bold())
             Text("Synthetic account settings").foregroundStyle(.secondary)

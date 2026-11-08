@@ -98,7 +98,9 @@ struct ProviderUsageSections: View {
                         : "Local usage comes from the current Codex profile."))
                 {
                     ProviderTokenUsageRow(
-                        usage: ProviderSettingsUsagePresentation.tokenUsage(tokenUsage, provider: self.content.provider))
+                        usage: ProviderSettingsUsagePresentation.tokenUsage(
+                            tokenUsage,
+                            provider: self.content.provider))
                 }
             }
         } else {

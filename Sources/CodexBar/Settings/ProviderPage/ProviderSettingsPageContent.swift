@@ -12,7 +12,9 @@ enum ProviderSettingsPageSection: String, CaseIterable, Identifiable {
     case alerts
     case options
 
-    var id: String { self.rawValue }
+    var id: String {
+        self.rawValue
+    }
 
     var title: String {
         switch self {

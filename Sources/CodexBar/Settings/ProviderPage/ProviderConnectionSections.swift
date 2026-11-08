@@ -214,7 +214,7 @@ struct ProviderOrganizationsSection: View {
                             set: { newValue in
                                 self.descriptor.onToggle(entry.id, newValue)
                             }))
-                        .disabled(entry.isLocked)
+                            .disabled(entry.isLocked)
                 }
             }
 
