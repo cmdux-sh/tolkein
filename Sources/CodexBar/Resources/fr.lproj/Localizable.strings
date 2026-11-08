@@ -2828,3 +2828,27 @@
 "Paste the WorkBuddy User-Agent as a single request header value." = "Collez le User-Agent de WorkBuddy sous forme d’une seule valeur d’en-tête de requête.";
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "Impossible de lire le récapitulatif de facturation TypeSafe. Ouvrez https://console.typesafe.ai/billing pour vérifier l’accès ; si la page s’ouvre, signalez le problème d’intégration.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "Aucun cookie de session TypeSafe trouvé. Connectez-vous sur console.typesafe.ai/billing ou collez un en-tête Cookie.";
+
+/* Settings: Integrations, Plugins */
+"The local HTTP server, the command-line tool and hooks." = "Le serveur HTTP local, l’outil en ligne de commande et les hooks.";
+"Running" = "En cours d’exécution";
+"Stopped" = "Arrêté";
+"Starting…" = "Démarrage…";
+"Stopping…" = "Arrêt…";
+"Network access" = "Accès réseau";
+"Other devices can connect" = "D’autres appareils peuvent se connecter";
+"Unapplied changes" = "Modifications non appliquées";
+"Discard" = "Abandonner";
+"Apply HTTP server changes?" = "Appliquer les modifications du serveur HTTP ?";
+"You left the HTTP server settings with changes that aren’t applied yet." = "Vous avez quitté les réglages du serveur HTTP avec des modifications qui ne sont pas encore appliquées.";
+"Keep Editing" = "Continuer la modification";
+"Installed" = "Installé";
+"A different file exists" = "Un autre fichier existe";
+"No write access" = "Pas d’accès en écriture";
+"At most %d rules." = "%d règles au maximum.";
+"At most %d arguments." = "%d arguments au maximum.";
+"Rule %d" = "Règle %d";
+"Argument %d" = "Argument %d";
+"Add a rule to run a command when a quota or provider event happens." = "Ajoutez une règle pour exécuter une commande lors d’un événement de quota ou de fournisseur.";
+"Delete Rule?" = "Supprimer la règle ?";
+"This rule is removed from Hooks. This can’t be undone." = "Cette règle est retirée des hooks. Cette action est irréversible.";

@@ -2821,3 +2821,27 @@
 "Paste the WorkBuddy User-Agent as a single request header value." = "将 WorkBuddy 的 User-Agent 粘贴为单个请求标头值。";
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "无法读取 TypeSafe 账单概览。请打开 https://console.typesafe.ai/billing 检查访问权限；如果页面可以打开，请报告集成故障。";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "未找到 TypeSafe 会话 Cookie。请在 console.typesafe.ai/billing 登录或粘贴 Cookie 请求头。";
+
+/* Settings: Integrations, Plugins */
+"The local HTTP server, the command-line tool and hooks." = "本地 HTTP 服务器、命令行工具和钩子。";
+"Running" = "运行中";
+"Stopped" = "已停止";
+"Starting…" = "正在启动…";
+"Stopping…" = "正在停止…";
+"Network access" = "网络访问";
+"Other devices can connect" = "其他设备可以连接";
+"Unapplied changes" = "未应用的更改";
+"Discard" = "放弃";
+"Apply HTTP server changes?" = "要应用 HTTP 服务器的更改吗？";
+"You left the HTTP server settings with changes that aren’t applied yet." = "你离开 HTTP 服务器设置时，还有尚未应用的更改。";
+"Keep Editing" = "继续编辑";
+"Installed" = "已安装";
+"A different file exists" = "存在其他文件";
+"No write access" = "没有写入权限";
+"At most %d rules." = "最多 %d 条规则。";
+"At most %d arguments." = "最多 %d 个参数。";
+"Rule %d" = "规则 %d";
+"Argument %d" = "参数 %d";
+"Add a rule to run a command when a quota or provider event happens." = "添加规则，在发生配额或提供商事件时运行命令。";
+"Delete Rule?" = "删除规则？";
+"This rule is removed from Hooks. This can’t be undone." = "此规则将从钩子中移除。此操作无法撤销。";

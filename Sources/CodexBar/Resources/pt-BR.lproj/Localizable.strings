@@ -2829,3 +2829,27 @@
 "Paste the WorkBuddy User-Agent as a single request header value." = "Cole o User-Agent do WorkBuddy como um único valor de cabeçalho da solicitação.";
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "Não foi possível ler o resumo de cobrança do TypeSafe. Abra https://console.typesafe.ai/billing para verificar o acesso; se a página abrir, relate a falha de integração.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "Nenhum cookie de sessão do TypeSafe encontrado. Entre em console.typesafe.ai/billing ou cole um cabeçalho Cookie.";
+
+/* Settings: Integrations, Plugins */
+"The local HTTP server, the command-line tool and hooks." = "O servidor HTTP local, a ferramenta de linha de comando e os hooks.";
+"Running" = "Em execução";
+"Stopped" = "Parado";
+"Starting…" = "Iniciando…";
+"Stopping…" = "Parando…";
+"Network access" = "Acesso à rede";
+"Other devices can connect" = "Outros dispositivos podem se conectar";
+"Unapplied changes" = "Alterações não aplicadas";
+"Discard" = "Descartar";
+"Apply HTTP server changes?" = "Aplicar as alterações do servidor HTTP?";
+"You left the HTTP server settings with changes that aren’t applied yet." = "Você saiu dos ajustes do servidor HTTP com alterações que ainda não foram aplicadas.";
+"Keep Editing" = "Continuar editando";
+"Installed" = "Instalado";
+"A different file exists" = "Existe outro arquivo";
+"No write access" = "Sem permissão de gravação";
+"At most %d rules." = "No máximo %d regras.";
+"At most %d arguments." = "No máximo %d argumentos.";
+"Rule %d" = "Regra %d";
+"Argument %d" = "Argumento %d";
+"Add a rule to run a command when a quota or provider event happens." = "Adicione uma regra para executar um comando quando ocorrer um evento de cota ou de provedor.";
+"Delete Rule?" = "Excluir regra?";
+"This rule is removed from Hooks. This can’t be undone." = "Esta regra será removida dos hooks. Não é possível desfazer.";

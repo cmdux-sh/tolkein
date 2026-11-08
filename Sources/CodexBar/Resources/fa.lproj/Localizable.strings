@@ -2833,3 +2833,27 @@
 "Paste the WorkBuddy User-Agent as a single request header value." = "User-Agent مربوط به WorkBuddy را به‌صورت یک مقدار واحد برای سرآیند درخواست جای‌گذاری کنید.";
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "خواندن نمای کلی صورتحساب TypeSafe ممکن نشد. برای بررسی دسترسی، https://console.typesafe.ai/billing را باز کنید؛ اگر صفحه باز شد، خطای یکپارچه‌سازی را گزارش کنید.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "هیچ کوکی نشست TypeSafe پیدا نشد. در console.typesafe.ai/billing وارد شوید یا یک سرآیند Cookie جای‌گذاری کنید.";
+
+/* Settings: Integrations, Plugins */
+"The local HTTP server, the command-line tool and hooks." = "سرور HTTP محلی، ابزار خط فرمان و قلاب‌ها.";
+"Running" = "در حال اجرا";
+"Stopped" = "متوقف";
+"Starting…" = "در حال شروع…";
+"Stopping…" = "در حال توقف…";
+"Network access" = "دسترسی شبکه";
+"Other devices can connect" = "دستگاه‌های دیگر می‌توانند متصل شوند";
+"Unapplied changes" = "تغییرات اعمال‌نشده";
+"Discard" = "دور انداختن";
+"Apply HTTP server changes?" = "تغییرات سرور HTTP اعمال شود؟";
+"You left the HTTP server settings with changes that aren’t applied yet." = "تنظیمات سرور HTTP را با تغییراتی ترک کردید که هنوز اعمال نشده‌اند.";
+"Keep Editing" = "ادامهٔ ویرایش";
+"Installed" = "نصب شده";
+"A different file exists" = "فایل دیگری وجود دارد";
+"No write access" = "اجازهٔ نوشتن نیست";
+"At most %d rules." = "حداکثر %d قانون.";
+"At most %d arguments." = "حداکثر %d آرگومان.";
+"Rule %d" = "قانون %d";
+"Argument %d" = "آرگومان %d";
+"Add a rule to run a command when a quota or provider event happens." = "یک قانون اضافه کنید تا هنگام رخ‌دادن رویداد سهمیه یا ارائه‌دهنده، فرمانی اجرا شود.";
+"Delete Rule?" = "قانون حذف شود؟";
+"This rule is removed from Hooks. This can’t be undone." = "این قانون از قلاب‌ها حذف می‌شود. این کار برگشت‌پذیر نیست.";

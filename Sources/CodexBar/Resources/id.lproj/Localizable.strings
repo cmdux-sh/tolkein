@@ -2831,3 +2831,27 @@
 "Paste the WorkBuddy User-Agent as a single request header value." = "Tempel User-Agent WorkBuddy sebagai satu nilai header permintaan.";
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "Ringkasan penagihan TypeSafe tidak dapat dibaca. Buka https://console.typesafe.ai/billing untuk memeriksa akses; jika halaman terbuka, laporkan kegagalan integrasi.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "Cookie sesi TypeSafe tidak ditemukan. Masuk di console.typesafe.ai/billing atau tempel header Cookie.";
+
+/* Settings: Integrations, Plugins */
+"The local HTTP server, the command-line tool and hooks." = "Server HTTP lokal, alat baris perintah, dan hook.";
+"Running" = "Berjalan";
+"Stopped" = "Berhenti";
+"Starting…" = "Memulai…";
+"Stopping…" = "Menghentikan…";
+"Network access" = "Akses jaringan";
+"Other devices can connect" = "Perangkat lain dapat terhubung";
+"Unapplied changes" = "Perubahan belum diterapkan";
+"Discard" = "Buang";
+"Apply HTTP server changes?" = "Terapkan perubahan server HTTP?";
+"You left the HTTP server settings with changes that aren’t applied yet." = "Anda meninggalkan pengaturan server HTTP dengan perubahan yang belum diterapkan.";
+"Keep Editing" = "Lanjutkan mengedit";
+"Installed" = "Terpasang";
+"A different file exists" = "Ada file lain";
+"No write access" = "Tidak ada akses tulis";
+"At most %d rules." = "Maksimal %d aturan.";
+"At most %d arguments." = "Maksimal %d argumen.";
+"Rule %d" = "Aturan %d";
+"Argument %d" = "Argumen %d";
+"Add a rule to run a command when a quota or provider event happens." = "Tambahkan aturan untuk menjalankan perintah saat terjadi peristiwa kuota atau penyedia.";
+"Delete Rule?" = "Hapus aturan?";
+"This rule is removed from Hooks. This can’t be undone." = "Aturan ini dihapus dari hook. Tindakan ini tidak dapat dibatalkan.";

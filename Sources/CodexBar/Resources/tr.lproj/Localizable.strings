@@ -2832,3 +2832,27 @@
 "Paste the WorkBuddy User-Agent as a single request header value." = "WorkBuddy User-Agent değerini tek bir istek üst bilgisi değeri olarak yapıştırın.";
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "TypeSafe faturalandırma özeti okunamadı. Erişimi kontrol etmek için https://console.typesafe.ai/billing adresini açın. Sayfa açılıyorsa entegrasyon hatasını bildirin.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "TypeSafe oturum çerezleri bulunamadı. console.typesafe.ai/billing adresinde oturum açın veya bir Cookie başlığı yapıştırın.";
+
+/* Settings: Integrations, Plugins */
+"The local HTTP server, the command-line tool and hooks." = "Yerel HTTP sunucusu, komut satırı aracı ve kancalar.";
+"Running" = "Çalışıyor";
+"Stopped" = "Durduruldu";
+"Starting…" = "Başlatılıyor…";
+"Stopping…" = "Durduruluyor…";
+"Network access" = "Ağ erişimi";
+"Other devices can connect" = "Diğer aygıtlar bağlanabilir";
+"Unapplied changes" = "Uygulanmamış değişiklikler";
+"Discard" = "Vazgeç";
+"Apply HTTP server changes?" = "HTTP sunucusu değişiklikleri uygulansın mı?";
+"You left the HTTP server settings with changes that aren’t applied yet." = "HTTP sunucusu ayarlarından henüz uygulanmamış değişikliklerle çıktınız.";
+"Keep Editing" = "Düzenlemeye devam et";
+"Installed" = "Yüklendi";
+"A different file exists" = "Farklı bir dosya var";
+"No write access" = "Yazma izni yok";
+"At most %d rules." = "En fazla %d kural.";
+"At most %d arguments." = "En fazla %d argüman.";
+"Rule %d" = "Kural %d";
+"Argument %d" = "Argüman %d";
+"Add a rule to run a command when a quota or provider event happens." = "Bir kota veya sağlayıcı olayı gerçekleştiğinde komut çalıştırmak için bir kural ekleyin.";
+"Delete Rule?" = "Kural silinsin mi?";
+"This rule is removed from Hooks. This can’t be undone." = "Bu kural kancalardan kaldırılır. Bu işlem geri alınamaz.";

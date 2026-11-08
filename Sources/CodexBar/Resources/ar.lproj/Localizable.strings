@@ -2833,3 +2833,27 @@
 "Paste the WorkBuddy User-Agent as a single request header value." = "ألصق User-Agent الخاص بـ WorkBuddy كقيمة واحدة لترويسة الطلب.";
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "تعذّرت قراءة ملخص فوترة TypeSafe. افتح https://console.typesafe.ai/billing للتحقق من إمكانية الوصول؛ إذا فُتحت الصفحة، فأبلغ عن خلل التكامل.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "لم يتم العثور على ملفات تعريف ارتباط لجلسة TypeSafe. سجّل الدخول في console.typesafe.ai/billing أو الصق ترويسة Cookie.";
+
+/* Settings: Integrations, Plugins */
+"The local HTTP server, the command-line tool and hooks." = "خادم HTTP المحلي وأداة سطر الأوامر والخطافات.";
+"Running" = "قيد التشغيل";
+"Stopped" = "متوقف";
+"Starting…" = "جارٍ البدء…";
+"Stopping…" = "جارٍ الإيقاف…";
+"Network access" = "الوصول عبر الشبكة";
+"Other devices can connect" = "يمكن للأجهزة الأخرى الاتصال";
+"Unapplied changes" = "تغييرات غير مطبّقة";
+"Discard" = "تجاهل";
+"Apply HTTP server changes?" = "هل تريد تطبيق تغييرات خادم HTTP؟";
+"You left the HTTP server settings with changes that aren’t applied yet." = "غادرت إعدادات خادم HTTP وفيها تغييرات لم تُطبَّق بعد.";
+"Keep Editing" = "متابعة التحرير";
+"Installed" = "مثبّت";
+"A different file exists" = "يوجد ملف مختلف";
+"No write access" = "لا يوجد إذن بالكتابة";
+"At most %d rules." = "الحد الأقصى %d من القواعد.";
+"At most %d arguments." = "الحد الأقصى %d من الوسيطات.";
+"Rule %d" = "القاعدة %d";
+"Argument %d" = "الوسيطة %d";
+"Add a rule to run a command when a quota or provider event happens." = "أضف قاعدة لتشغيل أمر عند وقوع حدث يخص الحصة أو المزود.";
+"Delete Rule?" = "هل تريد حذف القاعدة؟";
+"This rule is removed from Hooks. This can’t be undone." = "ستُزال هذه القاعدة من الخطافات. لا يمكن التراجع عن ذلك.";

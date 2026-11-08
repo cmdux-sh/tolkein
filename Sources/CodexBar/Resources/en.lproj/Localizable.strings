@@ -2834,3 +2834,27 @@
 "Paste the WorkBuddy User-Agent as a single request header value." = "Paste the WorkBuddy User-Agent as a single request header value.";
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header.";
+
+/* Settings: Integrations, Plugins */
+"The local HTTP server, the command-line tool and hooks." = "The local HTTP server, the command-line tool and hooks.";
+"Running" = "Running";
+"Stopped" = "Stopped";
+"Starting…" = "Starting…";
+"Stopping…" = "Stopping…";
+"Network access" = "Network access";
+"Other devices can connect" = "Other devices can connect";
+"Unapplied changes" = "Unapplied changes";
+"Discard" = "Discard";
+"Apply HTTP server changes?" = "Apply HTTP server changes?";
+"You left the HTTP server settings with changes that aren’t applied yet." = "You left the HTTP server settings with changes that aren’t applied yet.";
+"Keep Editing" = "Keep Editing";
+"Installed" = "Installed";
+"A different file exists" = "A different file exists";
+"No write access" = "No write access";
+"At most %d rules." = "At most %d rules.";
+"At most %d arguments." = "At most %d arguments.";
+"Rule %d" = "Rule %d";
+"Argument %d" = "Argument %d";
+"Add a rule to run a command when a quota or provider event happens." = "Add a rule to run a command when a quota or provider event happens.";
+"Delete Rule?" = "Delete Rule?";
+"This rule is removed from Hooks. This can’t be undone." = "This rule is removed from Hooks. This can’t be undone.";

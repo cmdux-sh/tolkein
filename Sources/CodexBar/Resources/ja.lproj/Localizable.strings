@@ -2829,3 +2829,27 @@
 "Paste the WorkBuddy User-Agent as a single request header value." = "WorkBuddy の User-Agent を単一のリクエストヘッダー値として貼り付けてください。";
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "TypeSafeの請求概要を読み取れませんでした。https://console.typesafe.ai/billing を開いてアクセスを確認してください。ページが開く場合は、連携の不具合を報告してください。";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "TypeSafeのセッションCookieが見つかりません。console.typesafe.ai/billing にサインインするか、Cookieヘッダーを貼り付けてください。";
+
+/* Settings: Integrations, Plugins */
+"The local HTTP server, the command-line tool and hooks." = "ローカルHTTPサーバー、コマンドラインツール、フック。";
+"Running" = "実行中";
+"Stopped" = "停止";
+"Starting…" = "起動中…";
+"Stopping…" = "停止中…";
+"Network access" = "ネットワークアクセス";
+"Other devices can connect" = "他のデバイスから接続できます";
+"Unapplied changes" = "未適用の変更";
+"Discard" = "破棄";
+"Apply HTTP server changes?" = "HTTPサーバーの変更を適用しますか？";
+"You left the HTTP server settings with changes that aren’t applied yet." = "まだ適用されていない変更を残したまま、HTTPサーバーの設定を離れました。";
+"Keep Editing" = "編集を続ける";
+"Installed" = "インストール済み";
+"A different file exists" = "別のファイルがあります";
+"No write access" = "書き込み権限がありません";
+"At most %d rules." = "ルールは最大%d件です。";
+"At most %d arguments." = "引数は最大%d個です。";
+"Rule %d" = "ルール %d";
+"Argument %d" = "引数 %d";
+"Add a rule to run a command when a quota or provider event happens." = "クォータまたはプロバイダーのイベント発生時にコマンドを実行するルールを追加します。";
+"Delete Rule?" = "ルールを削除しますか？";
+"This rule is removed from Hooks. This can’t be undone." = "このルールはフックから削除されます。この操作は取り消せません。";

@@ -2828,3 +2828,27 @@
 "Paste the WorkBuddy User-Agent as a single request header value." = "Pega o User-Agent de WorkBuddy como un único valor de cabeceira da solicitude.";
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "Non se puido ler o resumo de facturación de TypeSafe. Abre https://console.typesafe.ai/billing para comprobar o acceso; se a páxina se abre, informa do fallo de integración.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "Non se atoparon cookies de sesión de TypeSafe. Inicia sesión en console.typesafe.ai/billing ou pega unha cabeceira Cookie.";
+
+/* Settings: Integrations, Plugins */
+"The local HTTP server, the command-line tool and hooks." = "O servidor HTTP local, a ferramenta de liña de ordes e os ganchos.";
+"Running" = "En execución";
+"Stopped" = "Detido";
+"Starting…" = "Iniciando…";
+"Stopping…" = "Detendo…";
+"Network access" = "Acceso á rede";
+"Other devices can connect" = "Outros dispositivos poden conectarse";
+"Unapplied changes" = "Cambios sen aplicar";
+"Discard" = "Descartar";
+"Apply HTTP server changes?" = "Queres aplicar os cambios do servidor HTTP?";
+"You left the HTTP server settings with changes that aren’t applied yet." = "Saíches dos axustes do servidor HTTP con cambios que aínda non se aplicaron.";
+"Keep Editing" = "Seguir editando";
+"Installed" = "Instalado";
+"A different file exists" = "Existe outro ficheiro";
+"No write access" = "Sen permiso de escritura";
+"At most %d rules." = "Como máximo %d regras.";
+"At most %d arguments." = "Como máximo %d argumentos.";
+"Rule %d" = "Regra %d";
+"Argument %d" = "Argumento %d";
+"Add a rule to run a command when a quota or provider event happens." = "Engade unha regra para executar unha orde cando se produza un evento de cota ou de provedor.";
+"Delete Rule?" = "Queres eliminar a regra?";
+"This rule is removed from Hooks. This can’t be undone." = "Esta regra elimínase dos ganchos. Non se pode desfacer.";

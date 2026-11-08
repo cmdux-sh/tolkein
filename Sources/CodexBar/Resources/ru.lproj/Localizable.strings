@@ -2830,3 +2830,27 @@
 "Paste the WorkBuddy User-Agent as a single request header value." = "Вставьте User-Agent WorkBuddy как одно значение заголовка запроса.";
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "Не удалось прочитать сводку платежей TypeSafe. Откройте https://console.typesafe.ai/billing, чтобы проверить доступ. Если страница открывается, сообщите об ошибке интеграции.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "Файлы cookie сеанса TypeSafe не найдены. Войдите на console.typesafe.ai/billing или вставьте заголовок Cookie.";
+
+/* Settings: Integrations, Plugins */
+"The local HTTP server, the command-line tool and hooks." = "Локальный HTTP-сервер, инструмент командной строки и хуки.";
+"Running" = "Работает";
+"Stopped" = "Остановлен";
+"Starting…" = "Запуск…";
+"Stopping…" = "Остановка…";
+"Network access" = "Сетевой доступ";
+"Other devices can connect" = "Другие устройства могут подключиться";
+"Unapplied changes" = "Неприменённые изменения";
+"Discard" = "Сбросить";
+"Apply HTTP server changes?" = "Применить изменения HTTP-сервера?";
+"You left the HTTP server settings with changes that aren’t applied yet." = "Вы покинули настройки HTTP-сервера с изменениями, которые ещё не применены.";
+"Keep Editing" = "Продолжить редактирование";
+"Installed" = "Установлено";
+"A different file exists" = "Существует другой файл";
+"No write access" = "Нет доступа на запись";
+"At most %d rules." = "Не более %d правил.";
+"At most %d arguments." = "Не более %d аргументов.";
+"Rule %d" = "Правило %d";
+"Argument %d" = "Аргумент %d";
+"Add a rule to run a command when a quota or provider event happens." = "Добавьте правило, чтобы выполнять команду при событии квоты или провайдера.";
+"Delete Rule?" = "Удалить правило?";
+"This rule is removed from Hooks. This can’t be undone." = "Это правило будет удалено из хуков. Это действие нельзя отменить.";
