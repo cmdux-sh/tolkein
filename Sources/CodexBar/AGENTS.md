@@ -21,5 +21,14 @@ any UI change here, before writing code:
    requirement in `Package.swift` (resolve the widget workspace too; see `docs/DEVELOPMENT.md`). Do not
    hand-roll it here.
 
+## Settings panes
+
+`SettingsPane` (`Settings/PreferencesView.swift`) lists the panes; `Settings/SettingsPaneRouter.swift` maps each one
+to a wrapper view in `Settings/Panes/` (`GeneralSettingsPane`, `AlertsSettingsPane`, and so on). Rebuilding a pane
+means replacing its one wrapper file: keep `init(context: SettingsPaneContext)` and `static var searchEntries`, list
+every setting the pane shows in `searchEntries` (`pane.searchEntry(_:_:keywords:)`, ids unique within the pane), and
+delete the old view it wrapped once nothing else uses it. Leave the router and `SettingsSearchIndex` alone unless a
+pane is added or removed.
+
 If the `internal-ui` tools are not available, install them from an Internal UI clone (`cmdux-sh/internal-ui`) with
 `Scripts/install-mcp.sh` and start a new session.

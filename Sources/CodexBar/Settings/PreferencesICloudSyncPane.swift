@@ -14,7 +14,7 @@ struct ICloudSyncPane: View {
             if self.state.status.needsAppUpdate {
                 Section {
                     Label(
-                        L("Sync is paused: another Mac uses a newer version of CodexBar. Update to resume."),
+                        L("Sync is paused: another Mac uses a newer version of Tolkein. Update to resume."),
                         systemImage: "exclamationmark.triangle.fill")
                         .font(.callout)
                         .foregroundStyle(.orange)
@@ -101,7 +101,7 @@ struct ICloudSyncPane: View {
         case .available:
             nil
         case .missingEntitlement:
-            L("Requires a signed release build of CodexBar.")
+            L("Requires a signed release build of Tolkein.")
         case .noICloudAccount:
             L("Sign in to iCloud in System Settings to enable sync.")
         case .restricted:

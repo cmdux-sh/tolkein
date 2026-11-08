@@ -8,7 +8,7 @@ read_when:
 
 # Configuration
 
-The app's **Help → CodexBar Help** command opens the [README](https://github.com/steipete/CodexBar/blob/main/README.md), including setup instructions and links to provider documentation.
+The app's **Help → Tolkein Help** command opens the [README](https://github.com/cmdux-sh/tolkein/blob/main/README.md), including setup instructions and links to provider documentation.
 **Settings → About → Website** opens the project website at [codexbar.app](https://codexbar.app).
 
 The app and CLI share one JSON file for API keys, manual cookie headers, source selection, provider ordering, and token accounts. The running app detects external edits, atomic replacements, and restored older contents, including during watcher startup and change callbacks. App writes update the baseline without being treated as external edits.
@@ -58,7 +58,7 @@ sessions; see [CLI](cli.md#ssh-sessions-macos).
 
 ## External event hooks
 
-Hooks are local, explicit opt-in automation. Configure them in Settings > Hooks or in this local config file; no
+Hooks are local, explicit opt-in automation. Configure them in Settings > Integrations or in this local config file; no
 HTTP or remote-config endpoint can create or enable hook rules. The top-level `hooks.enabled` switch defaults to
 `false`, and each rule also has its own `enabled` switch. The editor shows thresholds as percentages; example
 values and command paths appear only as prompts in empty fields.
@@ -311,7 +311,7 @@ the timer, and a new reorder restarts it. Reduce Motion disables the fade animat
 ## iCloud sync
 The three sync sub-options are disabled while the main sync switch is off, iCloud is unavailable, or a newer app version is required. Their saved choices are retained when sync is turned off and restored when it is enabled again.
 
-Opt-in (Settings → iCloud Sync, off by default; requires a signed release build and an iCloud account). When enabled, CodexBar syncs across the user's Macs via CloudKit (private database, container `iCloud.com.steipete.codexbar`):
+Opt-in (Settings → Sync, off by default; requires a signed release build and an iCloud account). When enabled, CodexBar syncs across the user's Macs via CloudKit (private database, container `iCloud.com.steipete.codexbar`):
 
 - **Provider configuration** — portable fields of each provider entry (enabled intent, extras, region, workspace, quota-warning overrides, ordering-relevant metadata). Secrets (`apiKey`, `secretKey`, `cookieHeader`, `tokenAccounts`) sync only when "Include API keys, cookies, and tokens" is on, and travel exclusively in CloudKit `encryptedValues` (end-to-end encrypted; readable only on the user's devices).
 - **A curated preferences subset** — notification/threshold/display settings.

@@ -11,18 +11,8 @@ struct PreferencesPaneSmokeTests {
         let settings = Self.makeSettingsStore(suite: "PreferencesPaneSmokeTests-default")
         let store = Self.makeUsageStore(settings: settings)
 
-        _ = GeneralPane(settings: settings).body
-        _ = ICloudSyncPane(settings: settings, state: CloudSyncState()).body
-        _ = NotificationsPane(settings: settings).body
-        _ = MenuBarPane(settings: settings, store: store).body
-        _ = MenuPane(settings: settings, store: store).body
-        _ = AdvancedPane(settings: settings, store: store).body
-        _ = HooksPane(settings: settings).body
+        Self.buildEveryPane(settings: settings, store: store)
         _ = ProvidersPane(settings: settings, store: store).body
-        _ = DebugPane(settings: settings, store: store).body
-        _ = AboutPane(
-            updater: DisabledUpdaterController(),
-            selection: PreferencesSelection(userDefaults: InMemoryUserDefaults())).body
         _ = SettingsSidebarView(settings: settings, store: store, selection: .constant(.general)).body
 
         settings.debugDisableKeychainAccess = false
@@ -47,18 +37,40 @@ struct PreferencesPaneSmokeTests {
         let store = Self.makeUsageStore(settings: settings)
         store._setErrorForTesting("Example error", provider: .codex)
 
-        _ = GeneralPane(settings: settings).body
-        _ = ICloudSyncPane(settings: settings, state: CloudSyncState()).body
-        _ = NotificationsPane(settings: settings).body
-        _ = MenuBarPane(settings: settings, store: store).body
-        _ = MenuPane(settings: settings, store: store).body
-        _ = AdvancedPane(settings: settings, store: store).body
+        Self.buildEveryPane(settings: settings, store: store)
         _ = ProvidersPane(provider: .claude, settings: settings, store: store).body
-        _ = DebugPane(settings: settings, store: store).body
-        _ = AboutPane(
-            updater: DisabledUpdaterController(),
-            selection: PreferencesSelection(userDefaults: InMemoryUserDefaults())).body
         _ = SettingsSidebarView(settings: settings, store: store, selection: .constant(.provider(.codex))).body
+    }
+
+    /// Routes every pane through `SettingsPaneRouter`, the way the Settings window shows it.
+    private static func buildEveryPane(settings: SettingsStore, store: UsageStore) {
+        let context = SettingsPaneContext(
+            settings: settings,
+            store: store,
+            cloudSyncState: CloudSyncState(),
+            updater: DisabledUpdaterController(),
+            selection: PreferencesSelection(userDefaults: InMemoryUserDefaults()),
+            managedCodexAccountCoordinator: ManagedCodexAccountCoordinator(),
+            codexAccountPromotionCoordinator: CodexAccountPromotionCoordinator(
+                settingsStore: settings,
+                usageStore: store,
+                managedAccountCoordinator: ManagedCodexAccountCoordinator()),
+            runProviderLoginFlow: { _ in })
+        for pane in SettingsPane.fixedPanes + [.provider(.codex), .provider(.claude)] {
+            _ = SettingsPaneRouter(pane: pane, context: context).body
+        }
+        _ = GeneralSettingsPane(context: context).body
+        _ = MenuBarSettingsPane(context: context).body
+        _ = MenuSettingsPane(context: context).body
+        _ = AlertsSettingsPane(context: context).body
+        _ = CostsSettingsPane(context: context).body
+        _ = SyncSettingsPane(context: context).body
+        _ = IntegrationsSettingsPane(context: context).body
+        _ = PrivacySettingsPane(context: context).body
+        _ = AboutSettingsPane(context: context).body
+        _ = DebugSettingsPane(context: context).body
+        _ = PluginsSettingsPane(context: context).body
+        _ = ProviderSettingsPane(instanceID: UsageProvider.codex.instanceID, context: context).body
     }
 
     @Test
@@ -537,7 +549,7 @@ struct PreferencesPaneSmokeTests {
         CodexBarLocalizationOverride.$appLanguage.withValue("ja") {
             #expect(L("language_title") == "言語")
             #expect(L("start_at_login_title") == "ログイン時に起動")
-            #expect(L("quit_app") == "CodexBar を終了")
+            #expect(L("quit_app") == "Tolkein を終了")
         }
 
         settings.appLanguage = "id"
@@ -546,7 +558,7 @@ struct PreferencesPaneSmokeTests {
         CodexBarLocalizationOverride.$appLanguage.withValue("id") {
             #expect(L("language_title") == "Bahasa")
             #expect(L("start_at_login_title") == "Mulai saat Login")
-            #expect(L("quit_app") == "Keluar CodexBar")
+            #expect(L("quit_app") == "Keluar Tolkein")
         }
     }
 
@@ -586,7 +598,7 @@ struct PreferencesPaneSmokeTests {
     func `english quit app label resolves without format placeholders`() {
         CodexBarLocalizationOverride.$appLanguage.withValue("en") {
             let label = L("quit_app")
-            #expect(label == "Quit CodexBar")
+            #expect(label == "Quit Tolkein")
             #expect(!label.contains("%@"))
             #expect(!label.contains("%d"))
         }
@@ -601,7 +613,7 @@ struct PreferencesPaneSmokeTests {
         CodexBarLocalizationOverride.$appLanguage.withValue("de") {
             #expect(L("tab_general") == "Allgemein")
             #expect(L("language_title") == "Sprache")
-            #expect(L("quit_app") == "CodexBar beenden")
+            #expect(L("quit_app") == "Tolkein beenden")
             #expect(L("display_mode_reset_time") == "Zurücksetzungszeit")
             #expect(L("display_mode_reset_time_desc").contains("↻ 15:56"))
             #expect(L("vertex_ai_login_instructions").contains("\n\n1. Öffnen Sie Terminal"))
@@ -628,7 +640,7 @@ struct PreferencesPaneSmokeTests {
             #expect(L("language_italian") == "Italiano")
             #expect(L("tab_menu_bar") == "Barra menu")
             #expect(L("tab_advanced") == "Avanzate")
-            #expect(L("quit_app") == "Esci da CodexBar")
+            #expect(L("quit_app") == "Esci da Tolkein")
         }
     }
 

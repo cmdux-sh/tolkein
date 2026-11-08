@@ -15,10 +15,10 @@
 "Include API keys, cookies, and tokens" = "Incluye claves API, cookies y tokens.";
 "Sync usage snapshots" = "Sincronizar instantáneas de uso";
 "Show accounts from other Macs" = "Mostrar cuentas de otras Mac";
-"Requires a signed release build of CodexBar." = "Requiere una versión firmada de CodexBar.";
+"Requires a signed release build of Tolkein." = "Requiere una versión firmada de Tolkein.";
 "Sign in to iCloud in System Settings to enable sync." = "Inicie sesión en iCloud en Configuración del sistema para habilitar la sincronización.";
 "iCloud access is restricted on this Mac." = "El acceso a iCloud está restringido en esta Mac.";
-"Sync is paused: another Mac uses a newer version of CodexBar. Update to resume." = "La sincronización está en pausa: otra Mac usa una versión más reciente de CodexBar. Actualizar para reanudar.";
+"Sync is paused: another Mac uses a newer version of Tolkein. Update to resume." = "La sincronización está en pausa: otra Mac usa una versión más reciente de Tolkein. Actualizar para reanudar.";
 "Last successful fetch" = "Última recuperación exitosa";
 "Last successful push" = "Último empujón exitoso";
 "Never" = "nunca";
@@ -574,7 +574,7 @@
 "quota_warning_warning" = "Advertencia";
 "quota_warning_critical" = "Crítico";
 "apply" = "Aplicar";
-"quit_app" = "Salir de CodexBar";
+"quit_app" = "Salir de Tolkein";
 
 /* Tab titles */
 "tab_general" = "generales";
@@ -585,6 +585,11 @@
 "tab_advanced" = "Avanzado";
 "tab_about" = "Acerca de";
 "tab_debug" = "Depuración";
+"tab_alerts" = "Alertas";
+"tab_costs" = "Costes";
+"tab_sync" = "Sincronización";
+"tab_integrations" = "Integraciones";
+"tab_privacy" = "Privacidad y datos";
 
 /* Providers Pane */
 "select_a_provider" = "Selecciona un proveedor";
@@ -718,7 +723,7 @@
 "link_twitter" = "Twitter";
 "link_email" = "Correo electrónico";
 "link_acknowledgements" = "Agradecimientos";
-"acknowledgements_footer" = "CodexBar está construido con estos proyectos de código abierto.";
+"acknowledgements_footer" = "Tolkein está construido con estos proyectos de código abierto.";
 "acknowledgements_others" = "%d más";
 "acknowledgements_author" = "Autor";
 "acknowledgements_authors" = "Autores";
@@ -730,10 +735,11 @@
 "check_for_updates" = "Buscar actualizaciones…";
 "updates_unavailable" = "Actualizaciones no disponibles en esta compilación.";
 "copyright" = "© 2026 Peter Steinberger. Licencia MIT.";
+"about_based_on_codexbar" = "Basado en CodexBar de Peter Steinberger (licencia MIT)";
 
 /* Debug Pane */
 "use_javascriptcore_plugin_engine" = "Usar JavaScriptCore para los complementos de proveedores";
-"use_javascriptcore_plugin_engine_subtitle" = "Solo para reversión de compatibilidad. Reinicia CodexBar para aplicarlo; CODEXBAR_PLUGIN_ENGINE anula este ajuste.";
+"use_javascriptcore_plugin_engine_subtitle" = "Solo para reversión de compatibilidad. Reinicia Tolkein para aplicarlo; CODEXBAR_PLUGIN_ENGINE anula este ajuste.";
 "section_logging" = "Registro";
 "enable_file_logging" = "Activar registro en archivo";
 "enable_file_logging_subtitle" = "Escribir registros en %@ para depuración.";
@@ -862,8 +868,8 @@
 "Managed by Homebrew" = "Gestionado por Homebrew";
 "Copy update command" = "Copiar comando de actualización";
 "Update to %@" = "Actualizar a %@";
-"CodexBar %@ is available" = "CodexBar %@ está disponible";
-"CodexBar is up to date" = "CodexBar está actualizado";
+"Tolkein %@ is available" = "Tolkein %@ está disponible";
+"Tolkein is up to date" = "Tolkein está actualizado";
 "Checking for updates…" = "Buscando actualizaciones…";
 "Updating with Homebrew…" = "Actualizando con Homebrew…";
 "Homebrew update failed. You can run this command in Terminal instead:" = "La actualización con Homebrew falló. Puedes ejecutar este comando en Terminal:";
@@ -1221,7 +1227,7 @@
 "%d%% in reserve" = "%d%% de reserva";
 "%dd" = "%d d";
 "(%d%% risk)" = "(%d%% de riesgo de agotamiento)";
-"About CodexBar" = "Acerca de CodexBar";
+"About Tolkein" = "Acerca de Tolkein";
 "Add Account..." = "Añadir cuenta...";
 "Add accounts via GitHub OAuth Device Flow on the selected host." = "Añade cuentas mediante el flujo de dispositivo OAuth de GitHub en el host seleccionado.";
 "Add Google Account" = "Añadir cuenta de Google";
@@ -1777,7 +1783,7 @@
 "CodexBar Account Usage" = "Uso de la cuenta CodexBar";
 "CodexBar Burn Down" = "CodexBar Cuota quemado";
 "CodexBar Burn Down (Combined)" = "CodexBar Cuota quemado (combinado)";
-"CodexBar Help" = "CodexBar Ayuda";
+"Tolkein Help" = "Tolkein Ayuda";
 "CodexBar History" = "Historia de CodexBar";
 "CodexBar Metric" = "CodexBar Métrica";
 "CodexBar Switcher" = "Conmutador CodexBar";
@@ -2681,7 +2687,7 @@
 "http_server_plain_http" = "Permitir HTTP sin cifrar fuera de este Mac";
 "http_server_dashboard" = "Panel";
 "http_server_wildcard" = "En otros dispositivos, sustituye 0.0.0.0 por la dirección IPv4 de VPN o Tailscale de este Mac.";
-"http_server_footer" = "Desactivado por defecto. Se inicia con CodexBar y se detiene al cerrarlo. La configuración y el token permanecen en este Mac y se excluyen de la sincronización y las exportaciones. Mantén el Mac activo para el acceso remoto.";
+"http_server_footer" = "Desactivado por defecto. Se inicia con Tolkein y se detiene al cerrarlo. La configuración y el token permanecen en este Mac y se excluyen de la sincronización y las exportaciones. Mantén el Mac activo para el acceso remoto.";
 /* Claude desktop cookie source */
 "Claude desktop app" = "Aplicación de escritorio de Claude";
 "Use Claude desktop app cookies" = "Usar las cookies de la aplicación de escritorio de Claude";

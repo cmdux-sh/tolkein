@@ -15,7 +15,7 @@ Startup builds option metadata only for the selected command family. `--version`
 provider descriptors are built; provider discovery and fetching retain their existing behavior for other commands.
 
 ## Install
-- In the app: **Settings → Advanced → Install CLI** creates links in existing, writable `/usr/local/bin` and `/opt/homebrew/bin` directories. It preserves existing entries and reports each destination, including protected directories it cannot write. **CodexBar Help** below the result opens this guide.
+- In the app: **Settings → Integrations → Install CLI** creates links in existing, writable `/usr/local/bin` and `/opt/homebrew/bin` directories. It preserves existing entries and reports each destination, including protected directories it cannot write. **Tolkein Help** below the result opens this guide.
 - From the repo, after installing `CodexBar.app` in `/Applications`: `./bin/install-codexbar-cli.sh`. This separate installer requests macOS administrator approval and replaces both target entries.
 - Manual, for a missing link in an existing directory: `ln -s "/Applications/CodexBar.app/Contents/Helpers/CodexBarCLI" /usr/local/bin/codexbar`. Use `sudo` in Terminal if that directory requires administrator access; preserve any unrelated existing entry.
 
@@ -351,7 +351,7 @@ The saved app reporting period applies by default. `--period month-to-date|all` 
 
 ## Manage the HTTP server from the Mac app
 
-In **Settings → Advanced → HTTP server**, enable the server, generate a token,
+In **Settings → Integrations → HTTP server**, enable the server, generate a token,
 and click **Apply**. Defaults are off, `127.0.0.1:8080`, a 60-second cache,
 a 30-second request timeout, and redacted dashboard identity. Apply saves the settings
 and restarts only the app's own bundled CLI helper. A terminal-started server is

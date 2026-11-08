@@ -15,10 +15,10 @@
 "Include API keys, cookies, and tokens" = "API anahtarlarını, çerezleri ve tokenları dahil et";
 "Sync usage snapshots" = "Kullanım anlık görüntülerini eşzamanla";
 "Show accounts from other Macs" = "Diğer Mac'lerdeki hesapları göster";
-"Requires a signed release build of CodexBar." = "CodexBar'ın imzalı bir sürüm derlemesi gerekir.";
+"Requires a signed release build of Tolkein." = "Tolkein'in imzalı bir sürüm derlemesi gerekir.";
 "Sign in to iCloud in System Settings to enable sync." = "Eşzamanlamayı etkinleştirmek için Sistem Ayarları'nda iCloud'a giriş yapın.";
 "iCloud access is restricted on this Mac." = "Bu Mac'te iCloud erişimi kısıtlı.";
-"Sync is paused: another Mac uses a newer version of CodexBar. Update to resume." = "Eşzamanlama duraklatıldı: başka bir Mac daha yeni bir CodexBar sürümü kullanıyor. Devam etmek için güncelleyin.";
+"Sync is paused: another Mac uses a newer version of Tolkein. Update to resume." = "Eşzamanlama duraklatıldı: başka bir Mac daha yeni bir Tolkein sürümü kullanıyor. Devam etmek için güncelleyin.";
 "Last successful fetch" = "Son başarılı veri alma";
 "Last successful push" = "Son başarılı gönderme";
 "Never" = "Asla";
@@ -569,7 +569,7 @@
 "quota_warning_warning" = "Uyarı";
 "quota_warning_critical" = "Kritik";
 "apply" = "Uygula";
-"quit_app" = "CodexBar'dan Çık";
+"quit_app" = "Tolkein'den Çık";
 
 /* Tab titles */
 "tab_general" = "Genel";
@@ -602,6 +602,11 @@
 "hooks_delete_argument" = "Argümanı sil";
 "tab_about" = "Hakkında";
 "tab_debug" = "Hata ayıklama";
+"tab_alerts" = "Uyarılar";
+"tab_costs" = "Maliyetler";
+"tab_sync" = "Eşzamanlama";
+"tab_integrations" = "Entegrasyonlar";
+"tab_privacy" = "Gizlilik ve Veriler";
 
 /* Providers Pane */
 "select_a_provider" = "Bir sağlayıcı seçin";
@@ -736,7 +741,7 @@
 "link_twitter" = "Twitter";
 "link_email" = "E-posta";
 "link_acknowledgements" = "Teşekkürler";
-"acknowledgements_footer" = "CodexBar bu açık kaynak projelerle geliştirildi.";
+"acknowledgements_footer" = "Tolkein bu açık kaynak projelerle geliştirildi.";
 "acknowledgements_others" = "%d diğer kişi";
 "acknowledgements_author" = "Yazar";
 "acknowledgements_authors" = "Yazarlar";
@@ -748,10 +753,11 @@
 "check_for_updates" = "Güncellemeleri denetle…";
 "updates_unavailable" = "Bu derlemede güncellemeler kullanılamıyor.";
 "copyright" = "© 2026 Peter Steinberger. MIT Lisansı.";
+"about_based_on_codexbar" = "Peter Steinberger'ın CodexBar uygulamasına dayanır (MIT Lisansı)";
 
 /* Debug Pane */
 "use_javascriptcore_plugin_engine" = "Sağlayıcı eklentileri için JavaScriptCore kullan";
-"use_javascriptcore_plugin_engine_subtitle" = "Yalnızca uyumluluk geri dönüşü. Uygulamak için CodexBar'ı yeniden başlatın; CODEXBAR_PLUGIN_ENGINE bu ayarı geçersiz kılar.";
+"use_javascriptcore_plugin_engine_subtitle" = "Yalnızca uyumluluk geri dönüşü. Uygulamak için Tolkein'i yeniden başlatın; CODEXBAR_PLUGIN_ENGINE bu ayarı geçersiz kılar.";
 "section_logging" = "Günlükleme";
 "enable_file_logging" = "Dosya günlüğünü etkinleştir";
 "enable_file_logging_subtitle" = "Hata ayıklama için günlükleri %@ konumuna yaz.";
@@ -895,7 +901,7 @@
 "Status Page" = "Durum sayfası";
 "Open Status Page" = "Durum sayfasını aç";
 "Settings..." = "Ayarlar...";
-"About CodexBar" = "CodexBar hakkında";
+"About Tolkein" = "Tolkein hakkında";
 "Quit" = "Çık";
 "Last %d day" = "Son %d gün";
 "Last %d days" = "Son %d gün";
@@ -996,8 +1002,8 @@
 "Managed by Homebrew" = "Homebrew tarafından yönetiliyor";
 "Copy update command" = "Güncelleme komutunu kopyala";
 "Update to %@" = "%@ sürümüne güncelle";
-"CodexBar %@ is available" = "CodexBar %@ kullanılabilir";
-"CodexBar is up to date" = "CodexBar güncel";
+"Tolkein %@ is available" = "Tolkein %@ kullanılabilir";
+"Tolkein is up to date" = "Tolkein güncel";
 "Checking for updates…" = "Güncellemeler denetleniyor…";
 "Updating with Homebrew…" = "Homebrew ile güncelleniyor…";
 "Homebrew update failed. You can run this command in Terminal instead:" = "Homebrew güncellemesi başarısız oldu. Bunun yerine bu komutu Terminal'de çalıştırabilirsiniz:";
@@ -1782,7 +1788,7 @@
 "CodexBar Account Usage" = "CodexBar Hesap Kullanımı";
 "CodexBar Burn Down" = "CodexBar Kota yanma";
 "CodexBar Burn Down (Combined)" = "CodexBar Kota yanma (birleşik)";
-"CodexBar Help" = "CodexBar Yardım";
+"Tolkein Help" = "Tolkein Yardım";
 "CodexBar History" = "CodexBar Geçmişi";
 "CodexBar Metric" = "CodexBar Metrik";
 "CodexBar Switcher" = "CodexBar Değiştirici";
@@ -2686,7 +2692,7 @@
 "http_server_plain_http" = "Bu Mac dışında şifrelenmemiş HTTP’ye izin ver";
 "http_server_dashboard" = "Pano";
 "http_server_wildcard" = "Diğer cihazlarda 0.0.0.0 yerine bu Mac’in VPN veya Tailscale IPv4 adresini kullanın.";
-"http_server_footer" = "Varsayılan olarak kapalıdır. CodexBar ile başlar ve kapatıldığında durur. Ayarlar ve belirteç bu Mac’te kalır; eşitleme ve dışa aktarmaya dahil edilmez. Uzaktan erişim için Mac’i uyanık tutun.";
+"http_server_footer" = "Varsayılan olarak kapalıdır. Tolkein ile başlar ve kapatıldığında durur. Ayarlar ve belirteç bu Mac’te kalır; eşitleme ve dışa aktarmaya dahil edilmez. Uzaktan erişim için Mac’i uyanık tutun.";
 /* Claude desktop cookie source */
 "Claude desktop app" = "Claude masaüstü uygulaması";
 "Use Claude desktop app cookies" = "Claude masaüstü uygulamasının çerezlerini kullan";

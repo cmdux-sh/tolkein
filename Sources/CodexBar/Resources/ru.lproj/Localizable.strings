@@ -15,10 +15,10 @@
 "Include API keys, cookies, and tokens" = "Включите ключи API, cookies и токены.";
 "Sync usage snapshots" = "Синхронизировать снимки использования";
 "Show accounts from other Macs" = "Показать учетные записи с других компьютеров Mac";
-"Requires a signed release build of CodexBar." = "Требуется подписанная сборка выпуска CodexBar.";
+"Requires a signed release build of Tolkein." = "Требуется подписанная сборка выпуска Tolkein.";
 "Sign in to iCloud in System Settings to enable sync." = "Войдите в iCloud в настройках системы, чтобы включить синхронизацию.";
 "iCloud access is restricted on this Mac." = "Доступ к iCloud на этом Mac ограничен.";
-"Sync is paused: another Mac uses a newer version of CodexBar. Update to resume." = "Синхронизация приостановлена: на другом Mac используется более новая версия CodexBar. Обновите, чтобы возобновить работу.";
+"Sync is paused: another Mac uses a newer version of Tolkein. Update to resume." = "Синхронизация приостановлена: на другом Mac используется более новая версия Tolkein. Обновите, чтобы возобновить работу.";
 "Last successful fetch" = "Последнее успешное получение";
 "Last successful push" = "Последний успешный толчок";
 "Never" = "Никогда";
@@ -586,7 +586,7 @@
 "quota_warning_warning" = "Предупреждение";
 "quota_warning_critical" = "Критично";
 "apply" = "Применить";
-"quit_app" = "Выйти из CodexBar";
+"quit_app" = "Выйти из Tolkein";
 
 /* Tab titles */
 "tab_general" = "Общие";
@@ -597,6 +597,11 @@
 "tab_advanced" = "Расширенные";
 "tab_about" = "О приложении";
 "tab_debug" = "Отладка";
+"tab_alerts" = "Оповещения";
+"tab_costs" = "Расходы";
+"tab_sync" = "Синхронизация";
+"tab_integrations" = "Интеграции";
+"tab_privacy" = "Конфиденциальность и данные";
 
 /* Providers Pane */
 "select_a_provider" = "Выберите провайдера";
@@ -731,7 +736,7 @@
 "link_twitter" = "Twitter";
 "link_email" = "электронная почта";
 "link_acknowledgements" = "Благодарности";
-"acknowledgements_footer" = "CodexBar создан с использованием этих проектов с открытым исходным кодом.";
+"acknowledgements_footer" = "Tolkein создан с использованием этих проектов с открытым исходным кодом.";
 "acknowledgements_others" = "ещё %d";
 "acknowledgements_author" = "Автор";
 "acknowledgements_authors" = "Авторы";
@@ -743,10 +748,11 @@
 "check_for_updates" = "Проверить наличие обновлений…";
 "updates_unavailable" = "Обновления недоступны в этой сборке.";
 "copyright" = "© 2026 Peter Steinberger. Лицензия MIT.";
+"about_based_on_codexbar" = "Основано на CodexBar от Peter Steinberger (лицензия MIT)";
 
 /* Debug Pane */
 "use_javascriptcore_plugin_engine" = "Использовать JavaScriptCore для плагинов провайдеров";
-"use_javascriptcore_plugin_engine_subtitle" = "Только для отката совместимости. Перезапустите CodexBar; CODEXBAR_PLUGIN_ENGINE переопределяет эту настройку.";
+"use_javascriptcore_plugin_engine_subtitle" = "Только для отката совместимости. Перезапустите Tolkein; CODEXBAR_PLUGIN_ENGINE переопределяет эту настройку.";
 "section_logging" = "Журналирование";
 "enable_file_logging" = "Включить запись логов";
 "enable_file_logging_subtitle" = "Записывать логи в %@ для отладки.";
@@ -894,7 +900,7 @@
 "Status Page" = "Страница статуса";
 "Open Status Page" = "Открыть страницу статуса";
 "Settings..." = "Настройки…";
-"About CodexBar" = "О CodexBar";
+"About Tolkein" = "О Tolkein";
 "Quit" = "Выйти";
 "Last %d day" = "Последний %d день";
 "Last %d days" = "Последние %d дн.";
@@ -995,8 +1001,8 @@
 "Managed by Homebrew" = "Управляется через Homebrew";
 "Copy update command" = "Скопировать команду обновления";
 "Update to %@" = "Обновить до %@";
-"CodexBar %@ is available" = "Доступна версия CodexBar %@";
-"CodexBar is up to date" = "CodexBar обновлён";
+"Tolkein %@ is available" = "Доступна версия Tolkein %@";
+"Tolkein is up to date" = "Tolkein обновлён";
 "Checking for updates…" = "Проверка обновлений…";
 "Updating with Homebrew…" = "Обновление через Homebrew…";
 "Homebrew update failed. You can run this command in Terminal instead:" = "Не удалось обновить через Homebrew. Вместо этого можно выполнить эту команду в Терминале:";
@@ -1780,7 +1786,7 @@
 "CodexBar Account Usage" = "Использование учетной записи CodexBar";
 "CodexBar Burn Down" = "CodexBar Квота выгорание";
 "CodexBar Burn Down (Combined)" = "CodexBar Квота выгорание (комбинированное)";
-"CodexBar Help" = "CodexBar Справка";
+"Tolkein Help" = "Tolkein Справка";
 "CodexBar History" = "CodexBar История";
 "CodexBar Metric" = "CodexBar Показатель";
 "CodexBar Switcher" = "Коммутатор CodexBar";
@@ -2684,7 +2690,7 @@
 "http_server_plain_http" = "Разрешить незашифрованный HTTP вне этого Mac";
 "http_server_dashboard" = "Панель";
 "http_server_wildcard" = "На других устройствах замените 0.0.0.0 на IPv4-адрес VPN или Tailscale этого Mac.";
-"http_server_footer" = "По умолчанию выключен. Запускается с CodexBar и останавливается при выходе. Настройки и токен остаются на этом Mac и исключены из синхронизации и экспорта. Для удалённого доступа Mac не должен спать.";
+"http_server_footer" = "По умолчанию выключен. Запускается с Tolkein и останавливается при выходе. Настройки и токен остаются на этом Mac и исключены из синхронизации и экспорта. Для удалённого доступа Mac не должен спать.";
 /* Claude desktop cookie source */
 "Claude desktop app" = "Приложение Claude для компьютера";
 "Use Claude desktop app cookies" = "Использовать файлы cookie приложения Claude";

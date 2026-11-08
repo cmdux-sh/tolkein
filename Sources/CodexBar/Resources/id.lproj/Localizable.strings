@@ -15,10 +15,10 @@
 "Include API keys, cookies, and tokens" = "Sertakan kunci API, cookies, dan token";
 "Sync usage snapshots" = "Sinkronkan snapshot penggunaan";
 "Show accounts from other Macs" = "Tampilkan akun dari Mac lain";
-"Requires a signed release build of CodexBar." = "Memerlukan build rilis CodexBar yang ditandatangani.";
+"Requires a signed release build of Tolkein." = "Memerlukan build rilis Tolkein yang ditandatangani.";
 "Sign in to iCloud in System Settings to enable sync." = "Masuk ke iCloud di Pengaturan Sistem untuk mengaktifkan sinkronisasi.";
 "iCloud access is restricted on this Mac." = "Akses iCloud dibatasi di Mac ini.";
-"Sync is paused: another Mac uses a newer version of CodexBar. Update to resume." = "Sinkronisasi dijeda: Mac lain menggunakan versi CodexBar yang lebih baru. Perbarui untuk melanjutkan.";
+"Sync is paused: another Mac uses a newer version of Tolkein. Update to resume." = "Sinkronisasi dijeda: Mac lain menggunakan versi Tolkein yang lebih baru. Perbarui untuk melanjutkan.";
 "Last successful fetch" = "Pengambilan terakhir yang berhasil";
 "Last successful push" = "Dorongan terakhir yang berhasil";
 "Never" = "Tidak pernah";
@@ -571,7 +571,7 @@
 "quota_warning_warning" = "Peringatan";
 "quota_warning_critical" = "Kritis";
 "apply" = "Terapkan";
-"quit_app" = "Keluar CodexBar";
+"quit_app" = "Keluar Tolkein";
 
 /* Tab titles */
 "tab_general" = "Umum";
@@ -604,6 +604,11 @@
 "hooks_delete_argument" = "Hapus argumen";
 "tab_about" = "Tentang";
 "tab_debug" = "Men-debug";
+"tab_alerts" = "Peringatan";
+"tab_costs" = "Biaya";
+"tab_sync" = "Sinkronisasi";
+"tab_integrations" = "Integrasi";
+"tab_privacy" = "Privasi & Data";
 
 /* Providers Pane */
 "select_a_provider" = "Pilih penyedia";
@@ -738,7 +743,7 @@
 "link_twitter" = "Twitter";
 "link_email" = "Surel";
 "link_acknowledgements" = "Ucapan Terima Kasih";
-"acknowledgements_footer" = "CodexBar dibangun dengan proyek sumber terbuka ini.";
+"acknowledgements_footer" = "Tolkein dibangun dengan proyek sumber terbuka ini.";
 "acknowledgements_others" = "%d lainnya";
 "acknowledgements_author" = "Penulis";
 "acknowledgements_authors" = "Penulis";
@@ -750,10 +755,11 @@
 "check_for_updates" = "Periksa Pembaruan…";
 "updates_unavailable" = "Pembaruan tidak tersedia di build ini.";
 "copyright" = "© 2026 Peter Steinberger. Lisensi MIT.";
+"about_based_on_codexbar" = "Berdasarkan CodexBar oleh Peter Steinberger (Lisensi MIT)";
 
 /* Debug Pane */
 "use_javascriptcore_plugin_engine" = "Gunakan JavaScriptCore untuk plugin penyedia";
-"use_javascriptcore_plugin_engine_subtitle" = "Hanya untuk rollback kompatibilitas. Mulai ulang CodexBar untuk menerapkan; CODEXBAR_PLUGIN_ENGINE mengganti pengaturan ini.";
+"use_javascriptcore_plugin_engine_subtitle" = "Hanya untuk rollback kompatibilitas. Mulai ulang Tolkein untuk menerapkan; CODEXBAR_PLUGIN_ENGINE mengganti pengaturan ini.";
 "section_logging" = "Pencatatan";
 "enable_file_logging" = "Aktifkan pencatatan file";
 "enable_file_logging_subtitle" = "Tulis log ke %@ untuk debugging.";
@@ -901,7 +907,7 @@
 "Status Page" = "Halaman Status";
 "Open Status Page" = "Buka Halaman Status";
 "Settings..." = "Pengaturan...";
-"About CodexBar" = "Tentang CodexBar";
+"About Tolkein" = "Tentang Tolkein";
 "Quit" = "Keluar";
 "Last %d day" = "%d hari terakhir";
 "Last %d days" = "%d hari terakhir";
@@ -1002,8 +1008,8 @@
 "Managed by Homebrew" = "Dikelola oleh Homebrew";
 "Copy update command" = "Salin perintah pembaruan";
 "Update to %@" = "Perbarui ke %@";
-"CodexBar %@ is available" = "CodexBar %@ tersedia";
-"CodexBar is up to date" = "CodexBar sudah terbaru";
+"Tolkein %@ is available" = "Tolkein %@ tersedia";
+"Tolkein is up to date" = "Tolkein sudah terbaru";
 "Checking for updates…" = "Memeriksa pembaruan…";
 "Updating with Homebrew…" = "Memperbarui dengan Homebrew…";
 "Homebrew update failed. You can run this command in Terminal instead:" = "Pembaruan Homebrew gagal. Anda dapat menjalankan perintah ini di Terminal:";
@@ -1783,7 +1789,7 @@
 "CodexBar Account Usage" = "Penggunaan Akun CodexBar";
 "CodexBar Burn Down" = "CodexBar Kuota terbakar";
 "CodexBar Burn Down (Combined)" = "Pembakaran CodexBar Kuota (gabungan)";
-"CodexBar Help" = "Bantuan CodexBar";
+"Tolkein Help" = "Bantuan Tolkein";
 "CodexBar History" = "CodexBar Sejarah";
 "CodexBar Metric" = "CodexBar Metrik";
 "CodexBar Switcher" = "Pengalih CodexBar";
@@ -2685,7 +2691,7 @@
 "http_server_plain_http" = "Izinkan HTTP tanpa enkripsi di luar Mac ini";
 "http_server_dashboard" = "Dasbor";
 "http_server_wildcard" = "Pada perangkat lain, ganti 0.0.0.0 dengan alamat IPv4 VPN atau Tailscale Mac ini.";
-"http_server_footer" = "Nonaktif secara default. Dimulai bersama CodexBar dan berhenti saat ditutup. Pengaturan dan token tetap di Mac ini, tanpa sinkronisasi atau ekspor. Biarkan Mac tetap terjaga untuk akses jarak jauh.";
+"http_server_footer" = "Nonaktif secara default. Dimulai bersama Tolkein dan berhenti saat ditutup. Pengaturan dan token tetap di Mac ini, tanpa sinkronisasi atau ekspor. Biarkan Mac tetap terjaga untuk akses jarak jauh.";
 /* Claude desktop cookie source */
 "Claude desktop app" = "Aplikasi desktop Claude";
 "Use Claude desktop app cookies" = "Gunakan cookie aplikasi desktop Claude";

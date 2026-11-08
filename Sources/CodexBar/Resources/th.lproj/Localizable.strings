@@ -15,10 +15,10 @@
 "Include API keys, cookies, and tokens" = "รวมคีย์ API, cookies และ โทเค็น";
 "Sync usage snapshots" = "ซิงค์ภาพรวมการใช้งาน";
 "Show accounts from other Macs" = "แสดงบัญชีจาก Mac เครื่องอื่น";
-"Requires a signed release build of CodexBar." = "จำเป็นต้องมีรุ่น CodexBar ที่ลงนามแล้ว";
+"Requires a signed release build of Tolkein." = "จำเป็นต้องมีรุ่น Tolkein ที่ลงนามแล้ว";
 "Sign in to iCloud in System Settings to enable sync." = "ลงชื่อเข้าใช้ iCloud ในการตั้งค่าระบบเพื่อเปิดใช้งานการซิงค์";
 "iCloud access is restricted on this Mac." = "การเข้าถึง iCloud ถูกจำกัดบน Mac เครื่องนี้";
-"Sync is paused: another Mac uses a newer version of CodexBar. Update to resume." = "การซิงค์ถูกหยุดชั่วคราว: Mac เครื่องอื่นใช้ CodexBar เวอร์ชันใหม่กว่า อัปเดตเพื่อดำเนินการต่อ";
+"Sync is paused: another Mac uses a newer version of Tolkein. Update to resume." = "การซิงค์ถูกหยุดชั่วคราว: Mac เครื่องอื่นใช้ Tolkein เวอร์ชันใหม่กว่า อัปเดตเพื่อดำเนินการต่อ";
 "Last successful fetch" = "การดึงข้อมูลสำเร็จครั้งล่าสุด";
 "Last successful push" = "การผลักดันสำเร็จครั้งล่าสุด";
 "Never" = "ไม่เคย";
@@ -569,7 +569,7 @@
 "quota_warning_warning" = "คำเตือน";
 "quota_warning_critical" = "วิกฤติ";
 "apply" = "สมัคร";
-"quit_app" = "ออกจาก CodexBar";
+"quit_app" = "ออกจาก Tolkein";
 
 /* Tab titles */
 "tab_general" = "ทั่วไป";
@@ -602,6 +602,11 @@
 "hooks_add_argument" = "เพิ่มอาร์กิวเมนต์";
 "hooks_delete_argument" = "ลบอาร์กิวเมนต์";
 "tab_debug" = "แก้ไขข้อบกพร่อง";
+"tab_alerts" = "การแจ้งเตือน";
+"tab_costs" = "ค่าใช้จ่าย";
+"tab_sync" = "การซิงค์";
+"tab_integrations" = "การผสานรวม";
+"tab_privacy" = "ความเป็นส่วนตัวและข้อมูล";
 
 /* Providers Pane */
 "select_a_provider" = "เลือกผู้ให้บริการ";
@@ -736,7 +741,7 @@
 "link_twitter" = "ทวิตเตอร์";
 "link_email" = "อีเมล";
 "link_acknowledgements" = "กิตติกรรมประกาศ";
-"acknowledgements_footer" = "CodexBar สร้างขึ้นด้วยโปรเจกต์โอเพนซอร์สเหล่านี้";
+"acknowledgements_footer" = "Tolkein สร้างขึ้นด้วยโปรเจกต์โอเพนซอร์สเหล่านี้";
 "acknowledgements_others" = "อีก %d ราย";
 "acknowledgements_author" = "ผู้เขียน";
 "acknowledgements_authors" = "ผู้เขียน";
@@ -748,10 +753,11 @@
 "check_for_updates" = "ตรวจสอบการอัปเดต...";
 "updates_unavailable" = "การอัปเดตไม่พร้อมใช้งานในรุ่นนี้";
 "copyright" = "© 2026 ปีเตอร์ สไตน์เบอร์เกอร์ ใบอนุญาต MIT";
+"about_based_on_codexbar" = "พัฒนาต่อยอดจาก CodexBar โดย Peter Steinberger (สัญญาอนุญาต MIT)";
 
 /* Debug Pane */
 "use_javascriptcore_plugin_engine" = "ใช้ JavaScriptCore สำหรับปลั๊กอินผู้ให้บริการ";
-"use_javascriptcore_plugin_engine_subtitle" = "ใช้เพื่อย้อนกลับด้านความเข้ากันได้เท่านั้น เริ่ม CodexBar ใหม่เพื่อใช้ค่า; CODEXBAR_PLUGIN_ENGINE จะแทนที่การตั้งค่านี้";
+"use_javascriptcore_plugin_engine_subtitle" = "ใช้เพื่อย้อนกลับด้านความเข้ากันได้เท่านั้น เริ่ม Tolkein ใหม่เพื่อใช้ค่า; CODEXBAR_PLUGIN_ENGINE จะแทนที่การตั้งค่านี้";
 "section_logging" = "การบันทึก";
 "enable_file_logging" = "เปิดใช้งานการบันทึกไฟล์";
 "enable_file_logging_subtitle" = "เขียนบันทึกไปยัง %@ เพื่อแก้ไขข้อบกพร่อง";
@@ -899,7 +905,7 @@
 "Status Page" = "หน้าสถานะ";
 "Open Status Page" = "เปิดหน้าสถานะ";
 "Settings..." = "การตั้งค่า...";
-"About CodexBar" = "เกี่ยวกับ CodexBar";
+"About Tolkein" = "เกี่ยวกับ Tolkein";
 "Quit" = "ออก";
 "Last %d day" = "%d วันที่ผ่านมา";
 "Last %d days" = "%d วันที่ผ่านมา";
@@ -1000,8 +1006,8 @@
 "Managed by Homebrew" = "จัดการโดย Homebrew";
 "Copy update command" = "คัดลอกคำสั่งอัปเดต";
 "Update to %@" = "อัปเดตเป็น %@";
-"CodexBar %@ is available" = "CodexBar %@ พร้อมให้ใช้งานแล้ว";
-"CodexBar is up to date" = "CodexBar เป็นเวอร์ชันล่าสุดแล้ว";
+"Tolkein %@ is available" = "Tolkein %@ พร้อมให้ใช้งานแล้ว";
+"Tolkein is up to date" = "Tolkein เป็นเวอร์ชันล่าสุดแล้ว";
 "Checking for updates…" = "กำลังตรวจหาอัปเดต…";
 "Updating with Homebrew…" = "กำลังอัปเดตด้วย Homebrew…";
 "Homebrew update failed. You can run this command in Terminal instead:" = "อัปเดตผ่าน Homebrew ไม่สำเร็จ คุณสามารถเรียกใช้คำสั่งนี้ใน Terminal แทนได้:";
@@ -1783,7 +1789,7 @@
 "CodexBar Account Usage" = "การใช้บัญชี CodexBar";
 "CodexBar Burn Down" = "CodexBar โควต้า เบิร์นดาวน์";
 "CodexBar Burn Down (Combined)" = "CodexBar โควต้า เบิร์นดาวน์ (รวม)";
-"CodexBar Help" = "CodexBar ช่วยเหลือ";
+"Tolkein Help" = "Tolkein ช่วยเหลือ";
 "CodexBar History" = "ประวัติ CodexBar";
 "CodexBar Metric" = "CodexBar เมตริก";
 "CodexBar Switcher" = "สวิทซ์ CodexBar";
@@ -2685,7 +2691,7 @@
 "http_server_plain_http" = "อนุญาต HTTP ที่ไม่เข้ารหัสจากภายนอก Mac เครื่องนี้";
 "http_server_dashboard" = "แดชบอร์ด";
 "http_server_wildcard" = "บนอุปกรณ์อื่น ให้แทนที่ 0.0.0.0 ด้วยที่อยู่ IPv4 ของ VPN หรือ Tailscale ของ Mac เครื่องนี้";
-"http_server_footer" = "ปิดไว้โดยค่าเริ่มต้น เริ่มพร้อม CodexBar และหยุดเมื่อออกจากแอป การตั้งค่าและโทเค็นอยู่บน Mac เครื่องนี้และไม่รวมในการซิงค์หรือส่งออก ให้ Mac ตื่นอยู่เพื่อเข้าถึงจากระยะไกล";
+"http_server_footer" = "ปิดไว้โดยค่าเริ่มต้น เริ่มพร้อม Tolkein และหยุดเมื่อออกจากแอป การตั้งค่าและโทเค็นอยู่บน Mac เครื่องนี้และไม่รวมในการซิงค์หรือส่งออก ให้ Mac ตื่นอยู่เพื่อเข้าถึงจากระยะไกล";
 /* Claude desktop cookie source */
 "Claude desktop app" = "แอป Claude บนเดสก์ท็อป";
 "Use Claude desktop app cookies" = "ใช้คุกกี้จากแอป Claude บนเดสก์ท็อป";

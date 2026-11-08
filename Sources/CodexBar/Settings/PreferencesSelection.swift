@@ -7,35 +7,49 @@ extension SettingsPane {
     var persistenceToken: String {
         switch self {
         case .general: "general"
-        case .iCloudSync: "iCloudSync"
-        case .usageSpend: "usageSpend"
-        case .notifications: "notifications"
         case .menuBar: "menuBar"
         case .menu: "menu"
-        case .advanced: "advanced"
-        case .hooks: "hooks"
-        case .plugins: "plugins"
+        case .alerts: "alerts"
+        case .costs: "costs"
+        case .sync: "sync"
+        case .integrations: "integrations"
+        case .privacy: "privacy"
         case .about: "about"
         case .debug: "debug"
+        case .plugins: "plugins"
         case let .provider(provider): "provider:\(provider.rawValue)"
         }
     }
 
+    /// Tokens written by earlier Settings layouts, mapped to the pane that now holds their settings.
+    static let legacyPersistenceTokens: [String: SettingsPane] = [
+        // Pre-0.41.1 releases persisted the retired Display pane; its contents moved to Menu Bar.
+        "display": .menuBar,
+        "iCloudSync": .sync,
+        "usageSpend": .costs,
+        "notifications": .alerts,
+        // Advanced's HTTP server and CLI sections moved to Integrations; the rest of it is Privacy & Data.
+        "advanced": .privacy,
+        "hooks": .integrations,
+    ]
+
     init?(persistenceToken: String) {
+        if let legacyPane = Self.legacyPersistenceTokens[persistenceToken] {
+            self = legacyPane
+            return
+        }
         switch persistenceToken {
         case "general": self = .general
-        case "iCloudSync": self = .iCloudSync
-        case "usageSpend": self = .usageSpend
-        case "notifications": self = .notifications
         case "menuBar": self = .menuBar
-        // Pre-0.41.1 releases persisted the retired Display pane; its contents moved to Menu Bar.
-        case "display": self = .menuBar
         case "menu": self = .menu
-        case "advanced": self = .advanced
-        case "hooks": self = .hooks
-        case "plugins": self = .plugins
+        case "alerts": self = .alerts
+        case "costs": self = .costs
+        case "sync": self = .sync
+        case "integrations": self = .integrations
+        case "privacy": self = .privacy
         case "about": self = .about
         case "debug": self = .debug
+        case "plugins": self = .plugins
         default:
             let providerPrefix = "provider:"
             guard persistenceToken.hasPrefix(providerPrefix),

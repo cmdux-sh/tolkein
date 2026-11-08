@@ -15,10 +15,10 @@
 "Include API keys, cookies, and tokens" = "包含 API 密鑰、Cookie 和令牌";
 "Sync usage snapshots" = "同步使用情況快照";
 "Show accounts from other Macs" = "顯示其他 Mac 上的帳戶";
-"Requires a signed release build of CodexBar." = "需要經過簽名的 CodexBar 正式版本。";
+"Requires a signed release build of Tolkein." = "需要經過簽名的 Tolkein 正式版本。";
 "Sign in to iCloud in System Settings to enable sync." = "在「系統設定」中登入 iCloud 以啟用同步。";
 "iCloud access is restricted on this Mac." = "此 Mac 上的 iCloud 存取受到限制。";
-"Sync is paused: another Mac uses a newer version of CodexBar. Update to resume." = "同步已暫停：另一台 Mac 使用較新版本的 CodexBar。更新以恢復。";
+"Sync is paused: another Mac uses a newer version of Tolkein. Update to resume." = "同步已暫停：另一台 Mac 使用較新版本的 Tolkein。更新以恢復。";
 "Last successful fetch" = "上次成功獲取";
 "Last successful push" = "上次成功推送";
 "Never" = "從未";
@@ -590,7 +590,7 @@
 "quota_warning_warning" = "警告";
 "quota_warning_critical" = "嚴重";
 "apply" = "套用";
-"quit_app" = "結束 CodexBar";
+"quit_app" = "結束 Tolkein";
 "tab_general" = "一般";
 "tab_providers" = "提供者";
 "tab_notifications" = "通知";
@@ -599,6 +599,11 @@
 "tab_advanced" = "進階";
 "tab_about" = "關於";
 "tab_debug" = "除錯";
+"tab_alerts" = "提醒";
+"tab_costs" = "費用";
+"tab_sync" = "同步";
+"tab_integrations" = "整合";
+"tab_privacy" = "隱私權與資料";
 "select_a_provider" = "選擇提供者";
 "cancel" = "取消";
 "last_fetch_failed" = "上次取得失敗";
@@ -726,7 +731,7 @@
 "link_twitter" = "Twitter";
 "link_email" = "電子郵件";
 "link_acknowledgements" = "致謝";
-"acknowledgements_footer" = "CodexBar 使用了以下開放原始碼專案構建。";
+"acknowledgements_footer" = "Tolkein 使用了以下開放原始碼專案構建。";
 "acknowledgements_others" = "其他 %d 人";
 "acknowledgements_author" = "作者";
 "acknowledgements_authors" = "作者";
@@ -738,8 +743,9 @@
 "check_for_updates" = "檢查更新…";
 "updates_unavailable" = "此建置無法使用更新功能。";
 "copyright" = "© 2026 Peter Steinberger。MIT 許可證。";
+"about_based_on_codexbar" = "基於 Peter Steinberger 的 CodexBar（MIT 授權）";
 "use_javascriptcore_plugin_engine" = "為供應商外掛使用 JavaScriptCore";
-"use_javascriptcore_plugin_engine_subtitle" = "僅用於相容性回復。重新啟動 CodexBar 後生效；CODEXBAR_PLUGIN_ENGINE 會覆寫此設定。";
+"use_javascriptcore_plugin_engine_subtitle" = "僅用於相容性回復。重新啟動 Tolkein 後生效；CODEXBAR_PLUGIN_ENGINE 會覆寫此設定。";
 "section_logging" = "記錄";
 "enable_file_logging" = "啟用檔案記錄";
 "enable_file_logging_subtitle" = "將記錄寫入 %@ 以進行除錯。";
@@ -861,8 +867,8 @@
 "Managed by Homebrew" = "由 Homebrew 管理";
 "Copy update command" = "複製更新指令";
 "Update to %@" = "更新至 %@";
-"CodexBar %@ is available" = "CodexBar %@ 已推出";
-"CodexBar is up to date" = "CodexBar 已是最新版本";
+"Tolkein %@ is available" = "Tolkein %@ 已推出";
+"Tolkein is up to date" = "Tolkein 已是最新版本";
 "Checking for updates…" = "正在檢查更新…";
 "Updating with Homebrew…" = "正在透過 Homebrew 更新…";
 "Homebrew update failed. You can run this command in Terminal instead:" = "Homebrew 更新失敗。你也可以在終端機中執行此指令：";
@@ -942,7 +948,7 @@
 "Status Page" = "狀態頁";
 "Open Status Page" = "打開狀態頁";
 "Settings..." = "設定…";
-"About CodexBar" = "關於 CodexBar";
+"About Tolkein" = "關於 Tolkein";
 "Quit" = "結束";
 "Last %d day" = "近 %d 天";
 "Last %d days" = "近 %d 天";
@@ -1800,7 +1806,7 @@
 "CodexBar Account Usage" = "CodexBar 帳戶用量";
 "CodexBar Burn Down" = "CodexBar 額度消耗趨勢";
 "CodexBar Burn Down (Combined)" = "CodexBar 額度消耗趨勢（組合）";
-"CodexBar Help" = "CodexBar 幫助";
+"Tolkein Help" = "Tolkein 幫助";
 "CodexBar History" = "CodexBar 歷史記錄";
 "CodexBar Metric" = "CodexBar 指標";
 "CodexBar Switcher" = "CodexBar切換器";
@@ -2661,7 +2667,7 @@
 "http_server_plain_http" = "允許此 Mac 以外的未加密 HTTP 存取";
 "http_server_dashboard" = "儀表板";
 "http_server_wildcard" = "在其他裝置上，請將 0.0.0.0 替換為此 Mac 的 VPN 或 Tailscale IPv4 位址。";
-"http_server_footer" = "預設關閉。隨 CodexBar 啟動，並在結束時停止。設定和權杖僅保存在此 Mac 上，不會同步或匯出。遠端存取時請保持 Mac 喚醒。";
+"http_server_footer" = "預設關閉。隨 Tolkein 啟動，並在結束時停止。設定和權杖僅保存在此 Mac 上，不會同步或匯出。遠端存取時請保持 Mac 喚醒。";
 /* Claude desktop cookie source */
 "Claude desktop app" = "Claude 桌面應用程式";
 "Use Claude desktop app cookies" = "使用 Claude 桌面應用程式的 Cookie";

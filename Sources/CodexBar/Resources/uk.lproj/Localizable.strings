@@ -15,10 +15,10 @@
 "Include API keys, cookies, and tokens" = "Містить ключі API, cookies і жетони";
 "Sync usage snapshots" = "Синхронізувати знімки використання";
 "Show accounts from other Macs" = "Показати облікові записи з інших Mac";
-"Requires a signed release build of CodexBar." = "Для цього потрібна підписана релізна збірка CodexBar.";
+"Requires a signed release build of Tolkein." = "Для цього потрібна підписана релізна збірка Tolkein.";
 "Sign in to iCloud in System Settings to enable sync." = "Увійдіть в iCloud у Системних параметрах, щоб увімкнути синхронізацію.";
 "iCloud access is restricted on this Mac." = "Доступ до iCloud обмежено на цьому Mac.";
-"Sync is paused: another Mac uses a newer version of CodexBar. Update to resume." = "Синхронізацію призупинено: інший Mac використовує новішу версію CodexBar. Оновіть, щоб відновити.";
+"Sync is paused: another Mac uses a newer version of Tolkein. Update to resume." = "Синхронізацію призупинено: інший Mac використовує новішу версію Tolkein. Оновіть, щоб відновити.";
 "Last successful fetch" = "Останнє успішне отримання";
 "Last successful push" = "Останнє успішне надсилання";
 "Never" = "Ніколи";
@@ -585,7 +585,7 @@
 "quota_warning_warning" = "Попередження";
 "quota_warning_critical" = "Критично";
 "apply" = "Застосувати";
-"quit_app" = "Вийти з CodexBar";
+"quit_app" = "Вийти з Tolkein";
 
 /* Tab titles */
 "tab_general" = "Загальні";
@@ -596,6 +596,11 @@
 "tab_advanced" = "Розширені";
 "tab_about" = "Про програму";
 "tab_debug" = "Налагодження";
+"tab_alerts" = "Сповіщення";
+"tab_costs" = "Витрати";
+"tab_sync" = "Синхронізація";
+"tab_integrations" = "Інтеграції";
+"tab_privacy" = "Конфіденційність і дані";
 
 /* Providers Pane */
 "select_a_provider" = "Виберіть провайдера";
@@ -712,7 +717,7 @@
 "section_keychain_access" = "Доступ до Keychain";
 "keychain_access_caption" = "Блокує читання й запис до Keychain через Security.framework, а також розшифрування Chromium Safe Storage. CLI постачальників, які запускаються для отримання даних про використання, можуть і надалі звертатися до облікових даних за власними правилами. За наявності підтримки використовуйте введені вручну cookie, ключі API або файли.";
 "disable_keychain_access_title" = "Вимкнути доступ до Keychain";
-"disable_keychain_access_subtitle" = "Блокує доступ CodexBar до Keychain і розшифрування cookie браузера.";
+"disable_keychain_access_subtitle" = "Блокує доступ Tolkein до Keychain і розшифрування cookie браузера.";
 "Re-authenticate" = "Автентифікувати повторно";
 "kiro_reauthenticate_title" = "Вхід у Kiro CLI";
 "kiro_reauthenticate_subtitle" = "Запускає «kiro-cli login», щоб оновити сеанс після завершення терміну дії.";
@@ -730,7 +735,7 @@
 "link_twitter" = "Twitter";
 "link_email" = "Електронна пошта";
 "link_acknowledgements" = "Подяки";
-"acknowledgements_footer" = "CodexBar створено з використанням цих проєктів з відкритим кодом.";
+"acknowledgements_footer" = "Tolkein створено з використанням цих проєктів з відкритим кодом.";
 "acknowledgements_others" = "ще %d";
 "acknowledgements_author" = "Автор";
 "acknowledgements_authors" = "Автори";
@@ -742,10 +747,11 @@
 "check_for_updates" = "Перевірити наявність оновлень…";
 "updates_unavailable" = "Оновлення недоступні в цій збірці.";
 "copyright" = "© 2026 Пітер Штайнбергер. Ліцензія MIT.";
+"about_based_on_codexbar" = "Створено на основі CodexBar від Peter Steinberger (ліцензія MIT)";
 
 /* Debug Pane */
 "use_javascriptcore_plugin_engine" = "Використовувати JavaScriptCore для плагінів постачальників";
-"use_javascriptcore_plugin_engine_subtitle" = "Використовуйте лише для повернення до попереднього рушія сумісності. Перезапустіть CodexBar, щоб зміни набули чинності; CODEXBAR_PLUGIN_ENGINE має пріоритет над цим параметром.";
+"use_javascriptcore_plugin_engine_subtitle" = "Використовуйте лише для повернення до попереднього рушія сумісності. Перезапустіть Tolkein, щоб зміни набули чинності; CODEXBAR_PLUGIN_ENGINE має пріоритет над цим параметром.";
 "section_logging" = "Журналювання";
 "enable_file_logging" = "Увімкнути журналювання у файл";
 "enable_file_logging_subtitle" = "Записує журнали в %@ для налагодження.";
@@ -893,7 +899,7 @@
 "Status Page" = "Сторінка стану";
 "Open Status Page" = "Відкрити сторінку стану";
 "Settings..." = "Налаштування...";
-"About CodexBar" = "Про CodexBar";
+"About Tolkein" = "Про Tolkein";
 "Quit" = "Вийти";
 "Last %d day" = "Останній %d день";
 "Last %d days" = "За останні %d дн.";
@@ -993,8 +999,8 @@
 "Managed by Homebrew" = "Керується через Homebrew";
 "Copy update command" = "Скопіювати команду оновлення";
 "Update to %@" = "Оновити до %@";
-"CodexBar %@ is available" = "Доступна версія CodexBar %@";
-"CodexBar is up to date" = "CodexBar оновлено";
+"Tolkein %@ is available" = "Доступна версія Tolkein %@";
+"Tolkein is up to date" = "Tolkein оновлено";
 "Checking for updates…" = "Перевірка оновлень…";
 "Updating with Homebrew…" = "Оновлення через Homebrew…";
 "Homebrew update failed. You can run this command in Terminal instead:" = "Не вдалося оновити через Homebrew. Натомість можна виконати цю команду в Терміналі:";
@@ -1780,7 +1786,7 @@
 "CodexBar Account Usage" = "Використання облікового запису CodexBar";
 "CodexBar Burn Down" = "CodexBar: темп вичерпання квоти";
 "CodexBar Burn Down (Combined)" = "CodexBar: темп вичерпання квоти (загальний)";
-"CodexBar Help" = "Довідка CodexBar";
+"Tolkein Help" = "Довідка Tolkein";
 "CodexBar History" = "Історія CodexBar";
 "CodexBar Metric" = "Показник CodexBar";
 "CodexBar Switcher" = "Перемикач CodexBar";
@@ -2684,7 +2690,7 @@
 "http_server_plain_http" = "Дозволити незашифрований HTTP поза цим Mac";
 "http_server_dashboard" = "Панель";
 "http_server_wildcard" = "На інших пристроях замініть 0.0.0.0 на IPv4-адресу VPN або Tailscale цього Mac.";
-"http_server_footer" = "Типово вимкнено. Запускається з CodexBar і зупиняється після виходу. Налаштування й токен залишаються на цьому Mac та не синхронізуються й не експортуються. Для віддаленого доступу Mac має не спати.";
+"http_server_footer" = "Типово вимкнено. Запускається з Tolkein і зупиняється після виходу. Налаштування й токен залишаються на цьому Mac та не синхронізуються й не експортуються. Для віддаленого доступу Mac має не спати.";
 /* Claude desktop cookie source */
 "Claude desktop app" = "Програма Claude для комп’ютера";
 "Use Claude desktop app cookies" = "Використовувати файли cookie програми Claude";

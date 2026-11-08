@@ -15,10 +15,10 @@
 "Include API keys, cookies, and tokens" = "API 키, cookies 및 토큰 포함";
 "Sync usage snapshots" = "사용량 스냅샷 동기화";
 "Show accounts from other Macs" = "다른 Mac의 계정 보기";
-"Requires a signed release build of CodexBar." = "CodexBar의 서명된 릴리스 빌드가 필요합니다.";
+"Requires a signed release build of Tolkein." = "Tolkein의 서명된 릴리스 빌드가 필요합니다.";
 "Sign in to iCloud in System Settings to enable sync." = "동기화를 활성화하려면 시스템 설정에서 iCloud에 로그인하세요.";
 "iCloud access is restricted on this Mac." = "이 Mac에서는 iCloud 액세스가 제한되어 있습니다.";
-"Sync is paused: another Mac uses a newer version of CodexBar. Update to resume." = "동기화가 일시 중지되었습니다. 다른 Mac에서 최신 버전의 CodexBar를 사용하고 있습니다. 재개하려면 업데이트하세요.";
+"Sync is paused: another Mac uses a newer version of Tolkein. Update to resume." = "동기화가 일시 중지되었습니다. 다른 Mac에서 최신 버전의 Tolkein을 사용하고 있습니다. 재개하려면 업데이트하세요.";
 "Last successful fetch" = "마지막으로 성공한 가져오기";
 "Last successful push" = "마지막으로 성공한 푸시";
 "Never" = "절대로";
@@ -581,7 +581,7 @@
 "quota_warning_warning" = "경고";
 "quota_warning_critical" = "심각";
 "apply" = "적용";
-"quit_app" = "CodexBar 종료";
+"quit_app" = "Tolkein 종료";
 "tab_general" = "일반";
 "tab_providers" = "공급자";
 "tab_notifications" = "알림";
@@ -590,6 +590,11 @@
 "tab_advanced" = "고급";
 "tab_about" = "정보";
 "tab_debug" = "디버그";
+"tab_alerts" = "알림";
+"tab_costs" = "비용";
+"tab_sync" = "동기화";
+"tab_integrations" = "통합";
+"tab_privacy" = "개인정보 보호 및 데이터";
 "select_a_provider" = "공급자 선택";
 "cancel" = "취소";
 "last_fetch_failed" = "마지막 가져오기 실패";
@@ -716,7 +721,7 @@
 "link_twitter" = "Twitter";
 "link_email" = "이메일";
 "link_acknowledgements" = "감사의 말";
-"acknowledgements_footer" = "CodexBar는 다음 오픈 소스 프로젝트로 만들어졌습니다.";
+"acknowledgements_footer" = "Tolkein은 다음 오픈 소스 프로젝트로 만들어졌습니다.";
 "acknowledgements_others" = "외 %d명";
 "acknowledgements_author" = "작성자";
 "acknowledgements_authors" = "작성자";
@@ -728,8 +733,9 @@
 "check_for_updates" = "업데이트 확인…";
 "updates_unavailable" = "이 빌드에서는 업데이트를 사용할 수 없습니다.";
 "copyright" = "© 2026 Peter Steinberger. MIT License.";
+"about_based_on_codexbar" = "Peter Steinberger의 CodexBar 기반 (MIT 라이선스)";
 "use_javascriptcore_plugin_engine" = "제공자 플러그인에 JavaScriptCore 사용";
-"use_javascriptcore_plugin_engine_subtitle" = "호환성 롤백 전용입니다. 적용하려면 CodexBar를 재시작하세요. CODEXBAR_PLUGIN_ENGINE이 이 설정보다 우선합니다.";
+"use_javascriptcore_plugin_engine_subtitle" = "호환성 롤백 전용입니다. 적용하려면 Tolkein을 재시작하세요. CODEXBAR_PLUGIN_ENGINE이 이 설정보다 우선합니다.";
 "section_logging" = "로깅";
 "enable_file_logging" = "파일 로깅 사용";
 "enable_file_logging_subtitle" = "디버깅을 위해 %@에 로그를 기록합니다.";
@@ -865,7 +871,7 @@
 "Status Page" = "상태 페이지";
 "Open Status Page" = "상태 페이지 열기";
 "Settings..." = "설정...";
-"About CodexBar" = "CodexBar 정보";
+"About Tolkein" = "Tolkein 정보";
 "Quit" = "종료";
 "Last %d day" = "최근 %d일";
 "Last %d days" = "최근 %d일";
@@ -962,8 +968,8 @@
 "Managed by Homebrew" = "Homebrew로 관리됨";
 "Copy update command" = "업데이트 명령 복사";
 "Update to %@" = "%@(으)로 업데이트";
-"CodexBar %@ is available" = "CodexBar %@ 사용 가능";
-"CodexBar is up to date" = "CodexBar가 최신 버전입니다";
+"Tolkein %@ is available" = "Tolkein %@ 사용 가능";
+"Tolkein is up to date" = "Tolkein이 최신 버전입니다";
 "Checking for updates…" = "업데이트 확인 중…";
 "Updating with Homebrew…" = "Homebrew로 업데이트 중…";
 "Homebrew update failed. You can run this command in Terminal instead:" = "Homebrew 업데이트에 실패했습니다. 대신 터미널에서 이 명령을 실행할 수 있습니다:";
@@ -1748,7 +1754,7 @@
 "CodexBar Account Usage" = "CodexBar 계정 사용법";
 "CodexBar Burn Down" = "CodexBar 할당량 번다운";
 "CodexBar Burn Down (Combined)" = "CodexBar 할당량 번다운(결합)";
-"CodexBar Help" = "CodexBar 도움말";
+"Tolkein Help" = "Tolkein 도움말";
 "CodexBar History" = "CodexBar 역사";
 "CodexBar Metric" = "CodexBar 지표";
 "CodexBar Switcher" = "CodexBar 스위처";
@@ -2651,7 +2657,7 @@
 "http_server_plain_http" = "이 Mac 외부에서 암호화되지 않은 HTTP 허용";
 "http_server_dashboard" = "대시보드";
 "http_server_wildcard" = "다른 기기에서는 0.0.0.0을 이 Mac의 VPN 또는 Tailscale IPv4 주소로 바꾸세요.";
-"http_server_footer" = "기본적으로 꺼져 있습니다. CodexBar와 함께 시작되고 종료 시 중지됩니다. 설정과 토큰은 이 Mac에 보관되며 동기화 및 내보내기에서 제외됩니다. 원격 접근을 위해 Mac이 잠자기에 들어가지 않도록 하세요.";
+"http_server_footer" = "기본적으로 꺼져 있습니다. Tolkein과 함께 시작되고 종료 시 중지됩니다. 설정과 토큰은 이 Mac에 보관되며 동기화 및 내보내기에서 제외됩니다. 원격 접근을 위해 Mac이 잠자기에 들어가지 않도록 하세요.";
 /* Claude desktop cookie source */
 "Claude desktop app" = "Claude 데스크톱 앱";
 "Use Claude desktop app cookies" = "Claude 데스크톱 앱 쿠키 사용";

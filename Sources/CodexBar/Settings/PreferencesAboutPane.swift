@@ -47,10 +47,7 @@ struct AboutPane: View {
                 AboutLinkRow(
                     icon: "chevron.left.slash.chevron.right",
                     title: L("link_github"),
-                    url: "https://github.com/steipete/CodexBar")
-                AboutLinkRow(icon: "globe", title: L("link_website"), url: "https://codexbar.app")
-                AboutLinkRow(icon: "bird", title: L("link_twitter"), url: "https://twitter.com/steipete")
-                AboutLinkRow(icon: "envelope", title: L("link_email"), url: "mailto:peter@steipete.me")
+                    url: Self.projectHomeURL)
                 Button {
                     self.selection.showAcknowledgements()
                 } label: {
@@ -71,7 +68,7 @@ struct AboutPane: View {
             } header: {
                 Text(L("section_links"))
             } footer: {
-                Text(L("copyright"))
+                Text(verbatim: L("about_based_on_codexbar") + "\n" + L("copyright"))
                     .frame(maxWidth: .infinity)
                     .multilineTextAlignment(.center)
             }
@@ -159,7 +156,7 @@ struct AboutPane: View {
             }
 
             VStack(spacing: 2) {
-                Text("CodexBar")
+                Text(verbatim: Self.appName)
                     .font(.title3).bold()
                 Text(String(format: L("version_format"), AppVersion.displayString))
                     .foregroundStyle(.secondary)
@@ -190,9 +187,16 @@ struct AboutPane: View {
     }
 
     private func openProjectHome() {
-        guard let url = URL(string: "https://github.com/steipete/CodexBar") else { return }
+        guard let url = URL(string: Self.projectHomeURL) else { return }
         NSWorkspace.shared.open(url)
     }
+}
+
+extension AboutPane {
+    /// The product name About shows. The bundle, targets and CLI keep their CodexBar names for now.
+    static let appName = "Tolkein"
+    /// About's only external link; the app icon opens it too.
+    static let projectHomeURL = "https://github.com/cmdux-sh/tolkein"
 }
 
 enum AboutRoute: Hashable {
@@ -210,10 +214,10 @@ struct AboutHomebrewUpdateStatusView: View {
         case .checking:
             Self.progressRow(L("Checking for updates…"))
         case .upToDate:
-            Label(L("CodexBar is up to date"), systemImage: "checkmark.circle.fill")
+            Label(L("Tolkein is up to date"), systemImage: "checkmark.circle.fill")
                 .foregroundStyle(.secondary)
         case let .available(version):
-            LabeledContent(String(format: L("CodexBar %@ is available"), version)) {
+            LabeledContent(String(format: L("Tolkein %@ is available"), version)) {
                 Button(String(format: L("Update to %@"), version)) { self.updater.installUpdate() }
                     .buttonStyle(.borderedProminent)
                     .accessibilityIdentifier("about-homebrew-install-update")

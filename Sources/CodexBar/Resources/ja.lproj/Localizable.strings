@@ -15,10 +15,10 @@
 "Include API keys, cookies, and tokens" = "API キー、cookies、および トークン を含む";
 "Sync usage snapshots" = "使用状況のスナップショットを同期する";
 "Show accounts from other Macs" = "他の Mac のアカウントを表示する";
-"Requires a signed release build of CodexBar." = "CodexBar の署名付きリリース ビルドが必要です。";
+"Requires a signed release build of Tolkein." = "Tolkein の署名付きリリース ビルドが必要です。";
 "Sign in to iCloud in System Settings to enable sync." = "システム設定で iCloud にサインインして同期を有効にします。";
 "iCloud access is restricted on this Mac." = "この Mac では iCloud アクセスが制限されています。";
-"Sync is paused: another Mac uses a newer version of CodexBar. Update to resume." = "同期が一時停止されています: 別の Mac が新しいバージョンの CodexBar を使用しています。更新して再開します。";
+"Sync is paused: another Mac uses a newer version of Tolkein. Update to resume." = "同期が一時停止されています: 別の Mac が新しいバージョンの Tolkein を使用しています。更新して再開します。";
 "Last successful fetch" = "最後に成功したフェッチ";
 "Last successful push" = "最後に成功したプッシュ";
 "Never" = "なし";
@@ -582,7 +582,7 @@
 "quota_warning_warning" = "警告";
 "quota_warning_critical" = "重大";
 "apply" = "適用";
-"quit_app" = "CodexBar を終了";
+"quit_app" = "Tolkein を終了";
 
 /* Tab titles */
 "tab_general" = "一般";
@@ -593,6 +593,11 @@
 "tab_advanced" = "詳細";
 "tab_about" = "情報";
 "tab_debug" = "デバッグ";
+"tab_alerts" = "アラート";
+"tab_costs" = "コスト";
+"tab_sync" = "同期";
+"tab_integrations" = "連携";
+"tab_privacy" = "プライバシーとデータ";
 
 /* Providers Pane */
 "select_a_provider" = "プロバイダを選択";
@@ -727,7 +732,7 @@
 "link_twitter" = "Twitter";
 "link_email" = "メール";
 "link_acknowledgements" = "謝辞";
-"acknowledgements_footer" = "CodexBar は以下のオープンソースプロジェクトを利用しています。";
+"acknowledgements_footer" = "Tolkein は以下のオープンソースプロジェクトを利用しています。";
 "acknowledgements_others" = "他 %d 名";
 "acknowledgements_author" = "作者";
 "acknowledgements_authors" = "作者";
@@ -739,10 +744,11 @@
 "check_for_updates" = "アップデートを確認…";
 "updates_unavailable" = "このビルドではアップデートを利用できません。";
 "copyright" = "© 2026 Peter Steinberger. MIT License。";
+"about_based_on_codexbar" = "Peter Steinberger による CodexBar がベース（MIT ライセンス）";
 
 /* Debug Pane */
 "use_javascriptcore_plugin_engine" = "プロバイダープラグインにJavaScriptCoreを使用";
-"use_javascriptcore_plugin_engine_subtitle" = "互換性のためのロールバック専用です。適用するにはCodexBarを再起動してください。CODEXBAR_PLUGIN_ENGINEがこの設定より優先されます。";
+"use_javascriptcore_plugin_engine_subtitle" = "互換性のためのロールバック専用です。適用するにはTolkeinを再起動してください。CODEXBAR_PLUGIN_ENGINEがこの設定より優先されます。";
 "section_logging" = "ログ";
 "enable_file_logging" = "ファイルログを有効にする";
 "enable_file_logging_subtitle" = "デバッグ用に %@ へログを書き込みます。";
@@ -890,7 +896,7 @@
 "Status Page" = "ステータスページ";
 "Open Status Page" = "ステータスページを開く";
 "Settings..." = "設定...";
-"About CodexBar" = "CodexBar について";
+"About Tolkein" = "Tolkein について";
 "Quit" = "終了";
 "Last %d day" = "過去%d日間";
 "Last %d days" = "過去%d日間";
@@ -990,8 +996,8 @@
 "Managed by Homebrew" = "Homebrew で管理されています";
 "Copy update command" = "更新コマンドをコピー";
 "Update to %@" = "%@ にアップデート";
-"CodexBar %@ is available" = "CodexBar %@ が利用可能です";
-"CodexBar is up to date" = "CodexBar は最新です";
+"Tolkein %@ is available" = "Tolkein %@ が利用可能です";
+"Tolkein is up to date" = "Tolkein は最新です";
 "Checking for updates…" = "アップデートを確認中…";
 "Updating with Homebrew…" = "Homebrew でアップデート中…";
 "Homebrew update failed. You can run this command in Terminal instead:" = "Homebrew でのアップデートに失敗しました。代わりにターミナルで次のコマンドを実行できます:";
@@ -1779,7 +1785,7 @@
 "CodexBar Account Usage" = "CodexBar アカウントの使用状況";
 "CodexBar Burn Down" = "CodexBar クォータ バーンダウン";
 "CodexBar Burn Down (Combined)" = "CodexBar クォータ バーンダウン（複合）";
-"CodexBar Help" = "CodexBar ヘルプ";
+"Tolkein Help" = "Tolkein ヘルプ";
 "CodexBar History" = "CodexBarの歴史";
 "CodexBar Metric" = "CodexBar 指標";
 "CodexBar Switcher" = "CodexBar スイッチャー";
@@ -2683,7 +2689,7 @@
 "http_server_plain_http" = "このMac以外からの暗号化されていないHTTPを許可";
 "http_server_dashboard" = "ダッシュボード";
 "http_server_wildcard" = "他のデバイスでは、0.0.0.0をこのMacのVPNまたはTailscaleのIPv4アドレスに置き換えてください。";
-"http_server_footer" = "デフォルトではオフです。CodexBarと共に起動し、終了時に停止します。設定とトークンはこのMacに保存され、同期や書き出しの対象外です。リモートアクセス中はMacをスリープさせないでください。";
+"http_server_footer" = "デフォルトではオフです。Tolkeinと共に起動し、終了時に停止します。設定とトークンはこのMacに保存され、同期や書き出しの対象外です。リモートアクセス中はMacをスリープさせないでください。";
 /* Claude desktop cookie source */
 "Claude desktop app" = "Claudeデスクトップアプリ";
 "Use Claude desktop app cookies" = "ClaudeデスクトップアプリのCookieを使用";

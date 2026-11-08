@@ -28,7 +28,7 @@ struct MenuDescriptorUpdateAndVersionTests {
             return label
         }
 
-        #expect(labels == [L("About CodexBar") + (version.isEmpty ? "" : " (v\(version))")])
+        #expect(labels == [L("About Tolkein") + (version.isEmpty ? "" : " (v\(version))")])
     }
 
     @Test(arguments: [

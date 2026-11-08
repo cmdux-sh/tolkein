@@ -1,48 +1,46 @@
 import CodexBarCore
 import SwiftUI
 
+/// The Hooks switch and rule editor, as two form sections. Integrations shows them below the HTTP server and CLI.
 @MainActor
-struct HooksPane: View {
+struct HooksSections: View {
     @Bindable var settings: SettingsStore
 
     var body: some View {
-        Form {
-            Section {
-                Toggle(isOn: self.enabledBinding) {
-                    SettingsRowLabel(L("hooks_enable_title"), subtitle: L("hooks_enable_subtitle"))
-                }
-                Label(L("hooks_trust_warning"), systemImage: "exclamationmark.triangle.fill")
+        Section {
+            Toggle(isOn: self.enabledBinding) {
+                SettingsRowLabel(L("hooks_enable_title"), subtitle: L("hooks_enable_subtitle"))
+            }
+            Label(L("hooks_trust_warning"), systemImage: "exclamationmark.triangle.fill")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+        } header: {
+            Text(L("tab_hooks"))
+        }
+
+        Section {
+            if self.settings.hookRules.isEmpty {
+                Text(L("hooks_empty"))
                     .font(.caption)
                     .foregroundStyle(.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
-            } header: {
-                Text(L("tab_hooks"))
+            } else {
+                ForEach(self.settings.hookRules) { rule in
+                    HookRuleRow(
+                        rule: self.binding(for: rule),
+                        onDelete: { self.settings.removeHookRule(id: rule.id) })
+                }
             }
 
-            Section {
-                if self.settings.hookRules.isEmpty {
-                    Text(L("hooks_empty"))
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                } else {
-                    ForEach(self.settings.hookRules) { rule in
-                        HookRuleRow(
-                            rule: self.binding(for: rule),
-                            onDelete: { self.settings.removeHookRule(id: rule.id) })
-                    }
-                }
-
-                Button {
-                    self.settings.addHookRule(HookRule(event: .quotaReached, executable: ""))
-                } label: {
-                    Label(L("hooks_add_rule"), systemImage: "plus")
-                }
-                .disabled(!HookEditorValidation.canAddRule(count: self.settings.hookRules.count))
-            } header: {
-                Text(L("hooks_rules_header"))
+            Button {
+                self.settings.addHookRule(HookRule(event: .quotaReached, executable: ""))
+            } label: {
+                Label(L("hooks_add_rule"), systemImage: "plus")
             }
+            .disabled(!HookEditorValidation.canAddRule(count: self.settings.hookRules.count))
+        } header: {
+            Text(L("hooks_rules_header"))
         }
-        .formStyle(.grouped)
     }
 
     private var enabledBinding: Binding<Bool> {

@@ -552,7 +552,7 @@
 "quota_warning_warning" = "Warning";
 "quota_warning_critical" = "Critical";
 "apply" = "Apply";
-"quit_app" = "Quit CodexBar";
+"quit_app" = "Quit Tolkein";
 
 /* Tab titles */
 "tab_general" = "General";
@@ -564,6 +564,11 @@
 "tab_hooks" = "Hooks";
 "tab_about" = "About";
 "tab_debug" = "Debug";
+"tab_alerts" = "Alerts";
+"tab_costs" = "Costs";
+"tab_sync" = "Sync";
+"tab_integrations" = "Integrations";
+"tab_privacy" = "Privacy & Data";
 
 /* Hooks Pane */
 "hooks_enable_title" = "Enable hooks";
@@ -701,9 +706,9 @@
 "show_provider_storage_usage_title" = "Show provider storage usage";
 "show_provider_storage_usage_subtitle" = "Show local disk usage in menus. Scans known provider-owned paths in the background.";
 "section_keychain_access" = "Keychain access";
-"keychain_access_caption" = "Blocks CodexBar's Security.framework reads and writes and Chromium Safe Storage decryption. Provider-owned CLIs launched for usage may still access credentials under their own policy. Use manual cookies, API keys, or files where supported.";
+"keychain_access_caption" = "Blocks Tolkein's Security.framework reads and writes and Chromium Safe Storage decryption. Provider-owned CLIs launched for usage may still access credentials under their own policy. Use manual cookies, API keys, or files where supported.";
 "disable_keychain_access_title" = "Disable Keychain access";
-"disable_keychain_access_subtitle" = "Blocks CodexBar-owned Keychain access and browser-cookie decryption.";
+"disable_keychain_access_subtitle" = "Blocks Tolkein-owned Keychain access and browser-cookie decryption.";
 "Re-authenticate" = "Re-authenticate";
 "kiro_reauthenticate_title" = "Kiro CLI login";
 "kiro_reauthenticate_subtitle" = "Runs 'kiro-cli login' to refresh your session when it has expired.";
@@ -721,7 +726,7 @@
 "link_twitter" = "Twitter";
 "link_email" = "Email";
 "link_acknowledgements" = "Acknowledgements";
-"acknowledgements_footer" = "CodexBar is built with these open-source projects.";
+"acknowledgements_footer" = "Tolkein is built with these open-source projects.";
 "acknowledgements_others" = "%d others";
 "acknowledgements_author" = "Author";
 "acknowledgements_authors" = "Authors";
@@ -733,10 +738,11 @@
 "check_for_updates" = "Check for Updates…";
 "updates_unavailable" = "Updates unavailable in this build.";
 "copyright" = "© 2026 Peter Steinberger. MIT License.";
+"about_based_on_codexbar" = "Based on CodexBar by Peter Steinberger (MIT License)";
 
 /* Debug Pane */
 "use_javascriptcore_plugin_engine" = "Use JavaScriptCore for provider plugins";
-"use_javascriptcore_plugin_engine_subtitle" = "Compatibility rollback only. Restart CodexBar to apply; CODEXBAR_PLUGIN_ENGINE overrides this setting.";
+"use_javascriptcore_plugin_engine_subtitle" = "Compatibility rollback only. Restart Tolkein to apply; CODEXBAR_PLUGIN_ENGINE overrides this setting.";
 "section_logging" = "Logging";
 "enable_file_logging" = "Enable file logging";
 "enable_file_logging_subtitle" = "Write logs to %@ for debugging.";
@@ -884,7 +890,7 @@
 "Status Page" = "Status Page";
 "Open Status Page" = "Open Status Page";
 "Settings..." = "Settings...";
-"About CodexBar" = "About CodexBar";
+"About Tolkein" = "About Tolkein";
 "Quit" = "Quit";
 "Last %d day" = "Last %d day";
 "Last %d days" = "Last %d days";
@@ -989,8 +995,8 @@
 "Managed by Homebrew" = "Managed by Homebrew";
 "Copy update command" = "Copy update command";
 "Update to %@" = "Update to %@";
-"CodexBar %@ is available" = "CodexBar %@ is available";
-"CodexBar is up to date" = "CodexBar is up to date";
+"Tolkein %@ is available" = "Tolkein %@ is available";
+"Tolkein is up to date" = "Tolkein is up to date";
 "Checking for updates…" = "Checking for updates…";
 "Updating with Homebrew…" = "Updating with Homebrew…";
 "Homebrew update failed. You can run this command in Terminal instead:" = "Homebrew update failed. You can run this command in Terminal instead:";
@@ -1541,10 +1547,10 @@
 "Include API keys, cookies, and tokens" = "Include API keys, cookies, and tokens";
 "Sync usage snapshots" = "Sync usage snapshots";
 "Show accounts from other Macs" = "Show accounts from other Macs";
-"Requires a signed release build of CodexBar." = "Requires a signed release build of CodexBar.";
+"Requires a signed release build of Tolkein." = "Requires a signed release build of Tolkein.";
 "Sign in to iCloud in System Settings to enable sync." = "Sign in to iCloud in System Settings to enable sync.";
 "iCloud access is restricted on this Mac." = "iCloud access is restricted on this Mac.";
-"Sync is paused: another Mac uses a newer version of CodexBar. Update to resume." = "Sync is paused: another Mac uses a newer version of CodexBar. Update to resume.";
+"Sync is paused: another Mac uses a newer version of Tolkein. Update to resume." = "Sync is paused: another Mac uses a newer version of Tolkein. Update to resume.";
 "Last successful fetch" = "Last successful fetch";
 "Last successful push" = "Last successful push";
 "Never" = "Never";
@@ -1788,7 +1794,7 @@
 "CodexBar Account Usage" = "CodexBar Account Usage";
 "CodexBar Burn Down" = "CodexBar Burn Down";
 "CodexBar Burn Down (Combined)" = "CodexBar Burn Down (Combined)";
-"CodexBar Help" = "CodexBar Help";
+"Tolkein Help" = "Tolkein Help";
 "CodexBar History" = "CodexBar History";
 "CodexBar Metric" = "CodexBar Metric";
 "CodexBar Switcher" = "CodexBar Switcher";
@@ -2694,7 +2700,7 @@
 "http_server_plain_http" = "Allow unencrypted HTTP outside this Mac";
 "http_server_dashboard" = "Dashboard";
 "http_server_wildcard" = "On other devices, replace 0.0.0.0 with this Mac’s VPN or Tailscale IPv4 address.";
-"http_server_footer" = "Off by default. Starts with CodexBar and stops when it quits. Settings and token stay on this Mac and are excluded from sync and exports. Keep the Mac awake for remote access.";
+"http_server_footer" = "Off by default. Starts with Tolkein and stops when it quits. Settings and token stay on this Mac and are excluded from sync and exports. Keep the Mac awake for remote access.";
 /* Claude desktop cookie source */
 "Claude desktop app" = "Claude desktop app";
 "Use Claude desktop app cookies" = "Use Claude desktop app cookies";

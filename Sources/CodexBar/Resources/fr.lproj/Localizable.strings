@@ -15,10 +15,10 @@
 "Include API keys, cookies, and tokens" = "Inclut les clés API, cookies et jetons";
 "Sync usage snapshots" = "Synchroniser les instantanés d'utilisation";
 "Show accounts from other Macs" = "Afficher les comptes d'autres Mac";
-"Requires a signed release build of CodexBar." = "Nécessite une version signée de CodexBar.";
+"Requires a signed release build of Tolkein." = "Nécessite une version signée de Tolkein.";
 "Sign in to iCloud in System Settings to enable sync." = "Connectez-vous à iCloud dans les paramètres système pour activer la synchronisation.";
 "iCloud access is restricted on this Mac." = "L'accès à iCloud est restreint sur ce Mac.";
-"Sync is paused: another Mac uses a newer version of CodexBar. Update to resume." = "La synchronisation est suspendue : un autre Mac utilise une version plus récente de CodexBar. Mise à jour pour reprendre.";
+"Sync is paused: another Mac uses a newer version of Tolkein. Update to resume." = "La synchronisation est suspendue : un autre Mac utilise une version plus récente de Tolkein. Mise à jour pour reprendre.";
 "Last successful fetch" = "Dernière récupération réussie";
 "Last successful push" = "Dernière poussée réussie";
 "Never" = "Jamais";
@@ -585,7 +585,7 @@
 "quota_warning_warning" = "Avertissement";
 "quota_warning_critical" = "Critique";
 "apply" = "Appliquer";
-"quit_app" = "Quitter CodexBar";
+"quit_app" = "Quitter Tolkein";
 
 /* Tab titles */
 "tab_general" = "Général";
@@ -596,6 +596,11 @@
 "tab_advanced" = "Avancé";
 "tab_about" = "À propos";
 "tab_debug" = "Débogage";
+"tab_alerts" = "Alertes";
+"tab_costs" = "Coûts";
+"tab_sync" = "Synchronisation";
+"tab_integrations" = "Intégrations";
+"tab_privacy" = "Confidentialité et données";
 
 /* Providers Pane */
 "select_a_provider" = "Sélectionner un fournisseur";
@@ -730,7 +735,7 @@
 "link_twitter" = "X/Twitter";
 "link_email" = "E-mail";
 "link_acknowledgements" = "Remerciements";
-"acknowledgements_footer" = "CodexBar s'appuie sur ces projets open source.";
+"acknowledgements_footer" = "Tolkein s'appuie sur ces projets open source.";
 "acknowledgements_others" = "%d autres";
 "acknowledgements_author" = "Auteur";
 "acknowledgements_authors" = "Auteurs";
@@ -742,10 +747,11 @@
 "check_for_updates" = "Rechercher les mises à jour…";
 "updates_unavailable" = "Mises à jour non disponibles dans cette version.";
 "copyright" = "© 2026 Peter Steinberger. Licence MIT.";
+"about_based_on_codexbar" = "Basé sur CodexBar de Peter Steinberger (licence MIT)";
 
 /* Debug Pane */
 "use_javascriptcore_plugin_engine" = "Utiliser JavaScriptCore pour les extensions de fournisseurs";
-"use_javascriptcore_plugin_engine_subtitle" = "Repli de compatibilité uniquement. Redémarrez CodexBar pour l’appliquer ; CODEXBAR_PLUGIN_ENGINE remplace ce réglage.";
+"use_javascriptcore_plugin_engine_subtitle" = "Repli de compatibilité uniquement. Redémarrez Tolkein pour l’appliquer ; CODEXBAR_PLUGIN_ENGINE remplace ce réglage.";
 "section_logging" = "Journalisation";
 "enable_file_logging" = "Activer la journalisation des fichiers";
 "enable_file_logging_subtitle" = "Écrivez les journaux dans %@ pour le débogage.";
@@ -893,7 +899,7 @@
 "Status Page" = "Page d'état";
 "Open Status Page" = "Ouvrir la page d'état";
 "Settings..." = "Réglages…";
-"About CodexBar" = "À propos de CodexBar";
+"About Tolkein" = "À propos de Tolkein";
 "Quit" = "Quitter";
 "Last %d day" = "Dernier %d jour";
 "Last %d days" = "%d derniers jours";
@@ -993,8 +999,8 @@
 "Managed by Homebrew" = "Géré par Homebrew";
 "Copy update command" = "Copier la commande de mise à jour";
 "Update to %@" = "Mettre à jour vers %@";
-"CodexBar %@ is available" = "CodexBar %@ est disponible";
-"CodexBar is up to date" = "CodexBar est à jour";
+"Tolkein %@ is available" = "Tolkein %@ est disponible";
+"Tolkein is up to date" = "Tolkein est à jour";
 "Checking for updates…" = "Recherche de mises à jour…";
 "Updating with Homebrew…" = "Mise à jour via Homebrew…";
 "Homebrew update failed. You can run this command in Terminal instead:" = "La mise à jour Homebrew a échoué. Vous pouvez exécuter cette commande dans le Terminal :";
@@ -1778,7 +1784,7 @@
 "CodexBar Account Usage" = "Utilisation du compte CodexBar";
 "CodexBar Burn Down" = "Burn-down des quotas CodexBar";
 "CodexBar Burn Down (Combined)" = "Burndown des quotas CodexBar (combiné)";
-"CodexBar Help" = "CodexBar Aide";
+"Tolkein Help" = "Tolkein Aide";
 "CodexBar History" = "Historique du CodexBar";
 "CodexBar Metric" = "CodexBar Indicateur";
 "CodexBar Switcher" = "Commutateur CodexBar";
@@ -2682,7 +2688,7 @@
 "http_server_plain_http" = "Autoriser HTTP non chiffré en dehors de ce Mac";
 "http_server_dashboard" = "Tableau de bord";
 "http_server_wildcard" = "Sur les autres appareils, remplacez 0.0.0.0 par l’adresse IPv4 VPN ou Tailscale de ce Mac.";
-"http_server_footer" = "Désactivé par défaut. Démarre avec CodexBar et s’arrête à sa fermeture. Les réglages et le jeton restent sur ce Mac et sont exclus de la synchronisation et des exports. Gardez le Mac éveillé pour l’accès à distance.";
+"http_server_footer" = "Désactivé par défaut. Démarre avec Tolkein et s’arrête à sa fermeture. Les réglages et le jeton restent sur ce Mac et sont exclus de la synchronisation et des exports. Gardez le Mac éveillé pour l’accès à distance.";
 /* Claude desktop cookie source */
 "Claude desktop app" = "Application de bureau Claude";
 "Use Claude desktop app cookies" = "Utiliser les cookies de l’application de bureau Claude";

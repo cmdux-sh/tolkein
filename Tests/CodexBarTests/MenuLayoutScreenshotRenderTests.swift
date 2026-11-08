@@ -71,7 +71,7 @@ final class MenuLayoutScreenshotRenderTests: XCTestCase {
                             .frame(width: SettingsPane.sidebarMinWidth, height: 620)), []),
                         ("icloud", AnyView(ICloudSyncPane(settings: settings, state: state)
                                 .frame(width: 560, height: 600)), []),
-                        ("hooks", AnyView(HooksPane(settings: settings)
+                        ("hooks", AnyView(Form { HooksSections(settings: settings) }.formStyle(.grouped)
                                 .frame(width: 560, height: 350)), []),
                         ("layout", AnyView(MenuBarLayoutEditor(settings: settings, store: store)
                                 .frame(width: 560).padding(16)), ["menu_bar_layout_drag_remove"]),
