@@ -15,7 +15,7 @@ start-debug:
 start-release:
 	./Scripts/package_app.sh release
 	pkill -x CodexBar || pkill -f CodexBar.app || true
-	cd /Users/steipete/Projects/codexbar && open -n /Users/steipete/Projects/codexbar/CodexBar.app
+	open -n CodexBar.app
 
 restart: start
 

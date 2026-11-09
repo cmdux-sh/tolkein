@@ -201,3 +201,9 @@ Tolkein is a fork that no longer links to CodexBar beyond the MIT credit, so Art
 - **Later, in its own PR:** the internal rename to Tolkein (bundle ID, module and target names), with a migration that carries existing settings and Keychain items to the new bundle ID.
 
 Why: removing what Tolkein doesn't ship or use makes builds, checks and future UI work smaller. The internal names wait because changing the bundle ID moves where macOS keeps the app's data.
+
+## 2026-11-09: Upstream signing ties wait for the internal rename
+
+The upstream-ties cleanup removed the upstream monitor, upstream's appcast and changelog, and links and paths that pointed at upstream. Packaging still defaults to upstream's Developer ID identity and team, and keeps upstream's provisioning profile for iCloud entitlements.
+
+Why: the identity, team, provisioning profile, iCloud container and bundle ID depend on each other, and their tests assume upstream's team. They change together in the internal rename PR, which also migrates settings to the new bundle ID. None of these defaults match on Arturo's Mac, so local `make start` builds are unaffected meanwhile.
