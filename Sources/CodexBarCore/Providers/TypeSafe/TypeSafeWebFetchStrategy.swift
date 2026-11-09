@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 struct TypeSafeResolvedSession: Sendable {
     let cookieHeader: String
@@ -155,11 +152,7 @@ final class TypeSafeWebFetchStrategy: ProviderFetchStrategy, @unchecked Sendable
 
     private static func loadSessions(browserDetection: BrowserDetection) throws
     -> AnySequence<TypeSafeResolvedSession> {
-        #if os(macOS)
         try TypeSafeCookieImporter.sessionCandidates(browserDetection: browserDetection)
-        #else
-        throw TypeSafeCredentialError.missingCookie
-        #endif
     }
 }
 

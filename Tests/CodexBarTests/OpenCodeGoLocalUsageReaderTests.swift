@@ -1,5 +1,3 @@
-#if os(macOS)
-
 import Foundation
 import SQLite3
 import Testing
@@ -1348,5 +1346,3 @@ extension OpenCodeGoLocalUsageReaderTests {
         }
     }
 }
-
-#endif

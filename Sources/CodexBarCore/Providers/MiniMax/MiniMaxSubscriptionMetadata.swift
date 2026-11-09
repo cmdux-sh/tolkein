@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 struct MiniMaxSubscriptionMetadata: Equatable {
     let planName: String?

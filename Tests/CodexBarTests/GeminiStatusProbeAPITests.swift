@@ -1,11 +1,7 @@
 import CodexBarCore
+import Darwin
 import Foundation
 import Testing
-#if canImport(Darwin)
-import Darwin
-#else
-import Glibc
-#endif
 
 @Suite(.serialized)
 struct GeminiStatusProbeAPITests {

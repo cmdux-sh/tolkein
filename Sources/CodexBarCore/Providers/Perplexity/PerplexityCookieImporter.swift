@@ -1,6 +1,4 @@
 import Foundation
-
-#if os(macOS)
 import SweetCookieKit
 
 public enum PerplexityCookieImporter {
@@ -149,4 +147,3 @@ enum PerplexityCookieImportError: LocalizedError {
         }
     }
 }
-#endif

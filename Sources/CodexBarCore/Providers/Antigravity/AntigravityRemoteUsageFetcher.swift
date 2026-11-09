@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 public enum AntigravityRemoteFetchError: LocalizedError, Sendable, Equatable {
     case notLoggedIn
@@ -53,11 +50,7 @@ public struct AntigravityRemoteUsageFetcher: Sendable {
         #else
         let architecture = "amd64"
         #endif
-        #if os(Linux)
-        let platform = "linux"
-        #else
         let platform = "darwin"
-        #endif
         return "antigravity/hub/2.9.1 \(platform)/\(architecture)"
     }()
 

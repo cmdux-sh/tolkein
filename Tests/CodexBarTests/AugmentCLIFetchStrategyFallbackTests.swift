@@ -2,8 +2,6 @@ import Foundation
 import Testing
 @testable import CodexBarCore
 
-#if os(macOS)
-
 /// Regression tests for #474: verify that CLI timeout errors trigger fallback
 /// to the web strategy instead of stalling the refresh cycle.
 struct AugmentCLIFetchStrategyFallbackTests {
@@ -93,5 +91,3 @@ struct AugmentCLIFetchStrategyFallbackTests {
         #expect(strategy.shouldFallback(on: error, context: context) == true)
     }
 }
-
-#endif

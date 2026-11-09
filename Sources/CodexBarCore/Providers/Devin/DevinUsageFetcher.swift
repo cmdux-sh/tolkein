@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 public struct DevinUsageFetcher: Sendable {
     private static let log = CodexBarLog.logger(LogCategories.provider(.devin))
@@ -137,7 +134,6 @@ public struct DevinUsageFetcher: Sendable {
             return [manual]
         }
 
-        #if os(macOS)
         let normalizedOrganizationOverride = Self.normalizedOrganization(organizationOverride)
         let sessions = try DevinSessionImporter.importSessions(
             browserDetection: self.browserDetection,
@@ -154,9 +150,6 @@ public struct DevinUsageFetcher: Sendable {
                 internalOrganizationID: session.internalOrganizationID,
                 sourceLabel: session.sourceLabel)
         }
-        #else
-        throw DevinUsageError.noSession
-        #endif
     }
 
     static func shouldTryNextSession(after error: Error) -> Bool {

@@ -91,9 +91,7 @@ struct ProviderHTTPClientTests {
 
         #expect(configuration.timeoutIntervalForRequest == 30)
         #expect(configuration.timeoutIntervalForResource == 90)
-        #if !os(Linux)
         #expect(configuration.waitsForConnectivity == false)
-        #endif
     }
 
     @Test

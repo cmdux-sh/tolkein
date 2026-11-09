@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 extension GeminiStatusProbe {
     public static func defaultDataLoader(for request: URLRequest) async throws -> (Data, URLResponse) {

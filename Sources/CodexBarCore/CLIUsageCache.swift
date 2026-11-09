@@ -1,15 +1,7 @@
-#if canImport(Darwin)
 import Darwin
-#elseif canImport(Glibc)
-import Glibc
-#elseif canImport(Musl)
-import Musl
-#endif
 import Foundation
-#if os(macOS)
 import Security
 import SweetCookieKit
-#endif
 
 /// Private same-user usage cache the menu bar app writes (opt-in via `CodexBarConfig.shareUsageWithCLI`). SSH sessions
 /// cannot unlock the login keychain, so `codexbar usage` there can fail while the app holds fresh numbers; the CLI
@@ -155,14 +147,11 @@ public struct CLIUsageCache: Codable, Sendable {
             default: return false
             }
         default:
-            #if os(macOS)
             if case BrowserCookieError.accessDenied = error { return true }
-            #endif
             return false
         }
     }
 
-    #if os(macOS)
     /// Unknown session state counts as a GUI session so the existing local-only behavior stays.
     public static func callerHasGraphicSession() -> Bool {
         var attributes = SessionAttributeBits()
@@ -176,13 +165,4 @@ public struct CLIUsageCache: Codable, Sendable {
         let result = await KeychainLockWitness.$current.withValue(witness) { await body() }
         return (result, witness.didObserveLockedKeychain)
     }
-    #else
-    public static func callerHasGraphicSession() -> Bool {
-        true
-    }
-
-    public static func observingLockedKeychain<T>(_ body: () async -> T) async -> (T, Bool) {
-        await (body(), false)
-    }
-    #endif
 }

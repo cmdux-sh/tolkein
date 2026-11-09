@@ -1,8 +1,4 @@
-#if os(macOS)
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 import SweetCookieKit
 
 /// Qwen Cloud (home.qwencloud.com) shares the Aliyun one-console auth backend, so its
@@ -57,4 +53,3 @@ public enum QwenCloudCookieImport {
         return !names.isDisjoint(with: self.authTicketCookies)
     }
 }
-#endif

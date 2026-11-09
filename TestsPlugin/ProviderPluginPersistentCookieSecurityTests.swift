@@ -18,7 +18,6 @@ struct ProviderPluginPersistentCookieSecurityTests {
         #expect(restricted.allowsImportAttempt(runtime: .app, interaction: .userInitiated))
         #expect(!restricted.allowsImportAttempt(runtime: .cli, interaction: .userInitiated))
         #expect(!restricted.allowsImportAttempt(runtime: .app, interaction: .background))
-        #if os(macOS)
         let checks: [(KeychainAccessPreflight.Outcome, Bool)] = [
             (.allowed, true), (.interactionRequired, false), (.notFound, false), (.failure(-25293), false),
         ]
@@ -31,7 +30,6 @@ struct ProviderPluginPersistentCookieSecurityTests {
                 }
             }
         }
-        #endif
     }
 
     @Test(arguments: BundledPluginTestSupport.engines)

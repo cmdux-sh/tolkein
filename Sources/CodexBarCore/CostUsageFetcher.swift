@@ -548,7 +548,6 @@ public struct CostUsageFetcher: Sendable {
                     updatedAt: daily.updatedAt)
             }
 
-            #if os(macOS)
             // Provider-specific by design: Cursor retries failed web cost queries against local CSV history.
             if provider == .cursor {
                 remoteSnapshot = try await self.loadCursorTokenSnapshot(
@@ -558,7 +557,6 @@ public struct CostUsageFetcher: Sendable {
                     calendar: calendar,
                     cookieHeaderOverride: cursorCookieHeaderOverride)
             }
-            #endif
         } catch {
             if provider != .cursor {
                 throw error
@@ -1695,7 +1693,6 @@ public struct CostUsageFetcher: Sendable {
             cache: environment[BedrockSettingsReader.apiURLKey] == nil ? .shared : nil)
     }
 
-    #if os(macOS)
     /// Fetch Cursor's per-day token-cost plus its Cursor-metered total via the cookie-authenticated
     /// dashboard API, reusing the same session resolution as the Cursor status probe. Like Codex and
     /// Claude, the report covers the rolling `historyDays` window and the session line is tied to the
@@ -1725,7 +1722,6 @@ public struct CostUsageFetcher: Sendable {
                 daily: report.daily.data),
             credentialScopeFingerprint: report.credentialScopeFingerprint)
     }
-    #endif
 
     private static func loadCursorLocalSnapshot(
         now: Date,

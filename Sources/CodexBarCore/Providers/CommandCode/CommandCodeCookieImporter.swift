@@ -1,6 +1,4 @@
 import Foundation
-
-#if os(macOS)
 import SweetCookieKit
 
 /// Imports CommandCode session cookies from installed browsers (Chrome by default).
@@ -108,4 +106,3 @@ public enum CommandCodeCookieImportError: LocalizedError {
         }
     }
 }
-#endif

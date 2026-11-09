@@ -1,11 +1,7 @@
+import Darwin
 import Foundation
 import Testing
 @testable import CodexBarCore
-#if canImport(Darwin)
-import Darwin
-#else
-import Glibc
-#endif
 
 @Suite(.serialized)
 struct KiroStatusProbeTests {

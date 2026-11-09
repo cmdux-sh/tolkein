@@ -42,11 +42,7 @@ struct VeniceWebFetchStrategy: ProviderFetchStrategy {
         // sessions must never be fetched and labeled as that account.
         guard context.selectedTokenAccountID == nil else { return false }
         guard context.sourceMode == .web else { return false }
-        #if os(macOS)
         return true
-        #else
-        return false
-        #endif
     }
 
     func fetch(_ context: ProviderFetchContext) async throws -> ProviderFetchResult {
@@ -90,15 +86,8 @@ struct VeniceWebFetchStrategy: ProviderFetchStrategy {
         false
     }
 
-    #if os(macOS)
     private static func defaultSessions(browserDetection: BrowserDetection) throws
     -> AnySequence<VeniceResolvedSession> {
         try VeniceCookieImporter.sessionCandidates(browserDetection: browserDetection)
     }
-    #else
-    private static func defaultSessions(browserDetection _: BrowserDetection) throws
-    -> AnySequence<VeniceResolvedSession> {
-        AnySequence([])
-    }
-    #endif
 }

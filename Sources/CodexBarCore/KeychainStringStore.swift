@@ -1,4 +1,3 @@
-#if os(macOS)
 import Foundation
 import Security
 
@@ -158,4 +157,3 @@ package struct KeychainStringStore: Sendable {
         return value
     }
 }
-#endif

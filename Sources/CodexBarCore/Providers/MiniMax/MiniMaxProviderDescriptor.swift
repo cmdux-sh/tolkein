@@ -201,7 +201,6 @@ struct MiniMaxCodingPlanFetchStrategy: ProviderFetchStrategy {
         if Self.resolveCookieOverride(context: context) != nil {
             return true
         }
-        #if os(macOS)
         if let cached = CookieHeaderCache.load(provider: .minimax),
            !cached.cookieHeader.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         {
@@ -211,9 +210,6 @@ struct MiniMaxCodingPlanFetchStrategy: ProviderFetchStrategy {
             return false
         }
         return MiniMaxCookieImporter.hasSession(browserDetection: context.browserDetection)
-        #else
-        return false
-        #endif
     }
 
     func fetch(_ context: ProviderFetchContext) async throws -> ProviderFetchResult {
@@ -235,7 +231,6 @@ struct MiniMaxCodingPlanFetchStrategy: ProviderFetchStrategy {
                 sourceLabel: "web")
         }
 
-        #if os(macOS)
         let tokenContext = Self.loadTokenContext(browserDetection: context.browserDetection)
 
         var lastError: Error?
@@ -302,7 +297,6 @@ struct MiniMaxCodingPlanFetchStrategy: ProviderFetchStrategy {
         if let lastError {
             throw lastError
         }
-        #endif
 
         throw MiniMaxSettingsError.missingCookie
     }
@@ -351,7 +345,6 @@ struct MiniMaxCodingPlanFetchStrategy: ProviderFetchStrategy {
     }
 
     private static func loadTokenContext(browserDetection: BrowserDetection) -> TokenContext {
-        #if os(macOS)
         let tokenLog: (String) -> Void = { msg in Self.log.debug(msg) }
         let accessTokens = MiniMaxLocalStorageImporter.importAccessTokens(
             browserDetection: browserDetection,
@@ -375,10 +368,6 @@ struct MiniMaxCodingPlanFetchStrategy: ProviderFetchStrategy {
             }
         }
         return TokenContext(tokensByLabel: tokensByLabel, groupIDByLabel: groupIDByLabel)
-        #else
-        _ = browserDetection
-        return TokenContext(tokensByLabel: [:], groupIDByLabel: [:])
-        #endif
     }
 
     private static func attemptFetch(

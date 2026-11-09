@@ -1,7 +1,5 @@
-import Foundation
-
-#if os(macOS)
 import AppKit
+import Foundation
 
 @MainActor
 struct AugmentKeepaliveDependencies {
@@ -29,4 +27,3 @@ struct AugmentKeepaliveDependencies {
             })
     }
 }
-#endif

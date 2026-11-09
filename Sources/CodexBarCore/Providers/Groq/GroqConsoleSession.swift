@@ -91,7 +91,6 @@ extension String {
     }
 }
 
-#if os(macOS)
 import SweetCookieKit
 
 extension GroqConsoleSession {
@@ -171,23 +170,3 @@ extension GroqConsoleSession {
         self.log.debug("\(message)")
     }
 }
-#else
-extension GroqConsoleSession {
-    public static func resolveSessions(
-        environment: [String: String] = ProcessInfo.processInfo.environment,
-        browserDetection _: BrowserDetection = BrowserDetection(),
-        logger _: ((String) -> Void)? = nil) -> [SessionInfo]
-    {
-        guard let override = self.environmentSession(environment) else { return [] }
-        return [override]
-    }
-
-    public static func hasSession(
-        environment: [String: String] = ProcessInfo.processInfo.environment,
-        browserDetection _: BrowserDetection = BrowserDetection(),
-        logger _: ((String) -> Void)? = nil) -> Bool
-    {
-        self.environmentSession(environment) != nil
-    }
-}
-#endif

@@ -1,6 +1,4 @@
 import Foundation
-
-#if os(macOS)
 import SweetCookieKit
 
 enum TypeSafeCookieImporter {
@@ -67,4 +65,3 @@ enum TypeSafeCookieImporter {
             })
     }
 }
-#endif

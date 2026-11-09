@@ -1,8 +1,5 @@
 import CodexBarCore
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 import Testing
 
 struct LLMProxyResetPluginTests {

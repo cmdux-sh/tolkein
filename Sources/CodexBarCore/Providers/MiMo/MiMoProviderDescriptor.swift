@@ -129,7 +129,6 @@ struct MiMoWebFetchStrategy: ProviderFetchStrategy {
             return self.makeResult(usage: snapshot.toUsageSnapshot(), sourceLabel: "web")
         }
 
-        #if os(macOS)
         var lastError: Error?
 
         if let cached = CookieHeaderCache.load(provider: .mimo),
@@ -173,9 +172,6 @@ struct MiMoWebFetchStrategy: ProviderFetchStrategy {
             throw lastError
         }
         throw MiMoSettingsError.missingCookie()
-        #else
-        throw MiMoSettingsError.missingCookie()
-        #endif
     }
 
     func shouldFallback(on error: Error, context _: ProviderFetchContext) -> Bool {

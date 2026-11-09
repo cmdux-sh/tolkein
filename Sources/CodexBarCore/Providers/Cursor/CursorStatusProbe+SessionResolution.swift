@@ -1,9 +1,5 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
-#if os(macOS) || os(Linux)
 extension CursorStatusProbe {
     private struct CachedSessionFetchContext<Value: Sendable> {
         let cookieHeaderOverride: String?
@@ -18,7 +14,6 @@ extension CursorStatusProbe {
         case resumeFallback
     }
 
-    #if os(macOS)
     private struct AppSessionFetchContext<Value: Sendable> {
         let cachedEntry: CookieHeaderCache.Entry?
         let storedCookies: [HTTPCookie]
@@ -31,7 +26,6 @@ extension CursorStatusProbe {
         case succeeded(Value)
         case resumeFallback(storedCookies: [HTTPCookie], error: CursorStatusProbeError = .noSessionCookie)
     }
-    #endif
 
     /// Resolve a working Cursor session, preserving selected-account and cache-ownership rules.
     func resolveSession<Value: Sendable>(
@@ -56,12 +50,9 @@ extension CursorStatusProbe {
             coordinator: self.conditionalMutationCoordinator)
         let cachedEntry = allowCachedSessions ? CookieHeaderCache.load(provider: .cursor) : nil
         var storedCookies = allowCachedSessions ? await self.sessionStore.getCookies() : []
-        #if os(macOS) || os(Linux)
         if !allowAppAuthFallback {
             storedCookies.removeAll(where: CursorAppAuthSession.isPersistedCookie)
         }
-        #endif
-        #if os(macOS)
 
         let noSessionError: CursorStatusProbeError
         let hasExplicitBrowserSelection = cachedEntry?.sourceLabel != Self.appAuthSourceLabel &&
@@ -83,9 +74,6 @@ extension CursorStatusProbe {
         } else {
             noSessionError = .noSessionCookie
         }
-        #else
-        let noSessionError = CursorStatusProbeError.noSessionCookie
-        #endif
 
         if allowCachedSessions,
            let cached = cachedEntry,
@@ -97,7 +85,6 @@ extension CursorStatusProbe {
                 logger: logger,
                 log: log,
                 perform: perform)
-            #if os(macOS)
             if cached.sourceLabel == Self.appAuthSourceLabel {
                 if CookieHeaderCache.clearIfCurrent(provider: .cursor, expected: cached) {
                     cacheObservation = cacheObservation.afterOwnedClear()
@@ -110,17 +97,8 @@ extension CursorStatusProbe {
                     cacheObservation = cacheObservation.afterOwnedClear()
                 }
             }
-            #else
-            switch try await self.fetchCachedSession(cached, context: context) {
-            case let .succeeded(value):
-                return value
-            case .resumeFallback:
-                break
-            }
-            #endif
         }
 
-        #if os(macOS)
         let browserCandidates = self.browserCookieImportOrder.cookieImportCandidates(using: self.browserDetection)
         switch try await self.scanResolvedBrowsers(
             browserCandidates,
@@ -165,7 +143,6 @@ extension CursorStatusProbe {
         case .exhausted:
             break
         }
-        #endif
 
         if allowCachedSessions,
            let value = try await self.fetchStoredSession(
@@ -176,11 +153,6 @@ extension CursorStatusProbe {
         {
             return value
         }
-        #if os(Linux)
-        if allowAppAuthFallback {
-            return try await self.fetchLinuxAppSession(log: log, perform: perform)
-        }
-        #endif
         throw noSessionError
     }
 
@@ -212,7 +184,6 @@ extension CursorStatusProbe {
                 describedBy: CursorStatusProbeError.networkError(error.localizedDescription))
         }
 
-        #if os(macOS)
         let context = ResolvedSessionReconciliationContext(
             cookieHeader: cookieHeader,
             sourceLabel: "Stored Cursor session",
@@ -220,12 +191,8 @@ extension CursorStatusProbe {
             perform: perform,
             log: log)
         return try await self.reconcileResolvedSession(value: value, context: context)
-        #else
-        return value
-        #endif
     }
 
-    #if os(macOS)
     private static let appAuthSourceLabel = "Cursor.app local auth"
 
     private func fetchPreferredAppSession<Value: Sendable>(
@@ -339,7 +306,6 @@ extension CursorStatusProbe {
         CodexBarLog.logger(LogCategories.provider(.cursor)).warning(message)
         log(message)
     }
-    #endif
 
     private func fetchCachedSession<Value: Sendable>(
         _ cached: CookieHeaderCache.Entry,
@@ -385,4 +351,3 @@ extension CursorStatusProbe {
         }
     }
 }
-#endif

@@ -1,8 +1,6 @@
 import Foundation
 import SweetCookieKit
 
-#if os(macOS)
-
 private let augmentCookieImportOrder: BrowserCookieImportOrder =
     ProviderDefaults.metadata[.augment]?.browserCookieOrder ?? Browser.defaultImportOrder
 
@@ -613,46 +611,3 @@ public struct AugmentStatusProbe: Sendable {
         }
     }
 }
-
-#else
-
-// MARK: - Augment (Unsupported)
-
-public enum AugmentStatusProbeError: LocalizedError, Sendable {
-    case notSupported
-
-    public var errorDescription: String? {
-        "Augment is only supported on macOS."
-    }
-}
-
-public struct AugmentStatusSnapshot: Sendable {
-    public init() {}
-
-    public func toUsageSnapshot() -> UsageSnapshot {
-        UsageSnapshot(
-            primary: RateWindow(usedPercent: 0, windowMinutes: nil, resetsAt: nil, resetDescription: nil),
-            secondary: nil,
-            tertiary: nil,
-            providerCost: nil,
-            updatedAt: Date(),
-            identity: nil)
-    }
-}
-
-public struct AugmentStatusProbe: Sendable {
-    public init(baseURL: URL = URL(string: "https://app.augmentcode.com")!, timeout: TimeInterval = 15.0) {
-        _ = baseURL
-        _ = timeout
-    }
-
-    public func fetch(cookieHeaderOverride: String? = nil, logger: ((String) -> Void)? = nil)
-        async throws -> AugmentStatusSnapshot
-    {
-        _ = cookieHeaderOverride
-        _ = logger
-        throw AugmentStatusProbeError.notSupported
-    }
-}
-
-#endif

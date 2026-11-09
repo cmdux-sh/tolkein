@@ -1,4 +1,3 @@
-#if os(macOS)
 import Foundation
 import WebKit
 
@@ -20,4 +19,3 @@ enum WebKitContentProcess {
         return true
     }
 }
-#endif

@@ -282,16 +282,12 @@ enum KimiWebEnrichmentTokenResolver {
             return KimiWebCredential(token: override.token)
         }
         guard KimiBrowserImportPolicy.allowsImport(context) else { return nil }
-        #if os(macOS)
         if let token = KimiCookieImporter.desktopCredential(region: context.settings?.kimi?.region ?? .china) {
             return token
         }
         return ((try? KimiCookieImporter.importSession(region: settings.region).authToken)
             ?? KimiCookieImporter.localStorageTokens(region: settings.region).first)
             .map { KimiWebCredential(token: $0) }
-        #else
-        return nil
-        #endif
     }
 }
 
@@ -324,19 +320,11 @@ struct KimiWebFetchStrategy: ProviderFetchStrategy {
         fetchUsage: (@Sendable (KimiWebCredential, KimiRegion) async throws -> KimiUsageSnapshot)? = nil,
         transport: any ProviderHTTPTransport = ProviderHTTPClient.shared,
         desktopCredential: @escaping @Sendable (KimiRegion) -> KimiWebCredential? = { region in
-            #if os(macOS)
             KimiCookieImporter.desktopCredential(region: region)
-            #else
-            nil
-            #endif
         },
         browserTokens: @escaping @Sendable (KimiRegion) -> [String] = { region in
-            #if os(macOS)
             ((try? KimiCookieImporter.importSessions(region: region).compactMap(\.authToken)) ?? []) +
                 KimiCookieImporter.localStorageTokens(region: region)
-            #else
-            []
-            #endif
         })
     {
         self.fetchUsage = fetchUsage ?? {

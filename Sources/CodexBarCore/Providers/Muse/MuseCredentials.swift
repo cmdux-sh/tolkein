@@ -1,7 +1,5 @@
 import Foundation
-#if os(macOS)
 import Security
-#endif
 
 /// Reads the Muse Code CLI login. Subscription usage is minted with the device-code
 /// `dca:` access token, not a dashboard `LLM_` / Muse-minted `LLM|` inference key.
@@ -85,7 +83,6 @@ public enum MuseCredentials {
     /// Detects the CLI's Keychain login without requesting its secret, so availability and diagnostics checks
     /// can never show a Keychain prompt. Whether the token is readable is decided when usage is fetched.
     private static func hasKeychainItem() -> Bool {
-        #if os(macOS)
         guard !KeychainAccessGate.isDisabled else { return false }
         return switch KeychainAccessPreflight.checkGenericPassword(
             service: self.keychainService,
@@ -94,13 +91,9 @@ public enum MuseCredentials {
         case .allowed, .interactionRequired, .temporarilyUnavailable: true
         case .notFound, .failure: false
         }
-        #else
-        return false
-        #endif
     }
 
     private static func keychainAccessToken() throws -> String? {
-        #if os(macOS)
         guard !KeychainAccessGate.isDisabled else {
             throw MuseUsageError.keychainAccessDisabled
         }
@@ -130,12 +123,8 @@ public enum MuseCredentials {
         case .temporarilyUnavailable, .failure:
             throw MuseUsageError.keychainUnavailable
         }
-        #else
-        return nil
-        #endif
     }
 
-    #if os(macOS)
     private static func readKeychainToken(allowPrompt: Bool) throws -> String? {
         let (status, data) = self.readKeychainItem(allowPrompt: allowPrompt)
         switch status {
@@ -154,9 +143,7 @@ public enum MuseCredentials {
             throw MuseUsageError.keychainUnavailable
         }
     }
-    #endif
 
-    #if os(macOS)
     private static func readKeychainItem(allowPrompt: Bool) -> (OSStatus, Data?) {
         var query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
@@ -177,7 +164,6 @@ public enum MuseCredentials {
         let status = KeychainSecurity.copyMatching(query as CFDictionary, &result)
         return (status, result as? Data)
     }
-    #endif
 
     private static func requireAccessToken(_ raw: String?) throws -> String {
         let token = raw?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""

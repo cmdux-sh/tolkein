@@ -1,6 +1,4 @@
 import Foundation
-
-#if os(macOS)
 import SweetCookieKit
 
 // MARK: - Abacus Cookie Importer
@@ -111,4 +109,3 @@ public enum AbacusCookieImporter {
         self.log.debug(message)
     }
 }
-#endif

@@ -21,9 +21,7 @@ struct VeniceWebUsageFetcherTests {
         await #expect(throws: VeniceUsageError.missingCredentials) {
             _ = try await strategy.fetch(Self.context(.api))
         }
-        #if os(macOS)
         #expect(await strategy.isAvailable(Self.context(.web)) == true)
-        #endif
     }
 
     @Test

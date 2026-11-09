@@ -2,7 +2,6 @@ import Foundation
 import Testing
 @testable import CodexBarCore
 
-#if os(macOS)
 @Suite(.serialized)
 struct CursorUsageEventsPaginationTests {
     // MARK: - Helpers
@@ -408,4 +407,3 @@ struct CursorUsageEventsPaginationTests {
         #expect(CostUsageFetcher.supportsTokenSnapshot(.cursor))
     }
 }
-#endif

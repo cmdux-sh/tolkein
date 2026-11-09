@@ -1,9 +1,5 @@
 import Foundation
 
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
-
 public struct KimiUsageFetcher: Sendable {
     private static let log = CodexBarLog.logger(LogCategories.provider(.kimi, scope: "api"))
     private static let subscriptionGraceSeconds: TimeInterval = 2

@@ -1,9 +1,5 @@
 import Foundation
-#if canImport(SQLite3)
 import SQLite3
-#elseif canImport(CSQLite3)
-import CSQLite3
-#endif
 
 struct CodexThreadCatalog: Sendable {
     static let empty = CodexThreadCatalog(entriesById: [:], entriesByRolloutPath: [:], fingerprint: nil)
@@ -72,7 +68,6 @@ enum CodexThreadCatalogReader {
                 completeness: .unavailable(.missing))
         }
 
-        #if canImport(SQLite3) || canImport(CSQLite3)
         var db: OpaquePointer?
         let openResult = sqlite3_open_v2(url.path, &db, SQLITE_OPEN_READONLY, nil)
         guard openResult == SQLITE_OK else {
@@ -123,19 +118,12 @@ enum CodexThreadCatalogReader {
             }),
             fingerprint: fingerprint)
         return CodexThreadCatalogReadResult(catalog: catalog, databaseURL: url, completeness: .complete)
-        #else
-        return CodexThreadCatalogReadResult(
-            catalog: .empty,
-            databaseURL: url,
-            completeness: .unavailable(.incompatible))
-        #endif
     }
 
     private static func databaseURL(options: CostUsageScanner.Options) -> URL {
         CodexLocalDataScope.resolve(options: options).stateDatabaseURL
     }
 
-    #if canImport(SQLite3) || canImport(CSQLite3)
     private static func hasThreadsTable(_ db: OpaquePointer?) -> Bool? {
         var stmt: OpaquePointer?
         guard sqlite3_prepare_v2(
@@ -251,7 +239,6 @@ enum CodexThreadCatalogReader {
         }
         return nil
     }
-    #endif
 }
 
 extension String {

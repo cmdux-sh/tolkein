@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 // MARK: - agy file token storage payload
 
@@ -247,7 +244,6 @@ enum AntigravityScopedAgyStaging {
 
 // MARK: - Scoped print fetch
 
-#if os(macOS)
 extension AntigravityCLIHTTPSFetchStrategy {
     private static let scopedPrintLog = CodexBarLog.logger(LogCategories.provider(.antigravity))
 
@@ -330,4 +326,3 @@ extension AntigravityCLIHTTPSFetchStrategy {
         return try self.makeResult(usage: snapshot.toUsageSnapshot(), sourceLabel: Self.sourceLabel)
     }
 }
-#endif

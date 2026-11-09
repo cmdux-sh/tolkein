@@ -237,7 +237,6 @@ struct AntigravityScopedPrintFetchTests {
 
     // MARK: - Scoped subprocess (macOS only)
 
-    #if os(macOS)
     @Test
     func `scoped Starter reports preserve both weekly groups`() async throws {
         let groups: [[String: Any]] = [("Gemini Models", "gemini"), ("Claude and GPT models", "3p")]
@@ -524,7 +523,6 @@ struct AntigravityScopedPrintFetchTests {
                 binary: fixture.binary.path, environment: environment)
         }
     }
-    #endif
 
     // MARK: - Helpers
 
@@ -634,7 +632,6 @@ struct AntigravityScopedPrintFetchTests {
         return try #require(String(bytes: data, encoding: .utf8))
     }
 
-    #if os(macOS)
     private func scopedPrintFixture(body: String, version: String? = "1.2.7") throws
         -> (directory: URL, binary: URL, environment: [String: String])
     {
@@ -650,9 +647,7 @@ struct AntigravityScopedPrintFetchTests {
         try FileManager.default.setAttributes([.posixPermissions: 0o700], ofItemAtPath: binary.path)
         return (directory, binary, ["PATH": "/usr/bin:/bin"])
     }
-    #endif
 
-    #if os(macOS)
     private func userinfoLoader(
         mapping: [String: String]) -> @Sendable (URLRequest) async throws -> (Data, URLResponse)
     {
@@ -673,7 +668,6 @@ struct AntigravityScopedPrintFetchTests {
             return (Data(), response)
         }
     }
-    #endif
 
     private struct StubClaudeFetcher: ClaudeUsageFetching {
         func loadLatestUsage(model _: String) async throws -> ClaudeUsageSnapshot {

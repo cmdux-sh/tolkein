@@ -1,12 +1,6 @@
 import CodexBarCore
 import Commander
-#if canImport(Darwin)
 import Darwin
-#elseif canImport(Glibc)
-import Glibc
-#elseif canImport(Musl)
-import Musl
-#endif
 import Foundation
 
 struct PluginFetchOptions: CommanderParsable {

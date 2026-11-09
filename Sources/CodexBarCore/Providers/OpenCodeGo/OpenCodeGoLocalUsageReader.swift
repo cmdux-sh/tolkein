@@ -1,10 +1,5 @@
 import Foundation
-
-#if canImport(SQLite3)
 import SQLite3
-#elseif canImport(CSQLite3)
-import CSQLite3
-#endif
 
 public enum OpenCodeGoLocalUsageError: LocalizedError, Sendable, Equatable {
     case notDetected

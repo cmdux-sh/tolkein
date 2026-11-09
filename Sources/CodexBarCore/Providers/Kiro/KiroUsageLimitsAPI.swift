@@ -1,13 +1,5 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
-
-#if canImport(SQLite3)
 import SQLite3
-#elseif canImport(CSQLite3)
-import CSQLite3
-#endif
 
 /// Kiro credit usage read from the service the official CLI itself calls.
 ///
@@ -101,13 +93,7 @@ public enum KiroUsageLimitsAPI: Sendable {
     public static func stateDatabaseURL(
         homeDirectory: URL = FileManager.default.homeDirectoryForCurrentUser,
         environment: [String: String] = ProcessInfo.processInfo.environment,
-        usesMacOSApplicationSupport: Bool = {
-            #if os(macOS)
-            true
-            #else
-            false
-            #endif
-        }()) -> URL
+        usesMacOSApplicationSupport: Bool = true) -> URL
     {
         if let override = self.cleanedPath(environment["KIRO_DATA_DIR"]) {
             return URL(fileURLWithPath: override, isDirectory: true)
@@ -298,9 +284,7 @@ public enum KiroUsageLimitsAPI: Sendable {
         configuration.httpCookieStorage = nil
         configuration.httpShouldSetCookies = false
         configuration.urlCache = nil
-        #if !os(Linux)
         configuration.waitsForConnectivity = false
-        #endif
         configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
         return ProviderHTTPClient(session: ProviderHTTPClient.redirectGuardedSession(configuration: configuration))
     }()
@@ -345,7 +329,6 @@ public enum KiroUsageLimitsAPI: Sendable {
     /// A test that reaches this without opting in would resolve the developer's real state database
     /// and call the live service with their token, so tests must name their own database instead.
     private static func readIdentity(databaseURL: URL) throws -> KiroCLIIdentity {
-        #if canImport(SQLite3) || canImport(CSQLite3)
         if TestProcessSafety.isRunning, databaseURL == self.stateDatabaseURL() {
             throw KiroUsageLimitsError.credentialsUnavailable(
                 "usage API needs an explicit state database under tests")
@@ -384,12 +367,8 @@ public enum KiroUsageLimitsAPI: Sendable {
             profileARN = nil
         }
         return KiroCLIIdentity(accessToken: accessToken, profileARN: profileARN)
-        #else
-        throw KiroUsageLimitsError.credentialsUnavailable("SQLite unavailable on this platform")
-        #endif
     }
 
-    #if canImport(SQLite3) || canImport(CSQLite3)
     private static func queryValue(db: OpaquePointer?, sql: String, what: String) throws -> String {
         guard let value = try self.queryOptionalValue(db: db, sql: sql, what: what) else {
             throw KiroUsageLimitsError.credentialsUnavailable("\(what) not found in Kiro CLI state")
@@ -411,7 +390,6 @@ public enum KiroUsageLimitsAPI: Sendable {
         }
         return String(cString: text)
     }
-    #endif
 
     private static func jsonString(in json: String, key: String) -> String? {
         guard let data = json.data(using: .utf8),

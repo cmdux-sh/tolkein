@@ -1,7 +1,5 @@
 import Foundation
 
-#if os(macOS)
-
 /// Fetches Augment usage via `auggie account status` CLI command
 public struct AuggieCLIProbe: Sendable {
     private static let log = CodexBarLog.logger(LogCategories.auggieCLI)
@@ -160,18 +158,6 @@ public struct AuggieCLIProbe: Sendable {
             rawJSON: nil)
     }
 }
-
-#else
-
-public struct AuggieCLIProbe: Sendable {
-    public init() {}
-
-    public func fetch() async throws -> AugmentStatusSnapshot {
-        throw AugmentStatusProbeError.notSupported
-    }
-}
-
-#endif
 
 public enum AuggieCLIError: LocalizedError {
     case noOutput

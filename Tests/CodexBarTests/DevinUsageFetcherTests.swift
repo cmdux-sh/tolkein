@@ -356,7 +356,6 @@ struct DevinUsageFetcherTests {
         #expect(auth.sourceLabel == "manual")
     }
 
-    #if os(macOS)
     @Test
     func `empty app organization setting preserves imported organization`() async throws {
         try await DevinSessionImporter.withImportSessionOverrideForTesting { _, organizationOverride, _ in
@@ -548,5 +547,4 @@ struct DevinUsageFetcherTests {
         #expect(!detection.hasUsableProfileData(.chrome))
         #expect(DevinSessionImporter.localStorageBrowsers(browserDetection: detection) == [.brave])
     }
-    #endif
 }

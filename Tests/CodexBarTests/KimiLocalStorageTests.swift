@@ -1,4 +1,3 @@
-#if os(macOS)
 import Foundation
 import SweetCookieKit
 import Testing
@@ -146,4 +145,3 @@ struct KimiLocalStorageTests {
         try record.write(to: directory.appendingPathComponent(filename))
     }
 }
-#endif

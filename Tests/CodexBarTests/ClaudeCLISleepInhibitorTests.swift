@@ -1,4 +1,3 @@
-#if canImport(Darwin)
 import Darwin
 import Foundation
 import Testing
@@ -329,4 +328,3 @@ struct ClaudeCLISleepInhibitorTests {
         }
     }
 }
-#endif

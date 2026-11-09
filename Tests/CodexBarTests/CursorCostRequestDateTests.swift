@@ -2,7 +2,6 @@ import Foundation
 import Testing
 @testable import CodexBarCore
 
-#if os(macOS)
 struct CursorCostRequestDateTests {
     @Test(arguments: [
         (nil, nil),
@@ -56,4 +55,3 @@ struct CursorCostRequestDateTests {
         #expect(await transport.requests().count == 1)
     }
 }
-#endif

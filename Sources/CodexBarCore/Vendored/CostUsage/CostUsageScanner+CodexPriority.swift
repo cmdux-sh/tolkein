@@ -4,11 +4,7 @@ import CryptoKit
 import Crypto
 #endif
 import Foundation
-#if canImport(SQLite3)
 import SQLite3
-#else
-import CSQLite3
-#endif
 
 extension CostUsageScanner {
     struct CodexPriorityTurnMetadata: Codable, Equatable {

@@ -1,10 +1,5 @@
 import Foundation
-#if os(macOS)
 import SweetCookieKit
-#endif
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 /// Host-owned browser records. The JavaScript bridge exposes only a session identifier.
 public struct ProviderPluginCookieRecord: Codable, Equatable, Sendable {
@@ -16,7 +11,6 @@ public struct ProviderPluginCookieRecord: Codable, Equatable, Sendable {
     public let secure: Bool
     public let expires: Date?
 
-    #if os(macOS)
     init(record: BrowserCookieRecord) {
         self.name = record.name
         self.value = record.value
@@ -26,7 +20,6 @@ public struct ProviderPluginCookieRecord: Codable, Equatable, Sendable {
         self.secure = record.isSecure
         self.expires = record.expires
     }
-    #endif
 
     public init(cookie: HTTPCookie) {
         self.name = cookie.name

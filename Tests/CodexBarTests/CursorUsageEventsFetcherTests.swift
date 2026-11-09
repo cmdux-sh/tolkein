@@ -2,7 +2,6 @@ import Foundation
 import Testing
 @testable import CodexBarCore
 
-#if os(macOS)
 @Suite(.serialized)
 struct CursorUsageEventsFetcherTests {
     // MARK: - Helpers
@@ -812,4 +811,3 @@ struct CursorUsageEventsFetcherTests {
         #expect(CursorUsageEventsFetcher.meteredCostUSD(from: events) == nil)
     }
 }
-#endif

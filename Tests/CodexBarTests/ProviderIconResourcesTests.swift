@@ -7,7 +7,7 @@ import Testing
 @MainActor
 struct ProviderIconResourcesTests {
     @Test
-    func `workbuddy uses its mascot consistently across app website and serve`() throws {
+    func `workbuddy uses its mascot consistently across app and serve`() throws {
         let root = try Self.repoRoot()
         let svg = try String(
             contentsOf: root.appending(path: "Sources/CodexBar/Resources/ProviderIcon-workbuddy.svg"),
@@ -15,8 +15,6 @@ struct ProviderIconResourcesTests {
         #expect(svg.contains("M18.777 1.647"))
         #expect(svg.contains("fill=\"currentColor\""))
         #expect(!svg.contains("<text"))
-        let website = try String(contentsOf: root.appending(path: "docs/logos/workbuddy.svg"), encoding: .utf8)
-        #expect(website == svg)
         let cli = try String(
             contentsOf: root.appending(path: "Sources/CodexBarCLI/CLIServeProviderIcons.swift"), encoding: .utf8)
         #expect(cli.contains("\"ProviderIcon-workbuddy\": \"\(Data(svg.utf8).base64EncodedString())\""))
@@ -96,7 +94,7 @@ struct ProviderIconResourcesTests {
     }
 
     @Test
-    func `replicate uses the official glyph across app website and serve`() throws {
+    func `replicate uses the official glyph across app and serve`() throws {
         let root = try Self.repoRoot()
         let svg = try String(
             contentsOf: root.appending(path: "Sources/CodexBar/Resources/ProviderIcon-replicate.svg"),
@@ -110,15 +108,13 @@ struct ProviderIconResourcesTests {
         ] {
             #expect(svg.contains("points=\"\(points)\""))
         }
-        let website = try String(contentsOf: root.appending(path: "docs/logos/replicate.svg"), encoding: .utf8)
-        #expect(website == svg)
         let cli = try String(
             contentsOf: root.appending(path: "Sources/CodexBarCLI/CLIServeProviderIcons.swift"), encoding: .utf8)
         #expect(cli.contains("\"ProviderIcon-replicate\": \"\(Data(svg.utf8).base64EncodedString())\""))
     }
 
     @Test
-    func `devin uses the official hexagonal mark across app website and serve`() throws {
+    func `devin uses the official hexagonal mark across app and serve`() throws {
         let root = try Self.repoRoot()
         let svg = try String(
             contentsOf: root.appending(path: "Sources/CodexBar/Resources/ProviderIcon-devin.svg"),
@@ -128,8 +124,6 @@ struct ProviderIconResourcesTests {
         #expect(svg.contains("M23 48.6315V29.1756C23 28.3205"))
         #expect(!svg.contains("<rect"))
         #expect(!svg.contains("M12 2.25c1.18 0 2.18.76"))
-        let website = try String(contentsOf: root.appending(path: "docs/logos/devin.svg"), encoding: .utf8)
-        #expect(website == svg)
         let cli = try String(
             contentsOf: root.appending(path: "Sources/CodexBarCLI/CLIServeProviderIcons.swift"), encoding: .utf8)
         #expect(cli.contains("\"ProviderIcon-devin\": \"\(Data(svg.utf8).base64EncodedString())\""))
@@ -142,7 +136,7 @@ struct ProviderIconResourcesTests {
     }
 
     @Test
-    func `typesafe keeps its proportions across app website and serve`() throws {
+    func `typesafe keeps its proportions across app and serve`() throws {
         let root = try Self.repoRoot()
         let svg = try String(
             contentsOf: root.appending(path: "Sources/CodexBar/Resources/ProviderIcon-typesafe.svg"),
@@ -150,8 +144,6 @@ struct ProviderIconResourcesTests {
         #expect(svg.contains("fill=\"currentColor\""))
         #expect(svg.contains("viewBox=\"24.68 24.68 350.65 350.65\""))
         #expect(svg.contains("M256.407 86.5946V138.33L303.032 168.589"))
-        let website = try String(contentsOf: root.appending(path: "docs/logos/typesafe.svg"), encoding: .utf8)
-        #expect(website == svg)
         let cli = try String(
             contentsOf: root.appending(path: "Sources/CodexBarCLI/CLIServeProviderIcons.swift"), encoding: .utf8)
         #expect(cli.contains("\"ProviderIcon-typesafe\": \"\(Data(svg.utf8).base64EncodedString())\""))
@@ -214,8 +206,6 @@ struct ProviderIconResourcesTests {
         ] {
             #expect(svg.contains("d=\"\(path)\""))
         }
-        let website = try String(contentsOf: root.appending(path: "docs/logos/pi.svg"), encoding: .utf8)
-        #expect(website == svg)
         let cli = try String(
             contentsOf: root.appending(path: "Sources/CodexBarCLI/CLIServeProviderIcons.swift"), encoding: .utf8)
         #expect(cli.contains("\"ProviderIcon-pi\": \"\(Data(svg.utf8).base64EncodedString())\""))

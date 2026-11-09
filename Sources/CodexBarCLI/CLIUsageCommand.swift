@@ -473,18 +473,6 @@ extension CodexBarCLI {
             persistsCLISessions: Self.persistsCLISessions(provider: provider, command: command),
             persistentCLISessionIdleWindow: command.persistentCLISessionIdleWindow,
             resolvedCLIVersion: resolvedCLIVersion)
-        #if !os(macOS)
-        if await Self.sourceModeRequiresWebSupport(provider: provider, context: fetchContext) {
-            return Self.webSourceUnsupportedOutput(
-                provider: provider,
-                account: (
-                    label: account?.label ?? codexVisibleAccount?.menuDisplayName,
-                    cacheKey: cacheAccountKey),
-                source: effectiveSourceMode.rawValue + command.sourceLabelSuffix,
-                status: status,
-                command: command)
-        }
-        #endif
         let (outcome, lockedKeychainObserved) = await CLIUsageCache.observingLockedKeychain {
             await Self.fetchProviderUsage(provider: provider, context: fetchContext)
         }
@@ -693,12 +681,10 @@ extension CodexBarCLI {
     {
         // Provider-specific by design: --augment-debug emits Augment's explicit diagnostic dump.
         guard command.augmentDebug, provider == .augment else { return }
-        #if os(macOS)
         let dump = await AugmentStatusProbe.latestDumps()
         if command.format == .text, !dump.isEmpty, !command.jsonOnly {
             Self.writeStderr("Augment API responses:\n\(dump)\n")
         }
-        #endif
     }
 
     private static func webSourceUnsupportedOutput(

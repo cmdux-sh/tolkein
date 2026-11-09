@@ -1,4 +1,3 @@
-#if os(macOS)
 import Foundation
 
 extension OpenAIDashboardBrowserCookieImporter {
@@ -223,4 +222,3 @@ extension OpenAIDashboardBrowserCookieImporter {
         }
     }
 }
-#endif

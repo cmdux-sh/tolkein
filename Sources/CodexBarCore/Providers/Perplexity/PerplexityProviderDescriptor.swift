@@ -94,10 +94,6 @@ public enum PerplexityProviderDescriptor {
         if let token = PerplexitySettingsReader.sessionToken(environment: environment) {
             return token
         }
-        #if os(macOS)
         return try? PerplexityCookieImporter.importSession().sessionToken
-        #else
-        return nil
-        #endif
     }
 }

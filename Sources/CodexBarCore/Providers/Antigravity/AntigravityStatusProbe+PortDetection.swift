@@ -52,18 +52,11 @@ enum ProcNetTCPListeningPortParser {
 extension AntigravityStatusProbe {
     /// Resolves the TCP ports the process `pid` is listening on.
     static func listeningPorts(pid: Int, timeout: TimeInterval) async throws -> [Int] {
-        #if canImport(Darwin)
         let ports = DarwinProcessEnumerator.listeningTCPPorts(pid: Int32(pid))
         if ports.isEmpty {
             throw AntigravityStatusProbeError.portDetectionFailed("no listening ports found")
         }
         return ports
-        #else
-        let lsof = ["/usr/sbin/lsof", "/usr/bin/lsof"].first(where: {
-            FileManager.default.isExecutableFile(atPath: $0)
-        })
-        return try await Self.linuxListeningPorts(pid: pid, timeout: timeout, lsof: lsof)
-        #endif
     }
 
     static func linuxListeningPorts(

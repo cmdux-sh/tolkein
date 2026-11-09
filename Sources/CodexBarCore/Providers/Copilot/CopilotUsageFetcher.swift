@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 /// Stable provider-detail row ids and section title for the Copilot AI credit lane, so a feature
 /// can find a row again (tests, menu card rendering).

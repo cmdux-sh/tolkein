@@ -115,7 +115,6 @@ struct AlibabaCodingPlanWebFetchStrategy: ProviderFetchStrategy {
             return CookieHeaderNormalizer.normalize(settings.manualCookieHeader) != nil
         }
 
-        #if os(macOS)
         if let cached = CookieHeaderCache.load(provider: .alibaba),
            !cached.cookieHeader.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         {
@@ -125,9 +124,6 @@ struct AlibabaCodingPlanWebFetchStrategy: ProviderFetchStrategy {
             return true
         }
         return false
-        #else
-        return false
-        #endif
     }
 
     func fetch(_ context: ProviderFetchContext) async throws -> ProviderFetchResult {
@@ -143,7 +139,6 @@ struct AlibabaCodingPlanWebFetchStrategy: ProviderFetchStrategy {
         } catch let error as AlibabaCodingPlanUsageError
             where (error == .invalidCredentials || error == .loginRequired) && cookieSource != .manual
         {
-            #if os(macOS)
             CookieHeaderCache.clear(provider: .alibaba)
             let refreshedHeader = try Self.resolveCookieHeader(context: context, allowCached: false)
             let region = context.settings?.alibaba?.apiRegion ?? .international
@@ -152,9 +147,6 @@ struct AlibabaCodingPlanWebFetchStrategy: ProviderFetchStrategy {
                 region: region,
                 environment: context.env)
             return self.makeResult(usage: usage.toUsageSnapshot(), sourceLabel: "web")
-            #else
-            throw AlibabaCodingPlanUsageError.invalidCredentials
-            #endif
         }
     }
 
@@ -230,7 +222,6 @@ struct AlibabaCodingPlanWebFetchStrategy: ProviderFetchStrategy {
             return normalized
         }
 
-        #if os(macOS)
         if allowCached,
            let cached = CookieHeaderCache.load(provider: .alibaba),
            !cached.cookieHeader.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
@@ -248,9 +239,6 @@ struct AlibabaCodingPlanWebFetchStrategy: ProviderFetchStrategy {
         } catch {
             throw error
         }
-        #else
-        throw AlibabaCodingPlanSettingsError.missingCookie()
-        #endif
     }
 }
 

@@ -44,11 +44,7 @@ struct CostUsageClaudeFileStamp: Equatable, Sendable, Codable {
             throw NSError(domain: NSPOSIXErrorDomain, code: Int(code), userInfo: [NSFilePathErrorKey: url.path])
         }
         guard info.st_mode & mode_t(S_IFMT) == mode_t(S_IFREG) else { return nil }
-        #if os(Linux)
-        let modifiedTime = info.st_mtim
-        #else
         let modifiedTime = info.st_mtimespec
-        #endif
         return Self(
             fileID: "\(info.st_dev):\(info.st_ino)",
             size: Int64(info.st_size),

@@ -137,7 +137,6 @@ struct MistralWebFetchStrategy: ProviderFetchStrategy {
                 usage: usage,
                 sourceLabel: "web")
         } catch MistralUsageError.invalidCredentials where cookieSource != .manual {
-            #if os(macOS)
             CookieHeaderCache.clear(provider: .mistral)
             let excludedSourceLabels = if session.wasCached {
                 Set<String>()
@@ -162,13 +161,9 @@ struct MistralWebFetchStrategy: ProviderFetchStrategy {
             return self.makeResult(
                 usage: usage,
                 sourceLabel: "web")
-            #else
-            throw MistralUsageError.invalidCredentials
-            #endif
         }
     }
 
-    #if os(macOS)
     static func fetchUsageFromSessions(
         _ sessions: some Sequence<MistralCookieImporter.SessionInfo>,
         timeout: TimeInterval,
@@ -189,7 +184,6 @@ struct MistralWebFetchStrategy: ProviderFetchStrategy {
         }
         throw MistralUsageError.invalidCredentials
     }
-    #endif
 
     static func fetchUsageWithVibe(
         cookieHeader: String,
@@ -372,7 +366,6 @@ struct MistralWebFetchStrategy: ProviderFetchStrategy {
             throw MistralSettingsError.invalidCookie
         }
 
-        #if os(macOS)
         if let cached = CookieHeaderCache.load(provider: .mistral),
            !cached.cookieHeader.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         {
@@ -386,8 +379,5 @@ struct MistralWebFetchStrategy: ProviderFetchStrategy {
             cookieHeader: session.cookieHeader,
             sourceLabel: session.sourceLabel)
         return (session.cookieHeader, session.csrfToken, session.sourceLabel, false)
-        #else
-        throw MistralSettingsError.missingCookie
-        #endif
     }
 }

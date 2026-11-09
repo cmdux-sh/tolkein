@@ -1,15 +1,6 @@
 import Foundation
-
-#if canImport(SQLite3)
 import SQLite3
-#elseif canImport(CSQLite3)
-import CSQLite3
-#endif
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
-#if os(macOS) || os(Linux)
 struct CursorSessionIdentity: Equatable, Sendable {
     let subject: String?
     let email: String?
@@ -104,9 +95,7 @@ struct CursorSessionIdentity: Equatable, Sendable {
         return value.lowercased()
     }
 }
-#endif
 
-#if os(macOS) || os(Linux)
 struct CursorAppAuthSession: Equatable, Sendable {
     static let persistedCookieMarker = "CodexBar Cursor.app local auth"
 
@@ -203,48 +192,9 @@ struct CursorAppAuthStore: CursorAppAuthSessionProviding {
         home: String? = nil,
         environment: [String: String] = ProcessInfo.processInfo.environment) -> String
     {
-        #if os(macOS)
         _ = environment
         return "\(home ?? NSHomeDirectory())/Library/Application Support/Cursor/User/globalStorage/state.vscdb"
-        #elseif os(Linux)
-        return "\(self.linuxConfigHome(home: home, environment: environment))/Cursor/User/globalStorage/state.vscdb"
-        #endif
     }
-
-    #if os(Linux)
-    /// An absolute `XDG_CONFIG_HOME`, else `.config` in the home `resolveLinuxHome` picks.
-    static func linuxConfigHome(home: String?, environment: [String: String]) -> String {
-        let configHome = environment[CodexBarConfigStore.xdgConfigHomeEnvironmentKey]?
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-        if let configHome,
-           !configHome.isEmpty,
-           configHome.hasPrefix("/")
-        {
-            return configHome
-        }
-        return "\(self.resolveLinuxHome(home: home, environment: environment))/.config"
-    }
-
-    /// Prefer an injected home, then an absolute process `HOME`, then the account database home.
-    private static func resolveLinuxHome(
-        home: String?,
-        environment: [String: String]) -> String
-    {
-        if let home {
-            return home
-        }
-
-        let envHome = environment["HOME"]?.trimmingCharacters(in: .whitespacesAndNewlines)
-        if let envHome,
-           !envHome.isEmpty,
-           envHome.hasPrefix("/")
-        {
-            return envHome
-        }
-
-        return NSHomeDirectory()
-    }
-    #endif
 
     func loadSession() throws -> CursorAppAuthSession? {
         guard FileManager.default.fileExists(atPath: self.dbPath),
@@ -253,7 +203,6 @@ struct CursorAppAuthStore: CursorAppAuthSessionProviding {
         else {
             return nil
         }
-        #if os(macOS)
         let prefix = "cursor-safe-storage:v1:"
         if accessToken.hasPrefix(prefix),
            let encrypted = Data(base64Encoded: String(accessToken.dropFirst(prefix.count))),
@@ -272,7 +221,6 @@ struct CursorAppAuthStore: CursorAppAuthSessionProviding {
                 return CursorAppAuthSession(accessToken: decoded)
             }
         }
-        #endif
         // Preserve an unusable session on decryption failure so stale persisted app auth cannot replace it.
         return CursorAppAuthSession(accessToken: accessToken.hasPrefix("cursor-safe-storage:") ? "" : accessToken)
     }
@@ -370,37 +318,3 @@ struct CursorAppAuthStore: CursorAppAuthSessionProviding {
         let message: String
     }
 }
-#endif
-
-#if os(Linux)
-/// The session `cursor-agent login` keeps in `cursor/auth.json` under the config home, for machines with the
-/// Cursor CLI and no Cursor.app. Read-only, like the app database: CodexBar never refreshes or writes it.
-struct CursorAgentAuthStore: CursorAppAuthSessionProviding {
-    private let path: String
-
-    init(path: String? = nil) {
-        self.path = path ?? Self.resolveDefaultPath()
-    }
-
-    static func resolveDefaultPath(
-        home: String? = nil,
-        environment: [String: String] = ProcessInfo.processInfo.environment) -> String
-    {
-        "\(CursorAppAuthStore.linuxConfigHome(home: home, environment: environment))/cursor/auth.json"
-    }
-
-    func loadSession() throws -> CursorAppAuthSession? {
-        guard let data = FileManager.default.contents(atPath: self.path) else { return nil }
-        guard let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
-            throw CursorStatusProbeError.parseFailed("cursor-agent auth file is not a JSON object")
-        }
-        guard let accessToken = (json["accessToken"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines),
-              !accessToken.isEmpty
-        else {
-            return nil
-        }
-        return CursorAppAuthSession(accessToken: accessToken)
-    }
-}
-
-#endif

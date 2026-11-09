@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 /// Reads the Grok CLI settings envelope. Plan names live here (`subscription_tier_display`),
 /// not on `/v1/billing?format=credits`.

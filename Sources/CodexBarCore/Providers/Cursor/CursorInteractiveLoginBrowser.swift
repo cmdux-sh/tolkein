@@ -1,7 +1,6 @@
 import Foundation
 import SweetCookieKit
 
-#if os(macOS)
 extension CursorStatusProbe {
     /// Whether the application maps to a browser whose Cursor cookie source can be inspected without prompting.
     public static func supportsInteractiveLoginBrowser(
@@ -61,4 +60,3 @@ extension CursorStatusProbe {
         "org.mozilla.nightly": .firefoxNightly,
     ]
 }
-#endif

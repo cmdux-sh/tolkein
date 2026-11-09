@@ -1,10 +1,7 @@
 import Foundation
-#if os(macOS)
 import SQLite3
 import SweetCookieKit
-#endif
 
-#if os(macOS)
 enum FactoryLocalStorageImporter {
     @TaskLocal static var safariWebsiteDataRoot: URL?
 
@@ -336,4 +333,3 @@ enum FactoryLocalStorageImporter {
         return String(contents[tokenRange])
     }
 }
-#endif

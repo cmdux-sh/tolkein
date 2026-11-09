@@ -1,9 +1,7 @@
 import Foundation
+import SweetCookieKit
 import Testing
 @testable import CodexBarCore
-
-#if os(macOS)
-import SweetCookieKit
 
 struct VeniceBrowserOrderTests {
     @Test
@@ -12,4 +10,3 @@ struct VeniceBrowserOrderTests {
         #expect(metadata.browserCookieOrder == Browser.defaultImportOrder)
     }
 }
-#endif

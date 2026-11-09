@@ -2,8 +2,6 @@ import Foundation
 import Testing
 @testable import CodexBarCore
 
-#if os(macOS)
-
 struct AuggieCLIProbeParseTests {
     private let probe = AuggieCLIProbe()
 
@@ -46,5 +44,3 @@ struct AuggieCLIProbeParseTests {
         #expect(snapshot.accountPlan == "\(450_000.formatted()) credits/month")
     }
 }
-
-#endif

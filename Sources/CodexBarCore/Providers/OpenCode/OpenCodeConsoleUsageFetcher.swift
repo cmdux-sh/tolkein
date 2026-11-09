@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 /// Console reads stay scoped to one workspace, even when its legacy session is also available.
 enum OpenCodeConsoleUsageFetcher {

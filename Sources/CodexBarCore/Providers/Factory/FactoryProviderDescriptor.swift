@@ -173,13 +173,8 @@ struct FactoryStatusFetchStrategy: ProviderFetchStrategy {
     let kind: ProviderFetchKind = .web
 
     func isAvailable(_ context: ProviderFetchContext) async -> Bool {
-        #if !os(macOS)
-        // Cookie/WorkOS import is macOS-only; Linux relies on API-key auth instead.
-        return false
-        #else
         guard context.settings?.factory?.cookieSource != .off else { return false }
         return true
-        #endif
     }
 
     func fetch(_ context: ProviderFetchContext) async throws -> ProviderFetchResult {

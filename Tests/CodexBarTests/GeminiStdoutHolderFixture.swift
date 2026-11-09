@@ -1,10 +1,6 @@
+import Darwin
 import Foundation
 @testable import CodexBarCore
-#if canImport(Darwin)
-import Darwin
-#else
-import Glibc
-#endif
 
 /// The test owns the holder Process before the producer can hand it a stdout descriptor.
 /// No descendant discovery or PID file is needed to clean up a failed producer.

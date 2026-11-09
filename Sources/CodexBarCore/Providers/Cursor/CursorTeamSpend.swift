@@ -1,9 +1,5 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
-#if os(macOS) || os(Linux)
 struct CursorTeamSpend: Decodable, Sendable {
     struct Member: Decodable, Sendable {
         let email: String?
@@ -134,4 +130,3 @@ extension CursorStatusProbe {
         return try JSONDecoder().decode(Response.self, from: data)
     }
 }
-#endif

@@ -114,7 +114,6 @@ struct OMPSessionRootResolver: Sendable {
         guard let root = Self.sessionRoot(agentRoot: agentRoot) else { return [] }
 
         var roots = [root]
-        #if os(macOS) || os(Linux)
         if customAgentRoot == nil,
            let xdgDataHome = Self.xdgDataHome(
                environment: environment,
@@ -131,7 +130,6 @@ struct OMPSessionRootResolver: Sendable {
                 roots.append(xdgRoot)
             }
         }
-        #endif
 
         var seen = Set<String>()
         return roots.filter { seen.insert(Self.canonicalURL($0).path).inserted }
@@ -177,7 +175,6 @@ struct OMPSessionRootResolver: Sendable {
         // the older `profiles/<name>/agent/sessions` layout. Keep both when present so a
         // profile migration cannot silently hide part of its history.
         appendExistingLayouts(in: profileRoot)
-        #if os(macOS) || os(Linux)
         if let xdgDataHome = Self.xdgDataHome(
             environment: environment,
             home: home,
@@ -189,7 +186,6 @@ struct OMPSessionRootResolver: Sendable {
                 .appendingPathComponent(profile, isDirectory: true)
             appendExistingLayouts(in: xdgProfileRoot)
         }
-        #endif
 
         if roots.isEmpty {
             // Preserve the historical missing-root signal for an explicitly selected profile.
@@ -212,7 +208,6 @@ struct OMPSessionRootResolver: Sendable {
         else { return [] }
 
         var directories = [configRoot.appendingPathComponent("profiles", isDirectory: true)]
-        #if os(macOS) || os(Linux)
         if self.environmentURL(
             environment["PI_CODING_AGENT_DIR"],
             baseDirectory: baseDirectory) == nil,
@@ -226,7 +221,6 @@ struct OMPSessionRootResolver: Sendable {
                     .appendingPathComponent("omp", isDirectory: true)
                     .appendingPathComponent("profiles", isDirectory: true))
         }
-        #endif
 
         var seen = Set<String>()
         return directories.compactMap { directory in

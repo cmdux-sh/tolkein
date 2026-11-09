@@ -1,8 +1,5 @@
 import CoreFoundation
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 public enum ProviderPluginEngineKind: Equatable, Sendable {
     case automatic

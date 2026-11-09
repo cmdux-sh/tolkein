@@ -3,11 +3,7 @@ import Foundation
 public enum WorkBuddyProviderDescriptor {
     /// Sessions bind to the browser User-Agent; the host can reconstruct only Chrome's versioned User-Agent.
     private static var browserCookieOrder: BrowserCookieImportOrder? {
-        #if os(macOS)
         [.chrome]
-        #else
-        nil
-        #endif
     }
 
     private static let webTimeout = PluginProviderSpec.WebSource.Timeout.web(

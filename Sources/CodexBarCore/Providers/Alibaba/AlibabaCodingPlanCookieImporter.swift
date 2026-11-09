@@ -1,6 +1,4 @@
 import Foundation
-
-#if os(macOS)
 import SweetCookieKit
 
 private let alibabaCookieImportOrder: BrowserCookieImportOrder =
@@ -121,4 +119,3 @@ public enum AlibabaCodingPlanCookieImporter {
         AliyunOneConsoleCookieImporter.normalizeCookieDomain(domain)
     }
 }
-#endif

@@ -1,7 +1,5 @@
-import CodexBarCore
-#if os(macOS)
 import AppKit
-#endif
+import CodexBarCore
 import InternalUI
 import SwiftUI
 
@@ -210,9 +208,7 @@ struct FocusResigningBackground: View {
         Color.clear
             .contentShape(Rectangle())
             .onTapGesture {
-                #if os(macOS)
                 NSApplication.shared.keyWindow?.makeFirstResponder(nil)
-                #endif
             }
     }
 }
@@ -313,16 +309,11 @@ private struct QuotaWarningThresholdFields: View {
         return "\(self.accessibilityContext), \(label)"
     }
 
-    @ViewBuilder
     private var focusMonitor: some View {
-        #if os(macOS)
         QuotaWarningFocusMonitor(isActive: self.focusedField != nil) {
             NSApplication.shared.keyWindow?.makeFirstResponder(nil)
             self.focusedField = nil
         }
-        #else
-        EmptyView()
-        #endif
     }
 }
 
@@ -344,7 +335,6 @@ extension QuotaWarningThresholdEditorText.Field {
     }
 }
 
-#if os(macOS)
 private struct QuotaWarningFocusMonitor: NSViewRepresentable {
     let isActive: Bool
     let onOutsideClick: () -> Void
@@ -445,7 +435,6 @@ extension NSView {
         return false
     }
 }
-#endif
 
 enum QuotaWarningThresholdEditorText {
     enum Field: Hashable {

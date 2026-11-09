@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 public struct MiniMaxUsageFetcher: Sendable {
     static let log = CodexBarLog.logger(LogCategories.provider(.minimax, scope: "usage"))

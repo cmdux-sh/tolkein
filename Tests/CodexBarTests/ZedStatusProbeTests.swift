@@ -256,7 +256,6 @@ struct ZedStatusProbeTests {
         }
     }
 
-    #if os(macOS)
     @Test
     func `keychain reader fails closed at the foreign item boundary`() {
         _ = KeychainAccessGate.withTaskOverrideForTesting(true) {
@@ -265,5 +264,4 @@ struct ZedStatusProbeTests {
             }
         }
     }
-    #endif
 }

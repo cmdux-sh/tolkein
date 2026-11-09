@@ -3,7 +3,6 @@ set -euo pipefail
 
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
 PACKAGE_SCRIPT="$ROOT/Scripts/package_app.sh"
-RELEASE_SCRIPT="$ROOT/Scripts/sign-and-notarize.sh"
 FUNCTIONS_FILE=$(mktemp "${TMPDIR:-/tmp}/codexbar-package-signing-functions.XXXXXX")
 trap 'rm -f "$FUNCTIONS_FILE"' EXIT
 
@@ -41,8 +40,6 @@ if resolve_package_signing_mode 2>/dev/null; then
   exit 1
 fi
 
-grep -Fq 'CODEXBAR_SIGNING=identity ./Scripts/package_app.sh release' "$RELEASE_SCRIPT"
-
 TEMP_DIR=$(mktemp -d "${TMPDIR:-/tmp}/codexbar-package-signing.XXXXXX")
 trap 'rm -f "$FUNCTIONS_FILE"; rm -rf "$TEMP_DIR"' EXIT
 APP="$TEMP_DIR/CodexBar.app"
@@ -76,7 +73,7 @@ if verify_packaged_app_integrity "$APP" 2>/dev/null; then
 fi
 unset MOCK_CODESIGN_STATUS
 
-python3 - "$PACKAGE_SCRIPT" "$RELEASE_SCRIPT" "$ROOT/Scripts/compile_and_run.sh" <<'PY'
+python3 - "$PACKAGE_SCRIPT" "$ROOT/Scripts/compile_and_run.sh" <<'PY'
 import itertools
 import os
 import plistlib
@@ -203,28 +200,8 @@ with tempfile.TemporaryDirectory(prefix='codexbar-identity-test-') as directory:
         assert widget_entitlements['com.apple.security.application-groups'] == expected_group, label
 print(f'{len(cases) * 2} direct identity cases passed without signing or Keychain access.')
 
-release_source = Path(sys.argv[2]).read_text()
-identity_assignment = next(line for line in release_source.splitlines() if line.startswith('APP_IDENTITY='))
-package_call = next(line for line in release_source.splitlines() if './Scripts/package_app.sh release' in line)
-with tempfile.TemporaryDirectory(prefix='codexbar-release-identity-test-') as directory:
-    root = Path(directory)
-    (root / 'Scripts').mkdir()
-    package_stub = root / 'Scripts/package_app.sh'
-    package_stub.write_text('#!/bin/bash\n[[ "$*" == release && "$CODEXBAR_SIGNING" == identity ]] || exit 99\nprintf "%s" "$APP_IDENTITY"\n')
-    package_stub.chmod(0o755)
-    for identity in [None, fork]:
-        env = dict(os.environ, ARCHES_VALUE='arm64')
-        env.pop('APP_IDENTITY', None)
-        if identity is not None:
-            env['APP_IDENTITY'] = identity
-        result = subprocess.run(['bash', '-eu', '-c', identity_assignment + '\n' + package_call],
-                                cwd=root, env=env, capture_output=True, text=True)
-        expected = identity or 'Developer ID Application: Peter Steinberger (Y5PE65HELJ)'
-        assert result.returncode == 0 and result.stdout == expected, result
-print('2 release identity forwarding cases passed without signing or notarization.')
-
 # Source only the selection functions, never the build/kill/launch entry point.
-dev_source = Path(sys.argv[3]).read_text()
+dev_source = Path(sys.argv[2]).read_text()
 start = dev_source.index('has_signing_identity() {')
 end = dev_source.index('\nrun_step() {', start)
 dev_selection = dev_source[start:end]

@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 /// Redirect policy for Aliyun OneConsole sessions with distinct dashboard and API cookie scopes.
 ///

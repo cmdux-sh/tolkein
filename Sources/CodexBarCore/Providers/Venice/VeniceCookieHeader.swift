@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 public enum VeniceCookieHeader {
     public static let sessionCookieName = "__venice-auth.session-token"

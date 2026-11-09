@@ -1,7 +1,5 @@
 import Foundation
 
-#if os(macOS)
-
 // MARK: - Factory Session Store
 
 public actor FactorySessionStore {
@@ -142,5 +140,3 @@ public actor FactorySessionStore {
         self.loadFromDisk()
     }
 }
-
-#endif

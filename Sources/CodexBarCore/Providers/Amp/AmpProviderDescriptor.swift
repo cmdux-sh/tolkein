@@ -153,11 +153,7 @@ struct AmpStatusFetchStrategy: ProviderFetchStrategy {
 
     func isAvailable(_ context: ProviderFetchContext) async -> Bool {
         guard context.sourceMode.usesWeb else { return false }
-        #if os(macOS)
         let canImportBrowserCookies = true
-        #else
-        let canImportBrowserCookies = false
-        #endif
         return Self.canUseWebFallback(
             settings: context.settings?.amp,
             canImportBrowserCookies: canImportBrowserCookies)

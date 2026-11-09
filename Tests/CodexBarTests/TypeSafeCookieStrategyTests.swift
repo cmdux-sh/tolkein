@@ -1,8 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
-#if os(macOS)
 import SweetCookieKit
 import Testing
 @testable import CodexBarCore
@@ -459,4 +455,3 @@ private struct TypeSafeCookieStrategyClaudeFetcher: ClaudeUsageFetching {
 
     func debugRawProbe(model _: String) async -> String { "unused" }
 }
-#endif

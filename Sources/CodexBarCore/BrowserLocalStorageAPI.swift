@@ -1,4 +1,3 @@
-#if os(macOS)
 import Foundation
 import SweetCookieKit
 
@@ -84,4 +83,3 @@ struct BrowserLocalStorageAPI: Sendable {
             .sorted { $0.label.localizedStandardCompare($1.label) == .orderedAscending }
     }
 }
-#endif

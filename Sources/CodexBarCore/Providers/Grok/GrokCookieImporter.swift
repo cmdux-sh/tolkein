@@ -1,6 +1,4 @@
 import Foundation
-
-#if os(macOS)
 import SweetCookieKit
 
 public enum GrokCookieImporter {
@@ -124,13 +122,3 @@ public enum GrokCookieImporter {
         self.importSessionCache.store(sessions, now: now)
     }
 }
-#else
-public enum GrokCookieImporter {
-    public static func hasSession(
-        browserDetection _: BrowserDetection = BrowserDetection(),
-        logger _: ((String) -> Void)? = nil) -> Bool
-    {
-        false
-    }
-}
-#endif

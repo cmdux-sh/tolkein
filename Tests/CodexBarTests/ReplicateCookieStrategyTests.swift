@@ -136,7 +136,6 @@ struct ReplicateCookieStrategyTests {
         await #expect(throws: CancellationError.self) { try await task.value }
     }
 
-    #if os(macOS)
     @Test
     func `browser import preserves overrides and session cookies do not require CSRF`() throws {
         #expect(ReplicateCookieImporter.resolvedImportOrder([.dia]) == [.dia])
@@ -149,7 +148,6 @@ struct ReplicateCookieStrategyTests {
         #expect(ReplicateCookieImporter.hasSessionCookie([cookie]))
         #expect(!ReplicateCookieImporter.hasSessionCookie([]))
     }
-    #endif
 
     private static func usage() -> UsageSnapshot {
         UsageSnapshot(primary: nil, secondary: nil, updatedAt: ReplicatePluginTests.now)

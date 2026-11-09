@@ -1,14 +1,7 @@
 import CoreFoundation
-import Foundation
-#if canImport(Darwin)
 import Darwin
-#elseif canImport(Glibc)
-import Glibc
-#endif
-
-#if os(macOS)
+import Foundation
 import SweetCookieKit
-#endif
 
 /// The caller supplies host-owned settings/home, never a plugin-supplied path, origin, or key.
 struct KimiDesktopSessionDiscovery: Sendable {
@@ -90,9 +83,7 @@ struct KimiDesktopSessionDiscovery: Sendable {
         return date.isFinite ? date : nil
     }
 
-    #if os(macOS)
     static let live = Self { directory, key in
         ChromiumLocalStorageReader.readCurrentValue(forRawKey: key, in: directory)
     }
-    #endif
 }

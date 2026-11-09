@@ -63,7 +63,6 @@ enum DeepSeekPlatformTokenImporter {
         browserDetection: BrowserDetection,
         logger: (@Sendable (String) -> Void)? = nil) async -> Resolution
     {
-        #if os(macOS)
         let candidates = self.importTokens(browserDetection: browserDetection, logger: logger)
         guard !Task.isCancelled else {
             return Resolution(profiles: [], selectedSummary: nil, detailedUsageState: .unavailable)
@@ -90,18 +89,8 @@ enum DeepSeekPlatformTokenImporter {
                     balance: nil,
                     detailedUsageState: .available)
             })
-        #else
-        _ = selectedProfileID
-        _ = requiresExplicitSelection
-        _ = includePlatformBalance
-        _ = includeOptionalUsage
-        _ = browserDetection
-        _ = logger
-        return Resolution(profiles: [], selectedSummary: nil, detailedUsageState: .webSessionRequired)
-        #endif
     }
 
-    #if os(macOS)
     static func importTokens(
         browserDetection: BrowserDetection,
         logger: (@Sendable (String) -> Void)? = nil,
@@ -133,8 +122,6 @@ enum DeepSeekPlatformTokenImporter {
         }
         return results
     }
-
-    #endif
 
     private static func resolve(
         candidates: [TokenInfo],

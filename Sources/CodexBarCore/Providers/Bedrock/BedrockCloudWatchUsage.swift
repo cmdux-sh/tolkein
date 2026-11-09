@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 struct BedrockClaudeActivity: Equatable {
     let inputTokens: Int

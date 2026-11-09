@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 /// Fetches live billing data from `api.commandcode.ai` using either a better-auth session
 /// cookie scraped from the user's browser or a Command Code API key.

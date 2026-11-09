@@ -120,7 +120,6 @@ public protocol ZedCredentialsReading: Sendable {
     func loadCredentials(serviceURL: String) throws -> ZedCredentials?
 }
 
-#if os(macOS)
 import Security
 
 public struct ZedKeychainCredentialsReader: ZedCredentialsReading, Sendable {
@@ -184,15 +183,6 @@ public struct ZedKeychainCredentialsReader: ZedCredentialsReading, Sendable {
         return ZedCredentials(userID: account, accessToken: accessToken)
     }
 }
-#else
-public struct ZedKeychainCredentialsReader: ZedCredentialsReading, Sendable {
-    public init() {}
-
-    public func loadCredentials(serviceURL _: String) throws -> ZedCredentials? {
-        throw ZedStatusProbeError.notSupported
-    }
-}
-#endif
 
 // MARK: - Probe
 

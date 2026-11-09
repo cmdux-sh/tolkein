@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 struct ReplicateResolvedSession: Sendable {
     let cookieHeader: String
@@ -123,13 +120,9 @@ struct ReplicateWebFetchStrategy: ProviderFetchStrategy {
 
     private static func loadSessions(browserDetection: BrowserDetection) throws
     -> AnySequence<ReplicateResolvedSession> {
-        #if os(macOS)
         try AnySequence(ReplicateCookieImporter.sessionCandidates(browserDetection: browserDetection).lazy.map {
             ReplicateResolvedSession(cookieHeader: $0.cookieHeader, sourceLabel: $0.sourceLabel)
         })
-        #else
-        throw ReplicateCredentialError.missingCookie
-        #endif
     }
 }
 

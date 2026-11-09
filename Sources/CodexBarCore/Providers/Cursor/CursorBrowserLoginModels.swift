@@ -17,7 +17,6 @@ extension CursorStatusProbe {
     }
 }
 
-#if os(macOS) || os(Linux)
 extension CursorStatusProbe {
     /// Stores the browser session selected by the user after candidate discovery completes.
     @discardableResult
@@ -29,11 +28,3 @@ extension CursorStatusProbe {
             authenticationFailurePolicy: .stopFallback)
     }
 }
-#else
-extension CursorStatusProbe {
-    @discardableResult
-    public static func commitBrowserLoginSession(_: BrowserLoginSession) -> Bool {
-        false
-    }
-}
-#endif

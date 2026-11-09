@@ -168,14 +168,9 @@ struct JetBrainsQuotaLogReaderTests {
     @Test
     func `maps IDE config directory to its log file`() {
         let home = FileManager.default.homeDirectoryForCurrentUser.path
-        #if os(macOS)
         let path = JetBrainsQuotaLogReader.logFilePath(
             forIDEBasePath: "\(home)/Library/Application Support/JetBrains/DataGrip2026.2")
         #expect(path == "\(home)/Library/Logs/JetBrains/DataGrip2026.2/idea.log")
-        #else
-        let path = JetBrainsQuotaLogReader.logFilePath(forIDEBasePath: "\(home)/.config/JetBrains/DataGrip2026.2")
-        #expect(path == "\(home)/.cache/JetBrains/DataGrip2026.2/log/idea.log")
-        #endif
     }
 
     @Test

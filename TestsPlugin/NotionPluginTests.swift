@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 import Testing
 @testable import CodexBarCore
 
@@ -101,7 +98,6 @@ struct NotionPluginTests {
         }
     }
 
-    #if os(macOS)
     @Test(arguments: BundledPluginTestSupport.engines)
     func `automatic import reaches Edge in the shared order and maps its Notion session`(
         engine: ProviderPluginEngineKind) async throws
@@ -177,7 +173,6 @@ struct NotionPluginTests {
             }
         }
     }
-    #endif
 
     @Test(arguments: BundledPluginTestSupport.engines)
     func `workspace selection identity and overage match native snapshots`(

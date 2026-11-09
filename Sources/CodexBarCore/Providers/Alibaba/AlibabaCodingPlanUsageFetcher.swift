@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 public struct AlibabaCodingPlanUsageFetcher: Sendable {
     private static let log = CodexBarLog.logger("alibaba-coding-plan")

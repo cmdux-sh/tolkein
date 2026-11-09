@@ -31,8 +31,6 @@ public struct WindsurfCachedPlanInfo: Codable, Sendable {
 
 // MARK: - Errors & Probe
 
-#if os(macOS)
-
 import SQLite3
 
 public enum WindsurfStatusProbeError: LocalizedError, Sendable, Equatable {
@@ -146,28 +144,6 @@ public struct WindsurfStatusProbe: Sendable {
         return nil
     }
 }
-
-#else
-
-// MARK: - Windsurf (Unsupported)
-
-public enum WindsurfStatusProbeError: LocalizedError, Sendable, Equatable {
-    case notSupported
-
-    public var errorDescription: String? {
-        "Windsurf is only supported on macOS."
-    }
-}
-
-public struct WindsurfStatusProbe: Sendable {
-    public init(dbPath _: String? = nil) {}
-
-    public func fetch() throws -> WindsurfCachedPlanInfo {
-        throw WindsurfStatusProbeError.notSupported
-    }
-}
-
-#endif
 
 // MARK: - Conversion to UsageSnapshot
 

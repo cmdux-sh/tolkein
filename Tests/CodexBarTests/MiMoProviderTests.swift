@@ -1,11 +1,9 @@
 import Foundation
+import SweetCookieKit
 import SwiftUI
 import Testing
 @testable import CodexBar
 @testable import CodexBarCore
-#if os(macOS)
-import SweetCookieKit
-#endif
 
 @Suite(.serialized)
 struct MiMoProviderTests {
@@ -1052,7 +1050,6 @@ extension MiMoProviderTests {
         }
     }
 
-    #if os(macOS)
     @Test
     func `mimo importer merges profile stores before validating auth cookies`() {
         let profile = BrowserProfile(id: "Default", name: "Default")
@@ -1504,7 +1501,6 @@ extension MiMoProviderTests {
             label: "Firefox \(profileDirectory.lastPathComponent)",
             databaseURL: profileDirectory.appendingPathComponent("cookies.sqlite"))
     }
-    #endif
 
     private func mozillaLZ4LiteralFile(_ json: String) -> Data {
         var data = Data([0x6D, 0x6F, 0x7A, 0x4C, 0x7A, 0x34, 0x30, 0x00])

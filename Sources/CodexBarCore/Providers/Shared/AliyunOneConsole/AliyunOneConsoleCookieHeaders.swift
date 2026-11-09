@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 /// Generic cookie-header pair for Aliyun OneConsole-based providers.
 ///

@@ -1,10 +1,5 @@
 import Foundation
-
-#if canImport(SQLite3)
 import SQLite3
-#elseif canImport(CSQLite3)
-import CSQLite3
-#endif
 
 /// Read-only access to the official Kimi Desktop Chromium cookie store.
 public enum KimiDesktopAuthToken: Sendable {
@@ -20,7 +15,6 @@ public enum KimiDesktopAuthToken: Sendable {
             .appendingPathComponent("Cookies", isDirectory: false)
     }
 
-    #if canImport(SQLite3) || canImport(CSQLite3)
     public static func load(
         region: KimiRegion = .china,
         homeDirectory: URL = FileManager.default.homeDirectoryForCurrentUser) -> String?
@@ -117,12 +111,4 @@ public enum KimiDesktopAuthToken: Sendable {
         let code: Int32
         let message: String
     }
-    #else
-    public static func load(
-        region _: KimiRegion = .china,
-        homeDirectory _: URL = FileManager.default.homeDirectoryForCurrentUser) -> String?
-    {
-        nil
-    }
-    #endif
 }

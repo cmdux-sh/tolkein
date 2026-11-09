@@ -1,9 +1,7 @@
 import Foundation
+import SweetCookieKit
 import Testing
 @testable import CodexBarCore
-#if os(macOS)
-import SweetCookieKit
-#endif
 
 @Suite(.serialized)
 struct OllamaUsageFetcherTests {
@@ -348,7 +346,6 @@ struct OllamaUsageFetcherTests {
         #expect(!OllamaUsageFetcher.shouldRetryWithNextCookieCandidate(after: OllamaUsageError.networkError("timeout")))
     }
 
-    #if os(macOS)
     @Test
     func `cookie importer defaults to chrome first`() {
         #expect(OllamaCookieImporter.defaultPreferredBrowsers == [.chrome])
@@ -714,5 +711,4 @@ struct OllamaUsageFetcherTests {
                 .path: "/",
             ])!
     }
-    #endif
 }

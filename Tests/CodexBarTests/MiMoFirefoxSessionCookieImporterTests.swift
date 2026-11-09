@@ -2,7 +2,6 @@ import Foundation
 import Testing
 @testable import CodexBarCore
 
-#if os(macOS)
 struct MiMoFirefoxSessionCookieImporterTests {
     @Test
     func `rejects mismatched decoded size`() throws {
@@ -256,4 +255,3 @@ struct MiMoFirefoxSessionCookieImporterTests {
         return output
     }
 }
-#endif

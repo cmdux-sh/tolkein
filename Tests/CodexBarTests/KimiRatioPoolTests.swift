@@ -2,10 +2,6 @@ import Foundation
 import Testing
 @testable import CodexBarCore
 
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
-
 struct KimiRatioPoolTests {
     @Test
     func `reported ratio pools retain missing weekly quota and monthly identity`() throws {

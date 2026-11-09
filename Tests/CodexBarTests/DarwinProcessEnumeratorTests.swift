@@ -1,10 +1,7 @@
+import Darwin
 import Foundation
 import Testing
 @testable import CodexBarCore
-
-#if canImport(Darwin)
-import Darwin
-#endif
 
 struct DarwinProcessEnumeratorTests {
     @Test
@@ -145,7 +142,6 @@ struct DarwinProcessEnumeratorTests {
         }
     }
 
-    #if canImport(Darwin)
     @Test
     func `filtered process enumeration includes this user and process group`() {
         #expect(DarwinProcessEnumerator.allPIDs(type: UInt32(PROC_UID_ONLY), typeInfo: getuid()).contains(getpid()))
@@ -285,7 +281,6 @@ struct DarwinProcessEnumeratorTests {
 
         #expect(record == nil)
     }
-    #endif
 
     private static func procArgsData(arguments: [String], environment: [String] = []) -> Data {
         var data = Data(self.littleEndianBytes(Int32(arguments.count)))
@@ -303,7 +298,6 @@ struct DarwinProcessEnumeratorTests {
         withUnsafeBytes(of: value.littleEndian) { Array($0) }
     }
 
-    #if canImport(Darwin)
     private static func openLoopbackListener() throws -> (fileDescriptor: Int32, port: Int) {
         let fileDescriptor = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)
         guard fileDescriptor >= 0 else { throw POSIXError(.init(rawValue: errno) ?? .EIO) }
@@ -337,5 +331,4 @@ struct DarwinProcessEnumeratorTests {
             throw error
         }
     }
-    #endif
 }

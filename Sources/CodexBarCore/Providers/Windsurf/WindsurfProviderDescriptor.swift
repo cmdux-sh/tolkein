@@ -77,7 +77,6 @@ struct WindsurfWebFetchStrategy: ProviderFetchStrategy {
     }
 
     func fetch(_ context: ProviderFetchContext) async throws -> ProviderFetchResult {
-        #if os(macOS)
         let cookieSource = context.settings?.windsurf?.cookieSource ?? .auto
         let manualToken = Self.manualToken(from: context)
         let usage = try await WindsurfWebFetcher.fetchUsage(
@@ -87,9 +86,6 @@ struct WindsurfWebFetchStrategy: ProviderFetchStrategy {
             timeout: context.webTimeout,
             logger: context.verbose ? { print($0) } : nil)
         return self.makeResult(usage: usage, sourceLabel: "windsurf-web")
-        #else
-        throw WindsurfStatusProbeError.notSupported
-        #endif
     }
 
     func shouldFallback(on _: Error, context: ProviderFetchContext) -> Bool {

@@ -1,5 +1,3 @@
-#if os(macOS)
-
 import Foundation
 import SQLite3
 import Testing
@@ -211,5 +209,3 @@ struct KimiDesktopAuthTokenTests {
         case exec
     }
 }
-
-#endif

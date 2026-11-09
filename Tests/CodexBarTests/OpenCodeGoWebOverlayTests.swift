@@ -600,7 +600,6 @@ struct OpenCodeGoWebOverlayTests {
         }
     }
 
-    #if os(macOS)
     @Test
     func `empty cookie cache marks local quota windows estimated`() async throws {
         try await self.withEmptyCookieCache {
@@ -705,5 +704,4 @@ struct OpenCodeGoWebOverlayTests {
             }
         }
     }
-    #endif
 }

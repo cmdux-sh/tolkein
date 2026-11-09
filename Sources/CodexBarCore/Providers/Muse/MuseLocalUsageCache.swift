@@ -1,11 +1,5 @@
-import Foundation
-#if canImport(Darwin)
 import Darwin
-#elseif canImport(Glibc)
-import Glibc
-#elseif canImport(Musl)
-import Musl
-#endif
+import Foundation
 
 /// Per-file scan cache for Muse session logs.
 ///
@@ -91,13 +85,8 @@ struct MuseLocalUsageCache: Codable {
 
         private static func make(_ info: stat) -> Self? {
             guard info.st_mode & mode_t(S_IFMT) == mode_t(S_IFREG), info.st_size >= 0 else { return nil }
-            #if os(Linux)
-            let modified = info.st_mtim
-            let changed = info.st_ctim
-            #else
             let modified = info.st_mtimespec
             let changed = info.st_ctimespec
-            #endif
             return Self(
                 identity: "\(info.st_dev):\(info.st_ino)",
                 size: Int64(info.st_size),

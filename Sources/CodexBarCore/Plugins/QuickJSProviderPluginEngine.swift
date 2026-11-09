@@ -1,8 +1,5 @@
 import CQuickJS
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 private enum QuickJSHostFunction: Int32 {
     case defineProvider

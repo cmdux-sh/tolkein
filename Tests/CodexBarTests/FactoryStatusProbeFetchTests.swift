@@ -1,10 +1,8 @@
 import Foundation
-import Testing
-@testable import CodexBarCore
-#if os(macOS)
 import SQLite3
 import SweetCookieKit
-#endif
+import Testing
+@testable import CodexBarCore
 
 @Suite(.serialized)
 struct FactoryStatusProbeFetchTests {
@@ -687,7 +685,6 @@ struct FactoryStatusProbeFetchTests {
         ])
     }
 
-    #if os(macOS)
     /// A channel-owned Firefox profile rejected under `.firefox` must not abort the loop before
     /// the channel-specific sources run.
     @Test(arguments: [
@@ -787,7 +784,6 @@ struct FactoryStatusProbeFetchTests {
         }
         await FactorySessionStore.shared.clearSession()
     }
-    #endif
 
     private static func makeResponse(
         url: URL,
@@ -913,7 +909,6 @@ private struct FactoryStubTransport: ProviderHTTPTransport {
     }
 }
 
-#if os(macOS)
 private func writeGeckoCookies(
     at url: URL,
     host: String,
@@ -968,4 +963,3 @@ private struct ChannelFallbackStubTransport: ProviderHTTPTransport {
         return (Data(body.utf8), response)
     }
 }
-#endif

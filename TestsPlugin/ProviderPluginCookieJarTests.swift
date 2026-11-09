@@ -1,14 +1,10 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 import Testing
 @testable import CodexBarCore
 
 struct ProviderPluginCookieJarTests {
     private static let now = Date(timeIntervalSince1970: 1_800_000_000)
 
-    #if os(macOS)
     @Test(arguments: BundledPluginTestSupport.engines)
     func `jar import retains interactive authorization across the engine callback`(
         engine: ProviderPluginEngineKind) async throws
@@ -39,7 +35,6 @@ struct ProviderPluginCookieJarTests {
         })
         #expect(usage.identity?.loginMethod == "interactive")
     }
-    #endif
 
     @Test
     func `URL matcher preserves duplicate names and path boundaries`() throws {

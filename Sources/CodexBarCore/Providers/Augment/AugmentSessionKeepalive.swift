@@ -1,6 +1,5 @@
 import Foundation
 
-#if os(macOS)
 /// Manages automatic session keepalive for Augment to prevent cookie expiration.
 ///
 /// This actor monitors cookie expiration and proactively refreshes the session
@@ -344,7 +343,6 @@ public final class AugmentSessionKeepalive {
         self.log("🔄 Attempting automatic session recovery...")
         self.log("   Strategy: Open Augment dashboard to trigger browser re-auth")
 
-        #if os(macOS)
         // Open the Augment dashboard in the default browser
         // This will trigger the browser to re-authenticate if the user is still logged in
         do {
@@ -383,9 +381,6 @@ public final class AugmentSessionKeepalive {
                 self.notifyUserLoginRequired(lifecycle: lifecycle)
             }
         }
-        #else
-        self.log("   ✗ Automatic recovery not supported on this platform")
-        #endif
     }
 
     private func notifyUserLoginRequired(lifecycle: UUID) {
@@ -520,5 +515,3 @@ public enum AugmentSessionKeepaliveError: LocalizedError, Sendable {
         }
     }
 }
-
-#endif

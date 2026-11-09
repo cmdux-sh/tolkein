@@ -31,7 +31,6 @@ enum OpenCodeWebCookieSupport {
             throw invalidCookie()
         }
 
-        #if os(macOS)
         if context.allowCached,
            let cached = CookieHeaderCache.load(provider: context.provider),
            let header = self.requestCookieHeader(from: cached.cookieHeader)
@@ -49,14 +48,9 @@ enum OpenCodeWebCookieSupport {
             cookieHeader: header,
             sourceLabel: session.sourceLabel)
         return header
-        #else
-        throw missingCookie()
-        #endif
     }
 
-    #if os(macOS)
     static func automaticImportOrder(provider: UsageProvider) -> BrowserCookieImportOrder {
         ProviderDefaults.metadata[provider]?.browserCookieOrder ?? [.chrome]
     }
-    #endif
 }

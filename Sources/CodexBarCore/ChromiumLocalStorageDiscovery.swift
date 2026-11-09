@@ -1,4 +1,3 @@
-#if os(macOS)
 import Foundation
 import SweetCookieKit
 
@@ -104,4 +103,3 @@ enum ChromiumLocalStorageDiscovery {
         }
     }
 }
-#endif

@@ -1,6 +1,4 @@
 import Foundation
-
-#if os(macOS)
 import SweetCookieKit
 
 public enum KimiCookieImporter {
@@ -153,4 +151,3 @@ enum KimiCookieImportError: LocalizedError {
         }
     }
 }
-#endif

@@ -1,6 +1,4 @@
 import Foundation
-
-#if os(macOS)
 import SweetCookieKit
 
 private let minimaxCookieImportOrder: BrowserCookieImportOrder =
@@ -122,4 +120,3 @@ enum MiniMaxCookieImportError: LocalizedError {
         }
     }
 }
-#endif

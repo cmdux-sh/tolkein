@@ -1,10 +1,6 @@
 import Foundation
 @testable import CodexBarCore
 
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
-
 public struct ManusCreditsResponse: Decodable, Sendable {
     public let totalCredits: Double
     public let freeCredits: Double

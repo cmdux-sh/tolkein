@@ -61,7 +61,6 @@ struct PerplexityCookieHeaderTests {
         #expect(override == nil)
     }
 
-    #if os(macOS)
     @Test
     func `importer session info reassembles chunked session cookies`() throws {
         let cookies = try [
@@ -73,9 +72,7 @@ struct PerplexityCookieHeaderTests {
         #expect(session.sessionCookie?.name == "__Secure-authjs.session-token")
         #expect(session.sessionCookie?.token == "chunk-achunk-b")
     }
-    #endif
 
-    #if os(macOS)
     private func makeCookie(name: String, value: String) -> HTTPCookie? {
         HTTPCookie(properties: [
             .domain: "www.perplexity.ai",
@@ -85,5 +82,4 @@ struct PerplexityCookieHeaderTests {
             .secure: "TRUE",
         ])
     }
-    #endif
 }

@@ -123,11 +123,7 @@ struct AntigravityHubIdentityTests {
         #else
         let architecture = "amd64"
         #endif
-        #if os(Linux)
-        let platform = "linux"
-        #else
         let platform = "darwin"
-        #endif
         for request in cloudRequests + dailyRequests {
             #expect(request.value(forHTTPHeaderField: "User-Agent") ==
                 "antigravity/hub/2.9.1 \(platform)/\(architecture)")

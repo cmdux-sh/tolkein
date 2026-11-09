@@ -1,4 +1,3 @@
-#if os(macOS)
 import Foundation
 import WebKit
 
@@ -26,4 +25,3 @@ final class OpenAIDashboardCacheMaintenance {
             modifiedSince: .distantPast)
     }
 }
-#endif

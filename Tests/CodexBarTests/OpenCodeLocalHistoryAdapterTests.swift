@@ -1,12 +1,7 @@
 import Foundation
+import SQLite3
 import Testing
 @testable import CodexBarCore
-
-#if canImport(SQLite3)
-import SQLite3
-#elseif canImport(CSQLite3)
-import CSQLite3
-#endif
 
 /// The adapter's stage-1/2 behavior: decode → atomic store commit → checkpointed
 /// continuation, including the three #4744 cursor regressions held as explicit tests

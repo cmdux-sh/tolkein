@@ -1,11 +1,7 @@
 import Foundation
+import SQLite3
 import Testing
 @testable import CodexBarCore
-#if canImport(SQLite3)
-import SQLite3
-#elseif canImport(CSQLite3)
-import CSQLite3
-#endif
 
 /// Synthetic, not a private capture. Independent schema and JSONL producer provenance:
 /// https://github.com/junhoyeo/tokscale/tree/62ca1eb1677556972ba963fdfa3a41ab23c1eb4b

@@ -1,12 +1,7 @@
 import Foundation
+import SQLite3
 import Testing
 @testable import CodexBarCore
-
-#if canImport(SQLite3)
-import SQLite3
-#elseif canImport(CSQLite3)
-import CSQLite3
-#endif
 
 extension CostUsageStoreReadWorkTests {
     @Test(arguments: [false, true])
@@ -57,7 +52,6 @@ extension CostUsageStoreReadWorkTests {
         }
     }
 
-    #if canImport(SQLite3)
     @Test(arguments: [false, true])
     func `workspace refresh rejects a retained cache from another source`(forceRefresh: Bool) throws {
         let fixture = try ReadWorkFixture(fileCount: 2, rowsPerFile: 4)
@@ -107,7 +101,6 @@ extension CostUsageStoreReadWorkTests {
             options: options) == baseline)
         #expect(try sidecar.usageCache(roots: baseline.rootsFingerprint) == sources)
     }
-    #endif
 
     @Test(arguments: [false, true])
     func `workspace refresh accepts an empty scan from the selected source`(forceRefresh: Bool) throws {

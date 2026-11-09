@@ -1,4 +1,3 @@
-#if os(macOS)
 import Darwin
 import Foundation
 import Testing
@@ -77,4 +76,3 @@ private struct ForbiddenDesktopTransport: ProviderHTTPTransport {
         throw KimiDesktopSessionChanged()
     }
 }
-#endif

@@ -1,9 +1,6 @@
 import Foundation
-#if os(macOS)
 import SweetCookieKit
-#endif
 
-#if os(macOS)
 enum WindsurfDevinSessionImporter {
     #if DEBUG
     final class ImportSessionsOverrideStore: @unchecked Sendable {
@@ -285,4 +282,3 @@ enum WindsurfDevinSessionImporter {
         "devin_primary_org_id",
     ]
 }
-#endif

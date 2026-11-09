@@ -1,8 +1,5 @@
 import CoreFoundation
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 enum MiMoCookieHeader {
     static let requiredCookieNames: Set<String> = [
@@ -96,7 +93,6 @@ enum MiMoCookieHeader {
     }
 }
 
-#if os(macOS)
 import SweetCookieKit
 
 private let miMoCookieImportOrder: BrowserCookieImportOrder =
@@ -658,4 +654,3 @@ enum MiMoFirefoxSessionCookieImporter {
         return length
     }
 }
-#endif

@@ -14,11 +14,7 @@ public enum CursorProviderDescriptor {
 
     /// Active Cursor sessions often live only in Safari; Chromium profiles may carry stale tokens.
     private static var browserCookieOrder: BrowserCookieImportOrder? {
-        #if os(macOS)
         [.safari] + Browser.defaultImportOrder.filter { $0 != .safari }
-        #else
-        nil
-        #endif
     }
 
     static func makeDescriptor() -> ProviderDescriptor {
@@ -109,27 +105,14 @@ public enum CursorProviderDescriptor {
                 name: "cursor",
                 versionDetector: nil,
                 supportsCostCommand: self.supportsCostCommand,
-                browserSupportExemption: { sourceMode, _, settings in
-                    #if os(Linux)
-                    guard settings?.cursor?.cookieSource != .off else { return false }
-                    if settings?.cursor?.cookieSource == .manual {
-                        return CookieHeaderNormalizer.normalize(settings?.cursor?.manualCookieHeader) != nil
-                    }
-                    // App auth needs no browser integration. Explicit web mode still requires a manual cookie.
-                    return sourceMode == .auto || sourceMode == .cli
-                    #else
+                browserSupportExemption: { _, _, _ in
                     false
-                    #endif
                 }),
             nativeAppBundleIdentifiers: ["com.todesktop.230313mzl4w4u92"])
     }
 
     private static var supportsCostCommand: Bool {
-        #if os(macOS)
         true
-        #else
-        false
-        #endif
     }
 
     /// The X Subscription's shared weekly pool replaces the monthly Total lane as the primary window.

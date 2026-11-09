@@ -2,11 +2,9 @@ import Foundation
 import os.lock
 import Security
 import SQLite3
+import SweetCookieKit
 import Testing
 @testable import CodexBarCore
-
-#if os(macOS)
-import SweetCookieKit
 
 @Suite(.serialized)
 struct AlibabaCodingPlanCookieImporterTests {
@@ -259,14 +257,3 @@ struct AlibabaCodingPlanCookieImporterTests {
         #expect(candidates.contains(.chrome) == false)
     }
 }
-
-#else
-
-struct AlibabaCodingPlanCookieImporterTests {
-    @Test
-    func `non mac OS placeholder`() {
-        #expect(true)
-    }
-}
-
-#endif

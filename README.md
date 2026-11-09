@@ -1,22 +1,10 @@
-# CodexBar 🎚️ — May your tokens never run out.
+# Tolkein
 
 > Every AI coding limit, in your menu bar.
 
-[![Latest release](https://img.shields.io/github/v/release/steipete/CodexBar?style=flat-square&color=0a0a0c)](https://github.com/steipete/CodexBar/releases/latest)
-[![macOS 14+](https://img.shields.io/badge/macOS-14%2B-0a0a0c?style=flat-square)](https://github.com/steipete/CodexBar/releases/latest)
-[![Linux desktop](https://img.shields.io/badge/Linux-Qt_6-1793d1?style=flat-square)](Integrations/Linux/README.md)
-[![Homebrew](https://img.shields.io/badge/brew-steipete%2Ftap%2Fcodexbar-orange?style=flat-square)](https://github.com/steipete/homebrew-tap)
-[![AUR](https://img.shields.io/aur/version/codexbar-cli?style=flat-square&color=1793d1)](https://aur.archlinux.org/packages/codexbar-cli)
-[![License: MIT](https://img.shields.io/badge/license-MIT-6e5aff?style=flat-square)](LICENSE)
-[![Site](https://img.shields.io/badge/site-codexbar.app-16d3b4?style=flat-square)](https://codexbar.app)
-
-<a href="https://codexbar.app"><img src="docs/social.png?v=0f99e47c69627e0b" alt="CodexBar — every AI coding limit in your menu bar. 112 providers." width="100%" /></a>
-
-Tiny macOS 14+ menu bar app that keeps **AI coding-provider limits visible** and shows when each window resets. See the [supported providers](#providers) below. One status item per provider, or Merge Icons mode with a provider switcher. No Dock icon, minimal UI, dynamic bar icons.
-
-Also available as a [Linux desktop app](Integrations/Linux/README.md) with usage and spending windows, separate settings, desktop notifications, and an optional tray icon. On Omarchy, a native bar widget shares the desktop app’s data and follows your theme.
-
-<img src="docs/codexbar.png" alt="CodexBar menu popover with provider tiles, usage bars, and reset countdowns" width="520" />
+Tolkein is a macOS 15+ menu bar app that keeps AI coding-provider limits visible and shows when each window resets.
+It started as a fork of [CodexBar](https://github.com/steipete/CodexBar) by Peter Steinberger and is now its own
+app, rebuilt on the Internal UI design system. See the [supported providers](#providers) below.
 
 ## Why
 
@@ -27,43 +15,8 @@ Also available as a [Linux desktop app](Integrations/Linux/README.md) with usage
 
 ## Install
 
-### macOS app
-
-Requires macOS 14+ (Sonoma). Download from [GitHub Releases](https://github.com/steipete/CodexBar/releases), or install with Homebrew:
-
-```bash
-brew install --cask codexbar
-```
-
-### Linux desktop and Omarchy
-
-The Qt 6 desktop app supports Wayland and X11, with an optional Omarchy widget.
-Published desktop archives target x86_64 and ARM64 and require glibc 2.39+,
-Qt 6.4+, and a separately installed CodexBar CLI. Python 3 runs the per-user installer.
-
-Follow the [Linux installation guide](Integrations/Linux/README.md#install-release-archives)
-for Arch/Omarchy, Fedora, and Debian/Ubuntu runtime packages, verified release
-downloads, and upgrades. It keeps the CLI's resource bundle beside its executable
-and installs a launcher and optional login startup. Open Settings to choose
-providers, then authenticate through the provider's CLI or configure its API key.
-GNOME may need a tray extension; the app's windows work without a tray.
-
-See the [macOS feature comparison](Integrations/Linux/MAC_COMPARISON.md) for
-supported features and remaining gaps.
-
-### CLI Tarballs (macOS/Linux)
-Homebrew formula (Linux today):
-```bash
-brew install steipete/tap/codexbar
-```
-Arch Linux AUR package:
-```bash
-yay -S codexbar-cli
-```
-Or download release tarballs from GitHub Releases:
-- macOS: `CodexBarCLI-v<tag>-macos-arm64.tar.gz`, `CodexBarCLI-v<tag>-macos-x86_64.tar.gz`
-- Linux (glibc): `CodexBarCLI-v<tag>-linux-aarch64.tar.gz`, `CodexBarCLI-v<tag>-linux-x86_64.tar.gz`
-- Linux (static musl): `CodexBarCLI-v<tag>-linux-musl-aarch64.tar.gz`, `CodexBarCLI-v<tag>-linux-musl-x86_64.tar.gz`
+Tolkein isn't published yet. Build it from source (see [Build from source](#build-from-source)), or run `make start`
+for the development loop.
 
 ### macOS first run
 - Open Settings → Providers and enable what you use.
@@ -233,7 +186,7 @@ show an incident indicator.
 - Privacy-first: on-device parsing by default; browser cookies are opt-in and reused (no passwords stored).
 
 ## Privacy note
-Wondering if CodexBar scans your disk? It doesn’t crawl your filesystem; it reads a small set of known locations (browser cookies/local storage, provider config files, local JSONL logs) when the related features are enabled. Plain Adaptive refresh never inspects local agent activity. The separate Adaptive (agent-aware) option asks before inspecting the running-process list (including command lines) to identify Codex/Claude and reading bounded known-session metadata. Declining returns to plain Adaptive. When allowed with Agent Sessions hidden, CodexBar retains only the latest activity time and discards session paths and identities. Provider tokens and token-account settings live in the CodexBar config file with restrictive file permissions. See the discussion and audit notes in [issue #12](https://github.com/steipete/CodexBar/issues/12).
+Wondering if Tolkein scans your disk? It doesn’t crawl your filesystem; it reads a small set of known locations (browser cookies/local storage, provider config files, local JSONL logs) when the related features are enabled. Plain Adaptive refresh never inspects local agent activity. The separate Adaptive (agent-aware) option asks before inspecting the running-process list (including command lines) to identify Codex/Claude and reading bounded known-session metadata. Declining returns to plain Adaptive. When allowed with Agent Sessions hidden, CodexBar retains only the latest activity time and discards session paths and identities. Provider tokens and token-account settings live in the CodexBar config file with restrictive file permissions. See the discussion and audit notes in [issue #12](https://github.com/steipete/CodexBar/issues/12).
 
 ## macOS permissions (why they’re needed)
 - **Full Disk Access (optional)**: only required to read Safari cookies/local storage for web-based providers. If you don’t grant it, use another supported browser, manual cookies/API keys, OAuth, or CLI/local sources where that provider supports them.
@@ -251,7 +204,6 @@ Wondering if CodexBar scans your disk? It doesn’t crawl your filesystem; it re
 ## Docs
 - Providers overview: [docs/providers.md](docs/providers.md)
 - Provider authoring: [docs/provider.md](docs/provider.md)
-- Issue labeling guide: [docs/ISSUE_LABELING.md](docs/ISSUE_LABELING.md)
 - UI & icon notes: [docs/ui.md](docs/ui.md)
 - CLI reference: [docs/cli.md](docs/cli.md)
 - Configuration: [docs/configuration.md](docs/configuration.md)
@@ -261,11 +213,8 @@ Wondering if CodexBar scans your disk? It doesn’t crawl your filesystem; it re
 - Architecture: [docs/architecture.md](docs/architecture.md)
 - Refresh loop: [docs/refresh-loop.md](docs/refresh-loop.md)
 - Status polling: [docs/status.md](docs/status.md)
-- Sparkle updates: [docs/sparkle.md](docs/sparkle.md)
 - Packaging: [docs/packaging.md](docs/packaging.md)
 - Development: [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)
-- Release checklist: [docs/RELEASING.md](docs/RELEASING.md)
-- Changelog: [CHANGELOG.md](CHANGELOG.md)
 
 ## Getting started (dev)
 - Clone the repo and open it in Xcode or run the scripts directly.
@@ -274,7 +223,7 @@ Wondering if CodexBar scans your disk? It doesn’t crawl your filesystem; it re
 - Optional: set OpenAI cookies (Automatic or Manual) for Codex dashboard extras.
 
 ## Build from source
-Requires macOS 14+ and Swift 6.2+.
+Requires macOS 15+ and Swift 6.2+.
 
 ```bash
 ./Scripts/package_app.sh        # builds CodexBar.app in-place with ad-hoc signing
@@ -285,7 +234,8 @@ Dev loop:
 ```bash
 ./Scripts/compile_and_run.sh
 ./Scripts/compile_and_run.sh --test  # also run the sharded test suite before packaging/relaunching
-make check                           # SwiftFormat + SwiftLint
+make check                           # format, lint and English strings (about 30 s)
+make check-all                       # plus packaging, CI and site self-tests
 make docs-list                       # list docs with frontmatter summaries
 ```
 
@@ -295,47 +245,9 @@ CLI install:
 ./bin/install-codexbar-cli.sh
 ```
 
-## Related
-- ✂️ [Trimmy](https://github.com/steipete/Trimmy) — “Paste once, run once.” Flatten multi-line shell snippets so they paste and run.
-- 🧳 [MCPorter](https://mcporter.dev) — TypeScript toolkit + CLI for Model Context Protocol servers.
-- 🧿 [oracle](https://askoracle.dev) — Ask the oracle when you're stuck. Invoke GPT-5 Pro with a custom context and files.
-
-## Looking for a Windows version?
-- [Win-CodexBar](https://github.com/Finesssee/Win-CodexBar)
-- [CodexBar for Windows](https://github.com/hinneslung/CodexBar-for-Windows) — Native Windows tray app powered by the original CodexBar CLI through WSL2; x64 and ARM64 installers.
-
-## Linux desktop integration?
-- [Linux desktop app](Integrations/Linux/README.md) — x86_64/ARM64 release archives with an installer; Qt 6 usage and spending windows, separate settings, optional system tray, and desktop notifications using the Linux CLI.
-- [Omarchy native widget](Integrations/Omarchy/README.md) — Compact Quickshell usage popup sharing the Linux desktop app’s backend.
-- [CodexBar GTK](https://github.com/SaahiilM/codexbar-gtk) — Community GTK4/libadwaita front-end with usage, spending, and agent sessions from the CodexBar Linux CLI.
-- [codexbar-waybar](https://github.com/Marouan-chak/codexbar-waybar) — Waybar custom module + GTK4 popover for Hyprland / Sway / other Wayland compositors, built on top of the bundled Linux CLI.
-- [codexbar-cosmic-applet](https://github.com/andrew-verde/codexbar-cosmic-applet) — Native COSMIC (System76) desktop panel applet with a tab per provider, pace projections, and cost/token stats, built on top of the bundled Linux CLI.
-- [Codexbar GNOME](https://extensions.gnome.org/extension/9841/codexbar/) — GNOME Shell extension that brings CodexBar usage into the desktop panel.
-- [codexbar-cinnamon-applet](https://github.com/jacobcalvert/codexbar-cinnamon-applet) — Linux Mint Cinnamon panel applet powered by CodexBar's JSON output.
-- [noctalia-codex-usage](https://github.com/rayoplateado/noctalia-codex-usage) — Noctalia/Quickshell plugin that shows Codex 5-hour and weekly usage limits, built on top of the bundled Linux CLI.
-- [KodexBar](https://github.com/tylxr59/KodexBar) — KDE Plasma widget that shows CodexBar usage in the Plasma panel, built on top of the bundled Linux CLI.
-- [codexbar-plasmoid](https://github.com/psimaker/codexbar-plasmoid) — KDE Plasma 6 widget for CodexBar's meter icon, provider switcher, quota windows, pace, credits, local cost, and status, powered by the bundled Linux CLI.
-- [CodexBar Plasma](https://github.com/Lucenx9/codexbar-plasma) — KDE Plasma 6 widget with multi-provider views, account selection, cost history, notifications, configurable providers, and installable `.plasmoid` releases, powered by the bundled Linux CLI.
-- [CodexBar AgentView](https://github.com/materemias/codexbar-agentview) — KDE Plasma 6 widget with usage meters, agent-session search, terminal focus, and kitty session restoration, powered by the bundled Linux CLI.
-- [CodexBar Meter](https://github.com/noctalia-dev/community-plugins/tree/main/codexbar-meter) — Noctalia v5 bar widget and panel showing every enabled provider's quota windows, credits, and pace, installable from Noctalia's plugin store, built on the bundled Linux CLI.
-- [codexbar-dms](https://github.com/quantmind-br/codexbar-dms) — DankMaterialShell bar widget with provider logo pills, a popout of quota windows, reset times, and local spending, and shortcuts to the Linux desktop app's Usage & Spend and Settings windows, sharing that app's backend.
-
-## Desk display
-- [AI Monitor](https://github.com/tobymarks/esp32-ai-monitor) — ESP32 desk display (Cheap Yellow Display) plus a macOS companion app that shows Claude, ChatGPT, Gemini, Copilot, Cursor and Antigravity limits as rings or bars, fed over USB by the bundled CLI. No Wi-Fi on the device, 3D-printable case.
-- [TokenTV](https://github.com/click6067-ship-it/token-tv) — Python host that shows Claude and Codex 5-hour and weekly limits on compatible 240×240 Wi-Fi desk clocks (GeekMagic SmallTV style), using the bundled CLI or `codexbar serve`. It uploads rendered screens to the clock's stock photo album without changing its firmware.
-
-## Status bar & terminal integration
-- [showy-quota](https://github.com/enieuwy/showy-quota) — always-on AI plan quota strips for SketchyBar, tmux, and Zellij (standalone WASM plugin), built on `codexbar serve` / the bundled CLI.
-- [AI Usage Limits](https://github.com/lenadweb/stream-deck-ai-limits) — Elgato Stream Deck integration for macOS: shows a selected CodexBar provider, account, and configurable quota or payload metrics on keys and Stream Deck+ dials, using local `codexbar serve`.
-- [ccx](https://github.com/aaronwong1999/ccx) — macOS menu bar companion for Claude Code/Codex task handoff, using `codexbar usage --provider both --format json` for quota warnings.
-
-## Phone & web
-
-- [Starbridge](https://github.com/T0mSIlver/starbridge) — Community-maintained Android and web app that displays quota windows from the CodexBar CLI on macOS and Linux, with optional quota alerts.
-- [Notify! CodexBar](https://github.com/simplytoast1/notify-codexbar) — Community-maintained macOS companion that reads CodexBar CLI or local `codexbar serve` output and sends selected usage through [Notify!](https://getnotifyapp.com/) for iPhone/iPad widgets, Live Activities, and quota notifications.
-
 ## Credits
-Inspired by [ccusage](https://github.com/ryoppippi/ccusage) (MIT), specifically the cost usage tracking.
+- Based on [CodexBar](https://github.com/steipete/CodexBar) by Peter Steinberger (MIT License).
+- Cost usage tracking inspired by [ccusage](https://github.com/ryoppippi/ccusage) (MIT).
 
 ## License
-MIT • Peter Steinberger ([steipete](https://twitter.com/steipete))
+MIT. Tolkein includes code from CodexBar, © Peter Steinberger; see [LICENSE](LICENSE).

@@ -1,9 +1,5 @@
 import Foundation
-#if canImport(SQLite3)
 import SQLite3
-#elseif canImport(CSQLite3)
-import CSQLite3
-#endif
 
 extension AntigravityLocalReader {
     static func readDatabases(_ paths: [URL], budget: Budget) throws -> SourceResult {
@@ -29,7 +25,6 @@ extension AntigravityLocalReader {
         return result
     }
 
-    #if canImport(SQLite3) || canImport(CSQLite3)
     private final class SQLProgress {
         let budget: Budget
         var failure: Error?
@@ -59,7 +54,6 @@ extension AntigravityLocalReader {
             }
         }
     }
-    #endif
 
     private enum OpenMode {
         /// Ordinary read-only access with WAL read-mark coordination through the sidecars.
@@ -99,7 +93,6 @@ extension AntigravityLocalReader {
         return source
     }
 
-    #if canImport(SQLite3) || canImport(CSQLite3)
     /// Opens the database for the given mode. A failed open leaves no handle behind.
     private static func openDatabase(
         _ url: URL,
@@ -128,10 +121,8 @@ extension AntigravityLocalReader {
         }
         return (status, database)
     }
-    #endif
 
     private static func readDatabase(_ url: URL, budget: Budget, mode: OpenMode) throws -> DatabaseAttempt {
-        #if canImport(SQLite3) || canImport(CSQLite3)
         let opened = self.openDatabase(url, mode: mode, budget: budget)
         guard let database = opened.database else {
             return DatabaseAttempt(SourceResult(isComplete: false), cannotOpen: opened.status == SQLITE_CANTOPEN)
@@ -262,12 +253,8 @@ extension AntigravityLocalReader {
             }
         }
         return DatabaseAttempt(rows.source)
-        #else
-        return DatabaseAttempt(SourceResult(isComplete: false))
-        #endif
     }
 
-    #if canImport(SQLite3) || canImport(CSQLite3)
     private struct PendingTimestampRow {
         let row: Int64
         let stepUUID: String
@@ -665,5 +652,4 @@ extension AntigravityLocalReader {
         rows.source.events.sort { $0.row < $1.row }
         return recoveredCount
     }
-    #endif
 }

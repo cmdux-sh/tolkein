@@ -1,4 +1,3 @@
-#if os(macOS)
 import Foundation
 import Network
 import Testing
@@ -109,4 +108,3 @@ private final class TypeSafeRedirectConnection: @unchecked Sendable {
         }
     }
 }
-#endif

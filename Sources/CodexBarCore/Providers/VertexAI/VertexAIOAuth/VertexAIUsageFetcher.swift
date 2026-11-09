@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 public enum VertexAIFetchError: LocalizedError, Sendable {
     case unauthorized

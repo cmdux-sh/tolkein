@@ -1,5 +1,3 @@
-#if os(macOS)
-
 import Foundation
 import SQLite3
 import Testing
@@ -346,5 +344,3 @@ struct OpenCodeGoV2LocalUsageReaderTests {
         case exec
     }
 }
-
-#endif

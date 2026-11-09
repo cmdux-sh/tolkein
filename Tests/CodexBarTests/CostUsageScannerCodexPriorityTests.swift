@@ -1,5 +1,4 @@
 import Foundation
-#if canImport(SQLite3)
 import SQLite3
 import Testing
 @testable import CodexBarCore
@@ -761,4 +760,3 @@ extension CostUsageScanner {
             untilDayKey: untilDayKey).turns
     }
 }
-#endif

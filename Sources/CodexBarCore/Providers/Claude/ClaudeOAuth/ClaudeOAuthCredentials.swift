@@ -1,14 +1,7 @@
 import Dispatch
 import Foundation
-
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
-
-#if os(macOS)
 import LocalAuthentication
 import Security
-#endif
 
 // swiftlint:disable type_body_length file_length
 public enum ClaudeOAuthCredentialsStore {
@@ -979,7 +972,6 @@ public enum ClaudeOAuthCredentialsStore {
 
         func hasClaudeKeychainCredentialsWithoutPrompt() -> Bool {
             self.context.run {
-                #if os(macOS)
                 let mode = ClaudeOAuthKeychainPromptPreference.current()
                 guard ClaudeOAuthCredentialsStore.shouldAllowClaudeCodeKeychainAccess(
                     mode: mode) else { return false }
@@ -1034,9 +1026,6 @@ public enum ClaudeOAuthCredentialsStore {
                 default:
                     return false
                 }
-                #else
-                return false
-                #endif
             }
         }
     }
@@ -1077,7 +1066,6 @@ public enum ClaudeOAuthCredentialsStore {
             respectKeychainPromptCooldown: Bool,
             now: Date = Date()) -> ClaudeOAuthCredentialRecord?
         {
-            #if os(macOS)
             guard self.shouldAttemptFreshnessSyncFromClaudeKeychain(cached: cached) else { return nil }
             let mode = ClaudeOAuthKeychainPromptPreference.current()
             guard ClaudeOAuthCredentialsStore
@@ -1141,12 +1129,6 @@ public enum ClaudeOAuthCredentialsStore {
             } catch {
                 return nil
             }
-            #else
-            _ = cached
-            _ = respectKeychainPromptCooldown
-            _ = now
-            return nil
-            #endif
         }
 
         func repairFromClaudeKeychainWithoutPromptIfAllowed(
@@ -1154,7 +1136,6 @@ public enum ClaudeOAuthCredentialsStore {
             respectKeychainPromptCooldown: Bool,
             allowCacheKeychainWrite: Bool = true) -> ClaudeOAuthCredentialRecord?
         {
-            #if os(macOS)
             let mode = ClaudeOAuthKeychainPromptPreference.current()
             guard ClaudeOAuthCredentialsStore
                 .shouldAllowClaudeCodeKeychainAccess(mode: mode) else { return nil }
@@ -1214,11 +1195,6 @@ public enum ClaudeOAuthCredentialsStore {
             } catch {
                 return nil
             }
-            #else
-            _ = now
-            _ = respectKeychainPromptCooldown
-            return nil
-            #endif
         }
 
         private func cacheClaudeKeychainCredentials(_ credentials: ClaudeOAuthCredentials, data: Data, now: Date) {
@@ -1232,7 +1208,6 @@ public enum ClaudeOAuthCredentialsStore {
         @discardableResult
         func syncFromClaudeKeychainWithoutPrompt(now: Date = Date()) -> Bool {
             self.context.run {
-                #if os(macOS)
                 let mode = ClaudeOAuthKeychainPromptPreference.current()
                 guard ClaudeOAuthCredentialsStore.shouldAllowClaudeCodeKeychainAccess(
                     mode: mode) else { return false }
@@ -1312,10 +1287,6 @@ public enum ClaudeOAuthCredentialsStore {
                 }
 
                 return false
-                #else
-                _ = now
-                return false
-                #endif
             }
         }
     }
@@ -1505,7 +1476,6 @@ public enum ClaudeOAuthCredentialsStore {
     static func latestCredentialModificationDate(environment: [String: String]) -> Date? {
         let file = self.credentialsFileURL(environment: environment)
         let fileDate = (try? FileManager.default.attributesOfItem(atPath: file.path))?[.modificationDate] as? Date
-        #if os(macOS)
         let defaultFile = ClaudeConfigPaths.homeDirectory(environment: environment)
             .appendingPathComponent(".claude/.credentials.json")
         guard !KeychainAccessGate.isDisabled, file.standardizedFileURL == defaultFile.standardizedFileURL else {
@@ -1523,9 +1493,6 @@ public enum ClaudeOAuthCredentialsStore {
         guard status == errSecSuccess, let rows = result as? [[String: Any]] else { return fileDate }
         return (rows.compactMap { $0[kSecAttrModificationDate as String] as? Date } + [fileDate].compactMap(\.self))
             .max()
-        #else
-        return fileDate
-        #endif
     }
 
     #if DEBUG
@@ -1883,7 +1850,6 @@ public enum ClaudeOAuthCredentialsStore {
         }
         #endif
 
-        #if os(macOS)
         let promptMode = ClaudeOAuthKeychainPromptPreference.current()
         let newest: ClaudeKeychainCandidate?
         switch self.newestClaudeKeychainCandidateProbeWithoutPrompt(promptMode: promptMode) {
@@ -1904,9 +1870,6 @@ public enum ClaudeOAuthCredentialsStore {
             persistentRefHash: persistentRefHash)
         else { return .unavailable }
         return .value(evidence)
-        #else
-        return .unavailable
-        #endif
     }
 
     private static func makeClaudeKeychainCredentialEvidence(
@@ -2074,7 +2037,6 @@ public enum ClaudeOAuthCredentialsStore {
         {
             return .unavailable
         }
-        #if os(macOS)
         let newest: ClaudeKeychainCandidate?
         switch self.newestClaudeKeychainCandidateProbeWithoutPrompt(promptMode: mode) {
         case .unavailable: return .unavailable
@@ -2083,9 +2045,6 @@ public enum ClaudeOAuthCredentialsStore {
         guard let newest else { return .value(nil) }
 
         return .value(newest.fingerprint)
-        #else
-        return .unavailable
-        #endif
     }
 
     static func currentClaudeKeychainFingerprintWithoutPromptForAuthGate() -> ClaudeKeychainFingerprint? {
@@ -2104,7 +2063,6 @@ public enum ClaudeOAuthCredentialsStore {
         readStrategy: ClaudeOAuthKeychainReadStrategy = ClaudeOAuthKeychainReadStrategyPreference.current())
         throws -> Data?
     {
-        #if os(macOS)
         let fallbackPromptMode = ClaudeOAuthKeychainPromptPreference.securityFrameworkFallbackMode(
             readStrategy: readStrategy)
         if let data = self.loadFromClaudeKeychainViaSecurityCLIIfEnabled(
@@ -2146,13 +2104,9 @@ public enum ClaudeOAuthCredentialsStore {
             return legacyData
         }
         return nil
-        #else
-        return nil
-        #endif
     }
 
     static func readRawClaudeKeychainPayloadViaSecurityFrameworkWithoutPrompt() -> Data? {
-        #if os(macOS)
         guard self.keychainAccessAllowed else { return nil }
         #if DEBUG
         if let store = self.taskClaudeKeychainOverrideStore {
@@ -2182,9 +2136,6 @@ public enum ClaudeOAuthCredentialsStore {
         return try? self.loadClaudeKeychainData(
             allowKeychainPrompt: false,
             promptMode: .always)
-        #else
-        return nil
-        #endif
     }
 
     public static func loadFromClaudeKeychain() throws -> Data {
@@ -2245,7 +2196,6 @@ public enum ClaudeOAuthCredentialsStore {
             return override
         }
         #endif
-        #if os(macOS)
         let candidates = self.claudeKeychainCandidatesWithoutPrompt(promptMode: promptMode)
         if let newest = candidates.first {
             do {
@@ -2286,12 +2236,8 @@ public enum ClaudeOAuthCredentialsStore {
             throw error
         }
         throw ClaudeOAuthCredentialsError.notFound
-        #else
-        throw ClaudeOAuthCredentialsError.notFound
-        #endif
     }
 
-    #if os(macOS)
     private struct ClaudeKeychainCandidate {
         let persistentRef: Data
         let account: String?
@@ -2471,7 +2417,6 @@ public enum ClaudeOAuthCredentialsStore {
             throw ClaudeOAuthCredentialsError.keychainError(Int(status))
         }
     }
-    #endif
 
     private static func loadFromEnvironment(_ environment: [String: String])
         -> ClaudeOAuthCredentials?
@@ -3002,7 +2947,6 @@ public enum ClaudeOAuthCredentialsStore {
             return override
         }
         #endif
-        #if os(macOS)
         let mode = ClaudeOAuthKeychainPromptPreference.current()
         guard self.shouldAllowClaudeCodeKeychainAccess(mode: mode) else { return nil }
         // Keep experimental mode prompt-safe: avoid Security.framework candidate probes when preflight says
@@ -3016,9 +2960,6 @@ public enum ClaudeOAuthCredentialsStore {
             return nil
         }
         return account
-        #else
-        return nil
-        #endif
     }
 
     private static func credentialsFileURL(

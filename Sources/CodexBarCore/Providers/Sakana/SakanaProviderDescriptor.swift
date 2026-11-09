@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 public enum SakanaProviderDescriptor {
     public static let descriptor: ProviderDescriptor = Self.spec.makeDescriptor(credentials: Self.credentials)
