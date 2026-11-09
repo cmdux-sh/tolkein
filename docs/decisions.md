@@ -142,3 +142,20 @@ Arturo asked to cut credit use while the seven Settings agents were about halfwa
 - **After this round:** no new agents at all; I do the remaining work directly. Builds use `-j 2` so the Mac mini stays usable.
 
 Why: seven agents compiling at once pushed the Mac mini to a load of about 400 on 10 cores and used credits fast. Checkpoint commits keep their edits; only the agents' own context is lost.
+
+## 2026-11-08: Cheaper finish for the Settings rebuild
+
+Arturo approved three changes to how the remaining Settings areas were finished.
+- **One checkout:** the areas were finished one at a time in a single worktree, switching branches, so the project compiled incrementally instead of seven times over.
+- **Translate once:** new strings could go in with English text and be translated in one final pass. In the end every area's agent had already translated its strings, so no translation pass was needed.
+- **Check once per PR:** `make check` ran once, right before each PR; while working, only the area's own tests ran.
+
+Why: Settings alone is about 15,000 lines in a 337,000-line app with 23 languages, so builds, full checks and per-area translation passes cost more than the rebuild itself.
+
+## 2026-11-08: One review and a stacked merge for the seven Settings PRs
+
+Arturo chose a single read-only Sonnet review of all seven Settings PRs (#15 to #21), as the one exception to "no new agents". Its findings were fixed before merging, mostly where two branches met.
+- **Merge order:** Alerts and Sync, Menus, Integrations, General, Costs, the window shell, then the provider pages. Each branch includes the one before it, so the hosted checks ran on all seven at once and every merge is conflict-free.
+- **Delete the emptied file:** `PreferencesAdvancedSections.swift` was deleted, since Integrations and General each moved out its other half.
+
+Why: hosted macOS checks take about 40 minutes per PR, so merging one at a time with fresh checks after each would take most of a day.
