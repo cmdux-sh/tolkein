@@ -2,6 +2,8 @@ import Foundation
 import Testing
 @testable import CodexBar
 
+/// Off while Tolkein is English only (docs/decisions.md): these pin each language to the full English catalog.
+@Suite(.disabled("English only for now; other languages may lag behind English."))
 struct LocalizationLanguageCatalogTests {
     @Test
     func `Persian and Arabic account labels describe user accounts`() {

@@ -14,33 +14,12 @@ const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), ".."
 const resources = path.join(repoRoot, "Sources/CodexBar/Resources");
 const english = readCatalog("en");
 const englishKeys = Object.keys(english).sort();
-const strictLocales = ["ar", "ca", "fa", "th"];
+// English only for now (docs/decisions.md): no other language has to be complete, so a missing key only warns
+// and the app falls back to English. Move a locale back into these lists to enforce it again.
+const strictLocales = [];
 // Catalogs that have reached full English-key coverage. New locales can remain
 // warning-only while they are being bootstrapped, then join this list once complete.
-const completeLocales = [
-  "ar",
-  "ca",
-  "de",
-  "es",
-  "fa",
-  "fr",
-  "gl",
-  "id",
-  "it",
-  "ja",
-  "ko",
-  "nl",
-  "pl",
-  "pt-BR",
-  "ru",
-  "sv",
-  "th",
-  "tr",
-  "uk",
-  "vi",
-  "zh-Hans",
-  "zh-Hant",
-];
+const completeLocales = [];
 const languageKeys = ["language_arabic", "language_persian", "language_thai"];
 const isTest = process.argv.includes("--test");
 

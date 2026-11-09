@@ -32,3 +32,10 @@ pane is added or removed.
 
 If the `internal-ui` tools are not available, install them from an Internal UI clone (`cmdux-sh/internal-ui`) with
 `Scripts/install-mcp.sh` and start a new session.
+
+## Strings
+
+Tolkein is English only for now. Wrap user-facing text in `L("…")` and add new keys to
+`Resources/en.lproj/Localizable.strings` only; do not translate them into the other language files. Those keep their
+existing translations, and any key they lack falls back to English. `make check` warns about the missing keys but does
+not fail.
