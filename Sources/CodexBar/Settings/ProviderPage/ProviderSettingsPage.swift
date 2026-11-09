@@ -26,6 +26,9 @@ struct ProviderSettingsPage: View {
             ProviderSettingsPageSections(model: self.model, content: content)
         }
         .background(ProviderSettingsFocusResigner())
+        // While a confirmation is open, keyboard and VoiceOver stay on it, as on the other panes.
+        .disabled(self.model.activeConfirmation != nil)
+        .accessibilityHidden(self.model.activeConfirmation != nil)
         .overlay {
             if let confirmation = self.model.activeConfirmation {
                 ProviderSettingsConfirmationOverlay(

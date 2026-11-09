@@ -389,13 +389,11 @@ private struct PluginSection: View {
                     }
                 }
             }
-            MacSettingsRow(L("menu_bar_metric_title")) {
-                ProviderMenuBarPercentWindowSettingsView(
-                    instanceID: manifest.id,
-                    settings: self.model.settings,
-                    snapshot: self.model.store.snapshot(for: manifest.id))
-                    .labelsHidden()
-            }
+            // Draws its own settings row (title, subtitle and picker).
+            ProviderMenuBarPercentWindowSettingsView(
+                instanceID: manifest.id,
+                settings: self.model.settings,
+                snapshot: self.model.store.snapshot(for: manifest.id))
             if let error = self.model.store.errors[manifest.id] {
                 MacSettingsRow(L("Error"), subtitle: error) {
                     Image(systemName: MacStatusTone.error.systemImage)

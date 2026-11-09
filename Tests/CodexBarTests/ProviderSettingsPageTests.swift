@@ -7,7 +7,7 @@ import Testing
 
 /// The provider page's section composition and the token-account remove confirmation.
 @MainActor
-@Suite(CodexCredentialFixtures())
+@Suite(CodexCredentialFixtures(), KeychainOffForProviderPageTests())
 struct ProviderSettingsPageTests {
     @Test
     func `a provider with no settings of its own gets only the fixed sections`() {
@@ -129,5 +129,23 @@ struct ProviderSettingsPageTests {
         settings._test_codexReconciliationEnvironment = [
             "CODEX_HOME": root.appendingPathComponent("codex-home", isDirectory: true).path,
         ]
+    }
+}
+
+/// Keeps Keychain access off for every provider page test, as the snapshot test does, so building a page's
+/// content can never reach a Keychain prompt.
+struct KeychainOffForProviderPageTests: TestTrait, SuiteTrait, TestScoping {
+    var isRecursive: Bool {
+        true
+    }
+
+    func provideScope(
+        for test: Test,
+        testCase: Test.Case?,
+        performing function: @Sendable () async throws -> Void) async throws
+    {
+        try await KeychainAccessGate.withTaskOverrideForTesting(true) {
+            try await function()
+        }
     }
 }
