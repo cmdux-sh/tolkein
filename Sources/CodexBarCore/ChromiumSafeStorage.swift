@@ -1,4 +1,3 @@
-#if os(macOS)
 import CommonCrypto
 import Foundation
 import Security
@@ -100,4 +99,3 @@ enum ChromiumSafeStorage {
         return out
     }
 }
-#endif

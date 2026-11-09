@@ -1,4 +1,3 @@
-#if os(macOS)
 import Foundation
 import WebKit
 
@@ -278,4 +277,3 @@ extension OpenAIDashboardFetcher {
             errorFirstSeenAt: firstSeenAt))
     }
 }
-#endif

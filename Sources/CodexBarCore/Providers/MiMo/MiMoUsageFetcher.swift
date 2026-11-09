@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 public enum MiMoSettingsError: LocalizedError, Sendable, Equatable {
     case missingCookie(details: String? = nil)

@@ -1,12 +1,7 @@
 import Foundation
 import Testing
 @testable import CodexBarCore
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
-#if os(macOS)
 @testable import SweetCookieKit
-#endif
 
 struct TraeCNPluginTests {
     private static let now = Date(timeIntervalSince1970: 1_800_000_000)
@@ -18,7 +13,6 @@ struct TraeCNPluginTests {
       {"group_type":4,"status":1,"expire_time":1850000000}]}
     """#
 
-    #if os(macOS)
     @Test(arguments: BundledPluginTestSupport.engines)
     func `automatic import finds parent-domain-only sessions through the shared broker`(
         engine: ProviderPluginEngineKind) async throws
@@ -87,7 +81,6 @@ struct TraeCNPluginTests {
                 }
             })
     }
-    #endif
 
     @Test(arguments: BundledPluginTestSupport.engines)
     func `credit summary does not invent reset or renewal dates`(engine: ProviderPluginEngineKind) async throws {

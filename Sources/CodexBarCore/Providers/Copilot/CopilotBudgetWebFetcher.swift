@@ -1,10 +1,5 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
-#if os(macOS)
 import SweetCookieKit
-#endif
 
 public struct CopilotBudgetWebFetcher: Sendable {
     public enum Error: Swift.Error, LocalizedError, Equatable {
@@ -329,11 +324,10 @@ public struct CopilotBudgetWebFetcher: Sendable {
     private let expectedGitHubAccountIdentifier: String?
     private let browserDetection: BrowserDetection
     private let transport: any ProviderHTTPTransport
-    #if os(macOS)
     var sessionLoader: @Sendable (BrowserDetection) throws -> AnySequence<CopilotGitHubCookieImporter.SessionInfo> = {
         try CopilotGitHubCookieImporter.sessionCandidates(browserDetection: $0)
     }
-    #endif
+
     private let now: @Sendable () -> Date
 
     public init(
@@ -372,7 +366,6 @@ public struct CopilotBudgetWebFetcher: Sendable {
             }
         }
 
-        #if os(macOS)
         for session in try self.sessionLoader(self.browserDetection) {
             do {
                 let windows = try await self.fetchBudgetWindows(cookieHeader: session.cookieHeader)
@@ -391,7 +384,6 @@ public struct CopilotBudgetWebFetcher: Sendable {
                 throw error
             }
         }
-        #endif
 
         throw Error.noSessionCookie
     }
@@ -756,7 +748,6 @@ public struct CopilotBudgetWebFetcher: Sendable {
     }
 }
 
-#if os(macOS)
 enum CopilotGitHubCookieImporter {
     private static let cookieClient = BrowserCookieClient()
     private static let cookieImportOrder: BrowserCookieImportOrder =
@@ -802,4 +793,3 @@ enum CopilotGitHubCookieImporter {
             })
     }
 }
-#endif

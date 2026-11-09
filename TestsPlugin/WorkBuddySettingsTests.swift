@@ -10,9 +10,7 @@ struct WorkBuddySettingsTests {
         #expect(descriptor.fetchPlan.sourceModes == [.auto, .web])
         #expect(descriptor.metadata.usesDetailBackedWindow)
         #expect(descriptor.credentials?.tokenAccountSupport == nil)
-        #if os(macOS)
         #expect(descriptor.metadata.browserCookieOrder == [.chrome])
-        #endif
         for source in ProviderCookieSource.allCases {
             let context = ProviderFetchContext(
                 runtime: .cli,
@@ -68,26 +66,22 @@ struct WorkBuddySettingsTests {
 struct WorkBuddyChromeVersionTests {
     @Test
     func `installed Chrome supplies its major version`() {
-        #if os(macOS)
         let major = WorkBuddyChromeVersion.majorVersion(homeDirectory: "/Users/fixture") { path in
             path == "/Applications/Google Chrome.app/Contents/Info.plist"
                 ? ["CFBundleShortVersionString": "154.0.8037.95"]
                 : nil
         }
         #expect(major == 154)
-        #endif
     }
 
     @Test
     func `user Applications Chrome is the fallback`() {
-        #if os(macOS)
         let major = WorkBuddyChromeVersion.majorVersion(homeDirectory: "/Users/fixture") { path in
             path == "/Users/fixture/Applications/Google Chrome.app/Contents/Info.plist"
                 ? ["CFBundleShortVersionString": "153.0.1.2"]
                 : nil
         }
         #expect(major == 153)
-        #endif
     }
 
     @Test(arguments: [nil, "", "beta", "1.0.0", "0.9"])

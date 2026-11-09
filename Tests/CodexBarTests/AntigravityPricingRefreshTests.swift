@@ -1,12 +1,5 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
-#if canImport(SQLite3)
 import SQLite3
-#elseif canImport(CSQLite3)
-import CSQLite3
-#endif
 import Testing
 @testable import CodexBarCore
 

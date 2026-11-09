@@ -4,7 +4,6 @@ import Testing
 
 @Suite(.serialized)
 struct CookieHeaderCacheConditionalMutationTests {
-    #if os(macOS)
     @Test
     func `temporary keychain read permits fresh replacement when legacy state is unchanged`() {
         self.withIsolatedCookieCache {
@@ -73,7 +72,6 @@ struct CookieHeaderCacheConditionalMutationTests {
                 "WorkosCursorSessionToken=existing")
         }
     }
-    #endif
 
     @Test
     func `legacy clear failure still permits replacing the keychain entry`() {

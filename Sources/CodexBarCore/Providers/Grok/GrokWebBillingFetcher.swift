@@ -1,9 +1,5 @@
 import Foundation
 
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
-
 public struct GrokProductUsage: Sendable, Equatable {
     public let product: String
     public let usedPercent: Double

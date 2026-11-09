@@ -1,9 +1,6 @@
 import Foundation
-#if os(macOS)
 import SweetCookieKit
-#endif
 
-#if os(macOS)
 enum MiniMaxLocalStorageImporter {
     struct TokenInfo {
         let accessToken: String
@@ -563,7 +560,6 @@ enum MiniMaxLocalStorageImporter {
         return candidates.max(by: { $0.count < $1.count })
     }
 }
-#endif
 
 #if DEBUG && os(macOS)
 extension MiniMaxLocalStorageImporter {

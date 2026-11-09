@@ -10,16 +10,7 @@ let sweetCookieKitDependency: Package.Dependency =
     ? .package(path: sweetCookieKitPath)
     : .package(url: "https://github.com/steipete/SweetCookieKit", from: "0.5.11")
 
-let sqlite3LibDir = ProcessInfo.processInfo.environment["CODEXBAR_SQLITE3_LIB_DIR"]?
-    .trimmingCharacters(in: .whitespacesAndNewlines)
-let sqlite3LinkerSettings: [LinkerSetting] = if let sqlite3LibDir, !sqlite3LibDir.isEmpty {
-    [.unsafeFlags(["-L\(sqlite3LibDir)"], .when(platforms: [.linux]))]
-} else {
-    []
-}
-
-// The shared Mac UI package is private and macOS-only. Declaring it only on macOS keeps the
-// Linux CLI jobs from fetching it; macOS CI reads it with a read-only deploy key.
+/// The shared Mac UI package is private; macOS CI reads it with a read-only deploy key.
 let macOSOnlyDependencies: [Package.Dependency] = {
     #if os(macOS)
     [.package(url: "https://github.com/cmdux-sh/internal-ui.git", from: "0.11.0")]
@@ -71,22 +62,11 @@ let package = Package(
                 publicHeadersPath: "include",
                 cSettings: [
                     .define("_GNU_SOURCE"),
-                ],
-                linkerSettings: [
-                    .linkedLibrary("m", .when(platforms: [.linux])),
-                ]),
-            // Both glibc and static-musl CLI builds use this target; the module map supplies sqlite3 linkage.
-            .systemLibrary(
-                name: "CSQLite3",
-                providers: [
-                    .apt(["libsqlite3-dev"]),
-                    .brew(["sqlite3"]),
                 ]),
             .target(
                 name: "CodexBarCore",
                 dependencies: [
                     "CQuickJS",
-                    .target(name: "CSQLite3", condition: .when(platforms: [.linux])),
                     .product(name: "Crypto", package: "swift-crypto"),
                     .product(name: "Logging", package: "swift-log"),
                     .product(name: "SweetCookieKit", package: "SweetCookieKit"),
@@ -97,7 +77,7 @@ let package = Package(
                 swiftSettings: [
                     .enableUpcomingFeature("StrictConcurrency"),
                 ],
-                linkerSettings: sqlite3LinkerSettings + [
+                linkerSettings: [
                     .linkedFramework("JavaScriptCore", .when(platforms: [.macOS])),
                 ]),
             .executableTarget(
@@ -110,10 +90,6 @@ let package = Package(
                 path: "Sources/CodexBarCLI",
                 swiftSettings: [
                     .enableUpcomingFeature("StrictConcurrency"),
-                ],
-                linkerSettings: sqlite3LinkerSettings + [
-                    // musl's default thread stack is too small for synchronous Swift cost scans.
-                    .unsafeFlags(["-Xlinker", "-z", "-Xlinker", "stack-size=8388608"], .when(platforms: [.linux])),
                 ]),
             // Crash-test subprocess: tests SIGKILL it mid-save to prove the cost store's
             // save cycle is atomic. Not shipped; built only as a test dependency.
@@ -123,8 +99,7 @@ let package = Package(
                 path: "Sources/CodexBarCostStoreCrashProbe",
                 swiftSettings: [
                     .enableUpcomingFeature("StrictConcurrency"),
-                ],
-                linkerSettings: sqlite3LinkerSettings),
+                ]),
             // Sole owner of the adaptive refresh decision table. Package-internal so the app and
             // offline replay tool share behavior without publishing another library product.
             .target(
@@ -176,13 +151,12 @@ let package = Package(
                     .enableExperimentalFeature("SwiftTesting"),
                 ]),
             .testTarget(
-                name: "CodexBarLinuxTests",
+                name: "CodexBarCoreTests",
                 dependencies: [
                     "CodexBarCore",
                     "CodexBarCLI",
-                    .target(name: "CSQLite3", condition: .when(platforms: [.linux])),
                 ],
-                path: "TestsLinux",
+                path: "TestsCore",
                 swiftSettings: [
                     .enableUpcomingFeature("StrictConcurrency"),
                     .enableExperimentalFeature("SwiftTesting"),

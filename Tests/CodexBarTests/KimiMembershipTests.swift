@@ -195,7 +195,6 @@ struct KimiMembershipTests {
         #expect(snapshot.subscriptionBalance?.amountUsedRatio == 0.42)
     }
 
-    #if os(macOS)
     @Test
     func `desktop JWT expiry is checked independently of cookie expiry`() {
         let payload = Data(#"{"exp":100}"#.utf8).base64EncodedString()
@@ -204,5 +203,4 @@ struct KimiMembershipTests {
         #expect(!KimiDesktopAuthToken.isExpired(token, now: Date(timeIntervalSince1970: 99)))
         #expect(!KimiDesktopAuthToken.isExpired("opaque-token"))
     }
-    #endif
 }

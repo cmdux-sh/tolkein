@@ -7,7 +7,6 @@ enum WorkBuddyChromeVersion {
         homeDirectory: String = FileManager.default.homeDirectoryForCurrentUser.path,
         readInfo: (String) -> [String: Any]? = Self.infoDictionary) -> Int?
     {
-        #if os(macOS)
         for app in ["/Applications/Google Chrome.app", "\(homeDirectory)/Applications/Google Chrome.app"] {
             guard let version = readInfo("\(app)/Contents/Info.plist")?["CFBundleShortVersionString"] as? String,
                   let major = version.split(separator: ".").first.flatMap({ Int($0) }),
@@ -15,7 +14,6 @@ enum WorkBuddyChromeVersion {
             else { continue }
             return major
         }
-        #endif
         return nil
     }
 

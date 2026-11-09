@@ -1,12 +1,6 @@
 import CoreFoundation
-import Foundation
-#if canImport(Darwin)
 import Darwin
-#elseif canImport(Glibc)
-import Glibc
-#elseif canImport(Musl)
-import Musl
-#endif
+import Foundation
 
 /// Reads Muse token usage from the durable session logs the CLI writes locally.
 ///
@@ -55,11 +49,7 @@ enum MuseLocalUsageReader {
             let override = environment["MUSE_SESSIONS_DIR"]?.trimmingCharacters(in: .whitespacesAndNewlines)
             self.sessionsRoot = override.flatMap { $0.isEmpty ? nil : URL(fileURLWithPath: $0, isDirectory: true) }
                 ?? dataHome.appendingPathComponent("muse/sessions", isDirectory: true)
-            #if os(macOS)
             let defaultCache = home.appendingPathComponent("Library/Caches", isDirectory: true)
-            #else
-            let defaultCache = home.appendingPathComponent(".cache", isDirectory: true)
-            #endif
             self.defaultCacheRoot = environment["XDG_CACHE_HOME"].flatMap { $0.isEmpty ? nil : $0 }
                 .map { URL(fileURLWithPath: $0, isDirectory: true) }
                 .map { $0.appendingPathComponent("CodexBar", isDirectory: true) }

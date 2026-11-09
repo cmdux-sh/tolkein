@@ -1,11 +1,6 @@
 import Foundation
-#if canImport(SQLite3)
 import SQLite3
-#elseif canImport(CSQLite3)
-import CSQLite3
-#endif
 
-#if canImport(SQLite3) || canImport(CSQLite3)
 extension AntigravityLocalReader {
     /// Outcome of a recognized history table's schema inspection.
     enum SQLiteTableSupport {
@@ -111,4 +106,3 @@ extension AntigravityLocalReader {
         }
     }
 }
-#endif

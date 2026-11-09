@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 enum LocalhostTrustPolicy {
     static func shouldAcceptServerTrust(
@@ -9,9 +6,7 @@ enum LocalhostTrustPolicy {
         authenticationMethod: String,
         hasServerTrust: Bool) -> Bool
     {
-        #if !os(Linux)
         guard authenticationMethod == NSURLAuthenticationMethodServerTrust else { return false }
-        #endif
         let normalizedHost = host.lowercased()
         guard normalizedHost == "127.0.0.1" || normalizedHost == "localhost" else { return false }
         return hasServerTrust
@@ -46,9 +41,6 @@ final class LocalhostSessionDelegate: NSObject {
         disposition: URLSession.AuthChallengeDisposition,
         credential: URLCredential?)
     {
-        #if os(Linux)
-        return (.performDefaultHandling, nil)
-        #else
         let protectionSpace = challenge.protectionSpace
         let trust = protectionSpace.serverTrust
         guard LocalhostTrustPolicy.shouldAcceptServerTrust(
@@ -60,7 +52,6 @@ final class LocalhostSessionDelegate: NSObject {
             return (.performDefaultHandling, nil)
         }
         return (.useCredential, URLCredential(trust: trust))
-        #endif
     }
 }
 

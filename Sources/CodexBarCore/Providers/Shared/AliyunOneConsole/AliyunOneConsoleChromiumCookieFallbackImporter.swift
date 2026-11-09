@@ -1,6 +1,4 @@
 import Foundation
-
-#if os(macOS)
 import SQLite3
 import SweetCookieKit
 
@@ -217,4 +215,3 @@ enum AliyunOneConsoleChromiumCookieFallbackImporter {
         return Date(timeIntervalSince1970: seconds)
     }
 }
-#endif

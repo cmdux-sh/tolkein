@@ -1,9 +1,6 @@
 import Foundation
 import Testing
 @testable import CodexBarCore
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 /// Tests for `CommandCodeUsageFetcher` parsers and the cookie/snapshot derivation,
 /// using real responses captured from api.commandcode.ai for an active "individual-go" plan.

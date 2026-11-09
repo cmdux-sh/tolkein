@@ -75,7 +75,7 @@ codesign --force --timestamp --options runtime \
 codesign --verify --deep --strict .build/control-center-diagnostic/CodexBar.app
 ```
 
-Use the normal [notarization instructions](RELEASING.md) for any externally delivered artifact, without
+Notarize any externally delivered artifact, without
 publishing a release or updating the appcast. Do not give a reporter an unsigned/ad-hoc replacement or tell them
 to bypass Gatekeeper. The recipe requires the maintainer's signing identity; a reporter should receive the
 finished signed/notarized artifact. Building and tracing are diagnostics, not a demonstrated fix for #3377.

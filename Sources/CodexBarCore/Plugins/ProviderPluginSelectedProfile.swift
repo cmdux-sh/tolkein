@@ -86,11 +86,7 @@ final class ProviderPluginSelectedProfile {
             return try revalidating
                 ? ProviderInteractionContext.$current.withValue(.background, operation: read) : read()
         }
-        #if os(macOS)
         self.read = BrowserCookieAccessGate.operationPreservingAccessContext(operation)
-        #else
-        self.read = operation
-        #endif
     }
 
     func next(domain: String, cachedOnly: Bool) throws -> ProviderPluginCookieSession? {

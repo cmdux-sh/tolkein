@@ -1,7 +1,5 @@
 import Foundation
-#if os(macOS)
 import Security
-#endif
 import SweetCookieKit
 import Testing
 @testable import CodexBarCore
@@ -113,7 +111,6 @@ struct ProviderPluginCookieResultTests {
         }
     }
 
-    #if os(macOS)
     @Test(arguments: BundledPluginTestSupport.engines)
     func `plugin fetch tasks keep separate witnesses when an importer reports a keychain status`(
         engine: ProviderPluginEngineKind) async throws
@@ -157,7 +154,6 @@ struct ProviderPluginCookieResultTests {
         #expect(lockedObserved)
         #expect(!otherObserved)
     }
-    #endif
 
     @Test(arguments: BundledPluginTestSupport.engines, [
         UsageProvider.lithosai, .museai, .abacus, .helmcode, .qoder, .parallel,

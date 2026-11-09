@@ -2,7 +2,6 @@ import Foundation
 import Testing
 @testable import CodexBarCore
 
-#if os(macOS)
 struct CursorEstimateCoverageTests {
     private static var calendar: Calendar {
         var calendar = Calendar(identifier: .gregorian)
@@ -176,4 +175,3 @@ struct CursorEstimateCoverageTests {
         #expect(abs(cost - 0.0004) < 1e-12)
     }
 }
-#endif

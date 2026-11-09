@@ -1,4 +1,3 @@
-#if os(macOS)
 import Foundation
 import Testing
 @testable import CodexBarCore
@@ -392,4 +391,3 @@ struct DevinSessionImporterTests {
         return withUnsafeBytes(of: littleEndian) { Array($0) }
     }
 }
-#endif

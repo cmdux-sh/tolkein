@@ -1,10 +1,5 @@
 import Foundation
-
-#if canImport(SQLite3)
 import SQLite3
-#elseif canImport(CSQLite3)
-import CSQLite3
-#endif
 
 /// Imports usage metadata into the existing cost store. Source reads never write to OpenCode.
 enum OpenCodeLocalHistoryAdapter {
@@ -201,7 +196,6 @@ enum OpenCodeLocalHistoryAdapter {
     }
 }
 
-#if canImport(SQLite3) || canImport(CSQLite3)
 extension OpenCodeLocalHistoryAdapter {
     static func runPass(
         databaseURL: URL,
@@ -587,9 +581,7 @@ extension OpenCodeLocalHistoryAdapter {
                 calendar: calendar))
     }
 }
-#endif
 
-#if canImport(SQLite3) || canImport(CSQLite3)
 extension OpenCodeLocalHistoryAdapter {
     final class ReadBudget {
         enum Limit: Error { case deadline, instructions }
@@ -846,7 +838,6 @@ extension OpenCodeLocalHistoryAdapter {
 }
 
 struct OpenCodeAdapterSourceFailure: Error { let code: Int32 }
-#endif
 
 extension OpenCodeLocalHistoryAdapter {
     static func xdgDataRoot(
@@ -905,7 +896,6 @@ extension OpenCodeLocalHistoryAdapter {
     }
 }
 
-#if canImport(SQLite3) || canImport(CSQLite3)
 extension OpenCodeLocalHistoryAdapter {
     static func reportEntries(
         from aggregates: [CostUsageStoreFileDayAggregate],
@@ -945,5 +935,3 @@ extension OpenCodeLocalHistoryAdapter {
         }
     }
 }
-
-#endif

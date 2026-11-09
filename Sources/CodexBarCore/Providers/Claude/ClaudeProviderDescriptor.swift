@@ -4,11 +4,7 @@ import SweetCookieKit
 public enum ClaudeProviderDescriptor {
     public static let descriptor: ProviderDescriptor = Self.makeDescriptor()
     private static var browserCookieOrder: BrowserCookieImportOrder? {
-        #if os(macOS)
         [.chrome] + Browser.defaultImportOrder.filter { $0 != .chrome } + [.claudeDesktop]
-        #else
-        nil
-        #endif
     }
 
     private static let ttyLaunch = ProviderTTYLaunchConfig(
@@ -372,13 +368,8 @@ public enum ClaudeProviderDescriptor {
     }
 
     private static func makePlanningInput(context: ProviderFetchContext) -> ClaudeSourcePlanningInput {
-        #if os(Linux)
-        let shouldAttemptOAuth = context.sourceMode == .auto ||
-            (context.runtime == .app && context.sourceMode == .oauth)
-        #else
         let shouldAttemptOAuth = context.runtime == .app &&
             (context.sourceMode == .auto || context.sourceMode == .oauth)
-        #endif
 
         return ClaudeSourcePlanningInput(
             runtime: context.runtime,
@@ -797,11 +788,7 @@ struct ClaudeOAuthFetchStrategy: ProviderFetchStrategy {
         }
         // In Auto mode, fall back to the next strategy (cli/web) when safe credentials are absent or OAuth fails.
         // Cancellation itself is always terminal.
-        #if os(Linux)
-        return context.sourceMode == .auto
-        #else
         return context.runtime == .app && context.sourceMode == .auto
-        #endif
     }
 
     fileprivate static func snapshot(
@@ -1050,11 +1037,7 @@ struct ClaudeWebFetchStrategy: ProviderFetchStrategy {
     }
 
     fileprivate static var isSupportedOnCurrentPlatform: Bool {
-        #if os(macOS)
         true
-        #else
-        false
-        #endif
     }
 }
 

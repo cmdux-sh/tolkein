@@ -1,8 +1,6 @@
 import Commander
 import Foundation
-#if os(macOS)
 import Security
-#endif
 import Testing
 @testable import CodexBarCLI
 @testable import CodexBarCore
@@ -198,7 +196,6 @@ struct CLIUsageCacheTests {
         #expect(unrelatedFailures.allSatisfy { !CLIUsageCache.isCredentialAccessFailure($0) })
     }
 
-    #if os(macOS)
     @Test
     func `witness records only locked statuses inside its own fetch`() async {
         KeychainLockWitness.note(errSecInteractionNotAllowed)
@@ -227,7 +224,6 @@ struct CLIUsageCacheTests {
         #expect(!plain)
         #expect(preserved)
     }
-    #endif
 
     @Test
     func `cli fallback is off without the config flag`() {
@@ -235,7 +231,6 @@ struct CLIUsageCacheTests {
             .fallbackReader(config: CodexBarConfig(providers: []), hasGraphicSession: { false }) == nil)
     }
 
-    #if os(macOS)
     /// Claude's web strategy fails with `failure` after reading the keychain with `lockStatus`; the CLI then decides
     /// whether the app cache may stand in for that failure.
     private static func fetchClaudeWeb(
@@ -312,7 +307,6 @@ struct CLIUsageCacheTests {
         #expect(output.exitCode != .success)
         #expect(output.payload.first?.source != "codexbar-app")
     }
-    #endif
 
     private static func command(provider: UsageProvider = .zai) throws -> UsageCommandContext {
         let values = try Program(descriptors: CodexBarCLI.commandDescriptors())

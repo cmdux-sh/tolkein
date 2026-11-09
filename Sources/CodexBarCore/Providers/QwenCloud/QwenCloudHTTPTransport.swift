@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 /// Qwen Cloud transport that applies its OneConsole redirect policy per request.
 ///

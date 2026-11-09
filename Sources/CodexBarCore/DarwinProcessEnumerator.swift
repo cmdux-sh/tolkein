@@ -77,7 +77,6 @@ enum DarwinProcessEnumerator {
     }
 }
 
-#if canImport(Darwin)
 import Darwin
 
 extension DarwinProcessEnumerator {
@@ -228,4 +227,3 @@ extension DarwinProcessEnumerator {
         return ports.sorted()
     }
 }
-#endif

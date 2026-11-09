@@ -140,13 +140,7 @@ public enum KimiSettingsReader {
     }
 
     private static var operatingSystemName: String {
-        #if os(macOS)
         "macOS"
-        #elseif os(Linux)
-        "Linux"
-        #else
-        "unknown"
-        #endif
     }
 
     private static var architectureName: String {

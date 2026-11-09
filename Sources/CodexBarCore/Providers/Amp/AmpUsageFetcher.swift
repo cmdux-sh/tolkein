@@ -1,11 +1,5 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
-
-#if os(macOS)
 import SweetCookieKit
-#endif
 
 public enum AmpUsageError: LocalizedError, Sendable {
     case notLoggedIn
@@ -36,7 +30,6 @@ public enum AmpUsageError: LocalizedError, Sendable {
     }
 }
 
-#if os(macOS)
 private let ampCookieImportOrder: BrowserCookieImportOrder =
     ProviderDefaults.metadata[.amp]?.browserCookieOrder ?? Browser.defaultImportOrder
 
@@ -97,7 +90,6 @@ public enum AmpCookieImporter {
         throw AmpUsageError.noSessionCookie
     }
 }
-#endif
 
 public struct AmpUsageFetcher: Sendable {
     private static let settingsURL = URL(string: "https://ampcode.com/settings")!
@@ -234,13 +226,9 @@ public struct AmpUsageFetcher: Sendable {
             }
             throw AmpUsageError.noSessionCookie
         }
-        #if os(macOS)
         let session = try AmpCookieImporter.importSession(browserDetection: self.browserDetection, logger: logger)
         logger?("[amp] Using cookies from \(session.sourceLabel)")
         return session.cookieHeader
-        #else
-        throw AmpUsageError.noSessionCookie
-        #endif
     }
 
     static func makeUsageAPIRequest(apiToken: String) throws -> URLRequest {

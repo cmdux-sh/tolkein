@@ -443,7 +443,6 @@ struct GrokWebFetchStrategy: ProviderFetchStrategy {
         {
             return true
         }
-        #if os(macOS)
         if cookieSource == .auto, CookieHeaderCache.load(provider: .grok) != nil {
             return true
         }
@@ -453,7 +452,6 @@ struct GrokWebFetchStrategy: ProviderFetchStrategy {
         {
             return true
         }
-        #endif
         return false
     }
 
@@ -602,7 +600,6 @@ struct GrokWebFetchStrategy: ProviderFetchStrategy {
             }
         }
 
-        #if os(macOS)
         var cacheObservation = CookieHeaderCache.observeForConditionalMutation(provider: .grok)
         if cookieSource == .auto, let cached = cacheObservation.entry {
             do {
@@ -642,7 +639,6 @@ struct GrokWebFetchStrategy: ProviderFetchStrategy {
             }
             throw lastCookieError ?? GrokWebBillingError.missingCredentials
         }
-        #endif
 
         throw lastCookieError ?? GrokWebBillingError.missingCredentials
     }
@@ -658,7 +654,6 @@ struct GrokWebFetchStrategy: ProviderFetchStrategy {
         }
     }
 
-    #if os(macOS)
     static func fetchFirstValidCookieSession(
         _ sessions: some Sequence<GrokCookieImporter.SessionInfo>,
         credentials: GrokCredentials? = nil,
@@ -754,7 +749,6 @@ struct GrokWebFetchStrategy: ProviderFetchStrategy {
             return false
         }
     }
-    #endif
 
     func shouldFallback(on _: Error, context: ProviderFetchContext) -> Bool {
         context.sourceMode == .auto

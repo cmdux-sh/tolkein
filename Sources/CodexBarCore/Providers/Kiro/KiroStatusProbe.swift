@@ -1,14 +1,5 @@
-import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
-#if canImport(Darwin)
 import Darwin
-#elseif canImport(Glibc)
-import Glibc
-#elseif canImport(Musl)
-import Musl
-#endif
+import Foundation
 
 public struct KiroUsageSnapshot: Sendable {
     public let planName: String

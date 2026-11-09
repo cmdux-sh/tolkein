@@ -1,8 +1,5 @@
 import Foundation
 import SweetCookieKit
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 enum ClaudeWebHTTPTransport {
     #if DEBUG
@@ -114,7 +111,6 @@ private enum ClaudeWebBrowserFetchSerialization {
 public enum ClaudeWebAPIFetcher {
     private static let baseURL = "https://claude.ai/api"
     private static let maxProbeBytes = 200_000
-    #if os(macOS)
     private static let cookieClient = BrowserCookieClient()
     static var cookieImportOrder: BrowserCookieImportOrder {
         // Desktop cookies are an explicit account choice, never a fallback to another browser account.
@@ -122,9 +118,6 @@ public enum ClaudeWebAPIFetcher {
             (ProviderDefaults.metadata[.claude]?.browserCookieOrder ?? Browser.defaultImportOrder)
             .filter { $0 != .claudeDesktop }
     }
-    #else
-    private static let cookieImportOrder: BrowserCookieImportOrder = []
-    #endif
 
     public struct OrganizationInfo: Sendable {
         public let id: String
@@ -264,7 +257,6 @@ public enum ClaudeWebAPIFetcher {
 extension ClaudeWebAPIFetcher {
     // MARK: - Public API
 
-    #if os(macOS)
     /// Attempts to fetch Claude usage data using cookies extracted from browsers.
     /// Tries browser cookies using the standard import order.
     public static func fetchUsage(
@@ -284,7 +276,6 @@ extension ClaudeWebAPIFetcher {
                 logger: logger)
         }
     }
-    #endif
 
     public static func fetchUsage(
         cookieHeader: String,
@@ -410,7 +401,6 @@ extension ClaudeWebAPIFetcher {
         return usage
     }
 
-    #if os(macOS)
     /// Probes a list of endpoints using the current claude.ai session cookies.
     /// - Parameters:
     ///   - endpoints: Absolute URLs or "/api/..." paths. Supports "{orgId}" placeholder.
@@ -481,9 +471,7 @@ extension ClaudeWebAPIFetcher {
 
         return results
     }
-    #endif
 
-    #if os(macOS)
     /// Checks if we can find a Claude session key in browser cookies without making API calls.
     public static func hasSessionKey(browserDetection: BrowserDetection, logger: ((String) -> Void)? = nil) -> Bool {
         if !ClaudeWebSessionKeyImport.desktopApp, let cached = CookieHeaderCache.load(provider: .claude),
@@ -498,21 +486,18 @@ extension ClaudeWebAPIFetcher {
             return false
         }
     }
-    #endif
 
     public static func hasSessionKey(cookieHeader: String?) -> Bool {
         guard let cookieHeader else { return false }
         return (try? self.sessionKeyInfo(cookieHeader: cookieHeader)) != nil
     }
 
-    #if os(macOS)
     public static func sessionKeyInfo(
         browserDetection: BrowserDetection,
         logger: ((String) -> Void)? = nil) throws -> SessionKeyInfo
     {
         try self.extractSessionKeyInfo(browserDetection: browserDetection, logger: logger)
     }
-    #endif
 
     public static func sessionKeyInfo(cookieHeader: String) throws -> SessionKeyInfo {
         let pairs = CookieHeaderNormalizer.pairs(from: cookieHeader)
@@ -527,7 +512,6 @@ extension ClaudeWebAPIFetcher {
 
     // MARK: - Session Key Extraction
 
-    #if os(macOS)
     private static func extractSessionKeyInfo(
         browserDetection: BrowserDetection,
         logger: ((String) -> Void)? = nil) throws -> SessionKeyInfo
@@ -576,7 +560,6 @@ extension ClaudeWebAPIFetcher {
             throw ClaudeWebSessionKeyImport.desktopApp ? FetchError.noDesktopSessionKeyFound : .noSessionKeyFound
         }
     }
-    #endif
 
     private static func findSessionKey(in cookies: [(name: String, value: String)]) -> String? {
         for cookie in cookies where cookie.name == "sessionKey" {
@@ -1052,48 +1035,6 @@ extension ClaudeWebAPIFetcher {
     }
 }
 
-#if !os(macOS)
-extension ClaudeWebAPIFetcher {
-    /// Browser cookie import is unavailable off macOS; the manual-cookie path is supported.
-    public static func fetchUsage(logger: ((String) -> Void)? = nil) async throws -> WebUsageData {
-        throw FetchError.notSupportedOnThisPlatform
-    }
-
-    public static func fetchUsage(
-        browserDetection: BrowserDetection,
-        targetOrganizationID: String? = nil,
-        includeUsageDetails: Bool = true,
-        includePrepaidBalance: Bool = true,
-        logger: ((String) -> Void)? = nil) async throws -> WebUsageData
-    {
-        _ = browserDetection
-        _ = targetOrganizationID
-        _ = includeUsageDetails
-        _ = includePrepaidBalance
-        _ = logger
-        throw FetchError.notSupportedOnThisPlatform
-    }
-
-    public static func probeEndpoints(
-        _ endpoints: [String],
-        includePreview: Bool = false,
-        logger: ((String) -> Void)? = nil) async throws -> [ProbeResult]
-    {
-        throw FetchError.notSupportedOnThisPlatform
-    }
-
-    public static func hasSessionKey(browserDetection: BrowserDetection, logger: ((String) -> Void)? = nil) -> Bool {
-        _ = browserDetection
-        _ = logger
-        return false
-    }
-
-    public static func sessionKeyInfo(logger: ((String) -> Void)? = nil) throws -> SessionKeyInfo {
-        throw FetchError.notSupportedOnThisPlatform
-    }
-}
-#endif
-
 extension ClaudeWebAPIFetcher {
     private static func persistSessionKeyIfNeeded(
         source: (initialSessionKey: String, label: String),
@@ -1392,7 +1333,6 @@ private enum ClaudeWebExtraUsageCost {
     }
 }
 
-#if os(macOS)
 extension ClaudeWebAPIFetcher {
     private static func fetchUsageSerialized(
         browserDetection: BrowserDetection,
@@ -1461,7 +1401,6 @@ extension ClaudeWebAPIFetcher {
                 persistInitialSessionKey: true))
     }
 }
-#endif
 
 private struct ClaudeWebOrganizationResponse: Decodable {
     let uuid: String

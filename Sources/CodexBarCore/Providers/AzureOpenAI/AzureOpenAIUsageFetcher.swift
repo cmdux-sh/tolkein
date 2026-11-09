@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 public struct AzureOpenAIUsageSnapshot: Codable, Sendable, Equatable {
     public let endpointHost: String

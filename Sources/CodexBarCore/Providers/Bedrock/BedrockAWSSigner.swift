@@ -4,9 +4,6 @@ import CryptoKit
 import Crypto
 #endif
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 enum BedrockAWSSigner {
     struct Credentials {

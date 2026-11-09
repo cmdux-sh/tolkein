@@ -123,11 +123,7 @@ struct CommandCodeWebFetchStrategy: ProviderFetchStrategy {
         if Self.manualCookieHeader(from: context) != nil {
             return true
         }
-        #if os(macOS)
         return true
-        #else
-        return false
-        #endif
     }
 
     func fetch(_ context: ProviderFetchContext) async throws -> ProviderFetchResult {
@@ -192,15 +188,11 @@ struct CommandCodeWebFetchStrategy: ProviderFetchStrategy {
     }
 
     private static func loadAutomaticSessions() throws -> any Sequence<CommandCodeResolvedSession> {
-        #if os(macOS)
         try CommandCodeCookieImporter.sessionCandidates().lazy.map { session in
             CommandCodeResolvedSession(
                 cookieHeader: session.cookieHeader,
                 sourceLabel: session.sourceLabel)
         }
-        #else
-        []
-        #endif
     }
 }
 

@@ -1,8 +1,5 @@
 // swiftlint:disable line_length multiline_arguments
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 import Testing
 @testable import CodexBarCore
 

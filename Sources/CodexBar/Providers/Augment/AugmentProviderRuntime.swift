@@ -50,7 +50,6 @@ final class AugmentProviderRuntime: ProviderRuntime {
     }
 
     private func updateKeepalive(context: ProviderRuntimeContext) {
-        #if os(macOS)
         let shouldRun = context.store.isEnabled(.augment)
         let isRunning = self.keepalive != nil
 
@@ -59,11 +58,9 @@ final class AugmentProviderRuntime: ProviderRuntime {
         } else if !shouldRun, isRunning {
             self.stopKeepalive(context: context, reason: "provider disabled")
         }
-        #endif
     }
 
     private func startKeepalive(context: ProviderRuntimeContext) {
-        #if os(macOS)
         context.store.augmentLogger.info(
             "Augment keepalive check",
             metadata: [
@@ -101,11 +98,9 @@ final class AugmentProviderRuntime: ProviderRuntime {
             })
         self.keepalive?.start()
         context.store.augmentLogger.info("Augment keepalive started")
-        #endif
     }
 
     private func stopKeepalive(context: ProviderRuntimeContext, reason: String) {
-        #if os(macOS)
         guard let keepalive = self.keepalive else { return }
         self.keepaliveGeneration = UUID()
         context.store.retireCredentialNotifications(provider: .augment)
@@ -115,11 +110,9 @@ final class AugmentProviderRuntime: ProviderRuntime {
         self._test_keepaliveStopCount += 1
         #endif
         context.store.augmentLogger.info("Augment keepalive stopped (\(reason))")
-        #endif
     }
 
     private func forceRefresh(context: ProviderRuntimeContext) async {
-        #if os(macOS)
         guard !Task.isCancelled, context.store.isEnabled(.augment) else { return }
         context.store.augmentLogger.info("Augment force refresh requested")
         self.clearCookieCache()
@@ -128,7 +121,6 @@ final class AugmentProviderRuntime: ProviderRuntime {
             self.startKeepalive(context: context)
         }
         await self.keepalive?.forceRefresh()
-        #endif
     }
 
     private func clearCookieCache() {

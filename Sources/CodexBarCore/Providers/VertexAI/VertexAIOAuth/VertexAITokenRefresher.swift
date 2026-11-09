@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 public enum VertexAITokenRefresher {
     private static let tokenEndpoint = URL(string: "https://oauth2.googleapis.com/token")!

@@ -64,4 +64,4 @@ See the [official CLI reference](https://docs.coderabbit.ai/cli/reference#usage-
 - `Sources/CodexBarCore/Providers/CodeRabbit/CodeRabbitUsageSnapshot.swift` - Usage models & snapshot mapping
 - `Sources/CodexBarCore/Providers/CodeRabbit/CodeRabbitProviderDescriptor.swift` - Provider metadata and fetch strategies
 - `Sources/CodexBar/Providers/CodeRabbit/CodeRabbitProviderImplementation.swift` - App registration
-- `TestsLinux/CodeRabbitUsageTests.swift` - Unit tests for parser and probe
+- `TestsCore/CodeRabbitUsageTests.swift` - Unit tests for parser and probe

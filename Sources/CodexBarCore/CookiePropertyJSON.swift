@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 /// The existing session-file cookie encoding, including Date/URL marker keys.
 /// File permissions, empty-file deletion, and expiration policy remain owned by each session store.

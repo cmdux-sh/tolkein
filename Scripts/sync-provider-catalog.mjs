@@ -19,20 +19,8 @@ const count = ids.length;
 const selected = process.argv.slice(2);
 if (selected.some((id) => !ids.includes(id))) throw new Error("Pass registered provider IDs to synchronize labels");
 if (!count) throw new Error("No registered providers");
-const counts = [
-  ["README.md", /(?<=alt="CodexBar — every AI coding limit in your menu bar\. )\d+(?= providers\.")/g],
-  ["docs/providers.md", /(?<=CodexBar currently registers )\d+(?= provider IDs)/g],
-  ["docs/social.html", /(?<=<strong>)\d+(?= providers<\/strong>)/g],
-  ["docs/index.html", /(?<=across )\d+(?= (?:AI coding )?providers)/g],
-  ["docs/index.html", /(?<=>)\d+(?= providers,\{mobileBreak\})/g],
-];
+const counts = [["docs/providers.md", /(?<=CodexBar currently registers )\d+(?= provider IDs)/g]];
 for (const [file, pattern] of counts) update(file, (text) => text.replace(pattern, String(count)));
-update("docs/site-locales.mjs", (text) =>
-  text.replace(
-    /("(?:meta.description|meta.ogDescription|providers.title)": ")([^"\n]*)/g,
-    (_, prefix, value) => prefix + value.replace(/\b\d+\b/, String(count)),
-  ),
-);
 
 // Names are owned by descriptors; documentation keeps its existing links and prose.
 const directory = "Sources/CodexBarCore/Providers";
@@ -46,12 +34,6 @@ for (const entry of fs.readdirSync(path.join(root, directory), { recursive: true
   for (const file of ["README.md", "docs/providers.md", "docs/plugins.md"]) {
     update(file, (text) => text.replace(link, (_, url) => `[${name}](${url})`));
   }
-  update("docs/index.html", (text) =>
-    text.replace(
-      new RegExp(`(data-provider="${id}"[^\\n]*?<strong>)[^<]*(</strong>)`),
-      (_, prefix, suffix) => prefix + name + suffix,
-    ),
-  );
 }
 
 update("docs/plugin-conversion-matrix.md", (text) => {
@@ -68,4 +50,4 @@ update("docs/plugin-conversion-matrix.md", (text) => {
       `${audited.length} audit rows, ${pluginFirst.length} additional plugin-first rows, and ${count - classified.size} providers not yet classified`,
     );
 });
-console.log(`Provider catalog synchronized (${count} providers). Run generate-llms.mjs and social-card.mjs afterward.`);
+console.log(`Provider catalog synchronized (${count} providers).`);

@@ -1,9 +1,6 @@
 import Foundation
-#if os(macOS)
 import SweetCookieKit
-#endif
 
-#if os(macOS)
 enum DevinSessionImporter {
     #if DEBUG
     final class ImportSessionOverrideStore: @unchecked Sendable {
@@ -404,4 +401,3 @@ enum DevinSessionImporter {
         return String(organization.dropFirst("organizations/".count))
     }
 }
-#endif

@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 public struct BedrockUsageSnapshot: Codable, Sendable {
     public let monthlySpend: Double

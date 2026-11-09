@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 /// Keeps Desktop provenance until dispatch. Other credential sources retain their existing behavior.
 struct KimiWebCredential: Sendable {

@@ -1,9 +1,6 @@
 import CodexBarCore
 import Foundation
 import Testing
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 /// BigModel CN pay-as-you-go account balance, surfaced by the bundled zai plugin
 /// as a best-effort detail row (endpoint verified against the live console API:

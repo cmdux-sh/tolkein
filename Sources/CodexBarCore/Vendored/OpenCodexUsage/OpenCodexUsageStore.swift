@@ -1,20 +1,10 @@
-#if canImport(SQLite3)
 import SQLite3
-#elseif canImport(CSQLite3)
-import CSQLite3
-#endif
 #if canImport(CryptoKit)
 import CryptoKit
 #else
 import Crypto
 #endif
-#if canImport(Darwin)
 import Darwin
-#elseif canImport(Glibc)
-import Glibc
-#elseif canImport(Musl)
-import Musl
-#endif
 import Foundation
 
 /// Independent OpenCodex usage cache. Never writes Codex `cost-usage.sqlite`.

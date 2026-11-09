@@ -1,9 +1,5 @@
 import Foundation
 
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
-
 /// Fetches credits from the Grok CLI's billing backend. The grok.com gRPC-web endpoint now requires
 /// a browser-held WKE keypair (#2812), so the CLI proxy is the supported bearer-token path.
 public enum GrokCreditsProxyFetcher {

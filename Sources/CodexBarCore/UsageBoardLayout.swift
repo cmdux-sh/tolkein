@@ -1,7 +1,5 @@
 import Foundation
-#if os(macOS)
 import SwiftUI
-#endif
 
 /// Presentation math for the wide usage board. This does not fetch providers or change stored usage.
 package enum UsageBoardAttention: String, Equatable, Sendable {
@@ -506,7 +504,6 @@ package enum UsageBoardProviderBuilder {
     }
 }
 
-#if os(macOS)
 /// SwiftUI adapter for `UsageBoardLayout.masonryPlacements`. Packing math stays testable without SwiftUI.
 package struct UsageBoardMasonryLayout: Layout {
     package var minimumColumnWidth: CGFloat
@@ -599,4 +596,3 @@ package struct UsageBoardMasonryLayout: Layout {
         }
     }
 }
-#endif

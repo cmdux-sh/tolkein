@@ -12,7 +12,6 @@ public struct AliyunOneConsoleCookieImportError: LocalizedError, Sendable {
     }
 }
 
-#if os(macOS)
 import SweetCookieKit
 
 /// Generic browser-cookie importer for Aliyun OneConsole-based providers.
@@ -212,4 +211,3 @@ public enum AliyunOneConsoleCookieImporter {
         return normalized.lowercased()
     }
 }
-#endif

@@ -1,11 +1,5 @@
-import Foundation
-#if canImport(Darwin)
 import Darwin
-#elseif canImport(Glibc)
-import Glibc
-#elseif canImport(Musl)
-import Musl
-#endif
+import Foundation
 
 /// Non-secret, instance-scoped state. Every operation reloads under a process-shared lock.
 final class ProviderPluginStorage: @unchecked Sendable {

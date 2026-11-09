@@ -5,11 +5,7 @@ public enum DevinProviderDescriptor {
 
     /// Local storage does not need Chromium Safe Storage cookie decryption.
     private static var browserCookieOrder: BrowserCookieImportOrder? {
-        #if os(macOS)
         ChromiumLocalStorageDiscovery.defaultBrowsers
-        #else
-        nil
-        #endif
     }
 
     static func makeDescriptor() -> ProviderDescriptor {
@@ -83,14 +79,8 @@ public enum DevinProviderDescriptor {
             cli: ProviderCLIConfig(
                 name: "devin",
                 versionDetector: nil,
-                browserSupportExemption: { _, environment, settings in
-                    #if os(Linux)
-                    settings?.devin?.cookieSource == .manual &&
-                        DevinUsageFetcher.manualAuth(
-                            from: settings?.devin?.bearerToken(environment: environment ?? [:])) != nil
-                    #else
+                browserSupportExemption: { _, _, _ in
                     false
-                    #endif
                 }))
     }
 }
@@ -106,11 +96,7 @@ struct DevinWebFetchStrategy: ProviderFetchStrategy {
         if source == .manual {
             return DevinUsageFetcher.manualAuth(from: settings?.bearerToken(environment: context.env)) != nil
         }
-        #if os(macOS)
         return true
-        #else
-        return false
-        #endif
     }
 
     func fetch(_ context: ProviderFetchContext) async throws -> ProviderFetchResult {

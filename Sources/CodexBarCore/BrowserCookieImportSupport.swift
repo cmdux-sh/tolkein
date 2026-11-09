@@ -1,19 +1,12 @@
 import Foundation
-#if os(macOS)
 import SweetCookieKit
-#endif
 
 /// Shared browser policies and traversal; providers retain session validation, caching, and logging.
 public enum BrowserCookieImportSupport {
     public static func browserNames(for provider: UsageProvider?) -> String {
-        #if os(macOS)
         self.importOrder(for: provider).map(\.displayName).joined(separator: ", ")
-        #else
-        "none on this platform"
-        #endif
     }
 
-    #if os(macOS)
     static func importOrder(for provider: UsageProvider?) -> [Browser] {
         let order = provider.map { ProviderDefaults.metadata[$0]?.browserCookieOrder ?? Browser.defaultImportOrder }
             ?? Browser.defaultImportOrder
@@ -70,5 +63,4 @@ public enum BrowserCookieImportSupport {
             return cookies.isEmpty ? nil : (profile.label, cookies)
         }
     }
-    #endif
 }

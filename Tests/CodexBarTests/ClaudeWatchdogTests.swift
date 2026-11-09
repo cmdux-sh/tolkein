@@ -1,4 +1,3 @@
-#if canImport(Darwin)
 import Darwin
 import Foundation
 import Testing
@@ -320,4 +319,3 @@ struct ClaudeWatchdogTests {
         #expect(kill(sentinelPID, 0) == 0)
     }
 }
-#endif

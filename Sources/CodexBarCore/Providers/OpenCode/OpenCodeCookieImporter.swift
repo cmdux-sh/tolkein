@@ -1,6 +1,4 @@
 import Foundation
-
-#if os(macOS)
 import SweetCookieKit
 
 private let opencodeCookieImportOrder: BrowserCookieImportOrder =
@@ -93,4 +91,3 @@ enum OpenCodeCookieImportError: LocalizedError {
         }
     }
 }
-#endif

@@ -132,11 +132,7 @@ struct QwenCloudUsageSnapshotTests {
 
         #expect(metadata.sessionLabel == "5-hour")
         #expect(metadata.weeklyLabel == "Weekly")
-        #if os(macOS)
         #expect(metadata.browserCookieOrder == ProviderBrowserCookieDefaults.defaultImportOrder)
-        #else
-        #expect(metadata.browserCookieOrder == nil)
-        #endif
     }
 
     @Test
@@ -708,7 +704,6 @@ struct QwenCloudFetchTests {
 }
 
 struct QwenCloudCookieImportValidationTests {
-    #if os(macOS)
     @Test
     func `accepts passport ticket sessions`() {
         let cookies = [
@@ -771,7 +766,6 @@ struct QwenCloudCookieImportValidationTests {
             .secure: true,
         ])!
     }
-    #endif
 }
 
 final class QwenCloudStubURLProtocol: URLProtocol {

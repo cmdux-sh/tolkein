@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 extension OpenCodeGoUsageFetcher {
     static let optionalZenBalanceTimeout: TimeInterval = 5

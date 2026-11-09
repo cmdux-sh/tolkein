@@ -24,20 +24,11 @@ enum JetBrainsQuotaLogReader {
         let vendorPath = base.deletingLastPathComponent()
         let vendor = vendorPath.lastPathComponent
         guard ["JetBrains", "Google"].contains(vendor) else { return nil }
-        #if os(macOS)
         let configRoots = ["\(homeDirectory)/Library/Application Support/\(vendor)"]
         let logRoot = "\(homeDirectory)/Library/Logs/\(vendor)"
-        #else
-        let configRoots = ["\(homeDirectory)/.config/\(vendor)", "\(homeDirectory)/.local/share/\(vendor)"]
-        let logRoot = "\(homeDirectory)/.cache/\(vendor)"
-        #endif
         // A copied or custom config directory does not prove it belongs to this installation's log.
         guard configRoots.contains(vendorPath.path) else { return nil }
-        #if os(macOS)
         return "\(logRoot)/\(base.lastPathComponent)/idea.log"
-        #else
-        return "\(logRoot)/\(base.lastPathComponent)/log/idea.log"
-        #endif
     }
 
     static func latestEntry(atPath path: String) -> Entry? {

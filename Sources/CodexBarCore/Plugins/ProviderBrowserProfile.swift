@@ -1,7 +1,5 @@
 import Foundation
-#if os(macOS)
 import SweetCookieKit
-#endif
 
 public struct ProviderBrowserProfile: Sendable, Equatable {
     public let browserID: String
@@ -18,7 +16,6 @@ public struct ProviderBrowserProfile: Sendable, Equatable {
         return Self(browserID: browserID, profileID: config?.browserProfileID ?? "")
     }
 
-    #if os(macOS)
     public static func selectableProfiles(from stores: [BrowserCookieStore]) -> [BrowserProfile] {
         var seen = Set<String>()
         var namesByRoot: [URL: [String: String]] = [:]
@@ -125,10 +122,8 @@ public struct ProviderBrowserProfile: Sendable, Equatable {
         guard let underlying = error.userInfo[NSUnderlyingErrorKey] as? Error else { return false }
         return Self.isPermissionError(underlying)
     }
-    #endif
 
     static func read(_ selection: Self, domains: Set<String>) throws -> [ProviderPluginCookieRecord] {
-        #if os(macOS)
         guard let browser = Browser(rawValue: selection.browserID) else {
             throw ProviderPluginError.secretAccess("unsupported selected browser")
         }
@@ -168,11 +163,6 @@ public struct ProviderBrowserProfile: Sendable, Equatable {
                     ? "Cannot read Safari cookies. Check Full Disk Access for Tolkein."
                     : "Cannot decrypt the selected profile. Check browser Keychain access.")
         }
-        #else
-        throw ProviderFetchClassifiedError(
-            kind: .missingCredential,
-            message: "Selected browser profiles require macOS.")
-        #endif
     }
 }
 
@@ -190,10 +180,6 @@ extension ProviderConfig {
 
 extension ProviderSettingsSectionRegistration {
     var selectedProfileCookieOrder: BrowserCookieImportOrder? {
-        #if os(macOS)
         self.selectedProfileBrowsers.map { $0.compactMap(Browser.init(rawValue:)) }
-        #else
-        nil
-        #endif
     }
 }

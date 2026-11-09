@@ -1,8 +1,5 @@
 import CoreFoundation
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 /// Shared request policy and HTTP values exposed to both plugin engines.
 enum ProviderPluginHTTPResponse {

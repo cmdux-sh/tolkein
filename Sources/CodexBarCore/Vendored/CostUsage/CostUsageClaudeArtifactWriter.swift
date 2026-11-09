@@ -14,7 +14,6 @@ final class CostUsageClaudeArtifactWriter {
 
     init?(temporaryURL: URL, replacing url: URL) {
         var cloned = false
-        #if os(macOS)
         let source = open(url.path, O_RDONLY | O_NOFOLLOW | O_NONBLOCK)
         if source >= 0 {
             defer { close(source) }
@@ -27,7 +26,6 @@ final class CostUsageClaudeArtifactWriter {
                 cloned = fclonefileat(source, AT_FDCWD, temporaryURL.path, UInt32(CLONE_NOOWNERCOPY)) == 0
             }
         }
-        #endif
         var descriptor: Int32 = -1
         if cloned {
             descriptor = open(temporaryURL.path, O_RDWR | O_NOFOLLOW)

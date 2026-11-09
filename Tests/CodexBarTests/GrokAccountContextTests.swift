@@ -383,7 +383,6 @@ private struct GrokAccountFixture: Sendable {
     }
 
     func context(sourceMode: ProviderSourceMode = .oauth) -> ProviderFetchContext {
-        #if os(macOS)
         let browserDetection = BrowserDetection(
             homeDirectory: self.home.path,
             cacheTTL: 0,
@@ -392,9 +391,6 @@ private struct GrokAccountFixture: Sendable {
             directoryContents: { _ in nil },
             applicationURLs: { _ in [] },
             profileAccessIssue: { _ in nil })
-        #else
-        let browserDetection = BrowserDetection(cacheTTL: 0)
-        #endif
         let environment = [
             "GROK_HOME": self.home.path,
             "GROK_CLI_PATH": self.home.appendingPathComponent("missing-grok").path,

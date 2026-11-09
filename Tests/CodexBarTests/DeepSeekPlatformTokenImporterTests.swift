@@ -1,7 +1,5 @@
 import Foundation
-#if os(macOS)
 import SweetCookieKit
-#endif
 import Testing
 @testable import CodexBarCore
 
@@ -37,7 +35,6 @@ struct DeepSeekPlatformTokenImporterTests {
         #expect(DeepSeekPlatformTokenImporter._extractUserTokenForTesting("token with embedded spaces 12345") == nil)
     }
 
-    #if os(macOS)
     @Test
     func `discovers a Chromium session without Chrome`() {
         let localStorage = BrowserLocalStorageAPI { _, browsers, _, _ in
@@ -173,7 +170,6 @@ struct DeepSeekPlatformTokenImporterTests {
         record.append(batch)
         try record.write(to: levelDB.appendingPathComponent("000003.log"))
     }
-    #endif
 
     @Test
     func `multiple profiles expose only server accepted sessions`() async {

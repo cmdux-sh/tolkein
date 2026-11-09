@@ -2,13 +2,7 @@ import Foundation
 #if canImport(CryptoKit)
 import CryptoKit
 #endif
-#if canImport(Darwin)
 import Darwin
-#elseif canImport(Glibc)
-import Glibc
-#elseif canImport(Musl)
-import Musl
-#endif
 
 public enum CookieAuthenticationFailurePolicy: String, Codable, Equatable, Sendable {
     case stopFallback

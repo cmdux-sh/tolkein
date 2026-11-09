@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 /// Fetches live credit balance and subscription details from the Codebuff API.
 /// Uses Bearer token auth against the public www.codebuff.com endpoints used by

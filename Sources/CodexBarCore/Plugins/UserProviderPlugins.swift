@@ -1,8 +1,5 @@
 import Crypto
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 #if canImport(JavaScriptCore)
 @preconcurrency import JavaScriptCore
 #endif
@@ -675,16 +672,11 @@ final class UserProviderPluginHTTPClient: ProviderHTTPTransport, Sendable {
             didReceive challenge: URLAuthenticationChallenge,
             completionHandler: @escaping @Sendable (URLSession.AuthChallengeDisposition, URLCredential?) -> Void)
         {
-            #if canImport(Darwin)
             if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
                 completionHandler(.performDefaultHandling, nil)
             } else {
                 completionHandler(.cancelAuthenticationChallenge, nil)
             }
-            #else
-            _ = challenge
-            completionHandler(.performDefaultHandling, nil)
-            #endif
         }
     }
 }

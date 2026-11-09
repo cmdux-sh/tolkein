@@ -1,8 +1,5 @@
 import Foundation
-
-#if os(macOS)
 import SweetCookieKit
-#endif
 
 public enum AbacusProviderDescriptor {
     public static let descriptor: ProviderDescriptor = Self.makeDescriptor()
@@ -90,7 +87,6 @@ public enum AbacusProviderDescriptor {
             transport: transport,
             timeout: Self.refreshTimeout(for: requestTimeout),
             cookieImport: { context, _, batch in
-                #if os(macOS)
                 guard batch < 2 else { return nil }
                 let browsers = batch == 0 ? [Browser.chrome] :
                     (ProviderBrowserCookieDefaults.defaultImportOrder ?? Browser.defaultImportOrder)
@@ -99,9 +95,6 @@ public enum AbacusProviderDescriptor {
                 return AbacusCookieImporter.importSessions(
                     browserDetection: context.browserDetection, preferredBrowsers: browsers)
                     .map { ($0.cookieHeader, $0.sourceLabel) }
-                #else
-                return nil
-                #endif
             },
             resolveValues: { context in
                 guard context.settings?.abacus?.cookieSource != .off else { return nil }

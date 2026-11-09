@@ -252,7 +252,6 @@ public struct JetBrainsStatusProbe: Sendable {
     }
 
     public static func parseXMLData(_ data: Data, detectedIDE: JetBrainsIDEInfo?) throws -> JetBrainsStatusSnapshot {
-        #if os(macOS)
         let document: XMLDocument
         do {
             document = try XMLDocument(data: data)
@@ -268,11 +267,6 @@ public struct JetBrainsStatusProbe: Sendable {
             .nodes(forXPath: "//component[@name='AIAssistantQuotaManager2']/option[@name='nextRefill']/@value")
             .first?
             .stringValue
-        #else
-        let parseResult = JetBrainsXMLParser.parse(data: data)
-        let quotaInfoRaw = parseResult.quotaInfo
-        let nextRefillRaw = parseResult.nextRefill
-        #endif
 
         guard let quotaInfoRaw, !quotaInfoRaw.isEmpty else {
             throw JetBrainsStatusProbeError.noQuotaInfo

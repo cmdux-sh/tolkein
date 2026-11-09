@@ -1,10 +1,4 @@
-#if canImport(Darwin)
 import Darwin
-#elseif canImport(Glibc)
-import Glibc
-#elseif canImport(Musl)
-import Musl
-#endif
 import Foundation
 
 // MARK: - Antigravity CLI Process Abstractions
@@ -868,11 +862,7 @@ struct AntigravityPTYProcessLauncher: AntigravityCLIProcessLaunching {
         let primaryHandle = FileHandle(fileDescriptor: primaryFD, closeOnDealloc: true)
         let secondaryHandle = FileHandle(fileDescriptor: secondaryFD, closeOnDealloc: true)
 
-        #if canImport(Darwin)
         var fileActions: posix_spawn_file_actions_t?
-        #else
-        var fileActions = posix_spawn_file_actions_t()
-        #endif
         guard posix_spawn_file_actions_init(&fileActions) == 0 else {
             try? primaryHandle.close()
             try? secondaryHandle.close()
@@ -890,21 +880,8 @@ struct AntigravityPTYProcessLauncher: AntigravityCLIProcessLaunching {
         _ = homeDirectory.withCString { path in
             PosixSpawnFileActionsCompatibility.addChangeDirectory(&fileActions, path: path)
         }
-        #if canImport(Glibc) || canImport(Musl)
-        do {
-            try PosixSpawnFileActionsCloseFrom.addCloseFrom(&fileActions, startingAt: 3)
-        } catch {
-            try? primaryHandle.close()
-            try? secondaryHandle.close()
-            throw AntigravityCLISession.SessionError.launchFailed(error.localizedDescription)
-        }
-        #endif
 
-        #if canImport(Darwin)
         var attr: posix_spawnattr_t?
-        #else
-        var attr = posix_spawnattr_t()
-        #endif
         guard posix_spawnattr_init(&attr) == 0 else {
             try? primaryHandle.close()
             try? secondaryHandle.close()
@@ -913,11 +890,7 @@ struct AntigravityPTYProcessLauncher: AntigravityCLIProcessLaunching {
         defer { posix_spawnattr_destroy(&attr) }
         var defaultSignals = Self.defaultSignalsForSpawn()
         posix_spawnattr_setsigdefault(&attr, &defaultSignals)
-        #if canImport(Darwin)
         let spawnFlags = POSIX_SPAWN_SETPGROUP | POSIX_SPAWN_SETSIGDEF | POSIX_SPAWN_CLOEXEC_DEFAULT
-        #else
-        let spawnFlags = POSIX_SPAWN_SETPGROUP | POSIX_SPAWN_SETSIGDEF
-        #endif
         posix_spawnattr_setflags(&attr, Int16(spawnFlags))
         posix_spawnattr_setpgroup(&attr, 0)
 
@@ -1118,55 +1091,14 @@ struct AntigravityProcessIdentityProvider: AntigravityCLIProcessIdentityProvidin
     }
 
     func ownerUserID(for pid: pid_t) -> UInt32? {
-        #if canImport(Darwin)
-        return DarwinProcessEnumerator.processInfo(pid: pid)?.pbi_uid
-        #else
-        guard let status = try? String(contentsOfFile: "/proc/\(pid)/status", encoding: .utf8),
-              let uidLine = status.split(separator: "\n").first(where: { $0.hasPrefix("Uid:") }),
-              let owner = uidLine.split(whereSeparator: \.isWhitespace).dropFirst().first,
-              let userID = UInt32(owner)
-        else {
-            return nil
-        }
-        return userID
-        #endif
+        DarwinProcessEnumerator.processInfo(pid: pid)?.pbi_uid
     }
 
     func identity(for pid: pid_t) -> AntigravityCLIProcessIdentity? {
-        #if canImport(Darwin)
         guard let executablePath = DarwinProcessEnumerator.executablePath(pid: pid),
               let info = DarwinProcessEnumerator.processInfo(pid: pid) else { return nil }
         let startEpoch = TimeInterval(info.pbi_start_tvsec) + (TimeInterval(info.pbi_start_tvusec) / 1_000_000)
         return AntigravityCLIProcessIdentity(executablePath: executablePath, startEpoch: startEpoch)
-        #else
-        let procDirectory = "/proc/\(pid)"
-        guard let executablePath = try? FileManager.default.destinationOfSymbolicLink(
-            atPath: "\(procDirectory)/exe"),
-            let stat = try? String(contentsOfFile: "\(procDirectory)/stat", encoding: .utf8),
-            let closeParen = stat.lastIndex(of: ")")
-        else {
-            return nil
-        }
-        let fields = stat[stat.index(after: closeParen)...].split(whereSeparator: \.isWhitespace)
-        let clockTicksPerSecond = sysconf(Int32(_SC_CLK_TCK))
-        let systemStat = try? String(contentsOfFile: "/proc/stat", encoding: .utf8)
-        let bootEpoch = systemStat?
-            .split(separator: "\n")
-            .first { $0.hasPrefix("btime ") }?
-            .split(whereSeparator: \.isWhitespace)
-            .dropFirst()
-            .first
-            .flatMap { TimeInterval($0) }
-        guard fields.count > 19,
-              let startTicks = TimeInterval(fields[19]),
-              clockTicksPerSecond > 0,
-              let bootEpoch
-        else {
-            return nil
-        }
-        let startEpoch = bootEpoch + (startTicks / TimeInterval(clockTicksPerSecond))
-        return AntigravityCLIProcessIdentity(executablePath: executablePath, startEpoch: startEpoch)
-        #endif
     }
 }
 

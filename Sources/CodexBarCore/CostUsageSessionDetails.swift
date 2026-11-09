@@ -1,10 +1,6 @@
 import Dispatch
 import Foundation
-#if canImport(SQLite3)
 import SQLite3
-#elseif canImport(CSQLite3)
-import CSQLite3
-#endif
 
 /// Captured by the native adapter. UI code never discovers another account's cache or session files.
 public struct CostUsageSessionDetailSource: Sendable, Equatable, Hashable {

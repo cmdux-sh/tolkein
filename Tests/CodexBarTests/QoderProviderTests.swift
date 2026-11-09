@@ -15,11 +15,7 @@ struct QoderProviderTests {
         #expect(descriptor.branding.iconResourceName == "ProviderIcon-qoder")
         #expect(descriptor.branding.iconStyle == .qoder)
         #expect(!descriptor.metadata.supportsCredits)
-        #if os(macOS)
         #expect(descriptor.metadata.browserCookieOrder == ProviderBrowserCookieDefaults.defaultImportOrder)
-        #else
-        #expect(descriptor.metadata.browserCookieOrder == nil)
-        #endif
     }
 
     @MainActor

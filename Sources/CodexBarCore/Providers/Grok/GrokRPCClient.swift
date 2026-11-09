@@ -53,9 +53,7 @@ final class GrokRPCClient: @unchecked Sendable {
         self.output.start(process: self.process, stdin: self.stdin) {
             Self.log.warning("Grok RPC line exceeded memory limit; terminating process")
         } onStderr: { line in
-            #if !os(Linux)
             fputs("[grok stderr] \(line)\n", stderr)
-            #endif
         }
     }
 

@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 /// Resolves the Aliyun OneConsole `sec_token` for a given authenticated
 /// session. The token is required for every gateway API call; it lives

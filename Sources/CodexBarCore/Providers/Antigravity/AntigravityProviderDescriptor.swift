@@ -520,7 +520,6 @@ struct AntigravityCLIHTTPSFetchStrategy: ProviderFetchStrategy {
             nil
         }
         let versionResolver = AgyVersionResolver()
-        #if os(macOS)
         let scopedReportFetch: (@Sendable () async throws -> ProviderFetchResult)? = {
             try await self.fetchScopedPrintUsage(
                 binary: binary,
@@ -530,9 +529,6 @@ struct AntigravityCLIHTTPSFetchStrategy: ProviderFetchStrategy {
                     try await AntigravityOAuthFetchStrategy.persistCredentials($0, context: context)
                 })
         }
-        #else
-        let scopedReportFetch: (@Sendable () async throws -> ProviderFetchResult)? = nil
-        #endif
         return try await Self.fetchWithReportFallback(
             context: context,
             legacyFetch: {

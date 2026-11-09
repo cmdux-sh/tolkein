@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 import Testing
 @testable import CodexBarCore
 
@@ -51,7 +48,6 @@ private final class MistralCookieHeaderLog: @unchecked Sendable {
 }
 
 struct MistralVibeUsageTests {
-    #if os(macOS)
     @Test
     func `cookie importer uses only accepted Mistral domains`() {
         #expect(Set(MistralCookieImporter.cookieDomains) == [
@@ -104,7 +100,6 @@ struct MistralVibeUsageTests {
             "ory_session_safari=valid",
         ])
     }
-    #endif
 
     @Test
     func `parses subscription percentage and reset`() throws {
@@ -347,7 +342,6 @@ struct MistralVibeUsageTests {
         """
     }
 
-    #if os(macOS)
     private static func session(cookieName: String, value: String, sourceLabel: String) throws
         -> MistralCookieImporter.SessionInfo
     {
@@ -359,7 +353,6 @@ struct MistralVibeUsageTests {
         ]))
         return MistralCookieImporter.SessionInfo(cookies: [cookie], sourceLabel: sourceLabel)
     }
-    #endif
 
     private static var billingUsageResponseJSON: String {
         """

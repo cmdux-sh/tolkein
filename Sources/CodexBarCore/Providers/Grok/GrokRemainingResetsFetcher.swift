@@ -1,9 +1,5 @@
 import Foundation
 
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
-
 /// One unused SuperGrok usage-limit reset token from grok.com.
 public struct GrokRemainingReset: Sendable, Equatable {
     public let tokenID: String

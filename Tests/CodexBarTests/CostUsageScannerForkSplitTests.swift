@@ -1,5 +1,4 @@
 import Foundation
-#if canImport(SQLite3)
 import Testing
 @testable import CodexBarCore
 
@@ -879,4 +878,3 @@ extension CostUsageScannerForkSplitTests {
         ]
     }
 }
-#endif

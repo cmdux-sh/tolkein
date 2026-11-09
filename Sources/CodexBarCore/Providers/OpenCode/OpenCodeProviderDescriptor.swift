@@ -100,7 +100,6 @@ struct OpenCodeUsageFetchStrategy: ProviderFetchStrategy {
                 usage: snapshot.toUsageSnapshot(),
                 sourceLabel: "web")
         } catch OpenCodeUsageError.invalidCredentials where cookieSource != .manual {
-            #if os(macOS)
             CookieHeaderCache.clear(provider: .opencode)
             let cookieHeader = try Self.resolveCookieHeader(context: context, allowCached: false)
             let snapshot = try await OpenCodeUsageFetcher.fetchUsage(
@@ -110,9 +109,6 @@ struct OpenCodeUsageFetchStrategy: ProviderFetchStrategy {
             return self.makeResult(
                 usage: snapshot.toUsageSnapshot(),
                 sourceLabel: "web")
-            #else
-            throw OpenCodeUsageError.invalidCredentials
-            #endif
         }
     }
 

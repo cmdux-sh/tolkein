@@ -1,11 +1,6 @@
 import Dispatch
 import Foundation
-
-#if canImport(SQLite3)
 import SQLite3
-#elseif canImport(CSQLite3)
-import CSQLite3
-#endif
 
 package enum CostUsageStoreExecutorTestControl {
     package static let suppressCurrentContextArgument = "--cost-store-suppress-current-context-for-testing"

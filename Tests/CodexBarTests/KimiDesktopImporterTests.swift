@@ -1,4 +1,3 @@
-#if os(macOS)
 import Foundation
 import Testing
 @testable import CodexBarCore
@@ -26,4 +25,3 @@ struct KimiDesktopImporterTests {
         #expect(KimiCookieImporter.desktopAuthToken(region: .international, homeDirectory: home) == nil)
     }
 }
-#endif

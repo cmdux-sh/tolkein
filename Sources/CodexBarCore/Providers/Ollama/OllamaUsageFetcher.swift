@@ -1,11 +1,5 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
-
-#if os(macOS)
 import SweetCookieKit
-#endif
 
 let ollamaDefaultSessionCookieName = "__Secure-session"
 
@@ -146,7 +140,6 @@ public enum OllamaUsageError: LocalizedError, Sendable {
     }
 }
 
-#if os(macOS)
 private let ollamaCookieImportOrder: BrowserCookieImportOrder =
     ProviderDefaults.metadata[.ollama]?.browserCookieOrder ?? Browser.defaultImportOrder
 
@@ -392,7 +385,6 @@ public enum OllamaCookieImporter {
         }
     }
 }
-#endif
 
 public struct OllamaUsageFetcher: Sendable {
     private static let settingsURL = URL(string: "https://ollama.com/settings")!
@@ -553,7 +545,6 @@ public struct OllamaUsageFetcher: Sendable {
                 cookieHeader: manualHeader,
                 sourceLabel: overrideSourceLabel ?? "manual cookie header")]
         }
-        #if os(macOS)
         let sessions = try OllamaCookieImporter.importSessions(
             browserDetection: self.browserDetection,
             preferredBrowsers: OllamaCookieImporter.defaultPreferredBrowsers,
@@ -562,9 +553,6 @@ public struct OllamaUsageFetcher: Sendable {
         return sessions.map { session in
             CookieCandidate(cookieHeader: session.cookieHeader, sourceLabel: session.sourceLabel)
         }
-        #else
-        throw OllamaUsageError.noSessionCookie
-        #endif
     }
 
     public func debugRawProbe(

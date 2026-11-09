@@ -1,6 +1,4 @@
 import Foundation
-
-#if os(macOS)
 import SweetCookieKit
 
 public enum ReplicateCookieImporter {
@@ -55,4 +53,3 @@ public enum ReplicateCookieImporter {
             referenceDate: referenceDate)
     }
 }
-#endif

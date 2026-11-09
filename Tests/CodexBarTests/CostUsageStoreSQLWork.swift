@@ -1,10 +1,6 @@
 import Foundation
-@testable import CodexBarCore
-#if canImport(SQLite3)
 import SQLite3
-#elseif canImport(CSQLite3)
-import CSQLite3
-#endif
+@testable import CodexBarCore
 
 /// Connection-local SQLite work, independent of executor scheduling and disk latency.
 struct CostUsageStoreSQLWork: Sendable {

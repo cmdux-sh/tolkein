@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 /// A resolved CommandCode session cookie ready to be sent on `Cookie:` headers.
 ///

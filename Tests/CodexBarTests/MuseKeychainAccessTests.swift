@@ -1,4 +1,3 @@
-#if os(macOS)
 import Foundation
 import LocalAuthentication
 import Security
@@ -298,4 +297,3 @@ struct MuseKeychainAccessTests {
         return home
     }
 }
-#endif

@@ -1,6 +1,4 @@
 import Foundation
-
-#if os(macOS)
 import SweetCookieKit
 
 private let mistralCookieImportOrder: BrowserCookieImportOrder =
@@ -119,4 +117,3 @@ enum MistralCookieImportError: LocalizedError {
         }
     }
 }
-#endif

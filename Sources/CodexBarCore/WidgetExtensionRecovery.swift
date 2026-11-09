@@ -1,4 +1,3 @@
-#if os(macOS)
 import Darwin
 import Foundation
 import Security
@@ -137,4 +136,3 @@ package enum WidgetExtensionRecovery {
         return data as Data?
     }
 }
-#endif

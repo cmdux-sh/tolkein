@@ -1,10 +1,7 @@
-import Foundation
-
-#if os(macOS)
 import Darwin
+import Foundation
 import LocalAuthentication
 import Security
-#endif
 
 public struct KeychainPromptContext: Sendable {
     public enum Kind: Sendable {
@@ -211,7 +208,6 @@ public enum KeychainAccessPreflight {
     private static let temporarilyUnavailableRetryDelayMicroseconds: UInt32 = 30000
 
     private static func checkGenericPasswordUncached(service: String, account: String?) -> Outcome {
-        #if os(macOS)
         var outcome = self.performGenericPasswordPreflightAttempt(service: service, account: account)
         var attempt = 1
         while case .temporarilyUnavailable = outcome, attempt < self.temporarilyUnavailableRetryCount {
@@ -220,12 +216,8 @@ public enum KeychainAccessPreflight {
             attempt += 1
         }
         return outcome
-        #else
-        return .notFound
-        #endif
     }
 
-    #if os(macOS)
     private static func waitBeforePreflightRetry() {
         #if DEBUG
         if let override = self.taskCheckGenericPasswordOverrideStore {
@@ -287,9 +279,7 @@ public enum KeychainAccessPreflight {
             return .failure(Int(status))
         }
     }
-    #endif
 
-    #if os(macOS)
     static func makeGenericPasswordPreflightQuery(service: String, account: String?) -> [String: Any] {
         var query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
@@ -508,5 +498,4 @@ public enum KeychainAccessPreflight {
         else { return nil }
         return unsafeBitCast(symbol, to: T.self)
     }
-    #endif
 }

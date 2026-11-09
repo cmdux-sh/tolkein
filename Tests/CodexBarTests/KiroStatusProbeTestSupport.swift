@@ -1,10 +1,6 @@
+import Darwin
 import Foundation
 @testable import CodexBarCore
-#if canImport(Darwin)
-import Darwin
-#else
-import Glibc
-#endif
 
 final class KiroTestProcessRegistry: @unchecked Sendable {
     private struct Record {

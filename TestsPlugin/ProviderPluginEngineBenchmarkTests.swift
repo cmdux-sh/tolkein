@@ -1,4 +1,3 @@
-#if os(macOS)
 import Darwin
 import Foundation
 import Testing
@@ -184,4 +183,3 @@ private enum BenchmarkError: LocalizedError {
         }
     }
 }
-#endif

@@ -1,10 +1,4 @@
-#if canImport(Darwin)
 import Darwin
-#elseif canImport(Glibc)
-import Glibc
-#elseif canImport(Musl)
-import Musl
-#endif
 import Foundation
 
 #if DEBUG
@@ -97,15 +91,10 @@ package final class SpawnedProcessGroup: @unchecked Sendable {
     }
 
     private struct OutputPipeIdentity: Hashable, Sendable {
-        #if canImport(Darwin)
         let firstHandle: UInt64
         let secondHandle: UInt64
-        #else
-        let inode: UInt64
-        #endif
 
         static func resolve(fileDescriptor: Int32) -> OutputPipeIdentity? {
-            #if canImport(Darwin)
             var info = pipe_fdinfo()
             let byteCount = proc_pidfdinfo(
                 getpid(),
@@ -117,36 +106,13 @@ package final class SpawnedProcessGroup: @unchecked Sendable {
             let handles = [info.pipeinfo.pipe_handle, info.pipeinfo.pipe_peerhandle].sorted()
             guard handles[0] != 0, handles[1] != 0 else { return nil }
             return OutputPipeIdentity(firstHandle: handles[0], secondHandle: handles[1])
-            #else
-            var info = stat()
-            guard fstat(fileDescriptor, &info) == 0 else { return nil }
-            return OutputPipeIdentity(inode: UInt64(info.st_ino))
-            #endif
         }
 
         static func holderPIDs(for pipes: Set<OutputPipeIdentity>) -> Set<pid_t> {
             guard !pipes.isEmpty else { return [] }
-            #if canImport(Darwin)
             return Set(SpawnedProcessGroup.allProcessIDs().filter { self.process(pid: $0, holdsAny: pipes) })
-            #else
-            let targets = Set(pipes.map { "pipe:[\($0.inode)]" })
-            return Set(SpawnedProcessGroup.allProcessIDs().filter { pid in
-                let directory = "/proc/\(pid)/fd"
-                guard let descriptors = try? FileManager.default.contentsOfDirectory(atPath: directory) else {
-                    return false
-                }
-                return descriptors.contains { descriptor in
-                    let path = "\(directory)/\(descriptor)"
-                    guard let target = try? FileManager.default.destinationOfSymbolicLink(atPath: path) else {
-                        return false
-                    }
-                    return targets.contains(target)
-                }
-            })
-            #endif
         }
 
-        #if canImport(Darwin)
         private static func process(pid: pid_t, holdsAny pipes: Set<OutputPipeIdentity>) -> Bool {
             for descriptor in DarwinProcessEnumerator.fileDescriptors(pid: pid)
                 where descriptor.proc_fdtype == PROX_FDTYPE_PIPE
@@ -167,7 +133,6 @@ package final class SpawnedProcessGroup: @unchecked Sendable {
             }
             return false
         }
-        #endif
     }
 
     private struct OutputTTYIdentity: Hashable, Sendable {
@@ -178,13 +143,8 @@ package final class SpawnedProcessGroup: @unchecked Sendable {
         static func resolve(fileDescriptor: Int32) -> OutputTTYIdentity? {
             var info = stat()
             guard fstat(fileDescriptor, &info) == 0 else { return nil }
-            #if canImport(Darwin)
             let device = SpawnedProcessGroup.darwinDeviceIdentifier(info.st_dev)
             let rawDevice = SpawnedProcessGroup.darwinDeviceIdentifier(info.st_rdev)
-            #else
-            let device = UInt64(info.st_dev)
-            let rawDevice = UInt64(info.st_rdev)
-            #endif
             return OutputTTYIdentity(
                 device: device,
                 inode: UInt64(info.st_ino),
@@ -193,29 +153,9 @@ package final class SpawnedProcessGroup: @unchecked Sendable {
 
         static func holderPIDs(for terminals: Set<OutputTTYIdentity>) -> Set<pid_t> {
             guard !terminals.isEmpty else { return [] }
-            #if canImport(Darwin)
             return Set(SpawnedProcessGroup.allProcessIDs().filter { self.process(pid: $0, holdsAny: terminals) })
-            #else
-            return Set(SpawnedProcessGroup.allProcessIDs().filter { pid in
-                let directory = "/proc/\(pid)/fd"
-                guard let descriptors = try? FileManager.default.contentsOfDirectory(atPath: directory) else {
-                    return false
-                }
-                return descriptors.contains { descriptor in
-                    var info = stat()
-                    let path = "\(directory)/\(descriptor)"
-                    guard path.withCString({ fstatat(AT_FDCWD, $0, &info, 0) }) == 0 else { return false }
-                    let identity = OutputTTYIdentity(
-                        device: UInt64(info.st_dev),
-                        inode: UInt64(info.st_ino),
-                        rawDevice: UInt64(info.st_rdev))
-                    return terminals.contains(identity)
-                }
-            })
-            #endif
         }
 
-        #if canImport(Darwin)
         private static func process(pid: pid_t, holdsAny terminals: Set<OutputTTYIdentity>) -> Bool {
             for descriptor in DarwinProcessEnumerator.fileDescriptors(pid: pid)
                 where descriptor.proc_fdtype == PROX_FDTYPE_VNODE
@@ -239,31 +179,19 @@ package final class SpawnedProcessGroup: @unchecked Sendable {
             }
             return false
         }
-        #endif
     }
 
     private static func allProcessIDs() -> [pid_t] {
-        #if canImport(Darwin)
-        return DarwinProcessEnumerator.allPIDs()
-        #else
-        guard let entries = try? FileManager.default.contentsOfDirectory(atPath: "/proc") else { return [] }
-        return entries.compactMap(pid_t.init)
-        #endif
+        DarwinProcessEnumerator.allPIDs()
     }
 
-    #if canImport(Darwin)
     /// Darwin exposes `stat` device IDs as signed values while vnode inspection uses the same bits unsigned.
     package static func darwinDeviceIdentifier(_ value: Int32) -> UInt64 {
         UInt64(UInt32(bitPattern: value))
     }
-    #endif
 
     private static func processIDs(inProcessGroup processGroup: pid_t) -> [pid_t] {
-        #if canImport(Darwin)
-        return DarwinProcessEnumerator.allPIDs(type: UInt32(PROC_PGRP_ONLY), typeInfo: UInt32(bitPattern: processGroup))
-        #else
-        return self.allProcessIDs().filter { getpgid($0) == processGroup }
-        #endif
+        DarwinProcessEnumerator.allPIDs(type: UInt32(PROC_PGRP_ONLY), typeInfo: UInt32(bitPattern: processGroup))
     }
 
     package let pid: pid_t
@@ -305,11 +233,7 @@ package final class SpawnedProcessGroup: @unchecked Sendable {
         stdoutPipe: Pipe,
         stderrPipe: Pipe) throws -> SpawnedProcessGroup
     {
-        #if canImport(Darwin)
         var fileActions: posix_spawn_file_actions_t?
-        #else
-        var fileActions = posix_spawn_file_actions_t()
-        #endif
         guard posix_spawn_file_actions_init(&fileActions) == 0 else {
             throw LaunchError.setupFailed("posix_spawn_file_actions_init")
         }
@@ -329,24 +253,11 @@ package final class SpawnedProcessGroup: @unchecked Sendable {
         for descriptor in Self.pipeDescriptorsToClose([stdoutRead, stdoutWrite, stderrRead, stderrWrite]) {
             fileActionResults.append(posix_spawn_file_actions_addclose(&fileActions, descriptor))
         }
-        #if canImport(Glibc) || canImport(Musl)
-        do {
-            try PosixSpawnFileActionsCloseFrom.addCloseFrom(
-                &fileActions,
-                startingAt: STDERR_FILENO + 1)
-        } catch {
-            throw LaunchError.setupFailed(error.localizedDescription)
-        }
-        #endif
         guard fileActionResults.allSatisfy({ $0 == 0 }) else {
             throw LaunchError.setupFailed("posix_spawn file actions")
         }
 
-        #if canImport(Darwin)
         var attributes: posix_spawnattr_t?
-        #else
-        var attributes = posix_spawnattr_t()
-        #endif
         guard posix_spawnattr_init(&attributes) == 0 else {
             throw LaunchError.setupFailed("posix_spawnattr_init")
         }
@@ -358,11 +269,7 @@ package final class SpawnedProcessGroup: @unchecked Sendable {
         else {
             throw LaunchError.setupFailed("posix_spawn signal mask")
         }
-        #if canImport(Darwin)
         let flags = POSIX_SPAWN_SETPGROUP | POSIX_SPAWN_SETSIGMASK | POSIX_SPAWN_CLOEXEC_DEFAULT
-        #else
-        let flags = POSIX_SPAWN_SETPGROUP | POSIX_SPAWN_SETSIGMASK
-        #endif
         guard posix_spawnattr_setflags(&attributes, Int16(flags)) == 0,
               posix_spawnattr_setpgroup(&attributes, 0) == 0
         else {
@@ -414,11 +321,7 @@ package final class SpawnedProcessGroup: @unchecked Sendable {
         guard let reservedPTYPrimaryDescriptor = Self.reservePTYPrimaryDescriptor(primaryFD) else {
             throw LaunchError.setupFailed("reserve PTY primary descriptor")
         }
-        #if canImport(Darwin)
         var fileActions: posix_spawn_file_actions_t?
-        #else
-        var fileActions = posix_spawn_file_actions_t()
-        #endif
         guard posix_spawn_file_actions_init(&fileActions) == 0 else {
             throw LaunchError.setupFailed("posix_spawn_file_actions_init")
         }
@@ -437,24 +340,11 @@ package final class SpawnedProcessGroup: @unchecked Sendable {
                 PosixSpawnFileActionsCompatibility.addChangeDirectory(&fileActions, path: path)
             })
         }
-        #if canImport(Glibc) || canImport(Musl)
-        do {
-            try PosixSpawnFileActionsCloseFrom.addCloseFrom(
-                &fileActions,
-                startingAt: STDERR_FILENO + 1)
-        } catch {
-            throw LaunchError.setupFailed(error.localizedDescription)
-        }
-        #endif
         guard fileActionResults.allSatisfy({ $0 == 0 }) else {
             throw LaunchError.setupFailed("posix_spawn PTY file actions")
         }
 
-        #if canImport(Darwin)
         var attributes: posix_spawnattr_t?
-        #else
-        var attributes = posix_spawnattr_t()
-        #endif
         guard posix_spawnattr_init(&attributes) == 0 else {
             throw LaunchError.setupFailed("posix_spawnattr_init")
         }
@@ -466,11 +356,7 @@ package final class SpawnedProcessGroup: @unchecked Sendable {
         else {
             throw LaunchError.setupFailed("posix_spawn PTY signal mask")
         }
-        #if canImport(Darwin)
         let flags = POSIX_SPAWN_SETPGROUP | POSIX_SPAWN_SETSIGMASK | POSIX_SPAWN_CLOEXEC_DEFAULT
-        #else
-        let flags = POSIX_SPAWN_SETPGROUP | POSIX_SPAWN_SETSIGMASK
-        #endif
         guard posix_spawnattr_setflags(&attributes, Int16(flags)) == 0,
               posix_spawnattr_setpgroup(&attributes, 0) == 0
         else {

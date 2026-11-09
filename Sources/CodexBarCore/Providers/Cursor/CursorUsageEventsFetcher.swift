@@ -1,9 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
-
-#if os(macOS)
 
 // MARK: - Cursor Usage Event Models
 
@@ -842,5 +837,3 @@ struct CursorUsageEventsFetcher: Sendable {
         }
     }
 }
-
-#endif

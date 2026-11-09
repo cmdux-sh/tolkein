@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 public struct CopilotDeviceFlow: Sendable {
     public static let defaultHost = "github.com"

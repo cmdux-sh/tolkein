@@ -1,9 +1,7 @@
 import Commander
 import Foundation
-import Testing
-#if os(macOS)
 import SweetCookieKit
-#endif
+import Testing
 @testable import CodexBarCLI
 @testable import CodexBarCore
 
@@ -21,7 +19,6 @@ struct CLICookieRefreshTests {
         #expect(parsed.flags.contains("jsonShortcut"))
     }
 
-    #if os(macOS)
     @Test
     func `Muse AI participates in explicit and all provider cookie refresh`() throws {
         let targets = try CodexBarCLI.cookieRefreshTargets(rawProvider: nil, refreshAll: true)
@@ -555,5 +552,4 @@ struct CLICookieRefreshTests {
             #expect(!result.message.contains("opaque-test-marker"))
         }
     }
-    #endif
 }

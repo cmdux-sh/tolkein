@@ -320,11 +320,9 @@ struct OpenCodeGoLocalUsageFetchStrategy: ProviderFetchStrategy {
             return SnapshotResult(
                 snapshot: snapshot.withZenBalanceUSD(balance), sourceLabel: source, quotaIsAuthoritative: false)
         } catch OpenCodeGoUsageError.invalidCredentials {
-            #if os(macOS)
             if let cached = cookie?.cachedEntry {
                 _ = CookieHeaderCache.clearIfCurrent(provider: .opencodego, expected: cached)
             }
-            #endif
             // A manually configured credential is an explicit account selection.
             if source == "local", context.settings?.opencodego?.cookieSource == .manual {
                 throw OpenCodeGoUsageError.invalidCredentials
@@ -373,15 +371,11 @@ struct OpenCodeGoLocalUsageFetchStrategy: ProviderFetchStrategy {
             return OverlayCookie(header: header, cachedEntry: nil)
         }
 
-        #if os(macOS)
         let observation = CookieHeaderCache.observeForConditionalMutation(provider: .opencodego)
         guard let cached = observation.entry,
               let header = OpenCodeWebCookieSupport.requestCookieHeader(from: cached.cookieHeader)
         else { return nil }
         return OverlayCookie(header: header, cachedEntry: cached)
-        #else
-        return nil
-        #endif
     }
 }
 
@@ -462,7 +456,6 @@ struct OpenCodeGoUsageFetchStrategy: ProviderFetchStrategy {
                 usage: snapshot.toUsageSnapshot(),
                 sourceLabel: "web")
         } catch OpenCodeGoUsageError.invalidCredentials where cookieSource != .manual {
-            #if os(macOS)
             CookieHeaderCache.clear(provider: .opencodego)
             let cookieHeader = try Self.resolveCookieHeader(context: context, allowCached: false)
             let snapshot = try await OpenCodeGoUsageFetcher.fetchUsage(
@@ -474,9 +467,6 @@ struct OpenCodeGoUsageFetchStrategy: ProviderFetchStrategy {
             return self.makeResult(
                 usage: snapshot.toUsageSnapshot(),
                 sourceLabel: "web")
-            #else
-            throw OpenCodeGoUsageError.invalidCredentials
-            #endif
         }
     }
 

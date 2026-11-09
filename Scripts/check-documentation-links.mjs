@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const approvedRootDocumentation = new Set(
-  ["README.md", "CHANGELOG.md", "LICENSE", "VISION.md"].map((relativePath) => path.join(repoRoot, relativePath)),
+  ["README.md", "CHANGELOG.md", "LICENSE"].map((relativePath) => path.join(repoRoot, relativePath)),
 );
 
 const readme = readText("README.md");

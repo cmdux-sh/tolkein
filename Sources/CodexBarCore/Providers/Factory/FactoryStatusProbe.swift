@@ -1,8 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
-#if os(macOS)
 import SweetCookieKit
 
 private let factoryCookieImportOrder: BrowserCookieImportOrder =
@@ -130,8 +126,6 @@ public enum FactoryCookieImporter {
         return names.joined(separator: ", ")
     }
 }
-
-#endif
 
 // MARK: - Factory API Models
 
@@ -636,7 +630,6 @@ public struct FactoryStatusProbe: Sendable {
         cookieHeaderOverride: String? = nil,
         logger: ((String) -> Void)? = nil) async throws -> FactoryStatusSnapshot
     {
-        #if os(macOS)
         let log: (String) -> Void = { msg in logger?("[factory] \(msg)") }
         var lastError: Error?
 
@@ -716,14 +709,8 @@ public struct FactoryStatusProbe: Sendable {
 
         if let lastError { throw lastError }
         throw FactoryStatusProbeError.noSessionCookie
-        #else
-        _ = cookieHeaderOverride
-        _ = logger
-        throw FactoryStatusProbeError.notSupported
-        #endif
     }
 
-    #if os(macOS)
     private enum FetchAttemptResult {
         case success(FactoryStatusSnapshot)
         case failure(Error)
@@ -1017,8 +1004,6 @@ public struct FactoryStatusProbe: Sendable {
         cookies.map { "\($0.name)=\($0.value)" }.joined(separator: "; ")
     }
 
-    #endif
-
     func fetchWithCookieHeader(
         _ cookieHeader: String,
         bearerToken: String?,
@@ -1208,7 +1193,6 @@ public struct FactoryStatusProbe: Sendable {
         }
     }
 
-    #if os(macOS)
     private static func baseURLCandidates(default baseURL: URL, cookies: [HTTPCookie]) -> [URL] {
         let cookieDomains = Set(
             cookies.map {
@@ -1396,8 +1380,6 @@ public struct FactoryStatusProbe: Sendable {
         guard let description = json["error_description"] as? String else { return false }
         return description.localizedCaseInsensitiveContains("missing refresh token")
     }
-
-    #endif
 
     private func buildSnapshot(
         authInfo: FactoryAuthResponse,

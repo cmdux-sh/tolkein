@@ -4,9 +4,6 @@ import CryptoKit
 import Crypto
 #endif
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 public struct DoubaoCodingPlanCredentials: Sendable {
     public let accessKeyID: String

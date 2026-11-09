@@ -1,10 +1,4 @@
-#if canImport(Darwin)
 import Darwin
-#elseif canImport(Glibc)
-import Glibc
-#elseif canImport(Musl)
-import Musl
-#endif
 import Foundation
 
 actor ClaudeCLISession {
@@ -452,7 +446,6 @@ actor ClaudeCLISession {
             return self.fallbackProbeSessionID
         }
 
-        #if os(macOS) || os(Linux)
         do {
             try fm.setAttributes(
                 [.posixPermissions: NSNumber(value: Int16(0o600))],
@@ -462,7 +455,6 @@ actor ClaudeCLISession {
                 "Claude probe session identity permission hardening failed",
                 metadata: ["error": error.localizedDescription])
         }
-        #endif
         return sessionID
     }
 
@@ -483,7 +475,6 @@ actor ClaudeCLISession {
         return env
     }
 
-    #if canImport(Darwin)
     private func currentLiveTreeIdentities() -> Set<TTYProcessTreeTerminator.ProcessIdentity> {
         guard let proc = self.process, proc.isRunning,
               let rootIdentity = self.rootProcessIdentity
@@ -538,10 +529,8 @@ actor ClaudeCLISession {
         return environment?[ProcessOwnershipReaper.environmentKey] == marker
             && TTYProcessTreeTerminator.isCurrent(identity)
     }
-    #endif
 
     private func releaseSleepInhibitors() {
-        #if canImport(Darwin)
         let marker = self.ownershipReaper?.marker
         let liveTreeIdentities = self.currentLiveTreeIdentities()
         guard marker != nil || !liveTreeIdentities.isEmpty else { return }
@@ -553,7 +542,6 @@ actor ClaudeCLISession {
             else { continue }
             kill(identity.pid, SIGTERM)
         }
-        #endif
     }
 
     private func cleanup() {

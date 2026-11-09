@@ -1,7 +1,5 @@
 import Foundation
-#if os(macOS)
 import Security
-#endif
 
 public enum AppGroupSupport {
     public static let defaultTeamID = "Y5PE65HELJ"
@@ -85,11 +83,7 @@ public enum AppGroupSupport {
         fileManager: FileManager = .default)
         -> URL?
     {
-        #if os(macOS)
         fileManager.containerURL(forSecurityApplicationGroupIdentifier: self.currentGroupID(for: bundleID))
-        #else
-        nil
-        #endif
     }
 
     public static func snapshotURL(
@@ -219,7 +213,6 @@ public enum AppGroupSupport {
     }
 
     private static func codeSignatureTeamID(bundleURL: URL?) -> String? {
-        #if os(macOS)
         guard let bundleURL else { return nil }
 
         var staticCode: SecStaticCode?
@@ -241,9 +234,5 @@ public enum AppGroupSupport {
             return nil
         }
         return teamID
-        #else
-        _ = bundleURL
-        return nil
-        #endif
     }
 }

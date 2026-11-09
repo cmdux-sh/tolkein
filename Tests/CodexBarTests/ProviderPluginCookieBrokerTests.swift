@@ -425,16 +425,13 @@ struct ProviderPluginCookieBrokerTests {
         }
         #expect(ProviderPluginCookieBroker.matches(cookieDomain: ".perplexity.ai", domain: "www.perplexity.ai"))
         #expect(ProviderPluginCookieBroker.matches(cookieDomain: ".www.qoder.com.cn", domain: "qoder.com.cn"))
-        #if os(macOS)
         #expect(ProviderPluginCookieBroker.cookieQuery(domain: "qoder.com").domainMatch == .exact)
         #expect(ProviderPluginCookieBroker.cookieQuery(domain: "www.perplexity.ai").domains == [
             "www.perplexity.ai",
             "perplexity.ai",
         ])
-        #endif
     }
 
-    #if os(macOS)
     @Test(arguments: [false, true])
     func `exact host cookie wins over parent without accepting sibling or lookalike hosts`(reversed: Bool) throws {
         let rows = [
@@ -454,7 +451,6 @@ struct ProviderPluginCookieBrokerTests {
         let parent = ProviderPluginCookieBroker.cookiesForRequest(cookies, domain: "example.test")
         #expect(parent.map(\.value) == ["parent"])
     }
-    #endif
 
     @Test
     func `browser batches advance only after earlier candidates are consumed`() throws {

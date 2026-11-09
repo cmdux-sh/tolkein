@@ -82,8 +82,6 @@ extension WindsurfGetPlanStatusResponse {
 
 // MARK: - Session Material
 
-#if os(macOS)
-
 struct WindsurfDevinSessionAuth: Codable, Equatable {
     let sessionToken: String
     let auth1Token: String
@@ -655,5 +653,3 @@ private struct ProtoReader {
         }
     }
 }
-
-#endif

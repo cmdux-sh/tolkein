@@ -1,7 +1,5 @@
 import Foundation
-#if canImport(SQLite3)
 import SQLite3
-#endif
 import Testing
 @testable import CodexBar
 @testable import CodexBarCore
@@ -293,15 +291,9 @@ struct CodexLocalProjectUsageTests {
         #expect(snapshot.projects.first?.displayName == "CodexBar")
         #expect(snapshot.projects.first?.path == project.standardizedFileURL.path)
         let allModels = try #require(snapshot.modelsAnalytics?.allWorkspaces)
-        #if canImport(SQLite3) || canImport(CSQLite3)
         #expect(snapshot.sourceStatus == .catalogMissing)
         #expect(allModels.currentIsComplete == false)
         #expect(allModels.previousIsComplete == false)
-        #else
-        #expect(snapshot.sourceStatus == .complete)
-        #expect(allModels.currentIsComplete == true)
-        #expect(allModels.previousIsComplete == true)
-        #endif
     }
 
     @Test
@@ -352,7 +344,6 @@ struct CodexLocalProjectUsageTests {
 
     @Test
     func `project usage index uses codex state database catalog when available`() throws {
-        #if canImport(SQLite3)
         let env = try CostUsageTestEnvironment()
         defer { env.cleanup() }
 
@@ -412,14 +403,10 @@ struct CodexLocalProjectUsageTests {
         #expect(snapshot.sessions.first?.latestActivity == Date(timeIntervalSince1970: 1_800_000_120))
         #expect(snapshot.sessions.first?.topModel == "openai/gpt-5.4-catalog")
         #expect(snapshot.total.totalTokens == 125)
-        #else
-        #expect(Bool(true))
-        #endif
     }
 
     @Test
     func `catalog reader normalizes legacy seconds timestamps to milliseconds`() throws {
-        #if canImport(SQLite3)
         let env = try CostUsageTestEnvironment()
         defer { env.cleanup() }
 
@@ -444,14 +431,10 @@ struct CodexLocalProjectUsageTests {
 
         #expect(entry.createdAtUnixMs == 1_800_000_000_000)
         #expect(entry.updatedAtUnixMs == 1_800_000_120_000)
-        #else
-        #expect(Bool(true))
-        #endif
     }
 
     @Test
     func `cached refresh surfaces catalog degradation while retaining last good usage`() throws {
-        #if canImport(SQLite3)
         let env = try CostUsageTestEnvironment()
         defer { env.cleanup() }
 
@@ -506,14 +489,10 @@ struct CodexLocalProjectUsageTests {
         #expect(degraded.total == complete.total)
         #expect(degraded.projects == complete.projects)
         #expect(degraded.sessions == complete.sessions)
-        #else
-        #expect(Bool(true))
-        #endif
     }
 
     @Test
     func `sidecar retains catalog metadata when a sparse rollout update arrives during catalog failure`() throws {
-        #if canImport(SQLite3)
         let env = try CostUsageTestEnvironment()
         defer { env.cleanup() }
 
@@ -568,14 +547,10 @@ struct CodexLocalProjectUsageTests {
         #expect(metadata?.cwd == project.path)
         #expect(metadata?.title == "Retained catalog title")
         #expect(rehydrated.files[rolloutURL.path]?.days[dayKey]?["openai/gpt-5.4"]?[0] == 110)
-        #else
-        #expect(Bool(true))
-        #endif
     }
 
     @Test
     func `sidecar prunes catalog metadata absent from a complete generation`() throws {
-        #if canImport(SQLite3)
         let env = try CostUsageTestEnvironment()
         defer { env.cleanup() }
 
@@ -614,14 +589,10 @@ struct CodexLocalProjectUsageTests {
         try sidecar.synchronizeSources(cache: cache, catalog: .empty)
 
         #expect(try sidecar.usageCache(roots: [:]).files[rolloutURL.path]?.codexSession?.cwd == "/rollout/cwd")
-        #else
-        #expect(Bool(true))
-        #endif
     }
 
     @Test
     func `catalog reader distinguishes missing and corrupt state databases`() throws {
-        #if canImport(SQLite3)
         let env = try CostUsageTestEnvironment()
         defer { env.cleanup() }
         let options = CostUsageScanner.Options(
@@ -633,9 +604,6 @@ struct CodexLocalProjectUsageTests {
         let databaseURL = env.codexHomeRoot.appendingPathComponent("state_5.sqlite", isDirectory: false)
         try "not a SQLite database".write(to: databaseURL, atomically: true, encoding: .utf8)
         #expect(CodexThreadCatalogReader.loadResult(options: options).completeness == .unavailable(.corrupt))
-        #else
-        #expect(Bool(true))
-        #endif
     }
 
     @Test
@@ -1006,7 +974,6 @@ struct CodexLocalProjectUsageTests {
         #expect(changedProject.codexWorkspaceUsageFingerprintValue() != fingerprint)
     }
 
-    #if canImport(SQLite3)
     private struct CodexStateThreadFixture {
         var id: String
         var rolloutPath: String
@@ -1088,7 +1055,6 @@ struct CodexLocalProjectUsageTests {
             throw NSError(domain: "CodexLocalProjectUsageTests", code: 4)
         }
     }
-    #endif
 
     private func makeProject(
         id: String,
@@ -1411,7 +1377,6 @@ extension CodexLocalProjectUsageTests {
 
     @Test
     func `sidecar rejects unreleased schema versions`() throws {
-        #if canImport(SQLite3)
         for version in [2, 3, 4] {
             let env = try CostUsageTestEnvironment()
             defer { env.cleanup() }
@@ -1438,7 +1403,6 @@ extension CodexLocalProjectUsageTests {
             sqlite3_finalize(statement)
             sqlite3_close(database)
         }
-        #endif
     }
 
     @Test
@@ -1575,7 +1539,6 @@ extension CodexLocalProjectUsageTests {
             cache: cache,
             catalog: catalog,
             rootsFingerprint: cache.roots ?? [:])
-        #if canImport(SQLite3)
         let sidecarURL = env.cacheRoot
             .appendingPathComponent("local-usage", isDirectory: true)
             .appendingPathComponent("codex-workspaces-v1.sqlite", isDirectory: false)
@@ -1633,7 +1596,6 @@ extension CodexLocalProjectUsageTests {
         #expect(sidecar.loadLatestSnapshot(
             scopeSignature: baseline.scopeSignature,
             historyDays: baseline.historyDays)?.total == baseline.total)
-        #endif
         let rehydratedCache = try sidecar.usageCache(roots: cache.roots ?? [:])
         let rehydratedEvent = try #require(rehydratedCache.files[path]?.codexRows?.first)
         let rehydrated = try CodexLocalProjectUsageIndexer.buildSnapshotFromCostCache(

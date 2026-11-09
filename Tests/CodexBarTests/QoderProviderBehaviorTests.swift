@@ -1,11 +1,9 @@
 import Foundation
+import SweetCookieKit
 import Testing
 @testable import CodexBar
 @testable import CodexBarCLI
 @testable import CodexBarCore
-#if os(macOS)
-import SweetCookieKit
-#endif
 
 struct QoderProviderBehaviorTests {
     @MainActor
@@ -541,7 +539,6 @@ struct QoderManualCookieRoutingTests {
 }
 
 extension QoderProviderBehaviorTests {
-    #if os(macOS)
     @Test
     func `importer exact domain filter keeps China cookies out of global sessions`() {
         let records = [
@@ -572,7 +569,6 @@ extension QoderProviderBehaviorTests {
         #expect(ProviderPluginCookieBroker.cookieQuery(domain: "qoder.com.cn").domainMatch == .exact)
         #expect(filtered.map(\.name) == ["china", "china-www"])
     }
-    #endif
 
     @Test
     @MainActor
@@ -645,7 +641,6 @@ extension QoderProviderBehaviorTests {
             browserDetection: BrowserDetection(cacheTTL: 0))
     }
 
-    #if os(macOS)
     private static func cookieRecord(domain: String, name: String, value: String) -> BrowserCookieRecord {
         BrowserCookieRecord(
             domain: domain,
@@ -656,5 +651,4 @@ extension QoderProviderBehaviorTests {
             isSecure: true,
             isHTTPOnly: true)
     }
-    #endif
 }

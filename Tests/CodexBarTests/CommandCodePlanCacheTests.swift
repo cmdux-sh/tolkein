@@ -1,9 +1,6 @@
 import Foundation
 import Testing
 @testable import CodexBarCore
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 /// Command Code sizes its monthly grant from the optional `/internal/billing/subscriptions`
 /// lookup, which loses its bounded join grace several times a day. These tests pin how a

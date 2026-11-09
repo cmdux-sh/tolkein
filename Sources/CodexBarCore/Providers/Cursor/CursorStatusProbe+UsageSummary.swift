@@ -1,6 +1,5 @@
 import Foundation
 
-#if os(macOS) || os(Linux)
 extension CursorStatusProbe {
     func parseUsageSummary(
         _ summary: CursorUsageSummary,
@@ -117,4 +116,3 @@ extension CursorStatusProbe {
             requestsLimit: requestsLimit)
     }
 }
-#endif

@@ -1,7 +1,4 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 
 /// Exchanges the long-lived Groq console session cookie (`stytch_session`,
 /// ~30 days) for a fresh, short-lived session JWT via Stytch's B2B frontend

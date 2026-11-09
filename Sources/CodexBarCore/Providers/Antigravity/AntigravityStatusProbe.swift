@@ -1,7 +1,4 @@
-import Foundation // swiftlint:disable file_length
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
+import Foundation
 
 public struct AntigravityModelQuota: Sendable {
     public let label: String
@@ -857,9 +854,7 @@ public struct AntigravityStatusProbe: Sendable {
         let config = URLSessionConfiguration.ephemeral
         config.timeoutIntervalForRequest = 30
         config.timeoutIntervalForResource = 120
-        #if !os(Linux)
         config.waitsForConnectivity = false
-        #endif
         return URLSession(configuration: config, delegate: Self.localhostDelegate, delegateQueue: nil)
     }()
 
@@ -1109,7 +1104,6 @@ public struct AntigravityStatusProbe: Sendable {
         timeout: TimeInterval,
         scope: ProcessScope = .ideAndCLI) async throws -> [ProcessInfoResult]
     {
-        #if canImport(Darwin)
         let entries = DarwinProcessEnumerator.allPIDs().compactMap { pid -> ProcessEntry? in
             guard let executablePath = DarwinProcessEnumerator.executablePath(pid: pid),
                   DarwinProcessEnumerator.isAntigravityCandidatePath(executablePath)
@@ -1118,17 +1112,6 @@ public struct AntigravityStatusProbe: Sendable {
             return ProcessEntry(pid: Int(pid), command: command, executablePath: executablePath)
         }
         return try self.processInfos(fromEntries: entries, scope: scope)
-        #else
-        let env = ProcessInfo.processInfo.environment
-        let result = try await SubprocessRunner.run(
-            binary: "/bin/ps",
-            arguments: ["-ax", "-o", "pid=,command="],
-            environment: env,
-            timeout: timeout,
-            label: "antigravity-ps")
-
-        return try Self.processInfos(fromProcessListOutput: result.stdout, scope: scope)
-        #endif
     }
 
     static func processInfo(

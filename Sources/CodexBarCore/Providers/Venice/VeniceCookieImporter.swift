@@ -1,6 +1,4 @@
 import Foundation
-
-#if os(macOS)
 import SweetCookieKit
 
 public enum VeniceCookieImporter {
@@ -70,4 +68,3 @@ public enum VeniceCookieImporter {
         self.log.debug("\(message)")
     }
 }
-#endif

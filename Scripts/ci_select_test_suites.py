@@ -32,7 +32,7 @@ BROAD_PREFIXES = (
     "Scripts/ci_select_test_suites.py",
     ".github/workflows/",
 )
-TEST_ROOT = "Tests/"
+TEST_ROOTS = ("Tests/", "TestsCore/", "TestsPlugin/")
 SOURCE_ROOT = "Sources/"
 # A test file that declares no suite of its own (fixtures, helpers) is shared, so changing it runs everything.
 # Names other files can use: top-level declarations that are not private, and the members an extension adds (one
@@ -92,7 +92,7 @@ def select(paths: list[str], repo: Path) -> list[str] | None:
     for path in paths:
         if not path.endswith(".swift"):
             continue
-        if path.startswith(TEST_ROOT):
+        if path.startswith(TEST_ROOTS):
             text = test_files.get(path) or path_text(repo / path)
             found = suites_in(text)
             if text and not found:
@@ -121,7 +121,7 @@ def select(paths: list[str], repo: Path) -> list[str] | None:
 
 
 def tracked_test_files(repo: Path) -> list[str]:
-    return sorted(str(path.relative_to(repo)) for path in (repo / TEST_ROOT).rglob("*.swift"))
+    return sorted(str(path.relative_to(repo)) for root in TEST_ROOTS for path in (repo / root).rglob("*.swift"))
 
 
 def path_text(path: Path) -> str:

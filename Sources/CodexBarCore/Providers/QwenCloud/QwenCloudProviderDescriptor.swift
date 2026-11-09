@@ -104,16 +104,12 @@ struct QwenCloudWebFetchStrategy: ProviderFetchStrategy {
             return CookieHeaderNormalizer.normalize(settings.manualCookieHeader) != nil
         }
 
-        #if os(macOS)
         if let cached = CookieHeaderCache.load(provider: .qwencloud),
            !cached.cookieHeader.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         {
             return true
         }
         return true
-        #else
-        return false
-        #endif
     }
 
     func fetch(_ context: ProviderFetchContext) async throws -> ProviderFetchResult {
@@ -128,7 +124,6 @@ struct QwenCloudWebFetchStrategy: ProviderFetchStrategy {
         } catch let error as QwenCloudUsageError
             where error.isCredentialFailure && cookieSource != .manual
         {
-            #if os(macOS)
             CookieHeaderCache.clear(provider: .qwencloud)
             let refreshedHeaders = try Self.resolveCookieHeaders(context: context, allowCached: false)
             let usage = try await QwenCloudUsageFetcher.fetchUsage(
@@ -136,9 +131,6 @@ struct QwenCloudWebFetchStrategy: ProviderFetchStrategy {
                 dashboardCookieHeader: refreshedHeaders.dashboardCookieHeader,
                 environment: context.env)
             return self.makeResult(usage: usage.toUsageSnapshot(), sourceLabel: "web")
-            #else
-            throw error
-            #endif
         }
     }
 
@@ -188,7 +180,6 @@ struct QwenCloudWebFetchStrategy: ProviderFetchStrategy {
             return headers
         }
 
-        #if os(macOS)
         if allowCached,
            let cached = CookieHeaderCache.load(provider: .qwencloud),
            let headers = QwenCloudCookieHeaders(qwenCloudCachedHeader: cached.cookieHeader)
@@ -244,9 +235,6 @@ struct QwenCloudWebFetchStrategy: ProviderFetchStrategy {
                 metadata: ["error": error.localizedDescription])
             throw QwenCloudSettingsError.missingCookie(details: Self.missingCookieDetails(from: error))
         }
-        #else
-        throw QwenCloudSettingsError.missingCookie()
-        #endif
     }
 
     private static func missingCookieDetails(from error: Error) -> String? {

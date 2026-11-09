@@ -1,18 +1,22 @@
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
 import Testing
 @testable import CodexBarCore
 
 struct LongCatPluginTests {
     @Test(arguments: BundledPluginTestSupport.engines)
-    func `active token pack bypasses stale legacy usage and retains fuel`(engine: ProviderPluginEngineKind) async throws {
+    func `active token pack bypasses stale legacy usage and retains fuel`(
+        engine: ProviderPluginEngineKind) async throws
+    {
         let transport = Fixture([
             .init("/api/v1/user-current", body: #"{"data":{"name":"Fixture Account"}}"#),
-            .init("/api/pay/quota/metering/token-packs/summary", method: "POST", body:
+            .init(
+                "/api/pay/quota/metering/token-packs/summary",
+                method: "POST",
+                body:
                 #"{"code":0,"data":{"currentLot":{"status":"ACTIVE","totalToken":50000000,"consumedToken":1212576}}}"#),
-            .init("/api/lc-platform/v1/pending-fuel-packages", body:
+            .init(
+                "/api/lc-platform/v1/pending-fuel-packages",
+                body:
                 #"{"data":{"totalQuota":1000,"list":[{"availableToken":600,"expireTime":1750000000000},{"availableToken":150,"expireTime":1760000000000}]}}"#),
         ])
         let usage = try await Self.fetch(engine, transport: transport)
@@ -32,7 +36,9 @@ struct LongCatPluginTests {
         let transport = Fixture([
             .init("/api/v1/user-current", body: #"{"data":{"nickName":"Fixture"}}"#),
             .init("/api/pay/quota/metering/token-packs/summary", method: "POST", status: status, body: "invalid"),
-            .init("/api/lc-platform/v1/tokenUsage", body:
+            .init(
+                "/api/lc-platform/v1/tokenUsage",
+                body:
                 #"{"data":{"usage":{"totalToken":500000,"usedToken":120000,"availableToken":380000}}}"#),
             .init("/api/lc-platform/v1/pending-fuel-packages", status: status, body: "invalid"),
         ])
@@ -43,13 +49,20 @@ struct LongCatPluginTests {
     }
 
     @Test(arguments: ["0", "200", "\"2e2\"", "200.9"], BundledPluginTestSupport.engines)
-    func `supported envelope codes retain numeric boundaries`(code: String, engine: ProviderPluginEngineKind) async throws {
+    func `supported envelope codes retain numeric boundaries`(
+        code: String,
+        engine: ProviderPluginEngineKind) async throws
+    {
         let usage = try await Self.fetch(engine, transport: Fixture([
             .init("/api/v1/user-current", body: "{\"code\":\(code),\"data\":{}}"),
             .init("/api/pay/quota/metering/token-packs/summary", method: "POST", body: "{}"),
-            .init("/api/lc-platform/v1/tokenUsage", body:
+            .init(
+                "/api/lc-platform/v1/tokenUsage",
+                body:
                 #"{"totalToken":200000000000000000000,"usedToken":100000000000000000000}"#),
-            .init("/api/lc-platform/v1/pending-fuel-packages", body:
+            .init(
+                "/api/lc-platform/v1/pending-fuel-packages",
+                body:
                 #"{"totalQuota":10.9,"list":[{"availableToken":-0.25}]}"#),
         ]))
         #expect(usage.primary?.usedPercent == 50)
@@ -67,11 +80,17 @@ struct LongCatPluginTests {
     }
 
     @Test(arguments: [302, 401, 403], BundledPluginTestSupport.engines)
-    func `required authentication failures advance profiles`(status: Int, engine: ProviderPluginEngineKind) async throws {
+    func `required authentication failures advance profiles`(
+        status: Int,
+        engine: ProviderPluginEngineKind) async throws
+    {
         let transport = Fixture([
             .init("/api/v1/user-current", status: status, body: "login"),
             .init("/api/v1/user-current", body: "{}"),
-            .init("/api/pay/quota/metering/token-packs/summary", method: "POST", body:
+            .init(
+                "/api/pay/quota/metering/token-packs/summary",
+                method: "POST",
+                body:
                 #"{"currentLot":{"status":"ACTIVE","totalToken":100,"consumedToken":10}}"#),
             .init("/api/lc-platform/v1/pending-fuel-packages", body: "{}"),
         ])
@@ -100,15 +119,20 @@ struct LongCatPluginTests {
             .init("/api/v1/user-current", body: "{}"),
             .init("/api/pay/quota/metering/token-packs/summary", method: "POST", body: "{}"),
             .init("/api/lc-platform/v1/tokenUsage", body: #"{"totalToken":0}"#),
-            .init("/api/lc-platform/v1/pending-fuel-packages", body:
+            .init(
+                "/api/lc-platform/v1/pending-fuel-packages",
+                body:
                 "{\"totalQuota\":1000,\"list\":[{\"availableToken\":150,\"expireTime\":\"\(date)\"}]}"),
         ]))
         #expect(usage.secondary?.resetsAt == Date(timeIntervalSince1970: 1_750_000_000.250))
     }
 
-    @Test(arguments: ["{}", #"{"currentLot":null}"#,
-                      #"{"currentLot":{"status":"EXPIRED","totalToken":100}}"#,
-                      #"{"currentLot":{"status":"ACTIVE","totalToken":0}}"#], BundledPluginTestSupport.engines)
+    @Test(arguments: [
+        "{}",
+        #"{"currentLot":null}"#,
+        #"{"currentLot":{"status":"EXPIRED","totalToken":100}}"#,
+        #"{"currentLot":{"status":"ACTIVE","totalToken":0}}"#,
+    ], BundledPluginTestSupport.engines)
     func `unusable token packs fall back and infer used from remaining`(
         summary: String, engine: ProviderPluginEngineKind) async throws
     {
@@ -169,7 +193,10 @@ struct LongCatPluginTests {
         let transport = Fixture([
             .init("/api/v1/user-current", body: "{}"),
             .init("/api/v1/user-current", body: "{}"),
-            .init("/api/pay/quota/metering/token-packs/summary", method: "POST", body:
+            .init(
+                "/api/pay/quota/metering/token-packs/summary",
+                method: "POST",
+                body:
                 #"{"currentLot":{"status":"ACTIVE","totalToken":100,"consumedToken":10}}"#),
             .init("/api/lc-platform/v1/pending-fuel-packages", body: "{}"),
         ])
@@ -177,8 +204,11 @@ struct LongCatPluginTests {
             let cookie = try #require(HTTPCookie(properties: [
                 .name: "session", .value: "fixture", .domain: "longcat.chat", .path: path,
             ]))
-            return .init(header: "", source: "Synthetic", origin: "https://longcat.chat",
-                         records: [ProviderPluginCookieRecord(cookie: cookie)])
+            return .init(
+                header: "",
+                source: "Synthetic",
+                origin: "https://longcat.chat",
+                records: [ProviderPluginCookieRecord(cookie: cookie)])
         })
         let runtime = try BundledPluginTestSupport.runtime("longcat", engine: engine, transport: transport)
         let usage = try await runtime.fetchUsage(cookieSessionResolver: { _, _ in await sessions.next() })
@@ -215,8 +245,12 @@ struct LongCatPluginTests {
                 self.body = body
             }
         }
+
         var steps: [Step]
-        var remaining: Int { self.steps.count }
+        var remaining: Int {
+            self.steps.count
+        }
+
         init(_ steps: [Step]) { self.steps = steps }
         func data(for request: URLRequest) async throws -> (Data, URLResponse) {
             let step = try #require(self.steps.first)

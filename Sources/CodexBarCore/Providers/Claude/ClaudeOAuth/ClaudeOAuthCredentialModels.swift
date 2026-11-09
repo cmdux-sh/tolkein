@@ -6,9 +6,7 @@ import CryptoKit
 import Crypto
 #endif
 
-#if os(macOS)
 import Security
-#endif
 
 public struct ClaudeOAuthCredentials: Sendable {
     public let accessToken: String
@@ -275,7 +273,6 @@ public enum ClaudeOAuthCredentialsError: LocalizedError, Sendable {
             return "Claude OAuth credentials are currently unavailable to Tolkein. "
                 + "Click Refresh to retry access, or switch Claude Usage source to CLI/Web."
         case let .keychainError(status):
-            #if os(macOS)
             if status == Int(errSecUserCanceled)
                 || status == Int(errSecAuthFailed)
                 || status == Int(errSecInteractionNotAllowed)
@@ -285,7 +282,6 @@ public enum ClaudeOAuthCredentialsError: LocalizedError, Sendable {
                     + "via a user action (menu open / manual refresh). "
                     + "Switch Claude Usage source to Web/CLI, or allow access in Keychain Access."
             }
-            #endif
             return "Claude OAuth keychain error: \(status)"
         case let .readFailed(message):
             return "Claude OAuth credentials read failed: \(message)"
