@@ -68,9 +68,7 @@ final class AgentSessionVisibilityNativeProofTests: XCTestCase {
         menu.delegate = delegate
         let button = NSPopUpButton(frame: .zero, pullsDown: true)
         button.menu = menu
-        let form = NSHostingView(rootView: Form {
-            AgentSessionsSettingsSection(settings: settings)
-        }.formStyle(.grouped))
+        let form = NSHostingView(rootView: AgentSessionsSettingsSection(settings: settings).padding(20))
         let stack = NSStackView(views: [button, form])
         stack.orientation = .vertical
         stack.spacing = 12

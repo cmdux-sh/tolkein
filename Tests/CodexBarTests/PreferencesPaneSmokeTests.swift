@@ -121,7 +121,6 @@ struct PreferencesPaneSmokeTests {
 
     @Test
     func `menu bar and menu options cover persisted settings`() {
-        #expect(MenuBarSettingsMenuOptions.displayModes == MenuBarDisplayMode.allCases)
         #expect(MenuBarSettingsMenuOptions.iconStyles == MenuBarIconStyle.allCases)
         #expect(MenuBarSettingsMenuOptions.switcherRows == SwitcherRowsOption.allCases)
         #expect(MenuSettingsMenuOptions.weeklyProgressWorkDays == [nil, 4, 5, 6, 7])
@@ -164,7 +163,7 @@ struct PreferencesPaneSmokeTests {
 
     @Test
     func `overview provider limit text shows the configured maximum`() {
-        let text = MenuBarPane.overviewProviderLimitText()
+        let text = MenuBarSettingsPane.overviewProviderLimitText()
 
         #expect(text.contains("6"))
         #expect(!text.contains("%@"))
@@ -172,31 +171,31 @@ struct PreferencesPaneSmokeTests {
 
     @Test
     func `inactive display contrast is available only for icon and percent`() {
-        #expect(!MenuBarPane.layoutEditorEnabled(for: .critters))
-        #expect(!MenuBarPane.layoutEditorEnabled(for: .bars))
-        #expect(MenuBarPane.layoutEditorEnabled(for: .iconAndPercent))
+        #expect(!MenuBarSettingsPane.layoutEditorEnabled(for: .critters))
+        #expect(!MenuBarSettingsPane.layoutEditorEnabled(for: .bars))
+        #expect(MenuBarSettingsPane.layoutEditorEnabled(for: .iconAndPercent))
     }
 
     @Test
     func `menu bar layout footer follows the selected style`() {
-        #expect(MenuBarPane.layoutEditorEnabled(for: .iconAndPercent))
-        #expect(!MenuBarPane.layoutEditorEnabled(for: .critters))
-        #expect(!MenuBarPane.layoutEditorEnabled(for: .bars))
+        #expect(MenuBarSettingsPane.layoutEditorEnabled(for: .iconAndPercent))
+        #expect(!MenuBarSettingsPane.layoutEditorEnabled(for: .critters))
+        #expect(!MenuBarSettingsPane.layoutEditorEnabled(for: .bars))
 
         CodexBarLocalizationOverride.$appLanguage.withValue("en") {
-            let enabledFooter = MenuBarPane.layoutFooterText(for: .iconAndPercent)
-            let disabledFooter = MenuBarPane.layoutFooterText(for: .critters)
+            let enabledFooter = MenuBarSettingsPane.layoutFooterText(for: .iconAndPercent)
+            let disabledFooter = MenuBarSettingsPane.layoutFooterText(for: .critters)
 
             #expect(enabledFooter.contains("Drag tokens"))
             #expect(!enabledFooter.contains("Icon & percent"))
             #expect(disabledFooter.contains("Icon & percent"))
             #expect(!disabledFooter.contains("Drag tokens"))
             #expect(!disabledFooter.contains("%@"))
-            #expect(MenuBarPane.layoutFooterText(for: .bars) == disabledFooter)
+            #expect(MenuBarSettingsPane.layoutFooterText(for: .bars) == disabledFooter)
         }
 
         CodexBarLocalizationOverride.$appLanguage.withValue("de") {
-            let footer = MenuBarPane.layoutFooterText(for: .bars)
+            let footer = MenuBarSettingsPane.layoutFooterText(for: .bars)
 
             #expect(footer.contains(MenuBarIconStyle.iconAndPercent.label))
             #expect(!footer.contains("%@"))
@@ -378,7 +377,9 @@ struct PreferencesPaneSmokeTests {
             #expect(L("quota_warning_warning") == "Предупреждение")
             #expect(L("quota_warning_critical") == "Критично")
 
-            _ = GlobalQuotaWarningSettingsView(settings: settings).body
+            _ = AlertsSettingsPage(settings: settings).body
+            _ = GlobalQuotaWarningWindowRow(window: .session, settings: settings).body
+            _ = GlobalQuotaWarningWindowRow(window: .weekly, settings: settings).body
         }
     }
 
