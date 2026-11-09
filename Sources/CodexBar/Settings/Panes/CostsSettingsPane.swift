@@ -50,7 +50,7 @@ struct CostsSettingsPane: View {
     }
 
     static func sections(costUsageEnabled: Bool) -> [Section] {
-        costUsageEnabled ? [.tracking, .spend, .sources, .timeZone, .export] : [.off]
+        costUsageEnabled ? [.tracking, .spend, .sources, .timeZone, .export] : [.off, .timeZone]
     }
 
     var sections: [Section] {

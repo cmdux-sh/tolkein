@@ -83,7 +83,7 @@ struct SpendWindowOpeningTests {
 
     @Test
     func `the Costs pane's sections follow cost tracking`() {
-        #expect(CostsSettingsPane.sections(costUsageEnabled: false) == [.off])
+        #expect(CostsSettingsPane.sections(costUsageEnabled: false) == [.off, .timeZone])
         #expect(CostsSettingsPane.sections(costUsageEnabled: true) == [
             .tracking, .spend, .sources, .timeZone, .export,
         ])
@@ -91,7 +91,7 @@ struct SpendWindowOpeningTests {
         let session = Self.makeSession(suite: "SpendWindowOpening-sections", costUsageEnabled: false)
         defer { session.tearDown() }
         let pane = CostsSettingsPane(context: session.context) { _ in }
-        #expect(pane.sections == [.off])
+        #expect(pane.sections == [.off, .timeZone])
         _ = pane.body
 
         session.settings.costUsageEnabled = true
@@ -99,7 +99,7 @@ struct SpendWindowOpeningTests {
         _ = pane.body
 
         session.settings.costUsageEnabled = false
-        #expect(pane.sections == [.off])
+        #expect(pane.sections == [.off, .timeZone])
     }
 
     @Test
