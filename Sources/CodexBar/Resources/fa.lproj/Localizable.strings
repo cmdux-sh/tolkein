@@ -2857,3 +2857,37 @@
 "Add a rule to run a command when a quota or provider event happens." = "یک قانون اضافه کنید تا هنگام رخ‌دادن رویداد سهمیه یا ارائه‌دهنده، فرمانی اجرا شود.";
 "Delete Rule?" = "قانون حذف شود؟";
 "This rule is removed from Hooks. This can’t be undone." = "این قانون از قلاب‌ها حذف می‌شود. این کار برگشت‌پذیر نیست.";
+/* Settings: Menu Bar, Menu */
+"settings_menu_bar_subtitle" = "ظاهر آیکون نوار منو و آنچه نشان می‌دهد";
+"settings_menu_subtitle" = "آنچه منو هنگام باز شدن نشان می‌دهد";
+"settings_reason_requires_style" = "به سبک «%@» نیاز دارد";
+"settings_reason_requires_setting" = "ابتدا «%@» را روشن کنید";
+"settings_reason_two_providers" = "دست‌کم به دو ارائه‌دهندهٔ فعال نیاز دارد";
+"settings_reason_stacked_source" = "در سبک «%@» که ردیف‌های بالا و پایین خود را انتخاب می‌کند، استفاده نمی‌شود";
+"settings_reason_brand_icons" = "آیکون‌های برند متحرک نمی‌شوند. از سبک «%1$@» یا «%2$@» استفاده کنید.";
+"settings_color_pace_subtitle" = "سبز وقتی مصرف از آهنگ مورد انتظار عقب‌تر است و قرمز وقتی جلوتر است (خطر تمام شدن زودهنگام). روی نشانه‌های آهنگ در چیدمان اعمال می‌شود.";
+"settings_reason_work_days_automatic" = "تعداد روزهای کاری را انتخاب کنید. گزینهٔ خودکار نشانهٔ روز کاری نشان نمی‌دهد.";
+"agent_sessions_hosts_help" = "میزبان‌های SSH بیشتر برای یافتن جلسات عامل، به صورت user@host و جداشده با ویرگول.";
+"menu_bar_layout_override_subtitle" = "از چیدمان ذخیره‌شدهٔ خودش استفاده می‌کند";
+"cost_history_rolling_days_title" = "روزهای متحرک";
+/* Settings: Alerts, Sync */
+"settings_alerts_subtitle" = "اعلان‌های ورود، سهمیه و بازنشانی";
+"settings_alerts_section_sign_in" = "ورود و اعتبارها";
+"settings_alerts_section_quota" = "سهمیه";
+"settings_alerts_section_delivery" = "نحوه اطلاع‌رسانی";
+"settings_alerts_delivery_disabled" = "برای انتخاب نحوه دریافت، هشدارهای آستانه یا روند مصرف را روشن کنید.";
+"settings_alerts_section_menu_markers" = "نشانگرهای منو";
+"settings_alerts_overrides_title" = "تنظیمات اختصاصی هر ارائه دهنده";
+"settings_alerts_overrides_footer" = "صفحه هر ارائه دهنده در بخش ارائه دهندگان می‌تواند آستانه‌های جلسه و هفتگی خودش را تعیین کند یا هشدارهایش را خاموش کند.";
+"quota_warning_percent_unit" = "٪";
+"quota_warning_percent_value" = "%d٪";
+"quota_warning_threshold_named" = "%1$@ %2$@";
+"settings_sync_subtitle" = "تنظیمات، ارائه دهندگان و مصرف در همه Mac‌های شما";
+"settings_sync_update_needed" = "به‌روزرسانی لازم است";
+"settings_sync_secrets_confirm_title" = "کلیدهای API، کوکی‌ها و توکن‌ها همگام‌سازی شوند؟";
+"settings_sync_secrets_confirm_message" = "این موارد در هر Mac که با حساب iCloud شما وارد شده کپی می‌شوند و با رمزگذاری سرتاسری iCloud محافظت می‌شوند.";
+"settings_sync_secrets_confirm_action" = "شامل کردن اطلاعات محرمانه";
+"settings_sync_remove_mac_title" = "«%@» حذف شود؟";
+"settings_sync_remove_mac_message" = "رکورد و مصرف همگام‌شده آن از iCloud حذف می‌شود. اگر آن Mac هنوز همگام‌سازی کند، دفعه بعد دوباره نمایش داده می‌شود.";
+"settings_sync_no_macs_title" = "هیچ Mac همگام‌شده‌ای نیست";
+"settings_sync_no_macs_message" = "هر Mac که همگام‌سازی iCloud را روشن کند اینجا نمایش داده می‌شود.";

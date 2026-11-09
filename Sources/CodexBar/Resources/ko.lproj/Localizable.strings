@@ -2821,3 +2821,37 @@
 "Add a rule to run a command when a quota or provider event happens." = "할당량 또는 공급자 이벤트가 발생할 때 명령을 실행하는 규칙을 추가하세요.";
 "Delete Rule?" = "규칙을 삭제하시겠습니까?";
 "This rule is removed from Hooks. This can’t be undone." = "이 규칙이 훅에서 제거됩니다. 이 작업은 되돌릴 수 없습니다.";
+/* Settings: Menu Bar, Menu */
+"settings_menu_bar_subtitle" = "메뉴 막대 아이콘의 모양과 표시 내용";
+"settings_menu_subtitle" = "메뉴를 열었을 때 표시할 내용";
+"settings_reason_requires_style" = "“%@” 스타일이 필요합니다";
+"settings_reason_requires_setting" = "먼저 “%@”을(를) 켜세요";
+"settings_reason_two_providers" = "활성화된 공급자가 두 개 이상 필요합니다";
+"settings_reason_stacked_source" = "위쪽 행과 아래쪽 행을 따로 선택하는 “%@” 스타일에서는 사용되지 않습니다";
+"settings_reason_brand_icons" = "브랜드 아이콘은 애니메이션되지 않습니다. “%1$@” 또는 “%2$@” 스타일을 사용하세요.";
+"settings_color_pace_subtitle" = "사용량이 예상 속도보다 낮으면 초록색, 높으면 빨간색(조기 소진 위험)으로 표시합니다. 레이아웃의 페이스 토큰에 적용됩니다.";
+"settings_reason_work_days_automatic" = "근무일 수를 선택하세요. 자동에서는 근무일 눈금이 표시되지 않습니다.";
+"agent_sessions_hosts_help" = "에이전트 세션을 확인할 추가 SSH 호스트입니다. user@host 형식으로 쉼표로 구분해 입력하세요.";
+"menu_bar_layout_override_subtitle" = "자체 저장된 레이아웃 사용";
+"cost_history_rolling_days_title" = "롤링 일수";
+/* Settings: Alerts, Sync */
+"settings_alerts_subtitle" = "로그인, 할당량 및 재설정 알림";
+"settings_alerts_section_sign_in" = "로그인 및 크레딧";
+"settings_alerts_section_quota" = "할당량";
+"settings_alerts_section_delivery" = "전달 방식";
+"settings_alerts_delivery_disabled" = "전달 방식을 선택하려면 임곗값 경고 또는 속도 경고를 켜십시오.";
+"settings_alerts_section_menu_markers" = "메뉴 마커";
+"settings_alerts_overrides_title" = "공급자별 설정";
+"settings_alerts_overrides_footer" = "공급자 아래의 각 공급자 페이지에서 세션 및 주간 임곗값을 따로 설정하거나 경고를 끌 수 있습니다.";
+"quota_warning_percent_unit" = "%";
+"quota_warning_percent_value" = "%d%%";
+"quota_warning_threshold_named" = "%1$@ %2$@";
+"settings_sync_subtitle" = "모든 Mac에서 설정, 공급자 및 사용량 동기화";
+"settings_sync_update_needed" = "업데이트 필요";
+"settings_sync_secrets_confirm_title" = "API 키, 쿠키 및 토큰을 동기화하시겠습니까?";
+"settings_sync_secrets_confirm_message" = "iCloud 계정에 로그인된 모든 Mac에 복사되며 iCloud 종단 간 암호화로 보호됩니다.";
+"settings_sync_secrets_confirm_action" = "비밀 정보 포함";
+"settings_sync_remove_mac_title" = "“%@”을(를) 제거하시겠습니까?";
+"settings_sync_remove_mac_message" = "해당 기록과 동기화된 사용량이 iCloud에서 삭제됩니다. 그 Mac이 계속 동기화 중이면 다음 동기화 때 다시 나타납니다.";
+"settings_sync_no_macs_title" = "동기화된 Mac 없음";
+"settings_sync_no_macs_message" = "iCloud 동기화를 켠 Mac이 여기에 표시됩니다.";

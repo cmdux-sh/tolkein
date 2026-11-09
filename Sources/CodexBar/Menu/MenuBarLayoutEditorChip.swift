@@ -1,3 +1,4 @@
+import InternalUI
 import SwiftUI
 
 /// Draggable chip used by the layout editor for both placed tokens and palette entries.
@@ -11,6 +12,7 @@ import SwiftUI
 struct MenuBarLayoutEditorChip: View {
     let title: String
     let systemImage: String
+    let kind: MenuBarLayoutChipLabel.Kind
     let isSelected: Bool
     let isDisabled: Bool
     let accessibilityLabel: String
@@ -20,9 +22,14 @@ struct MenuBarLayoutEditorChip: View {
     var removeActionTitle: String?
     var remove: (() -> Void)?
 
+    @Environment(\.isEnabled) private var isEnabled
+    @Environment(\.macControlSize) private var controlSize
+    @FocusState private var isFocused: Bool
+
     init(
         title: String,
         systemImage: String,
+        kind: MenuBarLayoutChipLabel.Kind = .palette,
         isSelected: Bool = false,
         isDisabled: Bool = false,
         accessibilityLabel: String,
@@ -34,6 +41,7 @@ struct MenuBarLayoutEditorChip: View {
     {
         self.title = title
         self.systemImage = systemImage
+        self.kind = kind
         self.isSelected = isSelected
         self.isDisabled = isDisabled
         self.accessibilityLabel = accessibilityLabel
@@ -44,24 +52,33 @@ struct MenuBarLayoutEditorChip: View {
         self.remove = remove
     }
 
+    private var isActive: Bool {
+        self.isEnabled && !self.isDisabled
+    }
+
     var body: some View {
         MenuBarLayoutChipLabel(
             title: self.title,
             systemImage: self.systemImage,
-            isSelected: self.isSelected)
-            .opacity(self.isDisabled ? 0.4 : 1)
+            isSelected: self.isSelected,
+            kind: self.kind)
+            .opacity(self.isActive ? 1 : 0.5)
             .contentShape(Capsule(style: .continuous))
             .draggable(self.dragItem)
             .onTapGesture(perform: self.handleActivate)
-            .focusable(!self.isDisabled)
+            .focusable(self.isActive)
+            .focused(self.$isFocused)
+            .focusEffectDisabled()
+            .macFocusRing(self.isFocused, radius: MenuBarLayoutChipLabel.radius(in: self.controlSize))
             .onKeyPress(keys: [.space, .return], phases: [.down]) { _ in
-                guard !self.isDisabled else { return .ignored }
+                guard self.isActive else { return .ignored }
                 self.handleActivate()
                 return .handled
             }
-            .allowsHitTesting(!self.isDisabled)
+            .allowsHitTesting(self.isActive)
             .accessibilityElement()
             .accessibilityAddTraits(.isButton)
+            .accessibilityAddTraits(self.isSelected ? .isSelected : [])
             .accessibilityLabel(self.accessibilityLabel)
             .accessibilityHint(self.accessibilityHint ?? "")
             .accessibilityAction { self.handleActivate() }
@@ -71,8 +88,143 @@ struct MenuBarLayoutEditorChip: View {
     }
 
     private func handleActivate() {
-        guard !self.isDisabled else { return }
+        guard self.isActive else { return }
         self.activate()
+    }
+}
+
+/// A layout token drawn as an Internal UI chip, one step down the control ladder from the section's controls
+/// (24 pt beside 28 pt pop-ups), like `MacFilterChips`. Palette entries sit on the raised control fill; placed
+/// tokens take the token-field look (accent text on the soft accent); the selected placed token is solid accent.
+struct MenuBarLayoutChipLabel: View {
+    enum Kind {
+        case palette
+        case placed
+    }
+
+    let title: String
+    let systemImage: String
+    let isSelected: Bool
+    var kind: Kind = .palette
+
+    @Environment(\.macControlSize) private var controlSize
+    @Environment(\.colorSchemeContrast) private var contrast
+
+    /// The chip's control size for the surrounding control size, as filter chips step down.
+    static func chipSize(for size: ControlSize) -> ControlSize {
+        switch size {
+        case .extraLarge: .large
+        case .large: .regular
+        case .regular: .small
+        default: .mini
+        }
+    }
+
+    static func metrics(in size: ControlSize) -> MacControlMetrics {
+        MacControlMetrics.forSize(self.chipSize(for: size))
+    }
+
+    static func radius(in size: ControlSize) -> CGFloat {
+        self.metrics(in: size).radius
+    }
+
+    var body: some View {
+        let metrics = Self.metrics(in: self.controlSize)
+        let shape = RoundedRectangle(cornerRadius: metrics.radius, style: .circular)
+        HStack(spacing: MacSpace.unit) {
+            Image(systemName: self.systemImage)
+                .font(MacTextRole.caption.font.weight(.semibold))
+                .accessibilityHidden(true)
+            Text(self.title)
+                .font(metrics.font)
+                .lineLimit(1)
+        }
+        .foregroundStyle(self.foreground)
+        .padding(.horizontal, metrics.paddingX)
+        .frame(height: metrics.height)
+        .background {
+            switch (self.kind, self.isSelected) {
+            case (_, true):
+                Color.clear.background(MacColor.accent, in: shape)
+            case (.placed, false):
+                Color.clear.background(MacColor.accentSoft, in: shape)
+                    // Increase Contrast: an accent edge, so a placed token doesn't rest on a soft fill alone.
+                        .overlay(shape.strokeBorder(MacColor.accent, lineWidth: MacSize.border)
+                            .opacity(self.contrast == .increased ? 1 : 0))
+            case (.palette, false):
+                Color.clear.macSurface(radius: metrics.radius, fill: MacColor.raised, elevation: .raised)
+            }
+        }
+        .fixedSize()
+    }
+
+    private var foreground: Color {
+        if self.isSelected { return MacColor.onAccent }
+        return self.kind == .placed ? MacColor.accent : MacColor.primary
+    }
+}
+
+/// One line of the menu-bar strip: a control well holding the placed tokens, wrapping when they run out of
+/// width, that takes drops at its end. The well's corners are concentric with the chips inside it.
+struct MenuBarLayoutLineWell<Content: View>: View {
+    let isEmpty: Bool
+    let accessibilityLabel: String
+    let onDrop: (MenuBarLayoutDragItem?) -> Bool
+    @ViewBuilder let content: Content
+
+    @Environment(\.macControlSize) private var controlSize
+    @State private var isTargeted = false
+
+    var body: some View {
+        let chip = MenuBarLayoutChipLabel.metrics(in: self.controlSize)
+        let inset = MacSpace.unit
+        let radius = chip.radius + inset
+        MenuBarLayoutChipFlowLayout(spacing: MacSpace.chipGap) {
+            self.content
+            if self.isEmpty {
+                Text(L("menu_bar_layout_empty_line"))
+                    .font(MacTextRole.caption.font)
+                    .foregroundStyle(MacColor.muted)
+                    .padding(.horizontal, chip.paddingX)
+                    .frame(height: chip.height)
+            }
+        }
+        .padding(inset)
+        .frame(maxWidth: .infinity, minHeight: chip.height + inset * 2, alignment: .leading)
+        .macWell(radius: radius)
+        .macFocusRing(self.isTargeted, radius: radius)
+        .dropDestination(for: MenuBarLayoutDragItem.self) { items, _ in
+            self.onDrop(items.first)
+        } isTargeted: { self.isTargeted = $0 }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(self.accessibilityLabel)
+    }
+}
+
+/// Trash zone. Accepts drops and doubles as a plain click target so a selected token can be removed without
+/// dragging or reaching for the Delete key. It turns destructive while a placed token is selected.
+struct MenuBarLayoutRemoveZone: View {
+    let canRemoveSelection: Bool
+    let removeSelection: () -> Void
+    let onDrop: (MenuBarLayoutDragItem?) -> Bool
+
+    @State private var isTargeted = false
+    @Environment(\.macControlSize) private var controlSize
+
+    var body: some View {
+        let radius = MacControlMetrics.forSize(self.controlSize).radius
+        Button(action: self.removeSelection) {
+            Label(
+                self.canRemoveSelection ? L("menu_bar_layout_remove_selected") : L("menu_bar_layout_drag_remove"),
+                systemImage: "trash")
+                .frame(maxWidth: .infinity)
+        }
+        .buttonStyle(.mac(self.canRemoveSelection ? .destructive : .standard))
+        .macFocusRing(self.isTargeted, radius: radius)
+        .dropDestination(for: MenuBarLayoutDragItem.self) { items, _ in
+            self.onDrop(items.first)
+        } isTargeted: { self.isTargeted = $0 }
+        .accessibilityLabel(L("menu_bar_layout_drag_remove"))
     }
 }
 
@@ -87,5 +239,16 @@ private struct OptionalRemoveAccessibilityAction: ViewModifier {
         } else {
             content
         }
+    }
+}
+
+extension View {
+    /// The padding and width of a settings row, for rows of the layout editor that are not a title and a
+    /// control (the strip, the palettes), so they line up with the `MacSettingsRow`s around them.
+    func menuBarLayoutRowFrame() -> some View {
+        self
+            .padding(.horizontal, MacSpace.settingsRowPaddingX)
+            .padding(.vertical, MacSpace.settingsRowPaddingY)
+            .frame(maxWidth: .infinity, minHeight: MacSize.settingsRow, alignment: .leading)
     }
 }

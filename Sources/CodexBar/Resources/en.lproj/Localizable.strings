@@ -2858,3 +2858,37 @@
 "Add a rule to run a command when a quota or provider event happens." = "Add a rule to run a command when a quota or provider event happens.";
 "Delete Rule?" = "Delete Rule?";
 "This rule is removed from Hooks. This can’t be undone." = "This rule is removed from Hooks. This can’t be undone.";
+/* Settings: Menu Bar, Menu */
+"settings_menu_bar_subtitle" = "How the menu bar icon looks and what it shows";
+"settings_menu_subtitle" = "What the menu shows when you open it";
+"settings_reason_requires_style" = "Requires the %@ style";
+"settings_reason_requires_setting" = "Turn on %@ first";
+"settings_reason_two_providers" = "Needs at least two enabled providers";
+"settings_reason_stacked_source" = "Not used by the %@ style, which picks its top and bottom rows";
+"settings_reason_brand_icons" = "Brand icons don't animate. Use the %1$@ or %2$@ style.";
+"settings_color_pace_subtitle" = "Green when behind pace, red when ahead of pace (risk of running out early). Applies to the pace tokens in the layout.";
+"settings_reason_work_days_automatic" = "Choose a number of work days. Automatic shows no workday ticks.";
+"agent_sessions_hosts_help" = "More SSH hosts to check for agent sessions, written as user@host and separated by commas.";
+"menu_bar_layout_override_subtitle" = "Uses its own saved layout";
+"cost_history_rolling_days_title" = "Rolling days";
+/* Settings: Alerts, Sync */
+"settings_alerts_subtitle" = "Notifications for sign-in, quota and resets";
+"settings_alerts_section_sign_in" = "Sign-in & credits";
+"settings_alerts_section_quota" = "Quota";
+"settings_alerts_section_delivery" = "Delivery";
+"settings_alerts_delivery_disabled" = "Turn on threshold or pace warnings to choose how they arrive.";
+"settings_alerts_section_menu_markers" = "Menu markers";
+"settings_alerts_overrides_title" = "Per-provider overrides";
+"settings_alerts_overrides_footer" = "Each provider's page under Providers can set its own session and weekly thresholds, or turn its warnings off.";
+"quota_warning_percent_unit" = "%";
+"quota_warning_percent_value" = "%d%%";
+"quota_warning_threshold_named" = "%1$@ %2$@";
+"settings_sync_subtitle" = "Settings, providers and usage across your Macs";
+"settings_sync_update_needed" = "Update needed";
+"settings_sync_secrets_confirm_title" = "Sync API keys, cookies and tokens?";
+"settings_sync_secrets_confirm_message" = "They are copied to every Mac signed in to your iCloud account, protected by iCloud end-to-end encryption.";
+"settings_sync_secrets_confirm_action" = "Include Secrets";
+"settings_sync_remove_mac_title" = "Remove “%@”?";
+"settings_sync_remove_mac_message" = "Its record and synced usage are deleted from iCloud. If that Mac is still syncing, it appears again the next time it syncs.";
+"settings_sync_no_macs_title" = "No Synced Macs";
+"settings_sync_no_macs_message" = "Each Mac that turns on iCloud Sync appears here.";

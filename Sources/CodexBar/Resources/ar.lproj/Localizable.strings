@@ -2857,3 +2857,37 @@
 "Add a rule to run a command when a quota or provider event happens." = "أضف قاعدة لتشغيل أمر عند وقوع حدث يخص الحصة أو المزود.";
 "Delete Rule?" = "هل تريد حذف القاعدة؟";
 "This rule is removed from Hooks. This can’t be undone." = "ستُزال هذه القاعدة من الخطافات. لا يمكن التراجع عن ذلك.";
+/* Settings: Menu Bar, Menu */
+"settings_menu_bar_subtitle" = "شكل أيقونة شريط القوائم وما تعرضه";
+"settings_menu_subtitle" = "ما تعرضه القائمة عند فتحها";
+"settings_reason_requires_style" = "يتطلب النمط «%@»";
+"settings_reason_requires_setting" = "فعّل «%@» أولاً";
+"settings_reason_two_providers" = "يتطلب مزوّدَين مفعّلَين على الأقل";
+"settings_reason_stacked_source" = "لا يُستخدم مع النمط «%@» الذي يختار صفّيه العلوي والسفلي";
+"settings_reason_brand_icons" = "أيقونات العلامات التجارية لا تتحرك. استخدم النمط «%1$@» أو «%2$@».";
+"settings_color_pace_subtitle" = "أخضر عندما يكون الاستخدام أبطأ من الوتيرة المتوقعة، وأحمر عندما يكون أسرع (خطر النفاد مبكرًا). ينطبق على عناصر الوتيرة في التخطيط.";
+"settings_reason_work_days_automatic" = "اختر عددًا لأيام العمل. الخيار «تلقائي» لا يعرض علامات أيام العمل.";
+"agent_sessions_hosts_help" = "مضيفو SSH إضافيون للبحث فيهم عن جلسات الوكلاء، بصيغة user@host ومفصولون بفواصل.";
+"menu_bar_layout_override_subtitle" = "يستخدم تخطيطه المحفوظ الخاص";
+"cost_history_rolling_days_title" = "الأيام المتداولة";
+/* Settings: Alerts, Sync */
+"settings_alerts_subtitle" = "إشعارات تسجيل الدخول والحصة وإعادة التعيين";
+"settings_alerts_section_sign_in" = "تسجيل الدخول والأرصدة";
+"settings_alerts_section_quota" = "الحصة";
+"settings_alerts_section_delivery" = "طريقة التنبيه";
+"settings_alerts_delivery_disabled" = "فعّل تحذيرات العتبة أو الوتيرة لاختيار طريقة وصولها.";
+"settings_alerts_section_menu_markers" = "علامات القائمة";
+"settings_alerts_overrides_title" = "تجاوزات لكل مقدم خدمة";
+"settings_alerts_overrides_footer" = "يمكن لصفحة كل مقدم خدمة ضمن مقدمي الخدمات تعيين عتبات خاصة للجلسة والأسبوع، أو إيقاف تحذيراته.";
+"quota_warning_percent_unit" = "٪";
+"quota_warning_percent_value" = "%d٪";
+"quota_warning_threshold_named" = "%1$@ %2$@";
+"settings_sync_subtitle" = "الإعدادات ومقدمو الخدمات والاستخدام عبر أجهزة Mac لديك";
+"settings_sync_update_needed" = "يلزم التحديث";
+"settings_sync_secrets_confirm_title" = "مزامنة مفاتيح API وملفات تعريف الارتباط والرموز؟";
+"settings_sync_secrets_confirm_message" = "تُنسخ إلى كل جهاز Mac مسجّل الدخول إلى حساب iCloud الخاص بك، وتحميها تعمية iCloud من طرف إلى طرف.";
+"settings_sync_secrets_confirm_action" = "تضمين البيانات السرية";
+"settings_sync_remove_mac_title" = "إزالة “%@”؟";
+"settings_sync_remove_mac_message" = "يُحذف سجله واستخدامه المتزامن من iCloud. إذا كان ذلك الـMac لا يزال يزامن، فسيظهر مجددًا عند المزامنة التالية.";
+"settings_sync_no_macs_title" = "لا توجد أجهزة Mac متزامنة";
+"settings_sync_no_macs_message" = "يظهر هنا كل جهاز Mac يفعّل مزامنة iCloud.";

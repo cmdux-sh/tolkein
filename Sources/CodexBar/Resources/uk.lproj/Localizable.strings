@@ -2854,3 +2854,37 @@
 "Add a rule to run a command when a quota or provider event happens." = "Додайте правило, щоб виконувати команду під час події квоти або провайдера.";
 "Delete Rule?" = "Видалити правило?";
 "This rule is removed from Hooks. This can’t be undone." = "Це правило буде вилучено з хуків. Цю дію не можна скасувати.";
+/* Settings: Menu Bar, Menu */
+"settings_menu_bar_subtitle" = "Як виглядає значок у рядку меню і що він показує";
+"settings_menu_subtitle" = "Що показує меню, коли ви його відкриваєте";
+"settings_reason_requires_style" = "Потрібен стиль «%@»";
+"settings_reason_requires_setting" = "Спершу увімкніть «%@»";
+"settings_reason_two_providers" = "Потрібно щонайменше два ввімкнені постачальники";
+"settings_reason_stacked_source" = "Не використовується стилем «%@», який сам вибирає верхній і нижній рядки";
+"settings_reason_brand_icons" = "Значки брендів не анімуються. Використайте стиль «%1$@» або «%2$@».";
+"settings_color_pace_subtitle" = "Зелений — витрати нижчі за очікуваний темп, червоний — вищі (ризик дострокового вичерпання квоти). Застосовується до елементів темпу в компонуванні.";
+"settings_reason_work_days_automatic" = "Виберіть кількість робочих днів. У режимі «Автоматично» позначки робочих днів не показуються.";
+"agent_sessions_hosts_help" = "Додаткові хости SSH для пошуку сеансів агентів у форматі user@host, через кому.";
+"menu_bar_layout_override_subtitle" = "Використовує власне збережене компонування";
+"cost_history_rolling_days_title" = "Ковзні дні";
+/* Settings: Alerts, Sync */
+"settings_alerts_subtitle" = "Сповіщення про вхід, квоту та скидання";
+"settings_alerts_section_sign_in" = "Вхід і кредити";
+"settings_alerts_section_quota" = "Квота";
+"settings_alerts_section_delivery" = "Спосіб сповіщення";
+"settings_alerts_delivery_disabled" = "Увімкніть попередження про поріг або темп, щоб вибрати спосіб сповіщення.";
+"settings_alerts_section_menu_markers" = "Позначки в меню";
+"settings_alerts_overrides_title" = "Налаштування для провайдерів";
+"settings_alerts_overrides_footer" = "На сторінці кожного провайдера в розділі «Провайдери» можна задати власні пороги для сеансу й тижня або вимкнути попередження.";
+"quota_warning_percent_unit" = "%";
+"quota_warning_percent_value" = "%d%%";
+"quota_warning_threshold_named" = "%1$@ %2$@";
+"settings_sync_subtitle" = "Налаштування, провайдери та використання на всіх ваших Mac";
+"settings_sync_update_needed" = "Потрібне оновлення";
+"settings_sync_secrets_confirm_title" = "Синхронізувати ключі API, файли cookie і токени?";
+"settings_sync_secrets_confirm_message" = "Вони копіюються на кожен Mac, на якому виконано вхід у ваш обліковий запис iCloud, і захищені наскрізним шифруванням iCloud.";
+"settings_sync_secrets_confirm_action" = "Включити секрети";
+"settings_sync_remove_mac_title" = "Видалити «%@»?";
+"settings_sync_remove_mac_message" = "Його запис і синхронізоване використання видаляються з iCloud. Якщо цей Mac досі синхронізується, він знову з’явиться під час наступної синхронізації.";
+"settings_sync_no_macs_title" = "Немає синхронізованих Mac";
+"settings_sync_no_macs_message" = "Тут з’являється кожен Mac, на якому ввімкнено синхронізацію iCloud.";

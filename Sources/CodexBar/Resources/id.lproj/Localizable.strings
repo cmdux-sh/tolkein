@@ -2855,3 +2855,37 @@
 "Add a rule to run a command when a quota or provider event happens." = "Tambahkan aturan untuk menjalankan perintah saat terjadi peristiwa kuota atau penyedia.";
 "Delete Rule?" = "Hapus aturan?";
 "This rule is removed from Hooks. This can’t be undone." = "Aturan ini dihapus dari hook. Tindakan ini tidak dapat dibatalkan.";
+/* Settings: Menu Bar, Menu */
+"settings_menu_bar_subtitle" = "Tampilan ikon bar menu dan apa yang ditampilkannya";
+"settings_menu_subtitle" = "Apa yang ditampilkan menu saat dibuka";
+"settings_reason_requires_style" = "Memerlukan gaya “%@”";
+"settings_reason_requires_setting" = "Aktifkan “%@” terlebih dahulu";
+"settings_reason_two_providers" = "Memerlukan setidaknya dua penyedia aktif";
+"settings_reason_stacked_source" = "Tidak dipakai oleh gaya “%@”, yang memilih baris atas dan bawahnya sendiri";
+"settings_reason_brand_icons" = "Ikon merek tidak beranimasi. Gunakan gaya “%1$@” atau “%2$@”.";
+"settings_color_pace_subtitle" = "Hijau saat penggunaan lebih lambat dari laju perkiraan, merah saat lebih cepat (risiko kuota habis lebih awal). Berlaku untuk token laju di tata letak.";
+"settings_reason_work_days_automatic" = "Pilih jumlah hari kerja. Otomatis tidak menampilkan tanda hari kerja.";
+"agent_sessions_hosts_help" = "Host SSH lain untuk dicek sesi agennya, ditulis sebagai user@host dan dipisahkan koma.";
+"menu_bar_layout_override_subtitle" = "Memakai tata letak tersimpannya sendiri";
+"cost_history_rolling_days_title" = "Hari bergulir";
+/* Settings: Alerts, Sync */
+"settings_alerts_subtitle" = "Notifikasi untuk masuk, kuota, dan reset";
+"settings_alerts_section_sign_in" = "Masuk & kredit";
+"settings_alerts_section_quota" = "Kuota";
+"settings_alerts_section_delivery" = "Pengiriman";
+"settings_alerts_delivery_disabled" = "Aktifkan peringatan ambang batas atau laju pemakaian untuk memilih cara penyampaiannya.";
+"settings_alerts_section_menu_markers" = "Penanda menu";
+"settings_alerts_overrides_title" = "Pengaturan per penyedia";
+"settings_alerts_overrides_footer" = "Halaman setiap penyedia di bagian Penyedia dapat menetapkan ambang sesi dan mingguannya sendiri, atau mematikan peringatannya.";
+"quota_warning_percent_unit" = "%";
+"quota_warning_percent_value" = "%d%%";
+"quota_warning_threshold_named" = "%1$@ %2$@";
+"settings_sync_subtitle" = "Pengaturan, penyedia, dan penggunaan di semua Mac Anda";
+"settings_sync_update_needed" = "Perlu pembaruan";
+"settings_sync_secrets_confirm_title" = "Sinkronkan kunci API, cookie, dan token?";
+"settings_sync_secrets_confirm_message" = "Semuanya disalin ke setiap Mac yang masuk ke akun iCloud Anda, dilindungi enkripsi end-to-end iCloud.";
+"settings_sync_secrets_confirm_action" = "Sertakan Rahasia";
+"settings_sync_remove_mac_title" = "Hapus “%@”?";
+"settings_sync_remove_mac_message" = "Catatan dan penggunaan tersinkronnya dihapus dari iCloud. Jika Mac itu masih menyinkronkan, Mac tersebut akan muncul lagi saat sinkronisasi berikutnya.";
+"settings_sync_no_macs_title" = "Tidak Ada Mac Tersinkron";
+"settings_sync_no_macs_message" = "Setiap Mac yang menyalakan Sinkronisasi iCloud muncul di sini.";

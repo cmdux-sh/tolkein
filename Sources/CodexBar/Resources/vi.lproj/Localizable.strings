@@ -2854,3 +2854,37 @@
 "Add a rule to run a command when a quota or provider event happens." = "Thêm quy tắc để chạy lệnh khi có sự kiện hạn mức hoặc nhà cung cấp.";
 "Delete Rule?" = "Xóa quy tắc?";
 "This rule is removed from Hooks. This can’t be undone." = "Quy tắc này sẽ bị xóa khỏi hook. Không thể hoàn tác.";
+/* Settings: Menu Bar, Menu */
+"settings_menu_bar_subtitle" = "Biểu tượng thanh menu trông thế nào và hiển thị gì";
+"settings_menu_subtitle" = "Menu hiển thị gì khi bạn mở";
+"settings_reason_requires_style" = "Cần kiểu “%@”";
+"settings_reason_requires_setting" = "Hãy bật “%@” trước";
+"settings_reason_two_providers" = "Cần ít nhất hai nhà cung cấp đang bật";
+"settings_reason_stacked_source" = "Không dùng với kiểu “%@”, vốn tự chọn dòng trên và dòng dưới";
+"settings_reason_brand_icons" = "Biểu tượng thương hiệu không có hoạt ảnh. Hãy dùng kiểu “%1$@” hoặc “%2$@”.";
+"settings_color_pace_subtitle" = "Xanh khi mức sử dụng chậm hơn nhịp dự kiến, đỏ khi nhanh hơn (nguy cơ hết hạn mức sớm). Áp dụng cho các thẻ nhịp trong bố cục.";
+"settings_reason_work_days_automatic" = "Hãy chọn số ngày làm việc. Chế độ Tự động không hiển thị vạch ngày làm việc.";
+"agent_sessions_hosts_help" = "Các máy chủ SSH khác để tìm phiên của tác tử, viết theo dạng user@host và phân tách bằng dấu phẩy.";
+"menu_bar_layout_override_subtitle" = "Dùng bố cục riêng đã lưu";
+"cost_history_rolling_days_title" = "Số ngày cuộn";
+/* Settings: Alerts, Sync */
+"settings_alerts_subtitle" = "Thông báo về đăng nhập, hạn mức và đặt lại";
+"settings_alerts_section_sign_in" = "Đăng nhập và tín dụng";
+"settings_alerts_section_quota" = "Hạn mức";
+"settings_alerts_section_delivery" = "Cách gửi";
+"settings_alerts_delivery_disabled" = "Bật cảnh báo ngưỡng hoặc cảnh báo nhịp dùng để chọn cách nhận chúng.";
+"settings_alerts_section_menu_markers" = "Dấu trong menu";
+"settings_alerts_overrides_title" = "Cài đặt riêng cho từng nhà cung cấp";
+"settings_alerts_overrides_footer" = "Trang của từng nhà cung cấp trong mục Nhà cung cấp có thể đặt ngưỡng phiên và hằng tuần riêng, hoặc tắt cảnh báo.";
+"quota_warning_percent_unit" = "%";
+"quota_warning_percent_value" = "%d%%";
+"quota_warning_threshold_named" = "%1$@ %2$@";
+"settings_sync_subtitle" = "Cài đặt, nhà cung cấp và mức sử dụng trên mọi máy Mac của bạn";
+"settings_sync_update_needed" = "Cần cập nhật";
+"settings_sync_secrets_confirm_title" = "Đồng bộ khóa API, cookie và token?";
+"settings_sync_secrets_confirm_message" = "Chúng được sao chép sang mọi máy Mac đăng nhập vào tài khoản iCloud của bạn và được bảo vệ bằng mã hóa đầu cuối của iCloud.";
+"settings_sync_secrets_confirm_action" = "Bao gồm bí mật";
+"settings_sync_remove_mac_title" = "Xóa “%@”?";
+"settings_sync_remove_mac_message" = "Bản ghi và mức sử dụng đã đồng bộ của máy này sẽ bị xóa khỏi iCloud. Nếu máy Mac đó vẫn đang đồng bộ, nó sẽ xuất hiện lại ở lần đồng bộ tiếp theo.";
+"settings_sync_no_macs_title" = "Không có máy Mac nào được đồng bộ";
+"settings_sync_no_macs_message" = "Mỗi máy Mac bật Đồng bộ hóa iCloud sẽ xuất hiện ở đây.";
