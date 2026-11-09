@@ -4,7 +4,7 @@ SHELL := /bin/bash
 unexport FILTER
 test_filter_arg = $(if $(value FILTER),--filter '$(subst ','"'"',$(value FILTER))')
 
-.PHONY: build check docs-list format lint release restart start start-debug start-release stop test test-fast test-skip-build test-live test-tty
+.PHONY: build check check-all docs-list format lint release restart start start-debug start-release stop test test-fast test-skip-build test-live test-tty
 
 start:
 	./Scripts/compile_and_run.sh
@@ -24,6 +24,10 @@ stop:
 
 check lint:
 	./Scripts/lint.sh $(if $(filter Linux,$(shell uname -s)),lint-linux,lint)
+
+# Everything `check` skips: packaging, signing, Sparkle, CI and website self-tests. CI always runs these.
+check-all:
+	./Scripts/lint.sh $(if $(filter Linux,$(shell uname -s)),lint-linux,lint-all)
 
 format:
 	./Scripts/lint.sh format

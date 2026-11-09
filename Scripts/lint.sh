@@ -98,6 +98,7 @@ check_swift_test_sharding() {
 
 check_ci_path_gate() {
   "${ROOT_DIR}/Scripts/test_ci_path_gate.sh"
+  python3 "${ROOT_DIR}/Scripts/ci_select_test_suites.py" --test
 }
 
 check_ci_build_cache() {
@@ -146,6 +147,16 @@ check_llms_index() {
   node "${ROOT_DIR}/Scripts/generate-llms.mjs" --check
 }
 
+# The few portable checks tied to everyday code changes; `make check` runs only these.
+run_quick_portable_checks() {
+  check_package_resolved
+  check_codex_parser_hash
+  check_provider_manifests
+  check_plugin_javascript
+  check_shell_scripts
+}
+
+# Everything, including packaging, signing, Sparkle, CI and website self-tests: `make check-all` and CI.
 run_portable_checks() {
   bash "${ROOT_DIR}/Scripts/test_make_lint.sh"
   python3 "${ROOT_DIR}/Scripts/acknowledgements.py"
@@ -234,6 +245,13 @@ cmd="${1:-lint}"
 case "$cmd" in
   lint)
     check_app_locales
+    run_quick_portable_checks
+    run_javascript_checks
+    run_swiftformat_lint
+    run_swiftlint
+    ;;
+  lint-all)
+    check_app_locales
     check_cli_installer
     run_portable_checks
     run_javascript_checks
@@ -260,7 +278,7 @@ case "$cmd" in
     "${ROOT_DIR}/Scripts/regenerate-plugin-js.sh" --write
     ;;
   *)
-    printf 'Usage: %s [lint|lint-linux|lint-macos|format]\n' "$(basename "$0")" >&2
+    printf 'Usage: %s [lint|lint-all|lint-linux|lint-macos|format]\n' "$(basename "$0")" >&2
     exit 2
     ;;
 esac

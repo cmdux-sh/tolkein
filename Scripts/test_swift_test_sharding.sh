@@ -146,8 +146,12 @@ if re.search(r"(?m)^\s+(matrix|shard-index|shard-count):", job):
     raise SystemExit("swift-test-macos must run the complete inventory on one runner")
 job_timeout = re.search(r"(?m)^    timeout-minutes: (\d+)$", job)
 test_step = re.search(r"(?ms)^      - name: Swift Test\n(.*?)(?=^      - |\Z)", job)
-if not test_step or not re.search(r"(?m)^\s+\./Scripts/test.sh --direct-workers 2$", test_step.group(1)):
+if not test_step or not re.search(r'(?m)^\s+\./Scripts/test.sh --direct-workers 2 "\$\{selection\[@\]\}"$',
+                                 test_step.group(1)):
     raise SystemExit("required hosted tests must use the verified two-worker direct runner")
+# Pull requests may run only the suites their changes touch; every push to main runs the complete inventory.
+if "suites=ALL" not in workflow or 'github.event_name }}" == "pull_request"' not in workflow:
+    raise SystemExit("only pull requests may narrow the test suites; main must run everything")
 if "continue-on-error" in test_step.group(1) or re.search(r"(?m)^\s+if:", test_step.group(1)):
     raise SystemExit("required full-inventory tests must remain gating")
 if any(value in job for value in ["--limit-groups", "--shard-index", "--shard-count", "CODEXBAR_TEST_SHARD_"]):

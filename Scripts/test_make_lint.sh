@@ -50,4 +50,8 @@ for target in check lint; do
   assert_dispatch Darwin "$target" lint 23
 done
 
+assert_dispatch Linux check-all lint-linux
+assert_dispatch Darwin check-all lint-all
+assert_dispatch Darwin check-all lint-all 23
+
 printf 'Make lint platform dispatch and failure propagation tests passed.\n'
