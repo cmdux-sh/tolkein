@@ -2832,6 +2832,29 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "ไม่สามารถอ่านภาพรวมการเรียกเก็บเงินของ TypeSafe ได้ เปิด https://console.typesafe.ai/billing เพื่อตรวจสอบการเข้าถึง หากเปิดหน้าได้ ให้รายงานข้อผิดพลาดในการเชื่อมต่อระบบ";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "ไม่พบคุกกี้เซสชันของ TypeSafe ลงชื่อเข้าใช้ที่ console.typesafe.ai/billing หรือวางส่วนหัว Cookie";
 
+/* Settings: Integrations, Plugins */
+"The local HTTP server, the command-line tool and hooks." = "เซิร์ฟเวอร์ HTTP ในเครื่อง เครื่องมือบรรทัดคำสั่ง และฮุก";
+"Running" = "กำลังทำงาน";
+"Stopped" = "หยุดแล้ว";
+"Starting…" = "กำลังเริ่ม…";
+"Stopping…" = "กำลังหยุด…";
+"Network access" = "การเข้าถึงเครือข่าย";
+"Other devices can connect" = "อุปกรณ์อื่นเชื่อมต่อได้";
+"Unapplied changes" = "การเปลี่ยนแปลงที่ยังไม่ได้ใช้";
+"Discard" = "ละทิ้ง";
+"Apply HTTP server changes?" = "ใช้การเปลี่ยนแปลงเซิร์ฟเวอร์ HTTP หรือไม่";
+"You left the HTTP server settings with changes that aren’t applied yet." = "คุณออกจากการตั้งค่าเซิร์ฟเวอร์ HTTP โดยยังมีการเปลี่ยนแปลงที่ไม่ได้ใช้";
+"Keep Editing" = "แก้ไขต่อ";
+"Installed" = "ติดตั้งแล้ว";
+"A different file exists" = "มีไฟล์อื่นอยู่แล้ว";
+"No write access" = "ไม่มีสิทธิ์เขียน";
+"At most %d rules." = "สูงสุด %d กฎ";
+"At most %d arguments." = "สูงสุด %d อาร์กิวเมนต์";
+"Rule %d" = "กฎ %d";
+"Argument %d" = "อาร์กิวเมนต์ %d";
+"Add a rule to run a command when a quota or provider event happens." = "เพิ่มกฎเพื่อเรียกใช้คำสั่งเมื่อเกิดเหตุการณ์โควตาหรือผู้ให้บริการ";
+"Delete Rule?" = "ลบกฎหรือไม่";
+"This rule is removed from Hooks. This can’t be undone." = "กฎนี้จะถูกลบออกจากฮุก การดำเนินการนี้ย้อนกลับไม่ได้";
 /* Settings: Menu Bar, Menu */
 "settings_menu_bar_subtitle" = "ลักษณะของไอคอนแถบเมนูและสิ่งที่แสดง";
 "settings_menu_subtitle" = "สิ่งที่เมนูแสดงเมื่อคุณเปิด";

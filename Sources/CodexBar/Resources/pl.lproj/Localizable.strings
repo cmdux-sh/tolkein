@@ -2833,6 +2833,29 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "Nie udało się odczytać podsumowania rozliczeń TypeSafe. Otwórz https://console.typesafe.ai/billing, aby sprawdzić dostęp. Jeśli strona się otwiera, zgłoś błąd integracji.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "Nie znaleziono plików cookie sesji TypeSafe. Zaloguj się na console.typesafe.ai/billing lub wklej nagłówek Cookie.";
 
+/* Settings: Integrations, Plugins */
+"The local HTTP server, the command-line tool and hooks." = "Lokalny serwer HTTP, narzędzie wiersza poleceń i haki.";
+"Running" = "Działa";
+"Stopped" = "Zatrzymany";
+"Starting…" = "Uruchamianie…";
+"Stopping…" = "Zatrzymywanie…";
+"Network access" = "Dostęp sieciowy";
+"Other devices can connect" = "Inne urządzenia mogą się połączyć";
+"Unapplied changes" = "Niezastosowane zmiany";
+"Discard" = "Odrzuć";
+"Apply HTTP server changes?" = "Zastosować zmiany serwera HTTP?";
+"You left the HTTP server settings with changes that aren’t applied yet." = "Opuszczono ustawienia serwera HTTP ze zmianami, które nie zostały jeszcze zastosowane.";
+"Keep Editing" = "Kontynuuj edycję";
+"Installed" = "Zainstalowano";
+"A different file exists" = "Istnieje inny plik";
+"No write access" = "Brak uprawnień do zapisu";
+"At most %d rules." = "Maksymalnie %d reguł.";
+"At most %d arguments." = "Maksymalnie %d argumentów.";
+"Rule %d" = "Reguła %d";
+"Argument %d" = "Argument %d";
+"Add a rule to run a command when a quota or provider event happens." = "Dodaj regułę, aby uruchamiać polecenie, gdy wystąpi zdarzenie limitu lub dostawcy.";
+"Delete Rule?" = "Usunąć regułę?";
+"This rule is removed from Hooks. This can’t be undone." = "Ta reguła zostanie usunięta z haków. Tej operacji nie można cofnąć.";
 /* Settings: Menu Bar, Menu */
 "settings_menu_bar_subtitle" = "Jak wygląda ikona paska menu i co pokazuje";
 "settings_menu_subtitle" = "Co pokazuje menu po otwarciu";

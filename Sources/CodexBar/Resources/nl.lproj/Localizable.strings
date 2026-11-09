@@ -2827,6 +2827,29 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "Het factureringsoverzicht van TypeSafe kon niet worden gelezen. Open https://console.typesafe.ai/billing om de toegang te controleren. Als de pagina opent, meld dan de integratiefout.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "Geen TypeSafe-sessiecookies gevonden. Meld je aan op console.typesafe.ai/billing of plak een Cookie-header.";
 
+/* Settings: Integrations, Plugins */
+"The local HTTP server, the command-line tool and hooks." = "De lokale HTTP-server, de opdrachtregeltool en hooks.";
+"Running" = "Actief";
+"Stopped" = "Gestopt";
+"Starting…" = "Starten…";
+"Stopping…" = "Stoppen…";
+"Network access" = "Netwerktoegang";
+"Other devices can connect" = "Andere apparaten kunnen verbinding maken";
+"Unapplied changes" = "Niet-toegepaste wijzigingen";
+"Discard" = "Verwerpen";
+"Apply HTTP server changes?" = "HTTP-serverwijzigingen toepassen?";
+"You left the HTTP server settings with changes that aren’t applied yet." = "Je hebt de HTTP-serverinstellingen verlaten met wijzigingen die nog niet zijn toegepast.";
+"Keep Editing" = "Verder bewerken";
+"Installed" = "Geïnstalleerd";
+"A different file exists" = "Er bestaat een ander bestand";
+"No write access" = "Geen schrijftoegang";
+"At most %d rules." = "Maximaal %d regels.";
+"At most %d arguments." = "Maximaal %d argumenten.";
+"Rule %d" = "Regel %d";
+"Argument %d" = "Argument %d";
+"Add a rule to run a command when a quota or provider event happens." = "Voeg een regel toe om een opdracht uit te voeren bij een quota- of providergebeurtenis.";
+"Delete Rule?" = "Regel verwijderen?";
+"This rule is removed from Hooks. This can’t be undone." = "Deze regel wordt uit de hooks verwijderd. Dit kan niet ongedaan worden gemaakt.";
 /* Settings: Menu Bar, Menu */
 "settings_menu_bar_subtitle" = "Hoe het menubalkpictogram eruitziet en wat het toont";
 "settings_menu_subtitle" = "Wat het menu toont wanneer je het opent";

@@ -2834,6 +2834,29 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "Impossibile leggere il riepilogo di fatturazione di TypeSafe. Apri https://console.typesafe.ai/billing per verificare l’accesso; se la pagina si apre, segnala il problema di integrazione.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "Nessun cookie di sessione TypeSafe trovato. Accedi a console.typesafe.ai/billing oppure incolla un’intestazione Cookie.";
 
+/* Settings: Integrations, Plugins */
+"The local HTTP server, the command-line tool and hooks." = "Il server HTTP locale, lo strumento da riga di comando e gli hook.";
+"Running" = "In esecuzione";
+"Stopped" = "Arrestato";
+"Starting…" = "Avvio…";
+"Stopping…" = "Arresto…";
+"Network access" = "Accesso di rete";
+"Other devices can connect" = "Altri dispositivi possono connettersi";
+"Unapplied changes" = "Modifiche non applicate";
+"Discard" = "Scarta";
+"Apply HTTP server changes?" = "Applicare le modifiche al server HTTP?";
+"You left the HTTP server settings with changes that aren’t applied yet." = "Hai lasciato le impostazioni del server HTTP con modifiche non ancora applicate.";
+"Keep Editing" = "Continua a modificare";
+"Installed" = "Installato";
+"A different file exists" = "Esiste un altro file";
+"No write access" = "Nessun accesso in scrittura";
+"At most %d rules." = "Al massimo %d regole.";
+"At most %d arguments." = "Al massimo %d argomenti.";
+"Rule %d" = "Regola %d";
+"Argument %d" = "Argomento %d";
+"Add a rule to run a command when a quota or provider event happens." = "Aggiungi una regola per eseguire un comando quando si verifica un evento di quota o del provider.";
+"Delete Rule?" = "Eliminare la regola?";
+"This rule is removed from Hooks. This can’t be undone." = "Questa regola viene rimossa dagli hook. L’operazione non può essere annullata.";
 /* Settings: Menu Bar, Menu */
 "settings_menu_bar_subtitle" = "Come appare l’icona della barra dei menu e cosa mostra";
 "settings_menu_subtitle" = "Cosa mostra il menu quando lo apri";

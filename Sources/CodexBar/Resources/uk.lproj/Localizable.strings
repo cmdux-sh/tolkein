@@ -2831,6 +2831,29 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "Не вдалося прочитати огляд платежів TypeSafe. Відкрийте https://console.typesafe.ai/billing, щоб перевірити доступ. Якщо сторінка відкривається, повідомте про помилку інтеграції.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "Файли cookie сеансу TypeSafe не знайдено. Увійдіть на console.typesafe.ai/billing або вставте заголовок Cookie.";
 
+/* Settings: Integrations, Plugins */
+"The local HTTP server, the command-line tool and hooks." = "Локальний HTTP-сервер, інструмент командного рядка та хуки.";
+"Running" = "Працює";
+"Stopped" = "Зупинено";
+"Starting…" = "Запуск…";
+"Stopping…" = "Зупинка…";
+"Network access" = "Мережевий доступ";
+"Other devices can connect" = "Інші пристрої можуть під’єднатися";
+"Unapplied changes" = "Незастосовані зміни";
+"Discard" = "Скинути";
+"Apply HTTP server changes?" = "Застосувати зміни HTTP-сервера?";
+"You left the HTTP server settings with changes that aren’t applied yet." = "Ви залишили налаштування HTTP-сервера зі змінами, які ще не застосовано.";
+"Keep Editing" = "Продовжити редагування";
+"Installed" = "Встановлено";
+"A different file exists" = "Існує інший файл";
+"No write access" = "Немає доступу на запис";
+"At most %d rules." = "Не більше %d правил.";
+"At most %d arguments." = "Не більше %d аргументів.";
+"Rule %d" = "Правило %d";
+"Argument %d" = "Аргумент %d";
+"Add a rule to run a command when a quota or provider event happens." = "Додайте правило, щоб виконувати команду під час події квоти або провайдера.";
+"Delete Rule?" = "Видалити правило?";
+"This rule is removed from Hooks. This can’t be undone." = "Це правило буде вилучено з хуків. Цю дію не можна скасувати.";
 /* Settings: Menu Bar, Menu */
 "settings_menu_bar_subtitle" = "Як виглядає значок у рядку меню і що він показує";
 "settings_menu_subtitle" = "Що показує меню, коли ви його відкриваєте";

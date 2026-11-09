@@ -2808,6 +2808,29 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "無法讀取 TypeSafe 帳單總覽。請開啟 https://console.typesafe.ai/billing 檢查存取權限；如果頁面可以開啟，請回報整合錯誤。";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "找不到 TypeSafe 工作階段 Cookie。請在 console.typesafe.ai/billing 登入或貼上 Cookie 標頭。";
 
+/* Settings: Integrations, Plugins */
+"The local HTTP server, the command-line tool and hooks." = "本機 HTTP 伺服器、命令列工具和掛鉤。";
+"Running" = "執行中";
+"Stopped" = "已停止";
+"Starting…" = "正在啟動…";
+"Stopping…" = "正在停止…";
+"Network access" = "網路存取";
+"Other devices can connect" = "其他裝置可以連線";
+"Unapplied changes" = "尚未套用的變更";
+"Discard" = "放棄";
+"Apply HTTP server changes?" = "要套用 HTTP 伺服器的變更嗎？";
+"You left the HTTP server settings with changes that aren’t applied yet." = "你離開 HTTP 伺服器設定時，還有尚未套用的變更。";
+"Keep Editing" = "繼續編輯";
+"Installed" = "已安裝";
+"A different file exists" = "已有其他檔案";
+"No write access" = "沒有寫入權限";
+"At most %d rules." = "最多 %d 條規則。";
+"At most %d arguments." = "最多 %d 個引數。";
+"Rule %d" = "規則 %d";
+"Argument %d" = "引數 %d";
+"Add a rule to run a command when a quota or provider event happens." = "新增規則，在發生配額或提供者事件時執行指令。";
+"Delete Rule?" = "刪除規則？";
+"This rule is removed from Hooks. This can’t be undone." = "此規則將從掛鉤中移除。此動作無法復原。";
 /* Settings: Menu Bar, Menu */
 "settings_menu_bar_subtitle" = "選單列圖示的外觀與顯示內容";
 "settings_menu_subtitle" = "打開選單時顯示的內容";

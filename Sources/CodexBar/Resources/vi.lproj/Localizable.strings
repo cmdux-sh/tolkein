@@ -2831,6 +2831,29 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "Không thể đọc tổng quan thanh toán TypeSafe. Mở https://console.typesafe.ai/billing để kiểm tra quyền truy cập; nếu trang mở được, hãy báo cáo lỗi tích hợp.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "Không tìm thấy cookie phiên TypeSafe. Đăng nhập tại console.typesafe.ai/billing hoặc dán tiêu đề Cookie.";
 
+/* Settings: Integrations, Plugins */
+"The local HTTP server, the command-line tool and hooks." = "Máy chủ HTTP cục bộ, công cụ dòng lệnh và hook.";
+"Running" = "Đang chạy";
+"Stopped" = "Đã dừng";
+"Starting…" = "Đang khởi động…";
+"Stopping…" = "Đang dừng…";
+"Network access" = "Truy cập mạng";
+"Other devices can connect" = "Thiết bị khác có thể kết nối";
+"Unapplied changes" = "Thay đổi chưa áp dụng";
+"Discard" = "Bỏ";
+"Apply HTTP server changes?" = "Áp dụng thay đổi máy chủ HTTP?";
+"You left the HTTP server settings with changes that aren’t applied yet." = "Bạn đã rời cài đặt máy chủ HTTP khi còn thay đổi chưa được áp dụng.";
+"Keep Editing" = "Tiếp tục chỉnh sửa";
+"Installed" = "Đã cài đặt";
+"A different file exists" = "Đã có tệp khác";
+"No write access" = "Không có quyền ghi";
+"At most %d rules." = "Tối đa %d quy tắc.";
+"At most %d arguments." = "Tối đa %d đối số.";
+"Rule %d" = "Quy tắc %d";
+"Argument %d" = "Đối số %d";
+"Add a rule to run a command when a quota or provider event happens." = "Thêm quy tắc để chạy lệnh khi có sự kiện hạn mức hoặc nhà cung cấp.";
+"Delete Rule?" = "Xóa quy tắc?";
+"This rule is removed from Hooks. This can’t be undone." = "Quy tắc này sẽ bị xóa khỏi hook. Không thể hoàn tác.";
 /* Settings: Menu Bar, Menu */
 "settings_menu_bar_subtitle" = "Biểu tượng thanh menu trông thế nào và hiển thị gì";
 "settings_menu_subtitle" = "Menu hiển thị gì khi bạn mở";

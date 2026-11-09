@@ -2798,6 +2798,29 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "TypeSafe 청구 개요를 읽을 수 없습니다. https://console.typesafe.ai/billing 을 열어 접근할 수 있는지 확인하세요. 페이지가 열리면 연동 오류를 신고하세요.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "TypeSafe 세션 쿠키를 찾을 수 없습니다. console.typesafe.ai/billing 에 로그인하거나 Cookie 헤더를 붙여 넣으세요.";
 
+/* Settings: Integrations, Plugins */
+"The local HTTP server, the command-line tool and hooks." = "로컬 HTTP 서버, 명령줄 도구 및 훅.";
+"Running" = "실행 중";
+"Stopped" = "중지됨";
+"Starting…" = "시작하는 중…";
+"Stopping…" = "중지하는 중…";
+"Network access" = "네트워크 접근";
+"Other devices can connect" = "다른 기기에서 연결할 수 있음";
+"Unapplied changes" = "적용되지 않은 변경 사항";
+"Discard" = "버리기";
+"Apply HTTP server changes?" = "HTTP 서버 변경 사항을 적용하시겠습니까?";
+"You left the HTTP server settings with changes that aren’t applied yet." = "아직 적용되지 않은 변경 사항이 있는 상태로 HTTP 서버 설정을 떠났습니다.";
+"Keep Editing" = "계속 편집";
+"Installed" = "설치됨";
+"A different file exists" = "다른 파일이 있음";
+"No write access" = "쓰기 권한 없음";
+"At most %d rules." = "규칙은 최대 %d개입니다.";
+"At most %d arguments." = "인수는 최대 %d개입니다.";
+"Rule %d" = "규칙 %d";
+"Argument %d" = "인수 %d";
+"Add a rule to run a command when a quota or provider event happens." = "할당량 또는 공급자 이벤트가 발생할 때 명령을 실행하는 규칙을 추가하세요.";
+"Delete Rule?" = "규칙을 삭제하시겠습니까?";
+"This rule is removed from Hooks. This can’t be undone." = "이 규칙이 훅에서 제거됩니다. 이 작업은 되돌릴 수 없습니다.";
 /* Settings: Menu Bar, Menu */
 "settings_menu_bar_subtitle" = "메뉴 막대 아이콘의 모양과 표시 내용";
 "settings_menu_subtitle" = "메뉴를 열었을 때 표시할 내용";

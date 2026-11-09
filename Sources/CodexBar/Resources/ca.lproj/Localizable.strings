@@ -2832,6 +2832,29 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "No s'ha pogut llegir el resum de facturació de TypeSafe. Obre https://console.typesafe.ai/billing per comprovar-hi l'accés; si la pàgina s'obre, informa de l'error d'integració.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "No s'han trobat galetes de sessió de TypeSafe. Inicia sessió a console.typesafe.ai/billing o enganxa una capçalera Cookie.";
 
+/* Settings: Integrations, Plugins */
+"The local HTTP server, the command-line tool and hooks." = "El servidor HTTP local, l'eina de línia d'ordres i els hooks.";
+"Running" = "En execució";
+"Stopped" = "Aturat";
+"Starting…" = "S'està iniciant…";
+"Stopping…" = "S'està aturant…";
+"Network access" = "Accés a la xarxa";
+"Other devices can connect" = "Altres dispositius s'hi poden connectar";
+"Unapplied changes" = "Canvis sense aplicar";
+"Discard" = "Descarta";
+"Apply HTTP server changes?" = "Voleu aplicar els canvis del servidor HTTP?";
+"You left the HTTP server settings with changes that aren’t applied yet." = "Heu sortit de la configuració del servidor HTTP amb canvis que encara no s'han aplicat.";
+"Keep Editing" = "Continua editant";
+"Installed" = "Instal·lat";
+"A different file exists" = "Hi ha un fitxer diferent";
+"No write access" = "Sense permís d'escriptura";
+"At most %d rules." = "Com a màxim %d regles.";
+"At most %d arguments." = "Com a màxim %d arguments.";
+"Rule %d" = "Regla %d";
+"Argument %d" = "Argument %d";
+"Add a rule to run a command when a quota or provider event happens." = "Afegiu una regla per executar una ordre quan es produeixi un esdeveniment de quota o de proveïdor.";
+"Delete Rule?" = "Voleu eliminar la regla?";
+"This rule is removed from Hooks. This can’t be undone." = "Aquesta regla s'elimina dels hooks. No es pot desfer.";
 /* Settings: Menu Bar, Menu */
 "settings_menu_bar_subtitle" = "Com es veu la icona de la barra de menús i què mostra";
 "settings_menu_subtitle" = "Què mostra el menú quan l'obriu";

@@ -2829,6 +2829,29 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "Det gick inte att läsa TypeSafes faktureringsöversikt. Öppna https://console.typesafe.ai/billing för att kontrollera åtkomsten. Om sidan öppnas, rapportera integrationsfelet.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "Inga sessionskakor för TypeSafe hittades. Logga in på console.typesafe.ai/billing eller klistra in ett Cookie-huvud.";
 
+/* Settings: Integrations, Plugins */
+"The local HTTP server, the command-line tool and hooks." = "Den lokala HTTP-servern, kommandoradsverktyget och hooks.";
+"Running" = "Körs";
+"Stopped" = "Stoppad";
+"Starting…" = "Startar…";
+"Stopping…" = "Stoppar…";
+"Network access" = "Nätverksåtkomst";
+"Other devices can connect" = "Andra enheter kan ansluta";
+"Unapplied changes" = "Ej tillämpade ändringar";
+"Discard" = "Förkasta";
+"Apply HTTP server changes?" = "Tillämpa ändringarna för HTTP-servern?";
+"You left the HTTP server settings with changes that aren’t applied yet." = "Du lämnade inställningarna för HTTP-servern med ändringar som inte har tillämpats än.";
+"Keep Editing" = "Fortsätt redigera";
+"Installed" = "Installerad";
+"A different file exists" = "En annan fil finns";
+"No write access" = "Ingen skrivbehörighet";
+"At most %d rules." = "Högst %d regler.";
+"At most %d arguments." = "Högst %d argument.";
+"Rule %d" = "Regel %d";
+"Argument %d" = "Argument %d";
+"Add a rule to run a command when a quota or provider event happens." = "Lägg till en regel för att köra ett kommando när en kvot- eller leverantörshändelse inträffar.";
+"Delete Rule?" = "Ta bort regeln?";
+"This rule is removed from Hooks. This can’t be undone." = "Regeln tas bort från hooks. Det går inte att ångra.";
 /* Settings: Menu Bar, Menu */
 "settings_menu_bar_subtitle" = "Hur menyradssymbolen ser ut och vad den visar";
 "settings_menu_subtitle" = "Vad menyn visar när du öppnar den";
