@@ -1,4 +1,5 @@
 import Foundation
+import InternalUI
 import SwiftUI
 
 protocol CodexAmbientLoginRunning: Sendable {
@@ -133,92 +134,71 @@ struct CodexAccountsSectionView: View {
     let addAccount: () -> Void
     var renameAccount: (CodexVisibleAccount, String) -> Void = { _, _ in }
 
+    private var isBusy: Bool {
+        self.state.isAuthenticatingManagedAccount ||
+            self.state.isRemovingManagedAccount ||
+            self.state.isAuthenticatingLiveAccount ||
+            self.state.isPromotingSystemAccount
+    }
+
+    private var accountOptions: [(String, String)] {
+        self.state.visibleAccounts.map { ($0.id, self.state.displayName(for: $0)) }
+    }
+
     var body: some View {
-        Section {
+        MacSettingsSection(L("Accounts")) {
             if let selection = self.activeSelectionBinding {
-                VStack(alignment: .leading, spacing: 6) {
-                    HStack(alignment: .firstTextBaseline, spacing: 10) {
-                        Text(L("Tolkein follows"))
-                            .font(.subheadline.weight(.semibold))
-                            .frame(width: ProviderSettingsMetrics.pickerLabelWidth, alignment: .leading)
-
-                        Picker("", selection: selection) {
-                            ForEach(self.state.visibleAccounts) { account in
-                                Text(self.state.displayName(for: account)).tag(account.id)
-                            }
-                        }
-                        .labelsHidden()
-                        .pickerStyle(.menu)
-                        .controlSize(.small)
-
-                        Spacer(minLength: 0)
-                    }
-
-                    Text(L("Choose which Codex account Tolkein should follow."))
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-
-                    self.systemRow(selection: self.systemSelectionBinding)
+                MacSettingsRow(
+                    L("Tolkein follows"),
+                    subtitle: L("Choose which Codex account Tolkein should follow."))
+                {
+                    MacPopUpButton(self.accountOptions, selection: selection)
                 }
-                .disabled(
-                    self.state.isAuthenticatingManagedAccount ||
-                        self.state.isRemovingManagedAccount ||
-                        self.state.isAuthenticatingLiveAccount ||
-                        self.state.isPromotingSystemAccount)
+                .disabled(self.isBusy)
+                self.systemRow(selection: self.systemSelectionBinding)
+                    .disabled(self.isBusy)
             } else if let account = self.state.singleVisibleAccount {
-                VStack(alignment: .leading, spacing: 6) {
-                    HStack(alignment: .firstTextBaseline, spacing: 10) {
-                        Text(L("Account"))
-                            .font(.subheadline.weight(.semibold))
-                            .frame(width: ProviderSettingsMetrics.pickerLabelWidth, alignment: .leading)
-
-                        Text(self.state.displayName(for: account))
-                            .font(.subheadline)
-
-                        Spacer(minLength: 0)
-                    }
-
-                    self.systemRow(selection: nil)
-                }
+                MacSettingsValueRow(L("Account"), value: self.state.displayName(for: account))
+                self.systemRow(selection: nil)
             }
 
             if self.state.visibleAccounts.isEmpty {
-                Text(L("No Codex accounts detected yet."))
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
+                MacText(L("No Codex accounts detected yet."), role: .caption, muted: true)
+                    .providerSettingsRow()
             } else {
-                VStack(alignment: .leading, spacing: 10) {
-                    ForEach(self.state.visibleAccounts) { account in
-                        CodexAccountsSectionRowView(
-                            account: account,
-                            displayName: self.state.displayName(for: account),
-                            hidePersonalInfo: self.state.hidePersonalInfo,
-                            showsSystemBadge: self.state.showsLiveBadge(for: account),
-                            reauthenticateTitle: self.state.reauthenticateTitle(for: account),
-                            canReauthenticate: self.state.canReauthenticate(account),
-                            canRemove: self.state.canRemove(account),
-                            onReauthenticate: { self.reauthenticateAccount(account) },
-                            onRemove: { self.removeAccount(account) },
-                            onRename: { self.renameAccount(account, $0) })
-                    }
+                ForEach(self.state.visibleAccounts) { account in
+                    CodexAccountsSectionRowView(
+                        account: account,
+                        displayName: self.state.displayName(for: account),
+                        hidePersonalInfo: self.state.hidePersonalInfo,
+                        showsSystemBadge: self.state.showsLiveBadge(for: account),
+                        reauthenticateTitle: self.state.reauthenticateTitle(for: account),
+                        canReauthenticate: self.state.canReauthenticate(account),
+                        canRemove: self.state.canRemove(account),
+                        onReauthenticate: { self.reauthenticateAccount(account) },
+                        onRemove: { self.removeAccount(account) },
+                        onRename: { self.renameAccount(account, $0) })
                 }
             }
 
-            if let notice = self.state.notice {
-                Text(notice.text)
-                    .font(.footnote)
-                    .foregroundStyle(notice.tone == .warning ? .red : .secondary)
-                    .fixedSize(horizontal: false, vertical: true)
+            HStack(spacing: MacSpace.unit * 2) {
+                if let notice = self.state.notice {
+                    if notice.tone == .warning {
+                        MacStatusLabel(notice.text, tone: .warning)
+                            .help(notice.text)
+                    } else {
+                        MacText(notice.text, role: .caption, muted: true)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+                Spacer(minLength: 0)
+                Button(self.state.addAccountTitle) {
+                    self.addAccount()
+                }
+                .buttonStyle(.mac())
+                .disabled(self.state.canAddAccount == false)
             }
-
-            Button(self.state.addAccountTitle) {
-                self.addAccount()
-            }
-            .buttonStyle(.bordered)
-            .controlSize(.small)
-            .disabled(self.state.canAddAccount == false)
-        } header: {
-            Text(L("Accounts"))
+            .providerSettingsRow()
         }
     }
 
@@ -239,50 +219,26 @@ struct CodexAccountsSectionView: View {
             set: { self.requestSystemVisibleAccount($0) })
     }
 
-    @ViewBuilder
     private func systemRow(selection: Binding<String>?) -> some View {
-        HStack(alignment: .firstTextBaseline, spacing: 10) {
-            Text(L("System"))
-                .font(.subheadline.weight(.semibold))
-                .frame(width: ProviderSettingsMetrics.pickerLabelWidth, alignment: .leading)
-
+        MacSettingsRow(L("System"), subtitle: L("The default Codex account on this Mac.")) {
             if let selection {
-                Picker("", selection: selection) {
-                    ForEach(self.state.visibleAccounts) { account in
-                        Text(self.state.displayName(for: account))
-                            .tag(account.id)
-                    }
-                }
-                .labelsHidden()
-                .pickerStyle(.menu)
-                .controlSize(.small)
-                .disabled(self.state.isSystemSelectionDisabled)
+                MacPopUpButton(self.accountOptions, selection: selection)
+                    .disabled(self.state.isSystemSelectionDisabled)
             } else if self.state.showsSystemPicker {
-                Menu {
+                Menu(self.state.systemDisplayName) {
                     ForEach(self.state.visibleAccounts) { account in
                         Button(self.state.displayName(for: account)) {
                             self.requestSystemVisibleAccount(account.id)
                         }
                         .disabled(self.state.canPromoteToSystem(account) == false)
                     }
-                } label: {
-                    Text(self.state.systemDisplayName)
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
                 }
+                .fixedSize()
                 .disabled(self.state.isSystemSelectionDisabled)
             } else {
-                Text(self.state.systemDisplayName)
-                    .font(.subheadline)
-                    .foregroundStyle(self.state.systemVisibleAccount == nil ? .secondary : .primary)
+                MacText(self.state.systemDisplayName, muted: self.state.systemVisibleAccount == nil)
             }
-
-            Spacer(minLength: 0)
         }
-
-        Text(L("The default Codex account on this Mac."))
-            .font(.footnote)
-            .foregroundStyle(.secondary)
     }
 }
 
@@ -300,56 +256,46 @@ private struct CodexAccountsSectionRowView: View {
     @State private var isRenaming = false
     @State private var editedName = ""
 
+    private var title: String {
+        self.showsSystemBadge ? "\(self.displayName) \(L("(System)"))" : self.displayName
+    }
+
+    private var subtitle: String? {
+        var lines: [String] = []
+        if self.account.customName != nil, !self.hidePersonalInfo {
+            lines.append(self.account.withCustomName(nil).displayName)
+        }
+        if let health = self.account.authenticationHealthLabel {
+            lines.append(health)
+        }
+        return lines.isEmpty ? nil : lines.joined(separator: "\n")
+    }
+
     var body: some View {
-        HStack(alignment: .center, spacing: 12) {
-            VStack(alignment: .leading, spacing: 2) {
-                HStack(alignment: .firstTextBaseline, spacing: 6) {
-                    Text(self.displayName)
-                        .font(.subheadline.weight(.semibold))
-                    if self.showsSystemBadge {
-                        Text(L("(System)"))
-                            .font(.caption.weight(.semibold))
-                            .foregroundStyle(.secondary)
+        MacSettingsRow(self.title, subtitle: self.subtitle) {
+            HStack(spacing: MacSpace.unit * 2) {
+                Button(L("Rename")) {
+                    self.editedName = self.account.customName ?? ""
+                    self.isRenaming = true
+                }
+                .buttonStyle(.mac())
+                .disabled(self.hidePersonalInfo)
+
+                if self.account.canReauthenticate {
+                    Button(self.reauthenticateTitle) {
+                        self.onReauthenticate()
                     }
+                    .buttonStyle(.mac())
+                    .disabled(self.canReauthenticate == false)
                 }
-                if self.account.customName != nil, !self.hidePersonalInfo {
-                    Text(self.account.withCustomName(nil).displayName)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-                if let health = self.account.authenticationHealthLabel {
-                    Text(health)
-                        .font(.caption)
-                        .foregroundStyle(.orange)
-                }
-            }
 
-            Spacer(minLength: 8)
-
-            Button(L("Rename")) {
-                self.editedName = self.account.customName ?? ""
-                self.isRenaming = true
-            }
-            .buttonStyle(.bordered)
-            .controlSize(.small)
-            .disabled(self.hidePersonalInfo)
-
-            if self.account.canReauthenticate {
-                Button(self.reauthenticateTitle) {
-                    self.onReauthenticate()
+                if self.account.canRemove {
+                    Button(L("Remove")) {
+                        self.onRemove()
+                    }
+                    .buttonStyle(.mac())
+                    .disabled(self.canRemove == false)
                 }
-                .buttonStyle(.bordered)
-                .controlSize(.small)
-                .disabled(self.canReauthenticate == false)
-            }
-
-            if self.account.canRemove {
-                Button(L("Remove")) {
-                    self.onRemove()
-                }
-                .buttonStyle(.bordered)
-                .controlSize(.small)
-                .disabled(self.canRemove == false)
             }
         }
         .alert(L("Rename account"), isPresented: self.$isRenaming) {

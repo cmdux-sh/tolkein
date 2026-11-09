@@ -546,7 +546,7 @@ struct StatusMenuTests {
         settings.refreshFrequency = .manual
 
         let store = self.makeCodexStore(settings: settings, dashboardAuthorized: false)
-        let pane = ProvidersPane(settings: settings, store: store)
+        let pane = ProviderSettingsPageModel(settings: settings, store: store)
 
         let model = pane._test_menuCardModel(for: .codex)
         #expect(model.metrics.contains { $0.id == "code-review" } == false)
@@ -559,7 +559,7 @@ struct StatusMenuTests {
         settings.refreshFrequency = .manual
 
         let store = self.makeCodexStore(settings: settings, dashboardAuthorized: true)
-        let pane = ProvidersPane(settings: settings, store: store)
+        let pane = ProviderSettingsPageModel(settings: settings, store: store)
 
         let model = pane._test_menuCardModel(for: .codex)
         #expect(model.metrics.contains { $0.id == "code-review" && $0.percent == 88 })

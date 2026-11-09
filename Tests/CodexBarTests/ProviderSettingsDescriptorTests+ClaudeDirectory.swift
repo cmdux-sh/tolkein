@@ -19,7 +19,7 @@ extension ProviderSettingsDescriptorTests {
             settings: settings,
             startupBehavior: .testing,
             environmentBase: [:])
-        let pane = ProvidersPane(settings: settings, store: store)
+        let pane = ProviderSettingsPageModel(settings: settings, store: store)
         let descriptor = try #require(pane._test_tokenAccountDescriptor(for: .claude))
         let binding = try #require(descriptor.claudeConfigDirectory)
         let directory = binding(account.id)
@@ -33,7 +33,7 @@ extension ProviderSettingsDescriptorTests {
 
         let root = try CostUsageTestEnvironment()
         defer { root.cleanup() }
-        #expect(TokenAccountDirectoryPicker.isAvailable(root.root.path))
-        #expect(!TokenAccountDirectoryPicker.isAvailable(root.root.appendingPathComponent("missing").path))
+        #expect(TokenAccountDirectoryRow.isAvailable(root.root.path))
+        #expect(!TokenAccountDirectoryRow.isAvailable(root.root.appendingPathComponent("missing").path))
     }
 }

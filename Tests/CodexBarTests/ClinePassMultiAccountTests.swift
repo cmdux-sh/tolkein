@@ -73,7 +73,7 @@ struct ClinePassMultiAccountTests {
         let settings = Self.makeSettings(suite: "ClinePassMultiAccountTests-settings")
         let store = Self.makeStore(settings: settings)
         let descriptor = try #require(
-            ProvidersPane(settings: settings, store: store)._test_tokenAccountDescriptor(for: .clinepass))
+            ProviderSettingsPageModel(settings: settings, store: store)._test_tokenAccountDescriptor(for: .clinepass))
         #expect(descriptor.provider == .clinepass)
         #expect(descriptor.title == support.title)
         #expect(descriptor.isVisible?() == true)
@@ -290,12 +290,13 @@ struct ClinePassMultiAccountTests {
         settings.addTokenAccount(provider: .clinepass, label: "Personal", token: "fixture-personal-key")
         settings.addTokenAccount(provider: .clinepass, label: "Work", token: "fixture-work-key")
         let store = Self.makeStore(settings: settings)
-        let descriptor = ProvidersPane(settings: settings, store: store).tokenAccountDescriptor(for: .clinepass)
+        let descriptor = ProviderSettingsPageModel(settings: settings, store: store)
+            .tokenAccountDescriptor(for: .clinepass)
         let hosting = NSHostingView(rootView: VStack(alignment: .leading, spacing: 18) {
             Text("ClinePass").font(.title2.bold())
             Text("Synthetic account settings").foregroundStyle(.secondary)
             if let descriptor, descriptor.isVisible?() ?? true {
-                ProviderSettingsTokenAccountsRowView(descriptor: descriptor)
+                ProviderTokenAccountsSection(descriptor: descriptor, requestRemoval: { _ in })
             } else {
                 Text("Account editor unavailable")
             }

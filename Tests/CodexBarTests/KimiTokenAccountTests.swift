@@ -174,7 +174,7 @@ struct KimiTokenAccountTests {
     func `existing account editor is discoverable before adding the first account`() throws {
         let settings = self.settings()
         let store = self.store(settings)
-        let descriptor = try #require(ProvidersPane(settings: settings, store: store)
+        let descriptor = try #require(ProviderSettingsPageModel(settings: settings, store: store)
             .tokenAccountDescriptor(for: .kimi))
         #expect(descriptor.isVisible?() == true)
         #expect(descriptor.accounts().isEmpty)
@@ -192,12 +192,12 @@ struct KimiTokenAccountTests {
         settings.addTokenAccount(provider: .kimi, label: "Personal (synthetic)", token: "eyJ.first.fixture")
         settings.addTokenAccount(provider: .kimi, label: "Work (synthetic)", token: "kimi-auth=second")
         let store = self.store(settings)
-        let descriptor = ProvidersPane(settings: settings, store: store).tokenAccountDescriptor(for: .kimi)
+        let descriptor = ProviderSettingsPageModel(settings: settings, store: store).tokenAccountDescriptor(for: .kimi)
         let hosting = NSHostingView(rootView: VStack(alignment: .leading, spacing: 18) {
             Text("Kimi Code").font(.title2.bold())
             Text("Synthetic settings · International region").foregroundStyle(.secondary)
             if let descriptor, descriptor.isVisible?() ?? true {
-                ProviderSettingsTokenAccountsRowView(descriptor: descriptor)
+                ProviderTokenAccountsSection(descriptor: descriptor, requestRemoval: { _ in })
             } else {
                 Text("Account editor unavailable").foregroundStyle(.secondary)
             }

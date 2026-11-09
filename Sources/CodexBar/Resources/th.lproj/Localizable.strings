@@ -2832,6 +2832,10 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "ไม่สามารถอ่านภาพรวมการเรียกเก็บเงินของ TypeSafe ได้ เปิด https://console.typesafe.ai/billing เพื่อตรวจสอบการเข้าถึง หากเปิดหน้าได้ ให้รายงานข้อผิดพลาดในการเชื่อมต่อระบบ";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "ไม่พบคุกกี้เซสชันของ TypeSafe ลงชื่อเข้าใช้ที่ console.typesafe.ai/billing หรือวางส่วนหัว Cookie";
 
+/* Settings: Providers */
+"Sign-in & connection" = "การลงชื่อเข้าใช้และการเชื่อมต่อ";
+"Remove token account?" = "ลบบัญชีโทเค็นหรือไม่";
+"%@ and its saved credential will be removed from Tolkein." = "%@ และข้อมูลรับรองที่บันทึกไว้จะถูกลบออกจาก Tolkein";
 /* Settings: Costs, Spend window */
 "Local estimated cost history" = "ประวัติค่าใช้จ่ายโดยประมาณในเครื่อง";
 "Open Spend window" = "เปิดหน้าต่างค่าใช้จ่าย";

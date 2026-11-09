@@ -112,9 +112,9 @@ struct ClaudeSwapSettingsPlacementTests {
         let fields = implementation.settingsFields(context: context).filter { $0.id == "claude-swap-executable-path" }
         let toggles = implementation.settingsToggles(context: context).filter { $0.id == "claude-swap-accounts" }
         let hosting = NSHostingView(rootView: Form {
-            ForEach(fields) { ProviderSettingsFieldRowView(field: $0) }
+            ForEach(fields) { ProviderSettingsFieldRow(field: $0) }
             Section("Options") {
-                ForEach(toggles) { ProviderSettingsToggleRowView(toggle: $0) }
+                ForEach(toggles) { ProviderSettingsToggleRows(toggle: $0) }
             }
         }
         .formStyle(.grouped)

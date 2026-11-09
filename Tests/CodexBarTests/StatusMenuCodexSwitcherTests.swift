@@ -783,7 +783,7 @@ struct StatusMenuCodexSwitcherTests {
 
         let fetcher = UsageFetcher()
         let store = UsageStore(fetcher: fetcher, browserDetection: BrowserDetection(cacheTTL: 0), settings: settings)
-        let pane = ProvidersPane(
+        let pane = ProviderSettingsPageModel(
             settings: settings,
             store: store,
             managedCodexAccountCoordinator: coordinator)
@@ -817,7 +817,7 @@ struct StatusMenuCodexSwitcherTests {
 
         let fetcher = UsageFetcher()
         let store = UsageStore(fetcher: fetcher, browserDetection: BrowserDetection(cacheTTL: 0), settings: settings)
-        let pane = ProvidersPane(settings: settings, store: store)
+        let pane = ProviderSettingsPageModel(settings: settings, store: store)
         let state = try #require(pane._test_codexAccountsSectionState())
 
         #expect(state.hasUnreadableManagedAccountStore)

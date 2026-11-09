@@ -2832,6 +2832,10 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "Ringkasan penagihan TypeSafe tidak dapat dibaca. Buka https://console.typesafe.ai/billing untuk memeriksa akses; jika halaman terbuka, laporkan kegagalan integrasi.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "Cookie sesi TypeSafe tidak ditemukan. Masuk di console.typesafe.ai/billing atau tempel header Cookie.";
 
+/* Settings: Providers */
+"Sign-in & connection" = "Masuk & koneksi";
+"Remove token account?" = "Hapus akun token?";
+"%@ and its saved credential will be removed from Tolkein." = "%@ dan kredensial tersimpannya akan dihapus dari Tolkein.";
 /* Settings: Costs, Spend window */
 "Local estimated cost history" = "Riwayat perkiraan biaya lokal";
 "Open Spend window" = "Buka jendela Pengeluaran";

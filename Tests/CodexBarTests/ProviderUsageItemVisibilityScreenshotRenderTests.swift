@@ -45,14 +45,11 @@ final class ProviderUsageItemVisibilityScreenshotRenderTests: XCTestCase {
             Text("Codex display settings (synthetic data)")
                 .font(.headline)
 
-            Form {
-                ProviderUsageItemVisibilitySettingsView(
-                    provider: .codex,
-                    settings: settings,
-                    items: rawModel.usageItemDescriptors)
-            }
-            .formStyle(.grouped)
-            .frame(width: 480, height: 330)
+            ProviderUsageItemVisibilitySection(
+                provider: .codex,
+                settings: settings,
+                items: rawModel.usageItemDescriptors)
+                .frame(width: 480)
 
             Text("Provider card and Overview result")
                 .font(.headline)

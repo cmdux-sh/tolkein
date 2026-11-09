@@ -67,7 +67,7 @@ struct OllamaAPIBalanceProofTests {
             Text("Ollama · Synthetic API balance fixture").font(.headline)
             UsageMenuCardView(model: model, width: 360)
             Form {
-                ProviderSettingsPickerRowView(picker: picker)
+                ProviderSettingsPickerRow(picker: picker)
             }.formStyle(.grouped).frame(height: 140)
         }.padding(.top, 16).frame(width: 540)
             .environment(\.locale, Locale(identifier: "en_US_POSIX"))

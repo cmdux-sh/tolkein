@@ -2832,6 +2832,10 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "No s'ha pogut llegir el resum de facturació de TypeSafe. Obre https://console.typesafe.ai/billing per comprovar-hi l'accés; si la pàgina s'obre, informa de l'error d'integració.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "No s'han trobat galetes de sessió de TypeSafe. Inicia sessió a console.typesafe.ai/billing o enganxa una capçalera Cookie.";
 
+/* Settings: Providers */
+"Sign-in & connection" = "Inici de sessió i connexió";
+"Remove token account?" = "Voleu eliminar el compte amb token?";
+"%@ and its saved credential will be removed from Tolkein." = "%@ i la seva credencial desada s'eliminaran de Tolkein.";
 /* Settings: Costs, Spend window */
 "Local estimated cost history" = "Historial local de costos estimats";
 "Open Spend window" = "Obre la finestra de despesa";

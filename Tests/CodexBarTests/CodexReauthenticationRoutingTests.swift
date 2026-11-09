@@ -160,7 +160,7 @@ struct CodexReauthenticationRoutingTests {
         store._test_providerRefreshOverride = { _ in refreshes.setValue(refreshes.value + 1) }
         store._test_codexCreditsLoaderOverride = { throw UsageError.noRateLimitsFound }
         store._test_widgetSnapshotSaveOverride = { _ in }
-        let pane = ProvidersPane(
+        let pane = ProviderSettingsPageModel(
             settings: settings,
             store: store,
             managedCodexAccountCoordinator: coordinator,
@@ -192,7 +192,7 @@ struct CodexReauthenticationRoutingTests {
     private struct Fixture {
         let settings: SettingsStore
         let store: UsageStore
-        let pane: ProvidersPane
+        let pane: ProviderSettingsPageModel
         let runner: ReauthenticationRecordingRunner
         let snapshot: LockIsolated<CodexAccountReconciliationSnapshot>
         let managedStore: FileManagedCodexAccountStore

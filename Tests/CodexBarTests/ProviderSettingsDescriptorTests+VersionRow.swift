@@ -22,7 +22,7 @@ extension ProviderSettingsDescriptorTests {
         // Web-only source with versionDetector: nil — a Version row can only ever read "not detected".
         #expect(presentation.detailLine(context) == "web")
         #expect(presentation.showsVersionInSettings == false)
-        #expect(ProviderDetailView<EmptyView>.versionText(provider: .cursor, store: fixture.store) == nil)
+        #expect(ProviderStatusFacts.versionText(provider: .cursor, store: fixture.store) == nil)
     }
 
     @Test
@@ -37,7 +37,7 @@ extension ProviderSettingsDescriptorTests {
         // Bundled web-cookie plugin with versionDetector: nil — a Version row can only read "not detected".
         #expect(presentation.detailLine(context) == "web")
         #expect(presentation.showsVersionInSettings == false)
-        #expect(ProviderDetailView<EmptyView>.versionText(provider: .raycast, store: fixture.store) == nil)
+        #expect(ProviderStatusFacts.versionText(provider: .raycast, store: fixture.store) == nil)
     }
 
     @Test
@@ -60,10 +60,10 @@ extension ProviderSettingsDescriptorTests {
         let fixture = try self.makeSettingsFixture(suite: "ProviderSettingsDescriptorTests-version-row-control")
         fixture.store.versions[.codex] = "1.2.3"
 
-        #expect(ProviderDetailView<EmptyView>.versionText(provider: .codex, store: fixture.store) == "1.2.3")
+        #expect(ProviderStatusFacts.versionText(provider: .codex, store: fixture.store) == "1.2.3")
         // A version-capable provider with no resolved version keeps the existing "not detected" row.
         #expect(
-            ProviderDetailView<EmptyView>.versionText(provider: .gemini, store: fixture.store)
+            ProviderStatusFacts.versionText(provider: .gemini, store: fixture.store)
                 == L("not detected"))
     }
 }

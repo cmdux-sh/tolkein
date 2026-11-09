@@ -1,4 +1,5 @@
 import AppKit
+import InternalUI
 import SwiftUI
 import Testing
 @testable import CodexBar
@@ -15,10 +16,10 @@ struct AntigravitySettingsPresentationTests {
         try Self.withFixture { settings, store in
             store.lastSourceLabels[.antigravity] = source
             store.versions[.antigravity] = detectedVersion
-            let pane = ProvidersPane(provider: .antigravity, settings: settings, store: store)
+            let pane = ProviderSettingsPageModel(provider: .antigravity, settings: settings, store: store)
 
             #expect(pane.providerSubtitle(.antigravity).hasPrefix("\(source)\n"))
-            #expect(ProviderDetailView<EmptyView>.versionText(provider: .antigravity, store: store) == nil)
+            #expect(ProviderStatusFacts.versionText(provider: .antigravity, store: store) == nil)
             #expect(store.version(for: .antigravity) == detectedVersion)
         }
     }
@@ -27,10 +28,10 @@ struct AntigravitySettingsPresentationTests {
     func `settings use the selected source before any successful fetch`(source: AntigravityUsageDataSource) throws {
         try Self.withFixture { settings, store in
             settings.antigravityUsageDataSource = source
-            let pane = ProvidersPane(provider: .antigravity, settings: settings, store: store)
+            let pane = ProviderSettingsPageModel(provider: .antigravity, settings: settings, store: store)
 
             #expect(pane.providerSubtitle(.antigravity) == "\(source.rawValue)\n\(L("usage_not_fetched_yet"))")
-            #expect(ProviderDetailView<EmptyView>.versionText(provider: .antigravity, store: store) == nil)
+            #expect(ProviderStatusFacts.versionText(provider: .antigravity, store: store) == nil)
         }
     }
 
@@ -39,11 +40,11 @@ struct AntigravitySettingsPresentationTests {
         try Self.withFixture { settings, store in
             store.lastSourceLabels[.antigravity] = "oauth"
             store.errors[.antigravity] = "Synthetic quota refresh failed."
-            let pane = ProvidersPane(provider: .antigravity, settings: settings, store: store)
+            let pane = ProviderSettingsPageModel(provider: .antigravity, settings: settings, store: store)
 
             #expect(pane.providerSubtitle(.antigravity) == "oauth\n\(L("last_fetch_failed"))")
             #expect(pane.providerErrorDisplay(.antigravity)?.full == "Synthetic quota refresh failed.")
-            #expect(ProviderDetailView<EmptyView>.versionText(provider: .antigravity, store: store) == nil)
+            #expect(ProviderStatusFacts.versionText(provider: .antigravity, store: store) == nil)
         }
     }
 
@@ -53,7 +54,7 @@ struct AntigravitySettingsPresentationTests {
             store.lastSourceLabels[.antigravity] = "offline"
             store.snapshots[.antigravity] = Self.snapshot()
             store.diagnostics[.antigravity] = "Live Antigravity usage is unavailable; showing offline data."
-            let pane = ProvidersPane(provider: .antigravity, settings: settings, store: store)
+            let pane = ProviderSettingsPageModel(provider: .antigravity, settings: settings, store: store)
 
             #expect(pane.providerSubtitle(.antigravity).hasPrefix("offline\n"))
             #expect(!store.isStale(provider: .antigravity))
@@ -66,7 +67,7 @@ struct AntigravitySettingsPresentationTests {
     func `providers with version detection retain the shared version row`(detectedVersion: String?) throws {
         try Self.withFixture { _, store in
             store.versions[.codex] = detectedVersion
-            #expect(ProviderDetailView<EmptyView>.versionText(provider: .codex, store: store) ==
+            #expect(ProviderStatusFacts.versionText(provider: .codex, store: store) ==
                 (detectedVersion ?? L("not detected")))
         }
     }
@@ -87,7 +88,7 @@ struct AntigravitySettingsPresentationTests {
             let metadata = store.metadata(for: .antigravity)
             let context = ProviderPresentationContext(
                 provider: .antigravity, settings: settings, store: store, metadata: metadata)
-            let pane = ProvidersPane(provider: .antigravity, settings: settings, store: store)
+            let pane = ProviderSettingsPageModel(provider: .antigravity, settings: settings, store: store)
             let afterSubtitle = pane.providerSubtitle(.antigravity)
             let usageText = afterSubtitle.split(separator: "\n").dropFirst().joined(separator: "\n")
             let beforeSubtitle = "\(ProviderPresentation.standardDetailLine(context: context))\n\(usageText)"
@@ -99,20 +100,14 @@ struct AntigravitySettingsPresentationTests {
                     let title = before ? "Before · reconstructed synthetic baseline" : "After · synthetic settings"
                     let renderer = ImageRenderer(content: VStack(alignment: .leading, spacing: 18) {
                         Text(title).font(.caption).foregroundStyle(.secondary)
-                        ProviderDetailHeaderRow(
-                            provider: .antigravity,
-                            store: store,
-                            isEnabled: .constant(true),
-                            subtitle: before ? beforeSubtitle : afterSubtitle,
-                            onRefresh: {})
-                        Divider()
-                        ProviderDetailInfoRows(
-                            provider: .antigravity,
-                            store: store,
-                            isEnabled: true,
-                            versionText: before ? L("not detected") :
-                                ProviderDetailView<EmptyView>.versionText(provider: .antigravity, store: store),
-                            model: model)
+                        MacText(metadata.displayName, role: .title)
+                        MacText(
+                            ProviderSettingsPage.headerSubtitle(before ? beforeSubtitle : afterSubtitle),
+                            role: .caption,
+                            muted: true)
+                        MacSettingsSection(L("Status")) {
+                            ProviderFactsRow(facts: Self.facts(store: store, model: model, before: before))
+                        }
                     }
                     .padding(24)
                     .frame(width: 640, height: 280, alignment: .topLeading)
@@ -127,6 +122,20 @@ struct AntigravitySettingsPresentationTests {
                 }
             }
         }
+    }
+
+    /// The status facts, with the reconstructed baseline's "not detected" version row.
+    private static func facts(
+        store: UsageStore,
+        model: UsageMenuCardView.Model,
+        before: Bool) -> [MacKeyValueList.Row]
+    {
+        var facts = ProviderStatusFacts.rows(provider: .antigravity, store: store, model: model, showsAccountInfo: true)
+            .filter { !before || $0.id != "version" }
+        if before {
+            facts.insert(MacKeyValueList.Row(L("Version"), L("not detected"), id: "version"), at: min(1, facts.count))
+        }
+        return facts
     }
 
     private static func snapshot() -> UsageSnapshot {

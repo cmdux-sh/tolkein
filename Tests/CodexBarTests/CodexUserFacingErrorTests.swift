@@ -189,7 +189,7 @@ struct CodexUserFacingErrorTests {
         #expect(store.userFacingError(for: .grok) == GrokStatusProbe.teamUsageUnavailableMessage)
         #expect(!store.isStale(provider: .grok))
 
-        let pane = ProvidersPane(settings: settings, store: store)
+        let pane = ProviderSettingsPageModel(settings: settings, store: store)
         let display = pane._test_providerErrorDisplay(for: .grok)
         #expect(display?.preview == GrokStatusProbe.teamUsageUnavailableMessage)
         #expect(display?.full == GrokStatusProbe.teamUsageUnavailableMessage)
@@ -208,7 +208,7 @@ struct CodexUserFacingErrorTests {
                 + "Cached values from 1m ago."
         store.lastOpenAIDashboardError = "Frame load interrupted"
 
-        let pane = ProvidersPane(settings: settings, store: store)
+        let pane = ProviderSettingsPageModel(settings: settings, store: store)
         let model = pane._test_menuCardModel(for: .codex)
 
         #expect(model.subtitleText == "Codex usage is temporarily unavailable. Try refreshing.")
@@ -238,10 +238,10 @@ struct CodexUserFacingErrorTests {
         { controller in
             try #require(controller.menuCardModel(for: .codex))
         }
-        let pane = ProvidersPane(settings: settings, store: store)
+        let pane = ProviderSettingsPageModel(settings: settings, store: store)
         let settingsModel = pane._test_menuCardModel(for: .codex)
         let settingsDiagnostic = pane._test_openAIWebDiagnostic(for: .codex)
-        let settingsInfoRows = ProviderMetricsInlineView.infoRows(
+        let settingsInfoRows = ProviderSettingsUsagePresentation.infoRows(
             for: settingsModel,
             openAIWebDiagnostic: settingsDiagnostic)
 
@@ -263,7 +263,7 @@ struct CodexUserFacingErrorTests {
                 + "GET https://chatgpt.com/backend-api/wham/usage failed: 500; body={\"error\":{}}"
         store.errors[.codex] = raw
 
-        let pane = ProvidersPane(settings: settings, store: store)
+        let pane = ProviderSettingsPageModel(settings: settings, store: store)
         let display = pane._test_providerErrorDisplay(for: .codex)
 
         #expect(display?.preview == "Codex usage is temporarily unavailable. Try refreshing.")

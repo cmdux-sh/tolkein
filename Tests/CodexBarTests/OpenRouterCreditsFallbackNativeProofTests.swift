@@ -38,7 +38,7 @@ final class OpenRouterCreditsFallbackNativeProofTests: XCTestCase {
             startupBehavior: .testing,
             environmentBase: [:])
         store._setSnapshotForTesting(snapshot, provider: .openrouter)
-        let contentState = ProviderMetricsInlineView.ContentState(model: model, infoRows: [])
+        let contentState = ProviderSettingsUsagePresentation.ContentState(model: model, infoRows: [])
         let identity = snapshot.identity?.loginMethod
         let balance = try self.row("Balance", in: model)
         let todaySpend = try self.row("Today", in: model).value
@@ -47,7 +47,7 @@ final class OpenRouterCreditsFallbackNativeProofTests: XCTestCase {
         XCTAssertFalse(contentState.showsPlaceholder)
         XCTAssertNil(identity)
         XCTAssertNil(model.planText)
-        XCTAssertNil(ProviderDetailView<EmptyView>.planRow(provider: .openrouter, planText: model.planText))
+        XCTAssertNil(ProviderStatusFacts.planRow(provider: .openrouter, planText: model.planText))
         XCTAssertEqual(balance.value, "Unavailable right now")
         XCTAssertEqual(balance.secondaryValue, "Request returned HTTP 403")
         XCTAssertEqual(todaySpend, "$1.25")
@@ -87,22 +87,10 @@ final class OpenRouterCreditsFallbackNativeProofTests: XCTestCase {
         for appearance in [NSAppearance.Name.aqua, .darkAqua] {
             window.appearance = NSAppearance(named: appearance)
             window.contentView = NSHostingView(rootView:
-                ProviderDetailView(
+                ProviderSettingsPage(model: ProviderSettingsPageModel(
                     provider: .openrouter,
-                    store: store,
-                    isEnabled: .constant(true),
-                    subtitle: "Synthetic plugin response · Credits request returned HTTP 403",
-                    model: model,
-                    openAIWebDiagnostic: nil,
-                    settingsPickers: [],
-                    settingsToggles: [],
-                    settingsFields: [],
-                    settingsTokenAccounts: nil,
-                    errorDisplay: nil,
-                    isErrorExpanded: .constant(false),
-                    onCopyError: { _ in },
-                    onRefresh: {},
-                    supplementarySettingsContent: { EmptyView() })
+                    settings: store.settings,
+                    store: store))
                     .frame(width: 680, height: 900)
                     .background(appearance == .aqua ? Color.white : Color(nsColor: .windowBackgroundColor))
                     .environment(\.locale, Locale(identifier: "en"))
@@ -119,7 +107,7 @@ final class OpenRouterCreditsFallbackNativeProofTests: XCTestCase {
             "creditsStatus": 403,
             "transport": pluginResult.transport,
             "identity": identity ?? "",
-            "planRow": ProviderDetailView<EmptyView>.planRow(
+            "planRow": ProviderStatusFacts.planRow(
                 provider: .openrouter,
                 planText: model.planText)?.value ?? "",
             "shownRows": model.providerDetails.flatMap(\.rows).map(\.label),

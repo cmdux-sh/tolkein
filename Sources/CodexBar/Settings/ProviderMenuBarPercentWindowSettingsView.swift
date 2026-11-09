@@ -1,10 +1,11 @@
 import CodexBarCore
+import InternalUI
 import SwiftUI
 
-/// Per-provider picker for the quota window behind the menu bar percent.
+/// Per-provider picker for the quota window behind the menu bar percent, as a settings row.
 ///
 /// Writes a per-provider layout override so the choice survives whatever the global layout says,
-/// which is also how the layout editor's provider scope persists.
+/// which is also how the layout editor's provider scope persists. The Plugins pane embeds it too.
 @MainActor
 struct ProviderMenuBarPercentWindowSettingsView: View {
     let instanceID: ProviderInstanceID
@@ -22,6 +23,15 @@ struct ProviderMenuBarPercentWindowSettingsView: View {
     }
 
     var body: some View {
+        self.picker
+    }
+
+    /// Whether the row shows: always for plugins, and for a provider only while the menu bar has a percent to steer.
+    var isVisible: Bool {
+        self.picker.isVisible
+    }
+
+    private var picker: ProviderMenuBarPercentWindowPicker {
         ProviderMenuBarPercentWindowPicker(
             provider: self.instanceID.firstPartyProvider,
             iconStyle: self.settings.menuBarIconStyle,
@@ -64,38 +74,31 @@ struct ProviderMenuBarPercentWindowPicker: View {
         return MenuBarPercentWindowPreference.availableForPlugin(snapshot: self.snapshot, layout: self.layout)
     }
 
-    var body: some View {
-        if self.provider == nil {
-            // Plugin settings already own the section; the choice also controls the switcher in meter mode.
-            self.picker
-        } else if MenuBarPercentWindowPreference.isVisible(
+    /// Plugin settings always show the row (the choice also controls the switcher in meter mode); a provider shows it
+    /// only while the icon style and layout have a percent the choice can change.
+    var isVisible: Bool {
+        self.provider == nil || MenuBarPercentWindowPreference.isVisible(
             iconStyle: self.iconStyle,
             layout: self.layout,
             available: self.available)
-        {
-            Section {
-                self.picker
-            } footer: {
-                SettingsSectionFooter(L("menu_bar_metric_subtitle"))
+    }
+
+    var body: some View {
+        if self.isVisible {
+            MacSettingsRow(L("menu_bar_metric_title"), subtitle: L("menu_bar_metric_subtitle")) {
+                MacPopUpButton(self.options, selection: self.selectionBinding)
             }
-            .background(FocusResigningBackground())
         }
     }
 
-    private var picker: some View {
-        Picker(L("menu_bar_metric_title"), selection: self.selectionBinding) {
-            if self.selectionBinding.wrappedValue == nil {
-                // Mixed windows stay under the layout editor's control.
-                Text(L("menu_bar_layout_preset_custom"))
-                    .tag(MenuBarPercentWindowPreference?.none)
-            }
-            ForEach(self.available) { preference in
-                Text(preference.label(for: self.provider, snapshot: self.snapshot))
-                    .tag(MenuBarPercentWindowPreference?.some(preference))
-            }
+    /// The pop-up's choices: Custom while mixed windows stay under the layout editor's control, then each window.
+    var options: [(MenuBarPercentWindowPreference?, String)] {
+        let custom: [(MenuBarPercentWindowPreference?, String)] = self.selectionBinding.wrappedValue == nil
+            ? [(nil, L("menu_bar_layout_preset_custom"))]
+            : []
+        return custom + self.available.map { preference in
+            (preference, preference.label(for: self.provider, snapshot: self.snapshot))
         }
-        .pickerStyle(.menu)
-        .listRowSeparator(.hidden)
     }
 
     var selectionBinding: Binding<MenuBarPercentWindowPreference?> {

@@ -2830,6 +2830,10 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "TypeSafeの請求概要を読み取れませんでした。https://console.typesafe.ai/billing を開いてアクセスを確認してください。ページが開く場合は、連携の不具合を報告してください。";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "TypeSafeのセッションCookieが見つかりません。console.typesafe.ai/billing にサインインするか、Cookieヘッダーを貼り付けてください。";
 
+/* Settings: Providers */
+"Sign-in & connection" = "サインインと接続";
+"Remove token account?" = "トークンアカウントを削除しますか？";
+"%@ and its saved credential will be removed from Tolkein." = "%@ と保存済みの認証情報が Tolkein から削除されます。";
 /* Settings: Costs, Spend window */
 "Local estimated cost history" = "ローカルの推定コスト履歴";
 "Open Spend window" = "支出ウインドウを開く";
