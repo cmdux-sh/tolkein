@@ -1000,28 +1000,28 @@ struct ProviderArchitectureGatekeeperTests {
             expectedProviderIDs: ["codex"],
             reason: "This exact provider-owned construct passes a fixed identity to shared infrastructure."),
         SuppressedProviderReference(
-            path: "Sources/CodexBar/Settings/PreferencesProvidersPane+Testing.swift",
+            path: "Sources/CodexBar/Settings/ProviderPage/ProviderSettingsPageModel+Testing.swift",
             anchor: "self.codexAccountsSectionState(for: .codex)",
             expectedProviderIDs: ["codex"],
             reason: "This test-only app seam pins Codex fixture data and does not make production routing policy."),
         SuppressedProviderReference(
-            path: "Sources/CodexBar/Settings/PreferencesProvidersPane+Testing.swift",
+            path: "Sources/CodexBar/Settings/ProviderPage/ProviderSettingsPageModel+Testing.swift",
             anchor: "let model = pane._test_menuCardModel(for: .codex)",
             expectedProviderIDs: ["codex"],
             reason: "This test-only app seam pins Codex fixture data and does not make production routing policy."),
         SuppressedProviderReference(
-            path: "Sources/CodexBar/Settings/PreferencesProvidersPane+Testing.swift",
+            path: "Sources/CodexBar/Settings/ProviderPage/ProviderSettingsPageModel+Testing.swift",
             occurrence: 1,
             anchor: "provider: .codex,",
             expectedProviderIDs: ["codex"],
             reason: "This test-only app seam pins Codex fixture data and does not make production routing policy."),
         SuppressedProviderReference(
-            path: "Sources/CodexBar/Settings/PreferencesProvidersPane+Testing.swift",
+            path: "Sources/CodexBar/Settings/ProviderPage/ProviderSettingsPageModel+Testing.swift",
             anchor: "openAIWebDiagnostic: pane._test_openAIWebDiagnostic(for: .codex),",
             expectedProviderIDs: ["codex"],
             reason: "This test-only app seam pins Codex fixture data and does not make production routing policy."),
         SuppressedProviderReference(
-            path: "Sources/CodexBar/Settings/PreferencesProvidersPane+Testing.swift",
+            path: "Sources/CodexBar/Settings/ProviderPage/ProviderSettingsPageModel+Testing.swift",
             occurrence: 2,
             anchor: "provider: .codex,",
             expectedProviderIDs: ["codex"],
@@ -2066,7 +2066,7 @@ struct ProviderArchitectureGatekeeperTests {
             expectedReferenceFingerprint: ["claude@0"],
             reason: "Verified Claude history ownership reconciles warning state without sharing it between accounts."),
         AllowedProviderConstruct(
-            path: "Sources/CodexBar/Settings/PreferencesProvidersPane+Testing.swift",
+            path: "Sources/CodexBar/Settings/ProviderPage/ProviderSettingsPageModel+Testing.swift",
             anchor: "store.versions[.codex] = \"1.0.0\"",
             expectedProviderIDs: [
                 "claude", "codex", "cursor", "gemini", "kimi", "minimax", "opencode", "opencodego",
@@ -2097,21 +2097,21 @@ struct ProviderArchitectureGatekeeperTests {
             ],
             reason: "This exact preferences test fixture seeds representative provider versions, snapshots, and accounts."),
         AllowedProviderConstruct(
-            path: "Sources/CodexBar/Settings/PreferencesProvidersPane.swift",
+            path: "Sources/CodexBar/Settings/ProviderPage/ProviderSettingsPageModel.swift",
             anchor: "guard let state = self.codexAccountsSectionState(for: .codex), state.canAddAccount else {",
             expectedProviderIDs: ["codex"],
             expectedReferenceCount: 1,
             expectedReferenceFingerprint: ["codex@0"],
             reason: "This exact app-runtime bridge coordinates provider-owned state through the shared controller."),
         AllowedProviderConstruct(
-            path: "Sources/CodexBar/Settings/PreferencesProvidersPane.swift",
+            path: "Sources/CodexBar/Settings/ProviderPage/ProviderSettingsPageModel.swift",
             anchor: "guard let state = self.codexAccountsSectionState(for: .codex),",
             expectedProviderIDs: ["codex"],
             expectedReferenceCount: 1,
             expectedReferenceFingerprint: ["codex@0"],
             reason: "This exact app-runtime bridge coordinates provider-owned state through the shared controller."),
         AllowedProviderConstruct(
-            path: "Sources/CodexBar/Settings/PreferencesSpendDashboardPane.swift",
+            path: "Sources/CodexBar/SpendDashboard/SpendWindowView.swift",
             anchor: "self.configuration.providerIDs.contains(UsageProvider.codex.rawValue)",
             expectedProviderIDs: ["codex"],
             expectedReferenceCount: 1,

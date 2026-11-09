@@ -96,7 +96,7 @@ struct ClaudeEducationAvailabilityTests {
 
                 await store.refreshProvider(.claude)
                 await MainActor.run {
-                    let pane = ProvidersPane(settings: store.settings, store: store)
+                    let pane = ProviderSettingsPageModel(settings: store.settings, store: store)
                     let menuModel = pane._test_menuCardModel(for: .claude)
                     let descriptor = MenuDescriptor.build(
                         provider: .claude,

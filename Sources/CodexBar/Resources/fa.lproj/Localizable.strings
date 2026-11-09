@@ -2834,6 +2834,58 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "خواندن نمای کلی صورتحساب TypeSafe ممکن نشد. برای بررسی دسترسی، https://console.typesafe.ai/billing را باز کنید؛ اگر صفحه باز شد، خطای یکپارچه‌سازی را گزارش کنید.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "هیچ کوکی نشست TypeSafe پیدا نشد. در console.typesafe.ai/billing وارد شوید یا یک سرآیند Cookie جای‌گذاری کنید.";
 
+/* Settings: Providers */
+"Sign-in & connection" = "ورود و اتصال";
+"Remove token account?" = "حساب توکن حذف شود؟";
+"%@ and its saved credential will be removed from Tolkein." = "%@ و اطلاعات ورود ذخیره‌شده‌اش از Tolkein حذف می‌شوند.";
+/* Settings: Costs, Spend window */
+"Local estimated cost history" = "تاریخچه برآورد هزینه محلی";
+"Open Spend window" = "باز کردن پنجره هزینه";
+"Tracking" = "پیگیری";
+"Time zone" = "منطقه زمانی";
+"Export" = "صادرات";
+"Turn On" = "روشن کردن";
+"Requires OpenCodex usage logs." = "به گزارش‌های استفاده از OpenCodex نیاز دارد.";
+/* Settings: General, Privacy, About, Debug */
+"section_provider_switcher" = "تعویض‌کننده ارائه‌دهنده";
+"provider_switcher_default_shortcuts" = "میانبرهای پیش‌فرض";
+"provider_switcher_defaults_in_use" = "میانبرهای پیش‌فرض در حال استفاده‌اند.";
+"provider_switcher_shortcuts_footer" = "این میانبرها تا زمانی که منوی تعویض ارائه‌دهنده باز است کار می‌کنند. برای خاموش کردن عمل یک میانبر، آن را پاک کنید. بازخوانی (⌘R)، تنظیمات (⌘,) و خروج (⌘Q) رزرو شده‌اند.";
+"open_menu_shortcut_system_conflict_title" = "از میانبر macOS استفاده شود؟";
+"open_menu_shortcut_system_conflict_message" = "macOS از قبل از %@ به‌عنوان میانبر سراسری سیستم استفاده می‌کند. بیشتر آن‌ها را می‌توان در تنظیمات سیستم › صفحه‌کلید › میانبرهای صفحه‌کلید تغییر داد.";
+"Use Anyway" = "در هر صورت استفاده شود";
+"open_menu_shortcut_menu_conflict" = "از قبل توسط مورد منوی «%@» استفاده می‌شود.";
+"open_menu_shortcut_disallowed" = "Option را با Command یا Control ترکیب کنید.";
+"shortcut_issue_unsupported_key" = "از یک حرف، یک رقم، ← یا → استفاده کنید.";
+"shortcut_issue_reserved" = "%@ برای یک فرمان منو یا سیستم رزرو شده است.";
+"shortcut_issue_duplicate" = "از قبل توسط «%@» استفاده می‌شود.";
+"section_your_preferences" = "تنظیمات شما";
+"import_preferences_confirm_title" = "تنظیمات شما جایگزین شود؟";
+"import_preferences_confirm_message" = "وارد کردن «%@» تنظیمات نمایش و اعلان این Mac را جایگزین می‌کند. حساب‌ها، اطلاعات ورود، مسیرهای محلی و رضایت‌ها تغییر نمی‌کنند.";
+"import_preferences_confirm_action" = "وارد کردن";
+"update_check_title" = "جست‌وجوی نسخه جدید";
+"update_check_busy" = "یک بررسی یا به‌روزرسانی در حال اجراست.";
+"install_updates_needs_checks" = "نیاز به بررسی خودکار به‌روزرسانی‌ها دارد.";
+"section_simulations" = "شبیه‌سازی‌ها";
+"section_logs" = "گزارش‌ها";
+"debug_log_source" = "منبع";
+"debug_menu_error_title" = "خطای کارت منو";
+"debug_cost_error_title" = "خطای هزینه";
+"debug_cost_error_unsupported" = "فقط Codex و Claude خطاهای هزینه را گزارش می‌کنند.";
+"debug_cost_cache_busy" = "پس از پایان اسکن فعلی هزینه در دسترس است.";
+"debug_reset_action" = "بازنشانی";
+"debug_clear_cost_cache_confirm_title" = "کش هزینه پاک شود؟";
+"debug_clear_cost_cache_confirm_message" = "نتایج کش‌شده اسکن هزینه حذف می‌شوند. هزینه‌ها در بازخوانی بعدی دوباره از گزارش‌های محلی اسکن می‌شوند.";
+"debug_clear_cookie_cache_confirm_title" = "کش کوکی پاک شود؟";
+"debug_clear_cookie_cache_confirm_message" = "کوکی‌های کش‌شده مرورگر برای همه ارائه‌دهندگان حذف می‌شوند. ارائه‌دهندگانی که از کوکی استفاده می‌کنند، هنگام نیاز دوباره آن‌ها را وارد می‌کنند.";
+"debug_reset_cli_sessions_confirm_title" = "جلسات CLI بازنشانی شوند؟";
+"debug_reset_cli_sessions_confirm_message" = "جلسات کاوش باز Codex، Claude و Antigravity بسته می‌شوند. بازخوانی بعدی جلسات جدیدی شروع می‌کند.";
+"debug_cache_failed" = "ناموفق: %@";
+"debug_cookie_cache_failed_one" = "پاک‌سازی کش کوکی برای ۱ عملیات ناموفق بود.";
+"debug_cookie_cache_failed_other" = "پاک‌سازی کش کوکی برای %d عملیات ناموفق بود.";
+"debug_cookie_cache_cleared_one" = "۱ ارائه‌دهنده پاک شد.";
+"debug_cookie_cache_cleared_other" = "%d ارائه‌دهنده پاک شد.";
+"debug_cookie_cache_empty" = "هیچ کوکی کش‌شده‌ای پیدا نشد.";
 /* Settings: Integrations, Plugins */
 "The local HTTP server, the command-line tool and hooks." = "سرور HTTP محلی، ابزار خط فرمان و قلاب‌ها.";
 "Running" = "در حال اجرا";

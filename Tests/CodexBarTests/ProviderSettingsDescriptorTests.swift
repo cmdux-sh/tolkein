@@ -529,7 +529,7 @@ struct ProviderSettingsDescriptorTests {
         let view = NSHostingView(rootView:
             Form {
                 Section("Antigravity · synthetic settings") {
-                    ProviderSettingsPickerRowView(picker: picker)
+                    ProviderSettingsPickerRow(picker: picker)
                 }
             }.formStyle(.grouped).frame(width: 740, height: 210))
         view.frame = NSRect(x: 0, y: 0, width: 740, height: 210)
@@ -758,7 +758,7 @@ struct ProviderSettingsDescriptorTests {
         #expect(header.isVisible?() ?? true)
         #expect(header.title == "Cookie header")
 
-        let pane = ProvidersPane(settings: fixture.settings, store: fixture.store)
+        let pane = ProviderSettingsPageModel(settings: fixture.settings, store: fixture.store)
         #expect(pane._test_tokenAccountDescriptor(for: .raycast) == nil)
     }
 
@@ -1184,7 +1184,7 @@ extension ProviderSettingsDescriptorTests {
         fixture.store.snapshots.removeValue(forKey: .deepseek)
         fixture.store.refreshingProviders.insert(.deepseek)
 
-        let model = ProvidersPane(settings: fixture.settings, store: fixture.store)
+        let model = ProviderSettingsPageModel(settings: fixture.settings, store: fixture.store)
             ._test_menuCardModel(for: .deepseek)
 
         let balance = try #require(model.metrics.first)
@@ -1228,12 +1228,12 @@ extension ProviderSettingsDescriptorTests {
 
         #expect(fixture.store.snapshots[.deepseek] == nil)
         #expect(fixture.store.lastKnownResetSnapshots[.deepseek] == nil)
-        let model = ProvidersPane(settings: fixture.settings, store: fixture.store)
+        let model = ProviderSettingsPageModel(settings: fixture.settings, store: fixture.store)
             ._test_menuCardModel(for: .deepseek)
         #expect(model.metrics.first?.statusText == "$8.06 (Paid: $8.06 / Granted: $0.00)")
         #expect(model.inlineUsageDashboard == nil)
         #expect(model.usageNotes.isEmpty)
-        #expect(!ProvidersPane(settings: fixture.settings, store: fixture.store)
+        #expect(!ProviderSettingsPageModel(settings: fixture.settings, store: fixture.store)
             ._test_providerSubtitle(.deepseek).contains("usage not fetched yet"))
         let transitionPicker = try #require(DeepSeekProviderImplementation().settingsPickers(context: context).first)
         #expect(transitionPicker.options.map(\.id) == ["chrome:Default", "chrome:Profile 2"])
@@ -1512,11 +1512,11 @@ extension ProviderSettingsDescriptorTests {
 
     @Test
     func `provider settings labels an empty transition as refreshing`() {
-        #expect(ProviderMetricsInlineView.placeholderText(
+        #expect(ProviderSettingsUsagePresentation.placeholderText(
             isEnabled: true,
             isRefreshing: true,
             modelPlaceholder: nil) == "Refreshing")
-        #expect(ProviderMetricsInlineView.placeholderText(
+        #expect(ProviderSettingsUsagePresentation.placeholderText(
             isEnabled: true,
             isRefreshing: false,
             modelPlaceholder: nil) == "No usage yet")
@@ -1536,7 +1536,7 @@ extension ProviderSettingsDescriptorTests {
             keyUsageMonthly: 18.75,
             updatedAt: OpenRouterLimitTestSupport.now)
         let model = try OpenRouterLimitTestSupport.model(usage.toUsageSnapshot())
-        let content = ProviderMetricsInlineView.ContentState(model: model, infoRows: [])
+        let content = ProviderSettingsUsagePresentation.ContentState(model: model, infoRows: [])
 
         #expect(model.metrics.isEmpty)
         #expect(model.providerDetails.flatMap(\.rows).contains { $0.label == "This month" })
@@ -1552,13 +1552,13 @@ extension ProviderSettingsDescriptorTests {
             keyUsage: 10,
             updatedAt: OpenRouterLimitTestSupport.now).toUsageSnapshot())
         #expect(!meteredModel.metrics.isEmpty)
-        #expect(!ProviderMetricsInlineView.ContentState(model: meteredModel, infoRows: []).showsPlaceholder)
+        #expect(!ProviderSettingsUsagePresentation.ContentState(model: meteredModel, infoRows: []).showsPlaceholder)
 
         let emptyModel = try OpenRouterLimitTestSupport.model(UsageSnapshot(
             primary: nil,
             secondary: nil,
             updatedAt: OpenRouterLimitTestSupport.now))
-        #expect(ProviderMetricsInlineView.ContentState(model: emptyModel, infoRows: []).showsPlaceholder)
+        #expect(ProviderSettingsUsagePresentation.ContentState(model: emptyModel, infoRows: []).showsPlaceholder)
     }
 
     @Test
@@ -1608,7 +1608,7 @@ extension ProviderSettingsDescriptorTests {
             }
             let hosting = NSHostingView(rootView: Form {
                 ForEach(displayedFields) { field in
-                    ProviderSettingsFieldRowView(field: field)
+                    ProviderSettingsFieldRow(field: field)
                 }
             }
             .formStyle(.grouped)

@@ -21,7 +21,7 @@ struct KimiRegionSettingsTests {
         let renderer = ImageRenderer(content: VStack(alignment: .leading, spacing: 18) {
             Text("Kimi Code").font(.title2.bold())
             Text("Synthetic settings · International account").font(.caption).foregroundStyle(.secondary)
-            ForEach(pickers) { ProviderSettingsPickerRowView(picker: $0) }
+            ForEach(pickers) { ProviderSettingsPickerRow(picker: $0) }
         }.padding(24).frame(width: 700).background(Color(nsColor: .windowBackgroundColor)))
         renderer.scale = 2
         let image = try #require(renderer.cgImage)

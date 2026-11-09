@@ -45,7 +45,7 @@ struct ClinePassProviderTests {
             let hosting = NSHostingView(rootView: VStack(alignment: .leading, spacing: 18) {
                 Text("ClinePass").font(.title2.bold())
                 Text("Synthetic settings").font(.caption).foregroundStyle(.secondary)
-                ProviderSettingsFieldRowView(field: displayed)
+                ProviderSettingsFieldRow(field: displayed)
             }.padding(24).frame(width: 600).background(Color(nsColor: .windowBackgroundColor)))
             hosting.appearance = NSAppearance(named: .aqua)
             let png = try #require(MenuLayoutScreenshotRenderTests.pngDataWithWindow(hosting: hosting))

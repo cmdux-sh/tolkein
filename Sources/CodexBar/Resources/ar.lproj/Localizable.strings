@@ -2834,6 +2834,58 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "تعذّرت قراءة ملخص فوترة TypeSafe. افتح https://console.typesafe.ai/billing للتحقق من إمكانية الوصول؛ إذا فُتحت الصفحة، فأبلغ عن خلل التكامل.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "لم يتم العثور على ملفات تعريف ارتباط لجلسة TypeSafe. سجّل الدخول في console.typesafe.ai/billing أو الصق ترويسة Cookie.";
 
+/* Settings: Providers */
+"Sign-in & connection" = "تسجيل الدخول والاتصال";
+"Remove token account?" = "هل تريد إزالة الحساب الرمزي؟";
+"%@ and its saved credential will be removed from Tolkein." = "ستتم إزالة %@ وبيانات الاعتماد المحفوظة الخاصة به من Tolkein.";
+/* Settings: Costs, Spend window */
+"Local estimated cost history" = "سجل التكاليف التقديري المحلي";
+"Open Spend window" = "فتح نافذة الإنفاق";
+"Tracking" = "التتبّع";
+"Time zone" = "المنطقة الزمنية";
+"Export" = "التصدير";
+"Turn On" = "تشغيل";
+"Requires OpenCodex usage logs." = "يتطلب سجلات استخدام OpenCodex.";
+/* Settings: General, Privacy, About, Debug */
+"section_provider_switcher" = "مبدّل المزوّدين";
+"provider_switcher_default_shortcuts" = "الاختصارات الافتراضية";
+"provider_switcher_defaults_in_use" = "الاختصارات الافتراضية قيد الاستخدام.";
+"provider_switcher_shortcuts_footer" = "تعمل هذه الاختصارات أثناء فتح قائمة مبدّل المزوّدين. امسح اختصارًا لإيقاف إجرائه. التحديث (⌘R) والإعدادات (⌘,) والإنهاء (⌘Q) محجوزة.";
+"open_menu_shortcut_system_conflict_title" = "استخدام اختصار من macOS؟";
+"open_menu_shortcut_system_conflict_message" = "يستخدم macOS بالفعل %@ كاختصار على مستوى النظام. يمكن تغيير معظمها في إعدادات النظام › لوحة المفاتيح › اختصارات لوحة المفاتيح.";
+"Use Anyway" = "استخدام على أي حال";
+"open_menu_shortcut_menu_conflict" = "مستخدم بالفعل بواسطة عنصر القائمة «%@».";
+"open_menu_shortcut_disallowed" = "اجمع Option مع Command أو Control.";
+"shortcut_issue_unsupported_key" = "استخدم حرفًا أو رقمًا أو ← أو →.";
+"shortcut_issue_reserved" = "%@ محجوز لأمر قائمة أو أمر نظام.";
+"shortcut_issue_duplicate" = "مستخدم بالفعل بواسطة «%@».";
+"section_your_preferences" = "تفضيلاتك";
+"import_preferences_confirm_title" = "استبدال تفضيلاتك؟";
+"import_preferences_confirm_message" = "يؤدي استيراد «%@» إلى استبدال تفضيلات العرض والإشعارات على جهاز Mac هذا. تبقى الحسابات وبيانات الاعتماد والمسارات المحلية والموافقات كما هي.";
+"import_preferences_confirm_action" = "استيراد";
+"update_check_title" = "البحث عن إصدار جديد";
+"update_check_busy" = "هناك فحص أو تحديث قيد التشغيل بالفعل.";
+"install_updates_needs_checks" = "يتطلب التحقق من التحديثات تلقائيًا.";
+"section_simulations" = "عمليات المحاكاة";
+"section_logs" = "السجلات";
+"debug_log_source" = "المصدر";
+"debug_menu_error_title" = "خطأ بطاقة القائمة";
+"debug_cost_error_title" = "خطأ التكلفة";
+"debug_cost_error_unsupported" = "يبلّغ Codex وClaude فقط عن أخطاء التكلفة.";
+"debug_cost_cache_busy" = "متاح عند انتهاء فحص التكلفة الحالي.";
+"debug_reset_action" = "إعادة تعيين";
+"debug_clear_cost_cache_confirm_title" = "مسح ذاكرة التكلفة المؤقتة؟";
+"debug_clear_cost_cache_confirm_message" = "تُزال نتائج فحص التكلفة المخزّنة مؤقتًا. يُعاد فحص التكاليف من السجلات المحلية عند التحديث التالي.";
+"debug_clear_cookie_cache_confirm_title" = "مسح ذاكرة الكوكيز المؤقتة؟";
+"debug_clear_cookie_cache_confirm_message" = "تُزال كوكيز المتصفح المخزّنة مؤقتًا لجميع المزوّدين. يستورد المزوّدون الذين يستخدمون الكوكيز هذه الكوكيز مرة أخرى عند حاجتهم إليها.";
+"debug_reset_cli_sessions_confirm_title" = "إعادة تعيين جلسات CLI؟";
+"debug_reset_cli_sessions_confirm_message" = "تُغلق جلسات الفحص المفتوحة لـ Codex وClaude وAntigravity. يبدأ التحديث التالي جلسات جديدة.";
+"debug_cache_failed" = "فشل: %@";
+"debug_cookie_cache_failed_one" = "فشل تنظيف ذاكرة الكوكيز المؤقتة في عملية واحدة.";
+"debug_cookie_cache_failed_other" = "فشل تنظيف ذاكرة الكوكيز المؤقتة. عدد العمليات: %d.";
+"debug_cookie_cache_cleared_one" = "تم مسح مزوّد واحد.";
+"debug_cookie_cache_cleared_other" = "عدد المزوّدين الذين تم مسحهم: %d.";
+"debug_cookie_cache_empty" = "لم يُعثر على كوكيز مخزّنة مؤقتًا.";
 /* Settings: Integrations, Plugins */
 "The local HTTP server, the command-line tool and hooks." = "خادم HTTP المحلي وأداة سطر الأوامر والخطافات.";
 "Running" = "قيد التشغيل";

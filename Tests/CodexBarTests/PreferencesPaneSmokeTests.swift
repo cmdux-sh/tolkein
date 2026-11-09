@@ -12,7 +12,7 @@ struct PreferencesPaneSmokeTests {
         let store = Self.makeUsageStore(settings: settings)
 
         Self.buildEveryPane(settings: settings, store: store)
-        _ = ProvidersPane(settings: settings, store: store).body
+        _ = ProviderSettingsPage(model: ProviderSettingsPageModel(settings: settings, store: store)).body
         _ = SettingsSidebarView(settings: settings, store: store, selection: .constant(.general)).body
 
         settings.debugDisableKeychainAccess = false
@@ -38,7 +38,8 @@ struct PreferencesPaneSmokeTests {
         store._setErrorForTesting("Example error", provider: .codex)
 
         Self.buildEveryPane(settings: settings, store: store)
-        _ = ProvidersPane(provider: .claude, settings: settings, store: store).body
+        _ = ProviderSettingsPage(model: ProviderSettingsPageModel(provider: .claude, settings: settings, store: store))
+            .body
         _ = SettingsSidebarView(settings: settings, store: store, selection: .constant(.provider(.codex))).body
     }
 
@@ -71,6 +72,18 @@ struct PreferencesPaneSmokeTests {
         _ = DebugSettingsPane(context: context).body
         _ = PluginsSettingsPane(context: context).body
         _ = ProviderSettingsPane(instanceID: UsageProvider.codex.instanceID, context: context).body
+        _ = DebugSettingsPage(settings: settings, store: store, loadsPathInfo: false, initialLogText: "probe").body
+        _ = DebugLogsSection(settings: settings, store: store, logText: "probe").body
+        for updater: UpdaterProviding in [
+            DisabledUpdaterController(),
+            HomebrewUpdaterController(savedAutoCheck: false, startScheduledChecks: false),
+        ] {
+            _ = AboutSettingsPage(updater: updater).body
+        }
+        let acknowledgements = Acknowledgement.load()
+        _ = AcknowledgementsSheet(
+            acknowledgements: acknowledgements,
+            initiallyExpanded: Set(acknowledgements.map(\.id))).body
     }
 
     @Test

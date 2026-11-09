@@ -1,15 +1,17 @@
 import AppKit
 import CodexBarCore
+import InternalUI
 import SwiftUI
 
-/// Per-provider accent color override.
+/// Per-provider accent color override, as a settings row.
 ///
 /// The hex field is the source of truth and the color well writes into it, so a user can paste an
-/// exact brand hex or pick visually. Reset appears only when an override exists. Descriptors hold the
+/// exact brand hex or pick visually. Use default appears only when an override exists. Descriptors hold the
 /// shipped color as a compile-time constant, so a reset restores it and can never lose it.
 @MainActor
 struct ProviderAccentColorSettingsView: View {
-    private static let hexFieldWidth: CGFloat = 92
+    /// Wide enough for "#RRGGBB" in the field well.
+    private static let hexFieldWidth = MacSize.settingsField / 2
 
     let provider: UsageProvider
     @Bindable var settings: SettingsStore
@@ -25,37 +27,22 @@ struct ProviderAccentColorSettingsView: View {
     }
 
     var body: some View {
-        Section {
-            HStack(spacing: 10) {
-                TextField(L("provider_accent_color_title"), text: self.$hexText)
-                    .labelsHidden()
-                    .textFieldStyle(.roundedBorder)
-                    .font(.body.monospaced())
-                    .frame(width: Self.hexFieldWidth)
-                    .focused(self.$isHexFieldFocused)
-                    .onSubmit { self.commitHexText() }
-                    .accessibilityLabel(L("provider_accent_color_hex_label"))
-
-                ColorPicker(
-                    L("provider_accent_color_title"),
-                    selection: self.colorBinding,
-                    supportsOpacity: false)
-                    .labelsHidden()
-
-                Spacer(minLength: 0)
-
+        MacSettingsRow(L("provider_accent_color_title"), subtitle: L("provider_accent_color_footer")) {
+            HStack(spacing: MacSpace.unit * 2) {
                 if self.hasOverride {
                     Button(L("provider_accent_color_reset")) { self.reset() }
-                        .controlSize(.small)
+                        .buttonStyle(.mac())
                 }
+                ProviderTextField(
+                    L("provider_accent_color_hex_label"),
+                    text: self.$hexText,
+                    isMonospaced: true,
+                    focus: self.$isHexFieldFocused)
+                    .frame(width: Self.hexFieldWidth)
+                    .onSubmit { self.commitHexText() }
+                MacColorWell(selection: self.colorBinding, swatches: [])
             }
-            .listRowSeparator(.hidden)
-        } header: {
-            Text(L("provider_accent_color_title"))
-        } footer: {
-            SettingsSectionFooter(L("provider_accent_color_footer"))
         }
-        .background(FocusResigningBackground())
         .onAppear { self.syncHexText() }
         .onChange(of: self.isHexFieldFocused) { _, isFocused in
             if !isFocused {
@@ -108,7 +95,11 @@ struct ProviderAccentColorSettingsView: View {
     }
 
     private static func swiftUIColor(_ color: ProviderColor) -> Color {
-        Color(red: color.red, green: color.green, blue: color.blue)
+        Color(nsColor: NSColor(
+            srgbRed: CGFloat(color.red),
+            green: CGFloat(color.green),
+            blue: CGFloat(color.blue),
+            alpha: 1))
     }
 
     /// The color well can hand back a wide-gamut color, so pin it to sRGB before storing the hex.

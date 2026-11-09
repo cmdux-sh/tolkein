@@ -2832,6 +2832,58 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "No s'ha pogut llegir el resum de facturació de TypeSafe. Obre https://console.typesafe.ai/billing per comprovar-hi l'accés; si la pàgina s'obre, informa de l'error d'integració.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "No s'han trobat galetes de sessió de TypeSafe. Inicia sessió a console.typesafe.ai/billing o enganxa una capçalera Cookie.";
 
+/* Settings: Providers */
+"Sign-in & connection" = "Inici de sessió i connexió";
+"Remove token account?" = "Voleu eliminar el compte amb token?";
+"%@ and its saved credential will be removed from Tolkein." = "%@ i la seva credencial desada s'eliminaran de Tolkein.";
+/* Settings: Costs, Spend window */
+"Local estimated cost history" = "Historial local de costos estimats";
+"Open Spend window" = "Obre la finestra de despesa";
+"Tracking" = "Seguiment";
+"Time zone" = "Zona horària";
+"Export" = "Exporta";
+"Turn On" = "Activa";
+"Requires OpenCodex usage logs." = "Cal incloure els registres d'ús d'OpenCodex.";
+/* Settings: General, Privacy, About, Debug */
+"section_provider_switcher" = "Commutador de proveïdors";
+"provider_switcher_default_shortcuts" = "Dreceres predeterminades";
+"provider_switcher_defaults_in_use" = "S’estan fent servir les dreceres predeterminades.";
+"provider_switcher_shortcuts_footer" = "Aquestes dreceres funcionen mentre el menú del commutador de proveïdors és obert. Esborreu-ne una per desactivar-ne l’acció. Actualitza (⌘R), Configuració (⌘,) i Surt (⌘Q) estan reservades.";
+"open_menu_shortcut_system_conflict_title" = "Voleu fer servir una drecera de macOS?";
+"open_menu_shortcut_system_conflict_message" = "macOS ja fa servir %@ com a drecera de tot el sistema. La majoria es poden canviar a Configuració del Sistema › Teclat › Dreceres de teclat.";
+"Use Anyway" = "Feu-la servir igualment";
+"open_menu_shortcut_menu_conflict" = "Ja la fa servir l’element de menú «%@».";
+"open_menu_shortcut_disallowed" = "Combineu Opció amb Ordre o Control.";
+"shortcut_issue_unsupported_key" = "Feu servir una lletra, un dígit, ← o →.";
+"shortcut_issue_reserved" = "%@ està reservada per a una ordre del menú o del sistema.";
+"shortcut_issue_duplicate" = "Ja la fa servir «%@».";
+"section_your_preferences" = "Les vostres preferències";
+"import_preferences_confirm_title" = "Voleu substituir les vostres preferències?";
+"import_preferences_confirm_message" = "Importar «%@» substitueix les preferències de visualització i notificacions d’aquest Mac. Els comptes, les credencials, els camins locals i els consentiments no canvien.";
+"import_preferences_confirm_action" = "Importa";
+"update_check_title" = "Cerca una versió nova";
+"update_check_busy" = "Ja hi ha una comprovació o una actualització en curs.";
+"install_updates_needs_checks" = "Requereix cercar actualitzacions automàticament.";
+"section_simulations" = "Simulacions";
+"section_logs" = "Registres";
+"debug_log_source" = "Origen";
+"debug_menu_error_title" = "Error de la targeta del menú";
+"debug_cost_error_title" = "Error de costos";
+"debug_cost_error_unsupported" = "Només Codex i Claude informen d’errors de costos.";
+"debug_cost_cache_busy" = "Disponible quan acabi l’anàlisi de costos en curs.";
+"debug_reset_action" = "Reinicia";
+"debug_clear_cost_cache_confirm_title" = "Voleu esborrar la memòria cau de costos?";
+"debug_clear_cost_cache_confirm_message" = "S’eliminen els resultats de l’anàlisi de costos a la memòria cau. Els costos es tornen a analitzar a partir dels registres locals a la propera actualització.";
+"debug_clear_cookie_cache_confirm_title" = "Voleu esborrar la memòria cau de galetes?";
+"debug_clear_cookie_cache_confirm_message" = "S’eliminen les galetes del navegador a la memòria cau de tots els proveïdors. Els proveïdors que fan servir galetes les tornen a importar quan les necessiten.";
+"debug_reset_cli_sessions_confirm_title" = "Voleu reiniciar les sessions de la CLI?";
+"debug_reset_cli_sessions_confirm_message" = "Es tanquen les sessions de sondeig obertes de Codex, Claude i Antigravity. La propera actualització n’inicia de noves.";
+"debug_cache_failed" = "Ha fallat: %@";
+"debug_cookie_cache_failed_one" = "La neteja de la memòria cau de galetes ha fallat en 1 operació.";
+"debug_cookie_cache_failed_other" = "La neteja de la memòria cau de galetes ha fallat en %d operacions.";
+"debug_cookie_cache_cleared_one" = "S’ha esborrat 1 proveïdor.";
+"debug_cookie_cache_cleared_other" = "S’han esborrat %d proveïdors.";
+"debug_cookie_cache_empty" = "No s’han trobat galetes a la memòria cau.";
 /* Settings: Integrations, Plugins */
 "The local HTTP server, the command-line tool and hooks." = "El servidor HTTP local, l'eina de línia d'ordres i els hooks.";
 "Running" = "En execució";

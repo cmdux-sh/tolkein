@@ -495,7 +495,7 @@ struct OpenAILiveUsageLimitsModelTests {
             binding: .constant(manual),
             actions: [])
         try Self.render(
-            Form { ProviderSettingsModelLimitsRowView(descriptor: descriptor) }.formStyle(.grouped),
+            Form { ProviderModelLimitsSection(descriptor: descriptor) }.formStyle(.grouped),
             size: NSSize(width: 700, height: 250),
             to: URL(fileURLWithPath: directory).appendingPathComponent("settings.png"))
         var scoped = descriptor
@@ -503,7 +503,7 @@ struct OpenAILiveUsageLimitsModelTests {
             "Applies to the selected token account “%@”. Each account keeps its own limits.",
             "Synthetic Org B")
         try Self.render(
-            Form { ProviderSettingsModelLimitsRowView(descriptor: scoped) }.formStyle(.grouped),
+            Form { ProviderModelLimitsSection(descriptor: scoped) }.formStyle(.grouped),
             size: NSSize(width: 700, height: 270),
             to: URL(fileURLWithPath: directory).appendingPathComponent("settings-account-scope.png"))
     }

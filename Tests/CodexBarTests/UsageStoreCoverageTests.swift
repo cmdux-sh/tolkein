@@ -232,7 +232,7 @@ struct UsageStoreCoverageTests {
             workspaceBalances: [AmpWorkspaceBalance(name: "billing@example.test", remaining: 10.22)],
             updatedAt: now).toUsageSnapshot(now: now)
         store._setSnapshotForTesting(snapshot, provider: .amp)
-        let model = ProvidersPane(settings: settings, store: store)._test_menuCardModel(for: .amp)
+        let model = ProviderSettingsPageModel(settings: settings, store: store)._test_menuCardModel(for: .amp)
 
         #expect(model.metrics.map(\.title) == ["Amp Free"])
         #expect(model.metrics.allSatisfy { $0.pacePercent == nil })
@@ -243,7 +243,7 @@ struct UsageStoreCoverageTests {
         #expect(model.creditsRemaining == nil)
 
         settings.hidePersonalInfo = true
-        let redactedModel = ProvidersPane(settings: settings, store: store)._test_menuCardModel(for: .amp)
+        let redactedModel = ProviderSettingsPageModel(settings: settings, store: store)._test_menuCardModel(for: .amp)
         #expect(redactedModel.providerDetails.first?.rows.last?.label == "Workspace")
     }
 
@@ -281,7 +281,7 @@ struct UsageStoreCoverageTests {
                     loginMethod: "Megawatt")),
             provider: .amp)
 
-        let model = ProvidersPane(settings: settings, store: store)._test_menuCardModel(for: .amp)
+        let model = ProviderSettingsPageModel(settings: settings, store: store)._test_menuCardModel(for: .amp)
         let descriptor = MenuDescriptor.build(
             provider: .amp,
             store: store,

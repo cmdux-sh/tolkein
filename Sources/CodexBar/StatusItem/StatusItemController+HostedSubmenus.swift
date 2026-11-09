@@ -302,6 +302,32 @@ extension StatusItemController {
             displayCostMultiplier: displayConversion.multiplier))
     }
 
+    /// The cost history card's "Search sessions" and session rows: close the menu, then open the Spend window on
+    /// the session browser for this account's snapshot, with `sessionID` selected when one was clicked.
+    func costHistorySessionBrowser(
+        provider: UsageProvider,
+        tokenSnapshot: CostUsageTokenSnapshot,
+        submenu: NSMenu?) -> @MainActor (String?) -> Void
+    {
+        let displayConversion = self.costHistoryDisplayConversion(for: tokenSnapshot)
+        return { [weak self, weak submenu] sessionID in
+            guard let self else { return }
+            let context = SessionUsageBrowserContext(
+                providerName: ProviderDescriptorRegistry.descriptor(for: provider).metadata.displayName,
+                windowLabel: tokenSnapshot.historyLabel.map { L($0) }
+                    ?? CostHistoryChartMenuView.windowLabel(days: max(1, tokenSnapshot.historyDays)),
+                sessions: tokenSnapshot.sessions,
+                currencyCode: displayConversion.currencyCode,
+                costMultiplier: displayConversion.multiplier,
+                timeZone: self.settings.costUsageBucketCalendar.timeZone,
+                activityRange: SessionUsagePresentation.toolActivityRange(
+                    snapshot: tokenSnapshot, calendar: self.settings.costUsageBucketCalendar))
+            performAfterClosingSessionMenu(submenu) {
+                self.openSpendWindow(.sessions(context, sessionID: sessionID))
+            }
+        }
+    }
+
     /// Resolves the user's preferred display currency for cost-history values, falling back to
     /// the snapshot's native currency when no exchange rate is available.
     private func costHistoryDisplayConversion(
@@ -451,23 +477,10 @@ extension StatusItemController {
             sessions: tokenSnapshot.sessions,
             hidePersonalInfo: self.settings.hidePersonalInfo,
             width: width,
-            onBrowseSessions: { [weak self, weak submenu] sessionID in
-                guard let self else { return }
-                let context = SessionUsageBrowserContext(
-                    providerName: ProviderDescriptorRegistry.descriptor(for: provider).metadata.displayName,
-                    windowLabel: tokenSnapshot.historyLabel.map { L($0) }
-                        ?? CostHistoryChartMenuView.windowLabel(days: max(1, tokenSnapshot.historyDays)),
-                    sessions: tokenSnapshot.sessions,
-                    currencyCode: displayConversion.currencyCode,
-                    costMultiplier: displayConversion.multiplier,
-                    timeZone: self.settings.costUsageBucketCalendar.timeZone,
-                    activityRange: SessionUsagePresentation.toolActivityRange(
-                        snapshot: tokenSnapshot, calendar: self.settings.costUsageBucketCalendar))
-                performAfterClosingSessionMenu(submenu) {
-                    SessionUsageNavigation.shared.request = .init(context: context, sessionID: sessionID)
-                    self.settingsOpenHandler?(.costs)
-                }
-            })
+            onBrowseSessions: self.costHistorySessionBrowser(
+                provider: provider,
+                tokenSnapshot: tokenSnapshot,
+                submenu: submenu))
         let hosting = MenuHostingView(rootView: chartView.codexBarLocalized())
         let scrollView = CostHistoryMenuScrollView(
             hosting: hosting,

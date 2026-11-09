@@ -2831,6 +2831,58 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "Не вдалося прочитати огляд платежів TypeSafe. Відкрийте https://console.typesafe.ai/billing, щоб перевірити доступ. Якщо сторінка відкривається, повідомте про помилку інтеграції.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "Файли cookie сеансу TypeSafe не знайдено. Увійдіть на console.typesafe.ai/billing або вставте заголовок Cookie.";
 
+/* Settings: Providers */
+"Sign-in & connection" = "Вхід і підключення";
+"Remove token account?" = "Видалити обліковий запис із токеном?";
+"%@ and its saved credential will be removed from Tolkein." = "%@ і збережені облікові дані буде видалено з Tolkein.";
+/* Settings: Costs, Spend window */
+"Local estimated cost history" = "Локальна історія оцінок витрат";
+"Open Spend window" = "Відкрити вікно витрат";
+"Tracking" = "Відстеження";
+"Time zone" = "Часовий пояс";
+"Export" = "Експорт";
+"Turn On" = "Увімкнути";
+"Requires OpenCodex usage logs." = "Потрібні журнали використання OpenCodex.";
+/* Settings: General, Privacy, About, Debug */
+"section_provider_switcher" = "Перемикач провайдерів";
+"provider_switcher_default_shortcuts" = "Типові комбінації";
+"provider_switcher_defaults_in_use" = "Використовуються типові комбінації.";
+"provider_switcher_shortcuts_footer" = "Ці комбінації клавіш працюють, поки відкрито меню перемикача провайдерів. Очистіть комбінацію, щоб вимкнути її дію. Оновити (⌘R), Параметри (⌘,) і Вийти (⌘Q) зарезервовано.";
+"open_menu_shortcut_system_conflict_title" = "Використати комбінацію macOS?";
+"open_menu_shortcut_system_conflict_message" = "macOS уже використовує %@ як загальносистемну комбінацію клавіш. Більшість із них можна змінити в Системних параметрах › Клавіатура › Клавіатурні скорочення.";
+"Use Anyway" = "Усе одно використати";
+"open_menu_shortcut_menu_conflict" = "Уже використовується пунктом меню «%@».";
+"open_menu_shortcut_disallowed" = "Поєднуйте Option із Command або Control.";
+"shortcut_issue_unsupported_key" = "Використовуйте літеру, цифру, ← або →.";
+"shortcut_issue_reserved" = "%@ зарезервовано для команди меню або системи.";
+"shortcut_issue_duplicate" = "Уже використовується дією «%@».";
+"section_your_preferences" = "Ваші налаштування";
+"import_preferences_confirm_title" = "Замінити ваші налаштування?";
+"import_preferences_confirm_message" = "Імпорт «%@» замінить налаштування відображення та сповіщень на цьому Mac. Облікові записи, облікові дані, локальні шляхи та згоди залишаться без змін.";
+"import_preferences_confirm_action" = "Імпортувати";
+"update_check_title" = "Пошук нової версії";
+"update_check_busy" = "Перевірка або оновлення вже виконується.";
+"install_updates_needs_checks" = "Потрібна автоматична перевірка оновлень.";
+"section_simulations" = "Симуляції";
+"section_logs" = "Журнали";
+"debug_log_source" = "Джерело";
+"debug_menu_error_title" = "Помилка картки меню";
+"debug_cost_error_title" = "Помилка вартості";
+"debug_cost_error_unsupported" = "Про помилки вартості повідомляють лише Codex і Claude.";
+"debug_cost_cache_busy" = "Доступно після завершення поточного сканування вартості.";
+"debug_reset_action" = "Скинути";
+"debug_clear_cost_cache_confirm_title" = "Очистити кеш вартості?";
+"debug_clear_cost_cache_confirm_message" = "Кешовані результати сканування вартості буде видалено. Під час наступного оновлення вартість буде знову обчислено з локальних журналів.";
+"debug_clear_cookie_cache_confirm_title" = "Очистити кеш cookie?";
+"debug_clear_cookie_cache_confirm_message" = "Кешовані cookie браузера буде видалено для всіх провайдерів. Провайдери, які використовують cookie, імпортують їх знову, коли вони знадобляться.";
+"debug_reset_cli_sessions_confirm_title" = "Скинути сеанси CLI?";
+"debug_reset_cli_sessions_confirm_message" = "Відкриті сеанси перевірок Codex, Claude і Antigravity буде закрито. Наступне оновлення запустить нові.";
+"debug_cache_failed" = "Помилка: %@";
+"debug_cookie_cache_failed_one" = "Не вдалося очистити кеш cookie: 1 операція.";
+"debug_cookie_cache_failed_other" = "Не вдалося очистити кеш cookie, операцій: %d.";
+"debug_cookie_cache_cleared_one" = "Очищено 1 провайдера.";
+"debug_cookie_cache_cleared_other" = "Очищено провайдерів: %d.";
+"debug_cookie_cache_empty" = "Кешованих cookie не знайдено.";
 /* Settings: Integrations, Plugins */
 "The local HTTP server, the command-line tool and hooks." = "Локальний HTTP-сервер, інструмент командного рядка та хуки.";
 "Running" = "Працює";

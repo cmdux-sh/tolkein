@@ -2835,6 +2835,58 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header.";
 
+/* Settings: Providers */
+"Sign-in & connection" = "Sign-in & connection";
+"Remove token account?" = "Remove token account?";
+"%@ and its saved credential will be removed from Tolkein." = "%@ and its saved credential will be removed from Tolkein.";
+/* Settings: Costs, Spend window */
+"Local estimated cost history" = "Local estimated cost history";
+"Open Spend window" = "Open Spend window";
+"Tracking" = "Tracking";
+"Time zone" = "Time zone";
+"Export" = "Export";
+"Turn On" = "Turn On";
+"Requires OpenCodex usage logs." = "Requires OpenCodex usage logs.";
+/* Settings: General, Privacy, About, Debug */
+"section_provider_switcher" = "Provider switcher";
+"provider_switcher_default_shortcuts" = "Default shortcuts";
+"provider_switcher_defaults_in_use" = "The default shortcuts are in use.";
+"provider_switcher_shortcuts_footer" = "These shortcuts work while the provider switcher menu is open. Clear one to turn its action off. Refresh (⌘R), Settings (⌘,) and Quit (⌘Q) are reserved.";
+"open_menu_shortcut_system_conflict_title" = "Use a macOS shortcut?";
+"open_menu_shortcut_system_conflict_message" = "macOS already uses %@ for a system-wide shortcut. Most can be changed in System Settings › Keyboard › Keyboard Shortcuts.";
+"Use Anyway" = "Use Anyway";
+"open_menu_shortcut_menu_conflict" = "Already used by the “%@” menu item.";
+"open_menu_shortcut_disallowed" = "Combine Option with Command or Control.";
+"shortcut_issue_unsupported_key" = "Use a letter, a digit, ← or →.";
+"shortcut_issue_reserved" = "%@ is reserved for a menu or system command.";
+"shortcut_issue_duplicate" = "Already used by %@.";
+"section_your_preferences" = "Your preferences";
+"import_preferences_confirm_title" = "Replace your preferences?";
+"import_preferences_confirm_message" = "Importing “%@” replaces the display and notification preferences on this Mac. Accounts, credentials, local paths and consent stay as they are.";
+"import_preferences_confirm_action" = "Import";
+"update_check_title" = "Look for a new version";
+"update_check_busy" = "A check or an update is already running.";
+"install_updates_needs_checks" = "Requires checking for updates automatically.";
+"section_simulations" = "Simulations";
+"section_logs" = "Logs";
+"debug_log_source" = "Source";
+"debug_menu_error_title" = "Menu card error";
+"debug_cost_error_title" = "Cost error";
+"debug_cost_error_unsupported" = "Only Codex and Claude report cost errors.";
+"debug_cost_cache_busy" = "Available when the current cost scan finishes.";
+"debug_reset_action" = "Reset";
+"debug_clear_cost_cache_confirm_title" = "Clear the cost cache?";
+"debug_clear_cost_cache_confirm_message" = "Cached cost scan results are removed. Costs are scanned again from local logs on the next refresh.";
+"debug_clear_cookie_cache_confirm_title" = "Clear the cookie cache?";
+"debug_clear_cookie_cache_confirm_message" = "Cached browser cookies are removed for every provider. Providers that use cookies import them again when they next need them.";
+"debug_reset_cli_sessions_confirm_title" = "Reset CLI sessions?";
+"debug_reset_cli_sessions_confirm_message" = "Open Codex, Claude and Antigravity probe sessions are closed. The next refresh starts new ones.";
+"debug_cache_failed" = "Failed: %@";
+"debug_cookie_cache_failed_one" = "Cookie cache cleanup failed for 1 operation.";
+"debug_cookie_cache_failed_other" = "Cookie cache cleanup failed for %d operations.";
+"debug_cookie_cache_cleared_one" = "Cleared 1 provider.";
+"debug_cookie_cache_cleared_other" = "Cleared %d providers.";
+"debug_cookie_cache_empty" = "No cached cookies found.";
 /* Settings: Integrations, Plugins */
 "The local HTTP server, the command-line tool and hooks." = "The local HTTP server, the command-line tool and hooks.";
 "Running" = "Running";

@@ -10,35 +10,9 @@ struct SettingsWindowAppearanceTests {
         #expect(SettingsPane.sidebarWidth == 260)
         #expect(SettingsPane.sidebarMinWidth < SettingsPane.sidebarWidth)
         #expect(SettingsPane.sidebarMaxWidth > SettingsPane.sidebarWidth)
-        #expect(SettingsPane.detailMaxWidth > SettingsPane.windowMinWidth - SettingsPane.sidebarWidth)
         // The static window minimum must leave a usable detail pane even at the widest
         // sidebar; this is what lets window sizing stay independent of the drag state.
         #expect(SettingsPane.windowMinWidth - SettingsPane.sidebarMaxWidth >= 400)
-    }
-
-    @Test
-    func `sidebar resize handle clamps drags and re-anchors on mouse down`() {
-        let view = SidebarResizeHandleView()
-        var stored = Double(SettingsPane.sidebarWidth)
-        view.getWidth = { stored }
-        view.setWidth = { newValue in
-            stored = min(
-                max(newValue, Double(SettingsPane.sidebarMinWidth)),
-                Double(SettingsPane.sidebarMaxWidth))
-        }
-
-        view.mouseDown(with: NSEvent.fakeMouseEvent(windowX: 300))
-        view.mouseDragged(with: NSEvent.fakeMouseEvent(windowX: 300 + 500))
-        #expect(stored == Double(SettingsPane.sidebarMaxWidth))
-
-        view.mouseDown(with: NSEvent.fakeMouseEvent(windowX: 300))
-        view.mouseDragged(with: NSEvent.fakeMouseEvent(windowX: 300 - 500))
-        #expect(stored == Double(SettingsPane.sidebarMinWidth))
-
-        // A fresh mouseDown re-anchors the drag to the current (clamped) width.
-        view.mouseDown(with: NSEvent.fakeMouseEvent(windowX: 300))
-        view.mouseDragged(with: NSEvent.fakeMouseEvent(windowX: 300 + 40))
-        #expect(stored == Double(SettingsPane.sidebarMinWidth) + 40)
     }
 
     @Test
@@ -129,7 +103,7 @@ struct SettingsWindowAppearanceTests {
     }
 
     @Test
-    func `bridge updates window title without pulsing appearance on pane changes`() {
+    func `bridge pulses appearance only when the colour scheme changes`() {
         let resetCapture = ResetCapture()
         let bridge = SettingsWindowAppearanceView { resetCapture.actions.append($0) }
         let window = NSWindow(
@@ -140,13 +114,12 @@ struct SettingsWindowAppearanceTests {
         window.contentView = bridge
         resetCapture.actions.removeAll()
 
-        bridge.refreshWindowAppearance(for: .light, windowTitle: "Display")
+        bridge.refreshWindowAppearance(for: .light)
         #expect(resetCapture.actions.count == 1)
-
-        bridge.refreshWindowAppearance(for: .light, windowTitle: "General")
-
-        #expect(window.title == "General")
+        bridge.refreshWindowAppearance(for: .light)
         #expect(resetCapture.actions.count == 1)
+        bridge.refreshWindowAppearance(for: .dark)
+        #expect(resetCapture.actions.count == 2)
     }
 
     @Test
@@ -207,7 +180,7 @@ struct SettingsWindowAppearanceTests {
     }
 
     @Test
-    func `settings window extends content behind the titlebar for the edge-to-edge sidebar`() {
+    func `settings window runs the sidebar under the toolbar`() {
         let bridge = SettingsWindowAppearanceView()
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 400, height: 300),
@@ -218,13 +191,12 @@ struct SettingsWindowAppearanceTests {
         window.contentView = bridge
 
         #expect(window.styleMask.contains(.fullSizeContentView))
-        if #unavailable(macOS 26.0) {
-            #expect(window.titlebarAppearsTransparent)
-        }
+        // One layout on macOS 15 and 26: the titlebar and toolbar stay native.
+        #expect(!window.titlebarAppearsTransparent)
     }
 
     @Test
-    func `settings titlebar follows OS availability without losing the native title`() {
+    func `settings titlebar stays native on every macOS version`() {
         let bridge = SettingsWindowAppearanceView()
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 400, height: 300),
@@ -233,17 +205,10 @@ struct SettingsWindowAppearanceTests {
             defer: false)
 
         window.contentView = bridge
+        bridge.refreshWindowAppearance(for: .light)
 
-        bridge.refreshWindowAppearance(for: .light, windowTitle: "General")
-        #expect(window.title == "General")
-        if #available(macOS 26.0, *) {
-            // The split view owns the toolbar through scene bridging; the bridge leaves it native.
-            #expect(!window.titlebarAppearsTransparent)
-            #expect(window.titlebarSeparatorStyle == .automatic)
-        } else {
-            #expect(window.toolbar == nil)
-            #expect(window.titleVisibility == .visible)
-        }
+        #expect(!window.titlebarAppearsTransparent)
+        #expect(window.titlebarSeparatorStyle == .automatic)
     }
 
     @Test
@@ -291,21 +256,5 @@ private final class MiniaturizedWindowSpy: NSWindow {
 
     override func makeKeyAndOrderFront(_ sender: Any?) {
         _ = sender
-    }
-}
-
-extension NSEvent {
-    /// Minimal mouse event for driving NSView mouseDown/mouseDragged handlers in tests.
-    fileprivate static func fakeMouseEvent(windowX: CGFloat) -> NSEvent {
-        NSEvent.mouseEvent(
-            with: .leftMouseDragged,
-            location: NSPoint(x: windowX, y: 0),
-            modifierFlags: [],
-            timestamp: 0,
-            windowNumber: 0,
-            context: nil,
-            eventNumber: 0,
-            clickCount: 1,
-            pressure: 1)!
     }
 }

@@ -2829,6 +2829,58 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "Non se puido ler o resumo de facturación de TypeSafe. Abre https://console.typesafe.ai/billing para comprobar o acceso; se a páxina se abre, informa do fallo de integración.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "Non se atoparon cookies de sesión de TypeSafe. Inicia sesión en console.typesafe.ai/billing ou pega unha cabeceira Cookie.";
 
+/* Settings: Providers */
+"Sign-in & connection" = "Inicio de sesión e conexión";
+"Remove token account?" = "Queres eliminar a conta con token?";
+"%@ and its saved credential will be removed from Tolkein." = "%@ e a súa credencial gardada eliminaranse de Tolkein.";
+/* Settings: Costs, Spend window */
+"Local estimated cost history" = "Historial local de custos estimados";
+"Open Spend window" = "Abrir a xanela de gasto";
+"Tracking" = "Rexistro";
+"Time zone" = "Zona horaria";
+"Export" = "Exportar";
+"Turn On" = "Activar";
+"Requires OpenCodex usage logs." = "Require os rexistros de uso de OpenCodex.";
+/* Settings: General, Privacy, About, Debug */
+"section_provider_switcher" = "Cambiador de provedores";
+"provider_switcher_default_shortcuts" = "Atallos predeterminados";
+"provider_switcher_defaults_in_use" = "Estanse a usar os atallos predeterminados.";
+"provider_switcher_shortcuts_footer" = "Estes atallos funcionan mentres o menú do cambiador de provedores está aberto. Borra un para desactivar a súa acción. Actualizar (⌘R), Axustes (⌘,) e Saír (⌘Q) están reservados.";
+"open_menu_shortcut_system_conflict_title" = "Usar un atallo de macOS?";
+"open_menu_shortcut_system_conflict_message" = "macOS xa usa %@ como atallo de todo o sistema. A maioría pódense cambiar en Axustes do Sistema › Teclado › Atallos de teclado.";
+"Use Anyway" = "Usar igualmente";
+"open_menu_shortcut_menu_conflict" = "Xa o usa o elemento de menú «%@».";
+"open_menu_shortcut_disallowed" = "Combina Opción con Comando ou Control.";
+"shortcut_issue_unsupported_key" = "Usa unha letra, un díxito, ← ou →.";
+"shortcut_issue_reserved" = "%@ está reservado para un comando do menú ou do sistema.";
+"shortcut_issue_duplicate" = "Xa o usa «%@».";
+"section_your_preferences" = "As túas preferencias";
+"import_preferences_confirm_title" = "Substituír as túas preferencias?";
+"import_preferences_confirm_message" = "Importar «%@» substitúe as preferencias de visualización e notificacións deste Mac. As contas, as credenciais, as rutas locais e os consentimentos quedan como están.";
+"import_preferences_confirm_action" = "Importar";
+"update_check_title" = "Buscar unha versión nova";
+"update_check_busy" = "Xa hai unha comprobación ou unha actualización en curso.";
+"install_updates_needs_checks" = "Require buscar actualizacións automaticamente.";
+"section_simulations" = "Simulacións";
+"section_logs" = "Rexistros";
+"debug_log_source" = "Orixe";
+"debug_menu_error_title" = "Erro da tarxeta do menú";
+"debug_cost_error_title" = "Erro de custos";
+"debug_cost_error_unsupported" = "Só Codex e Claude informan de erros de custos.";
+"debug_cost_cache_busy" = "Dispoñible cando remate a análise de custos en curso.";
+"debug_reset_action" = "Restablecer";
+"debug_clear_cost_cache_confirm_title" = "Borrar a caché de custos?";
+"debug_clear_cost_cache_confirm_message" = "Elimínanse os resultados da análise de custos en caché. Os custos vólvense analizar a partir dos rexistros locais na próxima actualización.";
+"debug_clear_cookie_cache_confirm_title" = "Borrar a caché de cookies?";
+"debug_clear_cookie_cache_confirm_message" = "Elimínanse as cookies do navegador en caché de todos os provedores. Os provedores que usan cookies volven importalas cando as necesitan.";
+"debug_reset_cli_sessions_confirm_title" = "Reiniciar as sesións de CLI?";
+"debug_reset_cli_sessions_confirm_message" = "Péchanse as sesións de sondaxe abertas de Codex, Claude e Antigravity. A próxima actualización inicia outras novas.";
+"debug_cache_failed" = "Fallou: %@";
+"debug_cookie_cache_failed_one" = "A limpeza da caché de cookies fallou en 1 operación.";
+"debug_cookie_cache_failed_other" = "A limpeza da caché de cookies fallou en %d operacións.";
+"debug_cookie_cache_cleared_one" = "Borrouse 1 provedor.";
+"debug_cookie_cache_cleared_other" = "Borráronse %d provedores.";
+"debug_cookie_cache_empty" = "Non se atoparon cookies en caché.";
 /* Settings: Integrations, Plugins */
 "The local HTTP server, the command-line tool and hooks." = "O servidor HTTP local, a ferramenta de liña de ordes e os ganchos.";
 "Running" = "En execución";

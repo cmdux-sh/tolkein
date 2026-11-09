@@ -1,5 +1,6 @@
 import AppKit
 import CodexBarCore
+import InternalUI
 import SwiftUI
 import Testing
 @testable import CodexBar
@@ -19,24 +20,25 @@ extension CodexAccountScopedRefreshTests {
                     store.settings.hidePersonalInfo = width < 600
                     try CodexBarLocalizationOverride.$appLanguage.withValue(language) {
                         let overview = try #require(store.codexAccountUsageOverview(onRefresh: { _ in }))
-                        let content = Form {
+                        let content = VStack(alignment: .leading, spacing: MacSpace.settingsSectionGap) {
                             Text("Synthetic Codex account data").font(.headline)
-                            ProviderAccountUsageOverviewView(provider: .codex, overview: overview, isEnabled: true)
-                            Section {
-                                ProviderTokenUsageInlineView(provider: .codex, tokenUsage: .init(
-                                    sessionLine: "Synthetic local usage: 12K tokens",
-                                    monthLine: "Synthetic last 30 days: 180K tokens",
-                                    hintLine: nil,
-                                    errorLine: nil,
-                                    errorCopyText: nil))
-                            } header: {
-                                Text(L("This Mac"))
-                            } footer: {
-                                SettingsSectionFooter(L("Local usage is shared across accounts on this Mac."))
+                            ProviderAccountOverviewSections(provider: .codex, overview: overview, isEnabled: true)
+                            MacSettingsSection(
+                                L("This Mac"),
+                                footer: L("Local usage is shared across accounts on this Mac."))
+                            {
+                                ProviderTokenUsageRow(usage: ProviderSettingsUsagePresentation.tokenUsage(
+                                    .init(
+                                        sessionLine: "Synthetic local usage: 12K tokens",
+                                        monthLine: "Synthetic last 30 days: 180K tokens",
+                                        hintLine: nil,
+                                        errorLine: nil,
+                                        errorCopyText: nil),
+                                    provider: .codex))
                             }
                         }
-                        .formStyle(.grouped)
-                        .frame(width: width, height: 1080)
+                        .padding(MacSpace.settingsPagePadding)
+                        .frame(width: width, height: 1080, alignment: .top)
                         .environment(\.colorScheme, .light)
                         try self.writeOverviewProof(content, to: output.appendingPathComponent(
                             "overview-\(language)-\(Int(width)).png"))
@@ -56,25 +58,23 @@ extension CodexAccountScopedRefreshTests {
             try CodexBarLocalizationOverride.$appLanguage.withValue("en") {
                 let model = store.menuCardModel(for: .codex, context: .settings)
                 // The pre-overview settings layout uses these same shared components for one live model.
-                let content = Form {
+                let content = VStack(alignment: .leading, spacing: MacSpace.settingsSectionGap) {
                     Text("Synthetic Codex account data — prior settings layout").font(.headline)
-                    Section {
-                        ProviderDetailInfoRows(
-                            provider: .codex, store: store, isEnabled: true, versionText: nil, model: model)
+                    MacSettingsSection(L("Status")) {
+                        ProviderFactsRow(facts: ProviderStatusFacts.rows(
+                            provider: .codex, store: store, model: model, showsAccountInfo: true))
                     }
-                    Section {
-                        ProviderMetricsInlineView(
+                    MacSettingsSection(L("Usage")) {
+                        ProviderUsageRows(rows: ProviderSettingsUsagePresentation.rows(
                             provider: .codex,
                             model: model,
                             openAIWebDiagnostic: nil,
                             isEnabled: true,
-                            isRefreshing: false)
-                    } header: {
-                        Text(L("Usage"))
+                            isRefreshing: false))
                     }
                 }
-                .formStyle(.grouped)
-                .frame(width: 860, height: 440)
+                .padding(MacSpace.settingsPagePadding)
+                .frame(width: 860, height: 440, alignment: .top)
                 .environment(\.colorScheme, .light)
                 try self.writeOverviewProof(content, to: output.appendingPathComponent("before-en-860.png"))
             }
@@ -85,12 +85,12 @@ extension CodexAccountScopedRefreshTests {
         guard let path = ProcessInfo.processInfo.environment["CODEXBAR_ACCOUNT_OVERVIEW_PROOF_DIR"] else { return }
         let output = URL(fileURLWithPath: path, isDirectory: true)
         try FileManager.default.createDirectory(at: output, withIntermediateDirectories: true)
-        let content = Form {
+        let content = VStack(alignment: .leading, spacing: MacSpace.settingsSectionGap) {
             Text("Synthetic Codex accounts — credential rotation").font(.headline)
-            ProviderAccountUsageOverviewView(provider: .codex, overview: overview, isEnabled: true)
+            ProviderAccountOverviewSections(provider: .codex, overview: overview, isEnabled: true)
         }
-        .formStyle(.grouped)
-        .frame(width: 860, height: 780)
+        .padding(MacSpace.settingsPagePadding)
+        .frame(width: 860, height: 780, alignment: .top)
         .environment(\.colorScheme, .light)
         try self.writeOverviewProof(content, to: output.appendingPathComponent("\(phase).png"))
     }
