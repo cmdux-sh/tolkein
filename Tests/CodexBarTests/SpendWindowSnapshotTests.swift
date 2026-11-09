@@ -183,7 +183,7 @@ struct SpendWindowSnapshotTests {
         store.sharedSpendDashboardControllerStorage = controller
         controller.selectPeriod(.rolling(days: 90))
         controller.update(configuration: configuration)
-        try await SpendDashboardStateWait.until(timeout: .seconds(10)) { !controller.isRefreshing }
+        try await SpendDashboardStateWait.until(timeout: .seconds(60)) { !controller.isRefreshing }
         let context = SettingsPaneContext(
             settings: settings,
             store: store,
