@@ -2807,3 +2807,25 @@
 "Paste the WorkBuddy User-Agent as a single request header value." = "將 WorkBuddy 的 User-Agent 貼上為單一請求標頭值。";
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "無法讀取 TypeSafe 帳單總覽。請開啟 https://console.typesafe.ai/billing 檢查存取權限；如果頁面可以開啟，請回報整合錯誤。";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "找不到 TypeSafe 工作階段 Cookie。請在 console.typesafe.ai/billing 登入或貼上 Cookie 標頭。";
+
+/* Settings: Alerts, Sync */
+"settings_alerts_subtitle" = "登入、額度與重設的通知";
+"settings_alerts_section_sign_in" = "登入與點數";
+"settings_alerts_section_quota" = "額度";
+"settings_alerts_section_delivery" = "提醒方式";
+"settings_alerts_delivery_disabled" = "開啟門檻提醒或節奏提醒後即可選擇提醒方式。";
+"settings_alerts_section_menu_markers" = "選單標記";
+"settings_alerts_overrides_title" = "依提供者覆寫";
+"settings_alerts_overrides_footer" = "「提供者」下的每個提供者頁面都可以自行設定工作階段與每週門檻，或關閉其提醒。";
+"quota_warning_percent_unit" = "%";
+"quota_warning_percent_value" = "%d%%";
+"quota_warning_threshold_named" = "%1$@ %2$@";
+"settings_sync_subtitle" = "在你所有的 Mac 上同步設定、提供者與用量";
+"settings_sync_update_needed" = "需要更新";
+"settings_sync_secrets_confirm_title" = "要同步 API 金鑰、Cookie 與權杖嗎？";
+"settings_sync_secrets_confirm_message" = "它們會複製到登入你 iCloud 帳號的每台 Mac，並受 iCloud 端對端加密保護。";
+"settings_sync_secrets_confirm_action" = "包含機密資訊";
+"settings_sync_remove_mac_title" = "要移除「%@」嗎？";
+"settings_sync_remove_mac_message" = "它的記錄與已同步的用量會從 iCloud 刪除。如果那台 Mac 仍在同步，下次同步時會再次出現。";
+"settings_sync_no_macs_title" = "沒有已同步的 Mac";
+"settings_sync_no_macs_message" = "開啟 iCloud 同步的每台 Mac 都會顯示在這裡。";

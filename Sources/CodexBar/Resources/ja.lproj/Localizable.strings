@@ -2829,3 +2829,25 @@
 "Paste the WorkBuddy User-Agent as a single request header value." = "WorkBuddy の User-Agent を単一のリクエストヘッダー値として貼り付けてください。";
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "TypeSafeの請求概要を読み取れませんでした。https://console.typesafe.ai/billing を開いてアクセスを確認してください。ページが開く場合は、連携の不具合を報告してください。";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "TypeSafeのセッションCookieが見つかりません。console.typesafe.ai/billing にサインインするか、Cookieヘッダーを貼り付けてください。";
+
+/* Settings: Alerts, Sync */
+"settings_alerts_subtitle" = "サインイン、クォータ、リセットの通知";
+"settings_alerts_section_sign_in" = "サインインとクレジット";
+"settings_alerts_section_quota" = "クォータ";
+"settings_alerts_section_delivery" = "通知方法";
+"settings_alerts_delivery_disabled" = "通知方法を選ぶには、しきい値警告またはペース警告をオンにしてください。";
+"settings_alerts_section_menu_markers" = "メニューのマーカー";
+"settings_alerts_overrides_title" = "プロバイダごとの設定";
+"settings_alerts_overrides_footer" = "「プロバイダ」の各プロバイダのページで、セッションと週間の独自のしきい値を設定したり、警告をオフにしたりできます。";
+"quota_warning_percent_unit" = "%";
+"quota_warning_percent_value" = "%d%%";
+"quota_warning_threshold_named" = "%1$@ %2$@";
+"settings_sync_subtitle" = "すべてのMacで設定、プロバイダ、使用状況を同期";
+"settings_sync_update_needed" = "アップデートが必要";
+"settings_sync_secrets_confirm_title" = "APIキー、Cookie、トークンを同期しますか？";
+"settings_sync_secrets_confirm_message" = "iCloudアカウントにサインインしているすべてのMacにコピーされ、iCloudのエンドツーエンド暗号化で保護されます。";
+"settings_sync_secrets_confirm_action" = "シークレットを含める";
+"settings_sync_remove_mac_title" = "“%@”を削除しますか？";
+"settings_sync_remove_mac_message" = "このMacの記録と同期された使用状況がiCloudから削除されます。そのMacがまだ同期している場合は、次回の同期時に再び表示されます。";
+"settings_sync_no_macs_title" = "同期しているMacはありません";
+"settings_sync_no_macs_message" = "iCloud同期をオンにしたMacがここに表示されます。";

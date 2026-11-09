@@ -2833,3 +2833,25 @@
 "Paste the WorkBuddy User-Agent as a single request header value." = "User-Agent مربوط به WorkBuddy را به‌صورت یک مقدار واحد برای سرآیند درخواست جای‌گذاری کنید.";
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "خواندن نمای کلی صورتحساب TypeSafe ممکن نشد. برای بررسی دسترسی، https://console.typesafe.ai/billing را باز کنید؛ اگر صفحه باز شد، خطای یکپارچه‌سازی را گزارش کنید.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "هیچ کوکی نشست TypeSafe پیدا نشد. در console.typesafe.ai/billing وارد شوید یا یک سرآیند Cookie جای‌گذاری کنید.";
+
+/* Settings: Alerts, Sync */
+"settings_alerts_subtitle" = "اعلان‌های ورود، سهمیه و بازنشانی";
+"settings_alerts_section_sign_in" = "ورود و اعتبارها";
+"settings_alerts_section_quota" = "سهمیه";
+"settings_alerts_section_delivery" = "نحوه اطلاع‌رسانی";
+"settings_alerts_delivery_disabled" = "برای انتخاب نحوه دریافت، هشدارهای آستانه یا روند مصرف را روشن کنید.";
+"settings_alerts_section_menu_markers" = "نشانگرهای منو";
+"settings_alerts_overrides_title" = "تنظیمات اختصاصی هر ارائه دهنده";
+"settings_alerts_overrides_footer" = "صفحه هر ارائه دهنده در بخش ارائه دهندگان می‌تواند آستانه‌های جلسه و هفتگی خودش را تعیین کند یا هشدارهایش را خاموش کند.";
+"quota_warning_percent_unit" = "٪";
+"quota_warning_percent_value" = "%d٪";
+"quota_warning_threshold_named" = "%1$@ %2$@";
+"settings_sync_subtitle" = "تنظیمات، ارائه دهندگان و مصرف در همه Mac‌های شما";
+"settings_sync_update_needed" = "به‌روزرسانی لازم است";
+"settings_sync_secrets_confirm_title" = "کلیدهای API، کوکی‌ها و توکن‌ها همگام‌سازی شوند؟";
+"settings_sync_secrets_confirm_message" = "این موارد در هر Mac که با حساب iCloud شما وارد شده کپی می‌شوند و با رمزگذاری سرتاسری iCloud محافظت می‌شوند.";
+"settings_sync_secrets_confirm_action" = "شامل کردن اطلاعات محرمانه";
+"settings_sync_remove_mac_title" = "«%@» حذف شود؟";
+"settings_sync_remove_mac_message" = "رکورد و مصرف همگام‌شده آن از iCloud حذف می‌شود. اگر آن Mac هنوز همگام‌سازی کند، دفعه بعد دوباره نمایش داده می‌شود.";
+"settings_sync_no_macs_title" = "هیچ Mac همگام‌شده‌ای نیست";
+"settings_sync_no_macs_message" = "هر Mac که همگام‌سازی iCloud را روشن کند اینجا نمایش داده می‌شود.";

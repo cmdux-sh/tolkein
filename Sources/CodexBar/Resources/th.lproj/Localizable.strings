@@ -2831,3 +2831,25 @@
 "Paste the WorkBuddy User-Agent as a single request header value." = "วาง User-Agent ของ WorkBuddy เป็นค่าฮีเดอร์คำขอเพียงค่าเดียว";
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "ไม่สามารถอ่านภาพรวมการเรียกเก็บเงินของ TypeSafe ได้ เปิด https://console.typesafe.ai/billing เพื่อตรวจสอบการเข้าถึง หากเปิดหน้าได้ ให้รายงานข้อผิดพลาดในการเชื่อมต่อระบบ";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "ไม่พบคุกกี้เซสชันของ TypeSafe ลงชื่อเข้าใช้ที่ console.typesafe.ai/billing หรือวางส่วนหัว Cookie";
+
+/* Settings: Alerts, Sync */
+"settings_alerts_subtitle" = "การแจ้งเตือนสำหรับการลงชื่อเข้า โควตา และการรีเซ็ต";
+"settings_alerts_section_sign_in" = "การลงชื่อเข้าและเครดิต";
+"settings_alerts_section_quota" = "โควตา";
+"settings_alerts_section_delivery" = "วิธีแจ้งเตือน";
+"settings_alerts_delivery_disabled" = "เปิดคำเตือนตามเกณฑ์หรือคำเตือนความเร็วการใช้เพื่อเลือกวิธีแจ้งเตือน";
+"settings_alerts_section_menu_markers" = "เครื่องหมายในเมนู";
+"settings_alerts_overrides_title" = "การตั้งค่าแยกตามผู้ให้บริการ";
+"settings_alerts_overrides_footer" = "หน้าของผู้ให้บริการแต่ละรายในส่วนผู้ให้บริการสามารถกำหนดเกณฑ์ของเซสชันและรายสัปดาห์เอง หรือปิดคำเตือนได้";
+"quota_warning_percent_unit" = "%";
+"quota_warning_percent_value" = "%d%%";
+"quota_warning_threshold_named" = "%1$@ %2$@";
+"settings_sync_subtitle" = "การตั้งค่า ผู้ให้บริการ และการใช้งานบน Mac ทุกเครื่องของคุณ";
+"settings_sync_update_needed" = "ต้องอัปเดต";
+"settings_sync_secrets_confirm_title" = "ซิงค์คีย์ API คุกกี้ และโทเค็นหรือไม่";
+"settings_sync_secrets_confirm_message" = "ข้อมูลเหล่านี้จะถูกคัดลอกไปยัง Mac ทุกเครื่องที่ลงชื่อเข้าบัญชี iCloud ของคุณ และได้รับการปกป้องด้วยการเข้ารหัสตั้งแต่ต้นทางถึงปลายทางของ iCloud";
+"settings_sync_secrets_confirm_action" = "รวมข้อมูลลับ";
+"settings_sync_remove_mac_title" = "ลบ “%@” หรือไม่";
+"settings_sync_remove_mac_message" = "ระเบียนและการใช้งานที่ซิงค์ของเครื่องนี้จะถูกลบออกจาก iCloud หาก Mac เครื่องนั้นยังซิงค์อยู่ จะปรากฏขึ้นอีกครั้งในการซิงค์ครั้งถัดไป";
+"settings_sync_no_macs_title" = "ไม่มี Mac ที่ซิงค์";
+"settings_sync_no_macs_message" = "Mac ทุกเครื่องที่เปิดการซิงค์ iCloud จะปรากฏที่นี่";

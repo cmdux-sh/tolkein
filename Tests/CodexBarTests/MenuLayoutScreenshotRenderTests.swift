@@ -69,7 +69,7 @@ final class MenuLayoutScreenshotRenderTests: XCTestCase {
                         ("sidebar", AnyView(SettingsSidebarView(
                             settings: settings, store: store, selection: .constant(.plugins))
                             .frame(width: SettingsPane.sidebarMinWidth, height: 620)), []),
-                        ("icloud", AnyView(ICloudSyncPane(settings: settings, state: state)
+                        ("icloud", AnyView(SyncSettingsPage(settings: settings, state: state)
                                 .frame(width: 560, height: 600)), []),
                         ("hooks", AnyView(Form { HooksSections(settings: settings) }.formStyle(.grouped)
                                 .frame(width: 560, height: 350)), []),

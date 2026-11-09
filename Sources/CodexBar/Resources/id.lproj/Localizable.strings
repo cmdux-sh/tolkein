@@ -2831,3 +2831,25 @@
 "Paste the WorkBuddy User-Agent as a single request header value." = "Tempel User-Agent WorkBuddy sebagai satu nilai header permintaan.";
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "Ringkasan penagihan TypeSafe tidak dapat dibaca. Buka https://console.typesafe.ai/billing untuk memeriksa akses; jika halaman terbuka, laporkan kegagalan integrasi.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "Cookie sesi TypeSafe tidak ditemukan. Masuk di console.typesafe.ai/billing atau tempel header Cookie.";
+
+/* Settings: Alerts, Sync */
+"settings_alerts_subtitle" = "Notifikasi untuk masuk, kuota, dan reset";
+"settings_alerts_section_sign_in" = "Masuk & kredit";
+"settings_alerts_section_quota" = "Kuota";
+"settings_alerts_section_delivery" = "Pengiriman";
+"settings_alerts_delivery_disabled" = "Aktifkan peringatan ambang batas atau laju pemakaian untuk memilih cara penyampaiannya.";
+"settings_alerts_section_menu_markers" = "Penanda menu";
+"settings_alerts_overrides_title" = "Pengaturan per penyedia";
+"settings_alerts_overrides_footer" = "Halaman setiap penyedia di bagian Penyedia dapat menetapkan ambang sesi dan mingguannya sendiri, atau mematikan peringatannya.";
+"quota_warning_percent_unit" = "%";
+"quota_warning_percent_value" = "%d%%";
+"quota_warning_threshold_named" = "%1$@ %2$@";
+"settings_sync_subtitle" = "Pengaturan, penyedia, dan penggunaan di semua Mac Anda";
+"settings_sync_update_needed" = "Perlu pembaruan";
+"settings_sync_secrets_confirm_title" = "Sinkronkan kunci API, cookie, dan token?";
+"settings_sync_secrets_confirm_message" = "Semuanya disalin ke setiap Mac yang masuk ke akun iCloud Anda, dilindungi enkripsi end-to-end iCloud.";
+"settings_sync_secrets_confirm_action" = "Sertakan Rahasia";
+"settings_sync_remove_mac_title" = "Hapus “%@”?";
+"settings_sync_remove_mac_message" = "Catatan dan penggunaan tersinkronnya dihapus dari iCloud. Jika Mac itu masih menyinkronkan, Mac tersebut akan muncul lagi saat sinkronisasi berikutnya.";
+"settings_sync_no_macs_title" = "Tidak Ada Mac Tersinkron";
+"settings_sync_no_macs_message" = "Setiap Mac yang menyalakan Sinkronisasi iCloud muncul di sini.";

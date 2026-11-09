@@ -2830,3 +2830,25 @@
 "Paste the WorkBuddy User-Agent as a single request header value." = "Dán User-Agent của WorkBuddy dưới dạng một giá trị tiêu đề yêu cầu duy nhất.";
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "Không thể đọc tổng quan thanh toán TypeSafe. Mở https://console.typesafe.ai/billing để kiểm tra quyền truy cập; nếu trang mở được, hãy báo cáo lỗi tích hợp.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "Không tìm thấy cookie phiên TypeSafe. Đăng nhập tại console.typesafe.ai/billing hoặc dán tiêu đề Cookie.";
+
+/* Settings: Alerts, Sync */
+"settings_alerts_subtitle" = "Thông báo về đăng nhập, hạn mức và đặt lại";
+"settings_alerts_section_sign_in" = "Đăng nhập và tín dụng";
+"settings_alerts_section_quota" = "Hạn mức";
+"settings_alerts_section_delivery" = "Cách gửi";
+"settings_alerts_delivery_disabled" = "Bật cảnh báo ngưỡng hoặc cảnh báo nhịp dùng để chọn cách nhận chúng.";
+"settings_alerts_section_menu_markers" = "Dấu trong menu";
+"settings_alerts_overrides_title" = "Cài đặt riêng cho từng nhà cung cấp";
+"settings_alerts_overrides_footer" = "Trang của từng nhà cung cấp trong mục Nhà cung cấp có thể đặt ngưỡng phiên và hằng tuần riêng, hoặc tắt cảnh báo.";
+"quota_warning_percent_unit" = "%";
+"quota_warning_percent_value" = "%d%%";
+"quota_warning_threshold_named" = "%1$@ %2$@";
+"settings_sync_subtitle" = "Cài đặt, nhà cung cấp và mức sử dụng trên mọi máy Mac của bạn";
+"settings_sync_update_needed" = "Cần cập nhật";
+"settings_sync_secrets_confirm_title" = "Đồng bộ khóa API, cookie và token?";
+"settings_sync_secrets_confirm_message" = "Chúng được sao chép sang mọi máy Mac đăng nhập vào tài khoản iCloud của bạn và được bảo vệ bằng mã hóa đầu cuối của iCloud.";
+"settings_sync_secrets_confirm_action" = "Bao gồm bí mật";
+"settings_sync_remove_mac_title" = "Xóa “%@”?";
+"settings_sync_remove_mac_message" = "Bản ghi và mức sử dụng đã đồng bộ của máy này sẽ bị xóa khỏi iCloud. Nếu máy Mac đó vẫn đang đồng bộ, nó sẽ xuất hiện lại ở lần đồng bộ tiếp theo.";
+"settings_sync_no_macs_title" = "Không có máy Mac nào được đồng bộ";
+"settings_sync_no_macs_message" = "Mỗi máy Mac bật Đồng bộ hóa iCloud sẽ xuất hiện ở đây.";

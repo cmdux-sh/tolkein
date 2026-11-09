@@ -15,7 +15,7 @@ struct StayAwakeNotificationProofTests {
         try self.capture(Form {
             AgentSessionsSettingsSection(settings: settings)
         }.formStyle(.grouped).toggleStyle(.switch), to: output.appendingPathComponent("sessions.png"))
-        try self.capture(NotificationsPane(settings: settings), to: output.appendingPathComponent("notifications.png"))
+        try self.capture(AlertsSettingsPage(settings: settings), to: output.appendingPathComponent("notifications.png"))
     }
 
     private func capture(_ content: some View, to destination: URL) throws {
