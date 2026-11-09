@@ -2834,6 +2834,19 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "خواندن نمای کلی صورتحساب TypeSafe ممکن نشد. برای بررسی دسترسی، https://console.typesafe.ai/billing را باز کنید؛ اگر صفحه باز شد، خطای یکپارچه‌سازی را گزارش کنید.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "هیچ کوکی نشست TypeSafe پیدا نشد. در console.typesafe.ai/billing وارد شوید یا یک سرآیند Cookie جای‌گذاری کنید.";
 
+/* Settings: Menu Bar, Menu */
+"settings_menu_bar_subtitle" = "ظاهر آیکون نوار منو و آنچه نشان می‌دهد";
+"settings_menu_subtitle" = "آنچه منو هنگام باز شدن نشان می‌دهد";
+"settings_reason_requires_style" = "به سبک «%@» نیاز دارد";
+"settings_reason_requires_setting" = "ابتدا «%@» را روشن کنید";
+"settings_reason_two_providers" = "دست‌کم به دو ارائه‌دهندهٔ فعال نیاز دارد";
+"settings_reason_stacked_source" = "در سبک «%@» که ردیف‌های بالا و پایین خود را انتخاب می‌کند، استفاده نمی‌شود";
+"settings_reason_brand_icons" = "آیکون‌های برند متحرک نمی‌شوند. از سبک «%1$@» یا «%2$@» استفاده کنید.";
+"settings_color_pace_subtitle" = "سبز وقتی مصرف از آهنگ مورد انتظار عقب‌تر است و قرمز وقتی جلوتر است (خطر تمام شدن زودهنگام). روی نشانه‌های آهنگ در چیدمان اعمال می‌شود.";
+"settings_reason_work_days_automatic" = "تعداد روزهای کاری را انتخاب کنید. گزینهٔ خودکار نشانهٔ روز کاری نشان نمی‌دهد.";
+"agent_sessions_hosts_help" = "میزبان‌های SSH بیشتر برای یافتن جلسات عامل، به صورت user@host و جداشده با ویرگول.";
+"menu_bar_layout_override_subtitle" = "از چیدمان ذخیره‌شدهٔ خودش استفاده می‌کند";
+"cost_history_rolling_days_title" = "روزهای متحرک";
 /* Settings: Alerts, Sync */
 "settings_alerts_subtitle" = "اعلان‌های ورود، سهمیه و بازنشانی";
 "settings_alerts_section_sign_in" = "ورود و اعتبارها";

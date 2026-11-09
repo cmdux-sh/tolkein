@@ -2835,6 +2835,19 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header.";
 
+/* Settings: Menu Bar, Menu */
+"settings_menu_bar_subtitle" = "How the menu bar icon looks and what it shows";
+"settings_menu_subtitle" = "What the menu shows when you open it";
+"settings_reason_requires_style" = "Requires the %@ style";
+"settings_reason_requires_setting" = "Turn on %@ first";
+"settings_reason_two_providers" = "Needs at least two enabled providers";
+"settings_reason_stacked_source" = "Not used by the %@ style, which picks its top and bottom rows";
+"settings_reason_brand_icons" = "Brand icons don't animate. Use the %1$@ or %2$@ style.";
+"settings_color_pace_subtitle" = "Green when behind pace, red when ahead of pace (risk of running out early). Applies to the pace tokens in the layout.";
+"settings_reason_work_days_automatic" = "Choose a number of work days. Automatic shows no workday ticks.";
+"agent_sessions_hosts_help" = "More SSH hosts to check for agent sessions, written as user@host and separated by commas.";
+"menu_bar_layout_override_subtitle" = "Uses its own saved layout";
+"cost_history_rolling_days_title" = "Rolling days";
 /* Settings: Alerts, Sync */
 "settings_alerts_subtitle" = "Notifications for sign-in, quota and resets";
 "settings_alerts_section_sign_in" = "Sign-in & credits";

@@ -2833,6 +2833,19 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "TypeSafe faturalandırma özeti okunamadı. Erişimi kontrol etmek için https://console.typesafe.ai/billing adresini açın. Sayfa açılıyorsa entegrasyon hatasını bildirin.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "TypeSafe oturum çerezleri bulunamadı. console.typesafe.ai/billing adresinde oturum açın veya bir Cookie başlığı yapıştırın.";
 
+/* Settings: Menu Bar, Menu */
+"settings_menu_bar_subtitle" = "Menü çubuğu simgesinin görünümü ve gösterdikleri";
+"settings_menu_subtitle" = "Menü açıldığında neleri gösterir";
+"settings_reason_requires_style" = "“%@” stilini gerektirir";
+"settings_reason_requires_setting" = "Önce “%@” seçeneğini açın";
+"settings_reason_two_providers" = "En az iki etkin sağlayıcı gerektirir";
+"settings_reason_stacked_source" = "Üst ve alt satırlarını kendisi seçen “%@” stilinde kullanılmaz";
+"settings_reason_brand_icons" = "Marka simgeleri canlandırılmaz. “%1$@” veya “%2$@” stilini kullanın.";
+"settings_color_pace_subtitle" = "Kullanım beklenen hızın gerisindeyse yeşil, ilerisindeyse kırmızı (kotanın erken tükenme riski). Düzendeki tempo öğelerine uygulanır.";
+"settings_reason_work_days_automatic" = "Bir iş günü sayısı seçin. Otomatik seçeneğinde iş günü işaretleri gösterilmez.";
+"agent_sessions_hosts_help" = "Ajan oturumları için denetlenecek ek SSH sunucuları; user@host biçiminde ve virgülle ayrılmış olarak yazın.";
+"menu_bar_layout_override_subtitle" = "Kendi kayıtlı düzenini kullanır";
+"cost_history_rolling_days_title" = "Kayan günler";
 /* Settings: Alerts, Sync */
 "settings_alerts_subtitle" = "Oturum açma, kota ve sıfırlama bildirimleri";
 "settings_alerts_section_sign_in" = "Oturum açma ve krediler";

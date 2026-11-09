@@ -2828,6 +2828,19 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "Die TypeSafe-Abrechnungsübersicht konnte nicht gelesen werden. Öffne https://console.typesafe.ai/billing, um den Zugriff zu prüfen. Wenn sich die Seite öffnet, melde den Integrationsfehler.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "Keine TypeSafe-Sitzungscookies gefunden. Melde dich unter console.typesafe.ai/billing an oder füge einen Cookie-Header ein.";
 
+/* Settings: Menu Bar, Menu */
+"settings_menu_bar_subtitle" = "Wie das Menüleistensymbol aussieht und was es zeigt";
+"settings_menu_subtitle" = "Was das Menü beim Öffnen zeigt";
+"settings_reason_requires_style" = "Erfordert den Stil „%@“";
+"settings_reason_requires_setting" = "Aktiviere zuerst „%@“";
+"settings_reason_two_providers" = "Erfordert mindestens zwei aktivierte Anbieter";
+"settings_reason_stacked_source" = "Wird vom Stil „%@“ nicht verwendet, der seine obere und untere Zeile selbst wählt";
+"settings_reason_brand_icons" = "Markensymbole werden nicht animiert. Verwende den Stil „%1$@“ oder „%2$@“.";
+"settings_color_pace_subtitle" = "Grün bei langsamerem Verbrauch als erwartet, Rot bei schnellerem Verbrauch (Risiko einer vorzeitigen Ausschöpfung). Gilt für die Tempo-Bausteine im Layout.";
+"settings_reason_work_days_automatic" = "Wähle eine Anzahl von Arbeitstagen. Bei „Automatisch“ werden keine Arbeitstagsmarkierungen angezeigt.";
+"agent_sessions_hosts_help" = "Weitere SSH-Hosts, auf denen nach Agent-Sitzungen gesucht wird, als user@host und durch Kommas getrennt.";
+"menu_bar_layout_override_subtitle" = "Verwendet ein eigenes gespeichertes Layout";
+"cost_history_rolling_days_title" = "Rollierende Tage";
 /* Settings: Alerts, Sync */
 "settings_alerts_subtitle" = "Mitteilungen zu Anmeldung, Kontingent und Zurücksetzungen";
 "settings_alerts_section_sign_in" = "Anmeldung & Guthaben";

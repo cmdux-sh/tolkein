@@ -2831,6 +2831,19 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "Не удалось прочитать сводку платежей TypeSafe. Откройте https://console.typesafe.ai/billing, чтобы проверить доступ. Если страница открывается, сообщите об ошибке интеграции.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "Файлы cookie сеанса TypeSafe не найдены. Войдите на console.typesafe.ai/billing или вставьте заголовок Cookie.";
 
+/* Settings: Menu Bar, Menu */
+"settings_menu_bar_subtitle" = "Как выглядит значок в строке меню и что он показывает";
+"settings_menu_subtitle" = "Что показывает меню при открытии";
+"settings_reason_requires_style" = "Требуется стиль «%@»";
+"settings_reason_requires_setting" = "Сначала включите «%@»";
+"settings_reason_two_providers" = "Нужно не менее двух включённых провайдеров";
+"settings_reason_stacked_source" = "Не используется в стиле «%@», который сам выбирает верхнюю и нижнюю строки";
+"settings_reason_brand_icons" = "Значки брендов не анимируются. Используйте стиль «%1$@» или «%2$@».";
+"settings_color_pace_subtitle" = "Зелёный — расход ниже ожидаемого темпа, красный — выше (риск досрочного исчерпания квоты). Применяется к элементам темпа в компоновке.";
+"settings_reason_work_days_automatic" = "Выберите число рабочих дней. В режиме «Автоматически» отметки рабочих дней не показываются.";
+"agent_sessions_hosts_help" = "Дополнительные SSH-хосты для поиска сеансов агентов в формате user@host через запятую.";
+"menu_bar_layout_override_subtitle" = "Использует собственную сохранённую компоновку";
+"cost_history_rolling_days_title" = "Скользящие дни";
 /* Settings: Alerts, Sync */
 "settings_alerts_subtitle" = "Уведомления о входе, квоте и сбросах";
 "settings_alerts_section_sign_in" = "Вход и кредиты";

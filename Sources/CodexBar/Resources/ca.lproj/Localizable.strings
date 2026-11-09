@@ -2832,6 +2832,19 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "No s'ha pogut llegir el resum de facturació de TypeSafe. Obre https://console.typesafe.ai/billing per comprovar-hi l'accés; si la pàgina s'obre, informa de l'error d'integració.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "No s'han trobat galetes de sessió de TypeSafe. Inicia sessió a console.typesafe.ai/billing o enganxa una capçalera Cookie.";
 
+/* Settings: Menu Bar, Menu */
+"settings_menu_bar_subtitle" = "Com es veu la icona de la barra de menús i què mostra";
+"settings_menu_subtitle" = "Què mostra el menú quan l'obriu";
+"settings_reason_requires_style" = "Cal l'estil «%@»";
+"settings_reason_requires_setting" = "Activeu primer «%@»";
+"settings_reason_two_providers" = "Calen almenys dos proveïdors activats";
+"settings_reason_stacked_source" = "No s'utilitza amb l'estil «%@», que tria les seves files superior i inferior";
+"settings_reason_brand_icons" = "Les icones de marca no s'animen. Utilitzeu l'estil «%1$@» o «%2$@».";
+"settings_color_pace_subtitle" = "Verd quan l'ús va per sota del ritme previst, vermell quan va per sobre (risc d'esgotar la quota abans d'hora). S'aplica a les fitxes de ritme de la disposició.";
+"settings_reason_work_days_automatic" = "Trieu un nombre de dies laborables. Amb Automàtic no es mostren marques de dies laborables.";
+"agent_sessions_hosts_help" = "Altres amfitrions SSH on cercar sessions d'agents, escrits com a user@host i separats per comes.";
+"menu_bar_layout_override_subtitle" = "Fa servir la seva pròpia disposició desada";
+"cost_history_rolling_days_title" = "Dies mòbils";
 /* Settings: Alerts, Sync */
 "settings_alerts_subtitle" = "Notificacions d'inici de sessió, quota i restabliments";
 "settings_alerts_section_sign_in" = "Inici de sessió i crèdits";

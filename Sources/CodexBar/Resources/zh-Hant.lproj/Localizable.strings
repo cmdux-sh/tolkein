@@ -2808,6 +2808,19 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "無法讀取 TypeSafe 帳單總覽。請開啟 https://console.typesafe.ai/billing 檢查存取權限；如果頁面可以開啟，請回報整合錯誤。";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "找不到 TypeSafe 工作階段 Cookie。請在 console.typesafe.ai/billing 登入或貼上 Cookie 標頭。";
 
+/* Settings: Menu Bar, Menu */
+"settings_menu_bar_subtitle" = "選單列圖示的外觀與顯示內容";
+"settings_menu_subtitle" = "打開選單時顯示的內容";
+"settings_reason_requires_style" = "需要「%@」樣式";
+"settings_reason_requires_setting" = "請先開啟「%@」";
+"settings_reason_two_providers" = "至少需要兩個已啟用的提供者";
+"settings_reason_stacked_source" = "「%@」樣式會自行選擇上排與下排，因此不使用此項";
+"settings_reason_brand_icons" = "品牌圖示不會顯示動畫。請使用「%1$@」或「%2$@」樣式。";
+"settings_color_pace_subtitle" = "使用量低於預期進度時顯示綠色，高於預期時顯示紅色（可能提前用盡配額）。適用於佈局中的進度項目。";
+"settings_reason_work_days_automatic" = "請選擇工作日天數。選擇「自動」時不顯示工作日刻度。";
+"agent_sessions_hosts_help" = "用於尋找代理工作階段的其他 SSH 主機，格式為 user@host，以逗號分隔。";
+"menu_bar_layout_override_subtitle" = "使用其自行儲存的佈局";
+"cost_history_rolling_days_title" = "滾動天數";
 /* Settings: Alerts, Sync */
 "settings_alerts_subtitle" = "登入、額度與重設的通知";
 "settings_alerts_section_sign_in" = "登入與點數";

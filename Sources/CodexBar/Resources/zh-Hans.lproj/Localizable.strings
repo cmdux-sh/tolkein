@@ -2822,6 +2822,19 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "无法读取 TypeSafe 账单概览。请打开 https://console.typesafe.ai/billing 检查访问权限；如果页面可以打开，请报告集成故障。";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "未找到 TypeSafe 会话 Cookie。请在 console.typesafe.ai/billing 登录或粘贴 Cookie 请求头。";
 
+/* Settings: Menu Bar, Menu */
+"settings_menu_bar_subtitle" = "菜单栏图标的外观和显示内容";
+"settings_menu_subtitle" = "打开菜单时显示的内容";
+"settings_reason_requires_style" = "需要“%@”样式";
+"settings_reason_requires_setting" = "请先打开“%@”";
+"settings_reason_two_providers" = "至少需要两个已启用的提供商";
+"settings_reason_stacked_source" = "“%@”样式会自行选择上排和下排，因此不使用此项";
+"settings_reason_brand_icons" = "品牌图标不会显示动画。请使用“%1$@”或“%2$@”样式。";
+"settings_color_pace_subtitle" = "使用量低于预期进度时显示绿色，高于预期时显示红色（可能提前耗尽配额）。适用于布局中的进度项目。";
+"settings_reason_work_days_automatic" = "请选择工作日天数。选择“自动”时不显示工作日刻度。";
+"agent_sessions_hosts_help" = "用于查找智能体会话的其他 SSH 主机，格式为 user@host，用逗号分隔。";
+"menu_bar_layout_override_subtitle" = "使用其自己保存的布局";
+"cost_history_rolling_days_title" = "滚动天数";
 /* Settings: Alerts, Sync */
 "settings_alerts_subtitle" = "登录、额度和重置的通知";
 "settings_alerts_section_sign_in" = "登录与积分";

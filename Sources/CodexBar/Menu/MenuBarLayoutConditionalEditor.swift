@@ -1,4 +1,5 @@
 import CodexBarCore
+import InternalUI
 import SwiftUI
 
 struct MenuBarLayoutConditionalDraft: Identifiable {
@@ -19,8 +20,13 @@ struct MenuBarLayoutConditionalDraft: Identifiable {
     }
 }
 
+/// Creates or edits one conditional: its name, up to four clauses, and the tokens it shows either way. Laid out
+/// as settings sections, with Cancel and Save pinned bottom-right; Save stays off until the name is unique.
 @MainActor
 struct MenuBarLayoutConditionalEditorSheet: View {
+    /// The most clauses one conditional can combine.
+    static let maxClauses = 4
+
     @Environment(\.dismiss) private var dismiss
     @State private var conditional: MenuBarLayoutConditional
 
@@ -57,64 +63,71 @@ struct MenuBarLayoutConditionalEditorSheet: View {
         !self.trimmedName.isEmpty && !self.reservedNames.contains(self.trimmedName.lowercased())
     }
 
+    private var title: String {
+        switch self.draft.mode {
+        case .create: L("menu_bar_layout_conditional_add")
+        case .edit: L("menu_bar_layout_conditional_edit")
+        }
+    }
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            VStack(alignment: .leading, spacing: 4) {
-                Text(L("menu_bar_layout_conditional_name"))
-                    .font(.caption)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.secondary)
-                TextField(L("menu_bar_layout_conditional_name_placeholder"), text: self.$conditional.name)
-                    .textFieldStyle(.roundedBorder)
-                if !self.nameIsValid {
-                    Text(L("menu_bar_layout_conditional_name_error"))
-                        .font(.caption)
-                        .foregroundStyle(.red)
+        VStack(alignment: .leading, spacing: MacSpace.settingsSectionGap) {
+            MacText(self.title, role: .title)
+                .accessibilityAddTraits(.isHeader)
+
+            MacSettingsSection {
+                MacSettingsRow(L("menu_bar_layout_conditional_name")) {
+                    VStack(alignment: .trailing, spacing: MacSpace.unit) {
+                        MacTextField(L("menu_bar_layout_conditional_name_placeholder"), text: self.$conditional.name)
+                            .frame(width: MacSize.settingsField)
+                            .accessibilityLabel(L("menu_bar_layout_conditional_name"))
+                        if !self.nameIsValid {
+                            Text(L("menu_bar_layout_conditional_name_error"))
+                                .font(MacTextRole.caption.font)
+                                .foregroundStyle(MacColor.destructive)
+                        }
+                    }
                 }
             }
 
-            Text(L("menu_bar_layout_conditional_if"))
-                .font(.caption)
-                .fontWeight(.semibold)
-                .foregroundStyle(.secondary)
-
-            ForEach(self.conditional.clauses.indices, id: \.self) { index in
-                self.clauseRow(index: index)
+            MacSettingsSection(L("menu_bar_layout_conditional_if")) {
+                ForEach(self.conditional.clauses.indices, id: \.self) { index in
+                    self.clauseRow(index: index)
+                        .menuBarLayoutRowFrame()
+                }
+                HStack {
+                    Button(L("menu_bar_layout_conditional_add_condition"), systemImage: "plus") {
+                        self.conditional.clauses.append(
+                            MenuBarConditionalClause(
+                                combinator: .and,
+                                predicate: MenuBarConditionalPredicate(
+                                    metric: .automatic,
+                                    comparison: .greaterThan,
+                                    threshold: 0)))
+                    }
+                    .buttonStyle(.mac())
+                    .disabled(self.conditional.clauses.count >= Self.maxClauses)
+                    Spacer(minLength: 0)
+                }
+                .menuBarLayoutRowFrame()
             }
 
-            Button(L("menu_bar_layout_conditional_add_condition")) {
-                self.conditional.clauses.append(
-                    MenuBarConditionalClause(
-                        combinator: .and,
-                        predicate: MenuBarConditionalPredicate(
-                            metric: .automatic,
-                            comparison: .greaterThan,
-                            threshold: 0)))
-            }
-            .disabled(self.conditional.clauses.count >= 4)
-            .buttonStyle(.link)
-
-            HStack {
-                Text(L("menu_bar_layout_conditional_then"))
-                self.tokenMenu(selection: self.thenBinding)
-            }
-            HStack {
-                Text(L("menu_bar_layout_conditional_else"))
-                self.tokenMenu(selection: self.elseBinding)
+            MacSettingsSection(footer: self.conditional.editorSummary(provider: self.provider)) {
+                MacSettingsRow(L("menu_bar_layout_conditional_then")) {
+                    self.tokenPopUp(selection: self.thenBinding)
+                }
+                MacSettingsRow(L("menu_bar_layout_conditional_else")) {
+                    self.tokenPopUp(selection: self.elseBinding)
+                }
             }
 
-            Text(self.conditional.editorSummary(provider: self.provider))
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .lineLimit(2)
-
-            Divider()
-
-            HStack {
+            HStack(spacing: MacSpace.unit * 2) {
                 Spacer()
                 Button(L("Cancel"), role: .cancel) {
                     self.dismiss()
                 }
+                .buttonStyle(.mac())
+                .keyboardShortcut(.cancelAction)
                 Button(L("menu_bar_layout_conditional_save")) {
                     self.onSave(
                         MenuBarLayoutConditionalDraft(
@@ -122,74 +135,65 @@ struct MenuBarLayoutConditionalEditorSheet: View {
                             conditional: self.conditional))
                     self.dismiss()
                 }
+                .buttonStyle(.mac(.primary))
                 .keyboardShortcut(.defaultAction)
                 .disabled(!self.nameIsValid)
             }
         }
-        .padding(16)
-        // Wide enough for combinator + metric + direction + comparison + value + stepper + unit + remove.
-        .frame(width: 620)
+        .padding(MacSpace.settingsPagePadding)
+        // Wide enough for a clause's combinator, metric and direction on one line, and its test on the next.
+        .frame(width: MacSize.settingsContentWidth)
+        .background(MacColor.window)
     }
 
-    @ViewBuilder
+    /// One clause on two lines: what it measures (and how it joins the clause before), then the test.
     private func clauseRow(index: Int) -> some View {
         let metric = self.conditional.clauses.indices.contains(index)
             ? self.conditional.clauses[index].predicate.metric
             : MenuBarConditionalMetric.session
-        HStack(spacing: 6) {
-            if index > 0 {
-                Picker("", selection: self.combinatorBinding(index)) {
-                    Text(L("menu_bar_layout_conditional_and")).tag(MenuBarConditionalCombinator.and)
-                    Text(L("menu_bar_layout_conditional_or")).tag(MenuBarConditionalCombinator.or)
+        return VStack(alignment: .leading, spacing: MacSpace.unit * 2) {
+            HStack(spacing: MacSpace.unit * 2) {
+                if index > 0 {
+                    MacPopUpButton(
+                        [
+                            (MenuBarConditionalCombinator.and, L("menu_bar_layout_conditional_and")),
+                            (MenuBarConditionalCombinator.or, L("menu_bar_layout_conditional_or")),
+                        ],
+                        selection: self.combinatorBinding(index))
                 }
-                .labelsHidden()
-                .fixedSize()
-            }
-
-            Picker("", selection: self.metricBinding(index)) {
-                ForEach(MenuBarConditionalMetric.allCases, id: \.self) { metric in
-                    Text(metric.editorLabel(provider: self.provider)).tag(metric)
+                MacPopUpButton(
+                    MenuBarConditionalMetric.allCases.map { ($0, $0.editorLabel(provider: self.provider)) },
+                    selection: self.metricBinding(index))
+                if metric.supportsDirection {
+                    MacPopUpButton(
+                        [
+                            (MenuBarConditionalDirection.used, L("menu_bar_layout_conditional_used")),
+                            (MenuBarConditionalDirection.remaining, L("menu_bar_layout_conditional_remaining")),
+                        ],
+                        selection: self.directionBinding(index))
+                }
+                Spacer(minLength: 0)
+                if self.conditional.clauses.count > 1 {
+                    Button {
+                        self.conditional.clauses.remove(at: index)
+                    } label: {
+                        Image(systemName: "minus.circle")
+                            .frame(width: MacSize.iconTile, height: MacSize.iconTile)
+                    }
+                    .buttonStyle(.macIcon)
+                    .accessibilityLabel(L("Remove"))
                 }
             }
-            .labelsHidden()
-
-            if metric.supportsDirection {
-                Picker("", selection: self.directionBinding(index)) {
-                    Text(L("menu_bar_layout_conditional_used")).tag(MenuBarConditionalDirection.used)
-                    Text(L("menu_bar_layout_conditional_remaining")).tag(MenuBarConditionalDirection.remaining)
-                }
-                .labelsHidden()
-                .fixedSize()
-            }
-
-            Picker("", selection: self.comparisonBinding(index)) {
-                ForEach(MenuBarConditionalComparison.allCases, id: \.self) { comparison in
-                    Text(comparison.symbol).tag(comparison)
-                }
-            }
-            .labelsHidden()
-
-            TextField("", value: self.thresholdBinding(index), format: .number)
-                .textFieldStyle(.roundedBorder)
-                .frame(width: 52)
-                .monospacedDigit()
-            Stepper(
-                value: self.thresholdBinding(index),
-                in: metric.thresholdRange,
-                step: metric.thresholdStep)
-            {
-                EmptyView()
-            }
-            .labelsHidden()
-            Text(metric.thresholdUnit)
-
-            if self.conditional.clauses.count > 1 {
-                Button {
-                    self.conditional.clauses.remove(at: index)
-                } label: {
-                    Image(systemName: "minus.circle")
-                }
-                .buttonStyle(.plain)
+            HStack(spacing: MacSpace.unit * 2) {
+                MacPopUpButton(
+                    MenuBarConditionalComparison.allCases.map { ($0, $0.symbol) },
+                    selection: self.comparisonBinding(index))
+                MenuBarConditionalThresholdField(
+                    value: self.thresholdBinding(index),
+                    range: metric.thresholdRange,
+                    step: metric.thresholdStep,
+                    accessibilityLabel: metric.editorLabel(provider: self.provider))
+                MacText(metric.thresholdUnit, role: .body, muted: true)
             }
         }
     }
@@ -271,24 +275,45 @@ struct MenuBarLayoutConditionalEditorSheet: View {
             set: { self.conditional.elseToken = $0 })
     }
 
-    private func tokenMenu(selection: Binding<MenuBarLayoutToken>) -> some View {
-        Menu {
-            ForEach(MenuBarLayoutPaletteTokens.conditionalBranch, id: \.self) { token in
-                Button {
-                    selection.wrappedValue = token
-                } label: {
-                    Label(
-                        token.editorLabel(provider: self.provider),
-                        systemImage: token.editorSystemImage)
-                }
-                .accessibilityLabel(token.editorAccessibilityLabel(provider: self.provider))
+    private func tokenPopUp(selection: Binding<MenuBarLayoutToken>) -> some View {
+        MacPopUpButton(
+            MenuSettingsPopUpOptions.options(
+                MenuBarLayoutPaletteTokens.conditionalBranch,
+                selection: selection.wrappedValue,
+                label: { $0.editorLabel(provider: self.provider) }),
+            selection: selection)
+            .accessibilityValue(selection.wrappedValue.editorAccessibilityLabel(provider: self.provider))
+    }
+}
+
+/// A clause's threshold: a number field in the library's control well, with a stepper for the metric's step.
+/// The value can be fractional (half hours) and spans wide ranges (up to a year of hours, a million dollars), so
+/// it is typed rather than only stepped; `MacStepper` covers whole numbers only.
+private struct MenuBarConditionalThresholdField: View {
+    @Binding var value: Double
+    let range: ClosedRange<Double>
+    let step: Double
+    let accessibilityLabel: String
+
+    @Environment(\.macControlSize) private var controlSize
+
+    var body: some View {
+        let metrics = MacControlMetrics.forSize(self.controlSize)
+        HStack(spacing: MacSpace.unit) {
+            TextField(self.accessibilityLabel, value: self.$value, format: .number)
+                .labelsHidden()
+                .textFieldStyle(.plain)
+                .multilineTextAlignment(.trailing)
+                .monospacedDigit()
+                .font(metrics.font)
+                .padding(.horizontal, metrics.paddingX)
+                .frame(width: MacSize.control * 2, height: metrics.height)
+                .macWell(radius: metrics.radius)
+            Stepper(value: self.$value, in: self.range, step: self.step) {
+                EmptyView()
             }
-        } label: {
-            MenuBarLayoutChipLabel(
-                title: selection.wrappedValue.editorLabel(provider: self.provider),
-                systemImage: selection.wrappedValue.editorSystemImage,
-                isSelected: false)
-                .accessibilityLabel(selection.wrappedValue.editorAccessibilityLabel(provider: self.provider))
+            .labelsHidden()
+            .accessibilityLabel(self.accessibilityLabel)
         }
     }
 }

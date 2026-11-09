@@ -2832,6 +2832,19 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "ไม่สามารถอ่านภาพรวมการเรียกเก็บเงินของ TypeSafe ได้ เปิด https://console.typesafe.ai/billing เพื่อตรวจสอบการเข้าถึง หากเปิดหน้าได้ ให้รายงานข้อผิดพลาดในการเชื่อมต่อระบบ";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "ไม่พบคุกกี้เซสชันของ TypeSafe ลงชื่อเข้าใช้ที่ console.typesafe.ai/billing หรือวางส่วนหัว Cookie";
 
+/* Settings: Menu Bar, Menu */
+"settings_menu_bar_subtitle" = "ลักษณะของไอคอนแถบเมนูและสิ่งที่แสดง";
+"settings_menu_subtitle" = "สิ่งที่เมนูแสดงเมื่อคุณเปิด";
+"settings_reason_requires_style" = "ต้องใช้รูปแบบ “%@”";
+"settings_reason_requires_setting" = "เปิด “%@” ก่อน";
+"settings_reason_two_providers" = "ต้องมีผู้ให้บริการที่เปิดใช้งานอย่างน้อยสองราย";
+"settings_reason_stacked_source" = "ไม่ใช้กับรูปแบบ “%@” ซึ่งเลือกแถวบนและแถวล่างเอง";
+"settings_reason_brand_icons" = "ไอคอนแบรนด์ไม่มีภาพเคลื่อนไหว ใช้รูปแบบ “%1$@” หรือ “%2$@”";
+"settings_color_pace_subtitle" = "สีเขียวเมื่อใช้งานช้ากว่าอัตราที่คาดไว้ สีแดงเมื่อเร็วกว่า (เสี่ยงหมดโควตาก่อนเวลา) ใช้กับโทเค็นอัตราการใช้งานในเค้าโครง";
+"settings_reason_work_days_automatic" = "เลือกจำนวนวันทำงาน โหมดอัตโนมัติจะไม่แสดงขีดวันทำงาน";
+"agent_sessions_hosts_help" = "โฮสต์ SSH เพิ่มเติมสำหรับตรวจหาเซสชันของเอเจนต์ เขียนเป็น user@host และคั่นด้วยจุลภาค";
+"menu_bar_layout_override_subtitle" = "ใช้เค้าโครงที่บันทึกไว้ของตนเอง";
+"cost_history_rolling_days_title" = "จำนวนวันแบบเลื่อน";
 /* Settings: Alerts, Sync */
 "settings_alerts_subtitle" = "การแจ้งเตือนสำหรับการลงชื่อเข้า โควตา และการรีเซ็ต";
 "settings_alerts_section_sign_in" = "การลงชื่อเข้าและเครดิต";

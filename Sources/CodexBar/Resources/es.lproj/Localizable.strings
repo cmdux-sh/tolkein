@@ -2828,6 +2828,19 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "No se ha podido leer el resumen de facturación de TypeSafe. Abre https://console.typesafe.ai/billing para comprobar el acceso; si la página se abre, informa del fallo de integración.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "No se han encontrado cookies de sesión de TypeSafe. Inicia sesión en console.typesafe.ai/billing o pega una cabecera Cookie.";
 
+/* Settings: Menu Bar, Menu */
+"settings_menu_bar_subtitle" = "Cómo se ve el icono de la barra de menús y qué muestra";
+"settings_menu_subtitle" = "Qué muestra el menú al abrirlo";
+"settings_reason_requires_style" = "Requiere el estilo “%@”";
+"settings_reason_requires_setting" = "Activa primero “%@”";
+"settings_reason_two_providers" = "Se necesitan al menos dos proveedores activados";
+"settings_reason_stacked_source" = "No se usa con el estilo “%@”, que elige sus filas superior e inferior";
+"settings_reason_brand_icons" = "Los iconos de marca no se animan. Usa el estilo “%1$@” o “%2$@”.";
+"settings_color_pace_subtitle" = "Verde cuando el uso va por debajo del ritmo previsto, rojo cuando va por encima (riesgo de agotar la cuota antes de tiempo). Se aplica a las fichas de ritmo de la disposición.";
+"settings_reason_work_days_automatic" = "Elige un número de días laborables. Con Automático no se muestran marcas de días laborables.";
+"agent_sessions_hosts_help" = "Otros hosts SSH en los que buscar sesiones de agentes, escritos como user@host y separados por comas.";
+"menu_bar_layout_override_subtitle" = "Usa su propia disposición guardada";
+"cost_history_rolling_days_title" = "Días móviles";
 /* Settings: Alerts, Sync */
 "settings_alerts_subtitle" = "Notificaciones de inicio de sesión, cuota y restablecimientos";
 "settings_alerts_section_sign_in" = "Inicio de sesión y créditos";

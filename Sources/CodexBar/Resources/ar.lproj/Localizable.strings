@@ -2834,6 +2834,19 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "تعذّرت قراءة ملخص فوترة TypeSafe. افتح https://console.typesafe.ai/billing للتحقق من إمكانية الوصول؛ إذا فُتحت الصفحة، فأبلغ عن خلل التكامل.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "لم يتم العثور على ملفات تعريف ارتباط لجلسة TypeSafe. سجّل الدخول في console.typesafe.ai/billing أو الصق ترويسة Cookie.";
 
+/* Settings: Menu Bar, Menu */
+"settings_menu_bar_subtitle" = "شكل أيقونة شريط القوائم وما تعرضه";
+"settings_menu_subtitle" = "ما تعرضه القائمة عند فتحها";
+"settings_reason_requires_style" = "يتطلب النمط «%@»";
+"settings_reason_requires_setting" = "فعّل «%@» أولاً";
+"settings_reason_two_providers" = "يتطلب مزوّدَين مفعّلَين على الأقل";
+"settings_reason_stacked_source" = "لا يُستخدم مع النمط «%@» الذي يختار صفّيه العلوي والسفلي";
+"settings_reason_brand_icons" = "أيقونات العلامات التجارية لا تتحرك. استخدم النمط «%1$@» أو «%2$@».";
+"settings_color_pace_subtitle" = "أخضر عندما يكون الاستخدام أبطأ من الوتيرة المتوقعة، وأحمر عندما يكون أسرع (خطر النفاد مبكرًا). ينطبق على عناصر الوتيرة في التخطيط.";
+"settings_reason_work_days_automatic" = "اختر عددًا لأيام العمل. الخيار «تلقائي» لا يعرض علامات أيام العمل.";
+"agent_sessions_hosts_help" = "مضيفو SSH إضافيون للبحث فيهم عن جلسات الوكلاء، بصيغة user@host ومفصولون بفواصل.";
+"menu_bar_layout_override_subtitle" = "يستخدم تخطيطه المحفوظ الخاص";
+"cost_history_rolling_days_title" = "الأيام المتداولة";
 /* Settings: Alerts, Sync */
 "settings_alerts_subtitle" = "إشعارات تسجيل الدخول والحصة وإعادة التعيين";
 "settings_alerts_section_sign_in" = "تسجيل الدخول والأرصدة";
