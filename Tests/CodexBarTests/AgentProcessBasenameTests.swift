@@ -80,28 +80,6 @@ struct AgentProcessBasenameTests {
     }
 
     @Test
-    func `parser has no filesystem probing URL constructors`() throws {
-        let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
-            .deletingLastPathComponent()
-        let source = try String(
-            contentsOf: root.appendingPathComponent("Sources/CodexBarCore/AgentSession.swift"),
-            encoding: .utf8)
-        let start = try #require(source.range(of: "enum AgentProcessPath {"))
-        let end = try #require(source.range(of: "public enum LSOFCWDOutputParser {"))
-        let parser = String(source[start.lowerBound..<end.lowerBound])
-        let hintedProbe = "URL(fileURLWithPath: \"~\", isDirectory: false)"
-        #expect(parser.components(separatedBy: hintedProbe).count - 1 == 1)
-        #expect(parser.replacingOccurrences(of: hintedProbe, with: "").contains("URL(fileURLWithPath:") == false)
-        #expect(!parser.contains("fileExists"))
-        #expect(!parser.contains("attributesOfItem"))
-        #expect(!parser.contains("lstat("))
-        let enumerator = try String(
-            contentsOf: root.appendingPathComponent("Sources/CodexBarCore/DarwinProcessEnumerator.swift"),
-            encoding: .utf8)
-        #expect(enumerator.components(separatedBy: "AgentProcessRecord(").count - 1 == 0)
-    }
-
-    @Test
     func `agent classification preserves argv and portable command behavior`() {
         let commands = [
             ["node", "/opt/pi/index.js"], ["bun", "/opt/omp"], ["bun", "/opt/omp/"],

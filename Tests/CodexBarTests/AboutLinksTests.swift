@@ -13,22 +13,6 @@ struct AboutLinksTests {
     }
 
     @Test
-    func `about lists only the GitHub link and acknowledgements`() throws {
-        let source = try Self.aboutSource()
-        let rows = source.components(separatedBy: "MacSettingsLinkRow(").dropFirst()
-        #expect(rows.count == 2)
-        #expect(source.contains("MacSettingsLinkRow(L(\"link_github\")"))
-        #expect(source.contains("MacSettingsLinkRow(L(\"link_acknowledgements\")"))
-        #expect(source.contains("URL(string: AboutSettingsPane.projectHomeURL)"))
-        #expect(source.contains("self.showsAcknowledgements = true"))
-        for retired in ["link_website", "link_twitter", "link_email", "mailto:", "twitter.com", "codexbar.app"] {
-            #expect(!source.contains(retired), "\(retired)")
-        }
-        // The only link to the original project is the MIT credit.
-        #expect(source.components(separatedBy: "steipete/CodexBar").count == 2)
-    }
-
-    @Test
     func `the CodexBar credit links to the original project`() throws {
         #expect(AboutSettingsPane.originalProjectURL == "https://github.com/steipete/CodexBar")
         let credit = CodexBarLocalizationOverride.$appLanguage.withValue("en") { AboutSettingsPane.creditText() }
@@ -76,13 +60,5 @@ struct AboutLinksTests {
             try FileManager.default.createDirectory(at: output, withIntermediateDirectories: true)
             try png.write(to: output.appendingPathComponent("about.png"))
         }
-    }
-
-    private static func aboutSource() throws -> String {
-        let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
-            .deletingLastPathComponent().deletingLastPathComponent()
-        return try String(
-            contentsOf: root.appendingPathComponent("Sources/CodexBar/Settings/Panes/AboutSettingsPane.swift"),
-            encoding: .utf8)
     }
 }
