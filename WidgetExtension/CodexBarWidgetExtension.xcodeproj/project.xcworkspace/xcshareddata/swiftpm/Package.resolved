@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/cmdux-sh/internal-ui.git",
       "state" : {
-        "revision" : "c747de1371f1a7aefc4bc536e0d82b06553db1e4",
-        "version" : "0.11.0"
+        "revision" : "ba153adc4f45e8135979ef4b6888e820c068e28a",
+        "version" : "0.12.0"
       }
     },
     {

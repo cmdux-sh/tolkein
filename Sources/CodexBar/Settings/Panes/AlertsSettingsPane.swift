@@ -23,45 +23,45 @@ struct AlertsSettingsPage: View {
             thresholdWarningsEnabled: self.settings.quotaWarningNotificationsEnabled,
             predictiveWarningsEnabled: self.settings.predictivePaceWarningNotificationsEnabled)
 
-        MacSettingsPage(SettingsPane.alerts.title, subtitle: L("settings_alerts_subtitle")) {
-            MacSettingsSection(L("settings_alerts_section_sign_in")) {
-                MacSettingsToggleRow(
+        IUSettingsPage(SettingsPane.alerts.title, subtitle: L("settings_alerts_subtitle")) {
+            IUSettingsSection(L("settings_alerts_section_sign_in")) {
+                IUSettingsToggleRow(
                     L("credential_expiry_notifications_title"),
                     subtitle: L("credential_expiry_notifications_subtitle"),
                     isOn: self.$settings.credentialExpiryNotificationsEnabled)
                     .settingsAnchor(AlertsSettingsPane.Setting.credentialExpiry.id)
-                MacSettingsToggleRow(
+                IUSettingsToggleRow(
                     L("codex_reset_credit_expiry_notifications_title"),
                     subtitle: L("codex_reset_credit_expiry_notifications_subtitle"),
                     isOn: self.$settings.codexResetCreditExpiryNotificationsEnabled)
                     .settingsAnchor(AlertsSettingsPane.Setting.resetCreditExpiry.id)
             }
 
-            MacSettingsSection(
+            IUSettingsSection(
                 L("settings_alerts_section_quota"),
                 footer: visibility.showsThresholdControls ? L("quota_warning_global_threshold_subtitle") : nil)
             {
-                MacSettingsToggleRow(
+                IUSettingsToggleRow(
                     L("quota_depleted_title"),
                     subtitle: L("session_quota_notifications_subtitle"),
                     isOn: self.$settings.sessionQuotaNotificationsEnabled)
                     .settingsAnchor(AlertsSettingsPane.Setting.quotaDepleted.id)
-                MacSettingsToggleRow(
+                IUSettingsToggleRow(
                     L("upcoming_reset_notifications_title"),
                     subtitle: L("upcoming_reset_notifications_subtitle"),
                     isOn: self.$settings.upcomingResetNotificationsEnabled)
                     .settingsAnchor(AlertsSettingsPane.Setting.upcomingReset.id)
-                MacSettingsToggleRow(
+                IUSettingsToggleRow(
                     L("limit_reset_notifications_title"),
                     subtitle: L("limit_reset_notifications_subtitle"),
                     isOn: self.$settings.limitResetNotificationsEnabled)
                     .settingsAnchor(AlertsSettingsPane.Setting.limitReset.id)
-                MacSettingsToggleRow(
+                IUSettingsToggleRow(
                     L("predictive_pace_warnings_title"),
                     subtitle: L("predictive_pace_warnings_subtitle"),
                     isOn: self.$settings.predictivePaceWarningNotificationsEnabled)
                     .settingsAnchor(AlertsSettingsPane.Setting.predictivePace.id)
-                MacSettingsToggleRow(
+                IUSettingsToggleRow(
                     L("threshold_warnings_title"),
                     subtitle: L("quota_warning_notifications_subtitle"),
                     isOn: self.$settings.quotaWarningNotificationsEnabled)
@@ -72,13 +72,13 @@ struct AlertsSettingsPage: View {
                 }
             }
 
-            MacSettingsSection(L("settings_alerts_section_delivery")) {
-                MacSettingsToggleRow(
+            IUSettingsSection(L("settings_alerts_section_delivery")) {
+                IUSettingsToggleRow(
                     L("quota_warning_sound"),
                     disabledReason: L("settings_alerts_delivery_disabled"),
                     isOn: self.$settings.quotaWarningSoundEnabled)
                     .settingsAnchor(AlertsSettingsPane.Setting.sound.id)
-                MacSettingsToggleRow(
+                IUSettingsToggleRow(
                     L("quota_warning_onscreen_alert"),
                     disabledReason: L("settings_alerts_delivery_disabled"),
                     isOn: self.$settings.quotaWarningOnScreenAlertEnabled)
@@ -86,24 +86,24 @@ struct AlertsSettingsPage: View {
             }
             .disabled(!visibility.showsDeliveryControls)
 
-            MacSettingsSection(L("settings_alerts_section_menu_markers")) {
-                MacSettingsToggleRow(
+            IUSettingsSection(L("settings_alerts_section_menu_markers")) {
+                IUSettingsToggleRow(
                     L("show_quota_warning_markers_title"),
                     subtitle: L("show_quota_warning_markers_subtitle"),
                     isOn: self.$settings.quotaWarningMarkersVisible)
                     .settingsAnchor(AlertsSettingsPane.Setting.quotaWarningMarkers.id)
             }
 
-            MacSettingsSection(L("section_celebrations")) {
-                MacSettingsRow(L("confetti_on_reset_title"), subtitle: L("confetti_on_reset_subtitle")) {
-                    MacPopUpButton(
+            IUSettingsSection(L("section_celebrations")) {
+                IUSettingsRow(L("confetti_on_reset_title"), subtitle: L("confetti_on_reset_subtitle")) {
+                    IUPopUpButton(
                         ConfettiCelebrationOption.allCases.map { ($0, $0.label) },
                         selection: self.$settings.confettiCelebrationOption)
                 }
                 .settingsAnchor(AlertsSettingsPane.Setting.confetti.id)
             }
 
-            MacSettingsSection(L("settings_alerts_overrides_title"), footer: L("settings_alerts_overrides_footer")) {}
+            IUSettingsSection(L("settings_alerts_overrides_title"), footer: L("settings_alerts_overrides_footer")) {}
                 .settingsAnchor(AlertsSettingsPane.Setting.providerOverrides.id)
         }
     }

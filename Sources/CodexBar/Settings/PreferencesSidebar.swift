@@ -23,8 +23,8 @@ enum SettingsSidebarProviderFilter: Hashable, CaseIterable {
         }
     }
 
-    static var chips: [MacFilterChip<Self>] {
-        self.allCases.map { MacFilterChip($0.title, id: $0) }
+    static var chips: [IUFilterChip<Self>] {
+        self.allCases.map { IUFilterChip($0.title, id: $0) }
     }
 
     /// Dragging a provider edits the custom order, so it works only while that order is showing in full:
@@ -37,7 +37,7 @@ enum SettingsSidebarProviderFilter: Hashable, CaseIterable {
 /// What a provider row shows after its name: a spinner while it refreshes, otherwise a status symbol for a failed
 /// refresh or a service incident, with its text as the tooltip. Healthy providers show nothing.
 struct SettingsSidebarProviderStatus: Equatable {
-    let tone: MacStatusTone
+    let tone: IUStatusTone
     let text: String
 
     static func resolve(
@@ -57,7 +57,7 @@ struct SettingsSidebarProviderStatus: Equatable {
     }
 
     /// The tone for a service status. Operational and unknown statuses stay quiet.
-    static func tone(for indicator: ProviderStatusIndicator?) -> MacStatusTone? {
+    static func tone(for indicator: ProviderStatusIndicator?) -> IUStatusTone? {
         switch indicator ?? .unknown {
         case .none, .unknown: nil
         case .minor: .warning
@@ -105,10 +105,10 @@ struct SettingsSidebarView: View {
     }
 
     var body: some View {
-        VStack(spacing: MacSpace.chromeGap) {
-            MacTextField(L("Search settings"), text: self.$query, systemImage: "magnifyingglass", clearable: true)
-                .macControlSize(.large)
-                .padding(.horizontal, MacSpace.panelPadding)
+        VStack(spacing: IUSpace.chromeGap) {
+            IUTextField(L("Search settings"), text: self.$query, systemImage: "magnifyingglass", clearable: true)
+                .iuControlSize(.large)
+                .padding(.horizontal, IUSpace.panelPadding)
 
             if self.isSearching {
                 SettingsSidebarSearchResultsList(
@@ -158,11 +158,11 @@ struct SettingsSidebarView: View {
                 .onMove(perform: self.moveAction(for: providers))
 
                 if providers.isEmpty {
-                    MacEmptyState(
+                    IUEmptyState(
                         L("No matching providers"),
                         systemImage: "line.3.horizontal.decrease.circle",
                         size: .compact,
-                        secondary: MacEmptyStateAction(L("Clear filters")) {
+                        secondary: IUEmptyStateAction(L("Clear filters")) {
                             self.settings.providersEnabledOnly = false
                         })
                 }
@@ -293,9 +293,9 @@ private struct SettingsSidebarProvidersHeader: View {
     let enabledCount: Int
 
     var body: some View {
-        HStack(spacing: MacSpace.unit) {
+        HStack(spacing: IUSpace.unit) {
             Text(L("tab_providers"))
-            Spacer(minLength: MacSpace.unit)
+            Spacer(minLength: IUSpace.unit)
             Text(String(format: L("providers_on_count"), self.enabledCount))
                 .monospacedDigit()
         }
@@ -310,10 +310,10 @@ private struct SettingsSidebarProviderTools: View {
     let onRestore: () -> Void
 
     var body: some View {
-        HStack(spacing: MacSpace.chromeGap) {
-            MacFilterChips(SettingsSidebarProviderFilter.chips, selection: self.$filter, label: L("tab_providers"))
+        HStack(spacing: IUSpace.chromeGap) {
+            IUFilterChips(SettingsSidebarProviderFilter.chips, selection: self.$filter, label: L("tab_providers"))
             Spacer(minLength: 0)
-            MacToolMenu(L("Provider sorting"), systemImage: "arrow.up.arrow.down") {
+            IUToolMenu(L("Provider sorting"), systemImage: "arrow.up.arrow.down") {
                 Toggle(
                     L("Sort providers alphabetically (enabled first)"),
                     isOn: self.$settings.providersSortedAlphabetically)
@@ -347,7 +347,7 @@ private struct SettingsSidebarProviderIcon: View {
                     .scaledToFit()
             }
         }
-        .frame(width: MacSize.sidebarIcon, height: MacSize.sidebarIcon)
+        .frame(width: IUSize.sidebarIcon, height: IUSize.sidebarIcon)
         .accessibilityHidden(true)
     }
 }
@@ -364,10 +364,10 @@ struct SettingsSidebarProviderRow: View {
     var body: some View {
         let status = self.status
         Label {
-            HStack(spacing: MacSpace.unit) {
+            HStack(spacing: IUSpace.unit) {
                 Text(self.name)
                     .lineLimit(1)
-                Spacer(minLength: MacSpace.unit)
+                Spacer(minLength: IUSpace.unit)
                 if let status {
                     SettingsSidebarStatusSymbol(status: status)
                 }
@@ -438,7 +438,7 @@ private struct SettingsSidebarStatusSymbol: View {
                     .controlSize(.mini)
             } else {
                 Image(systemName: self.status.tone.systemImage)
-                    .font(MacTextRole.caption.font)
+                    .font(IUTextRole.caption.font)
                     .foregroundStyle(self.status.tone.color)
             }
         }
@@ -459,11 +459,11 @@ private struct SettingsSidebarSearchResultsList: View {
 
     var body: some View {
         if self.results.isEmpty {
-            MacEmptyState(
+            IUEmptyState(
                 L("No matching settings or providers"),
                 systemImage: "magnifyingglass",
                 size: .compact,
-                secondary: MacEmptyStateAction(L("Clear"), action: self.onClear))
+                secondary: IUEmptyStateAction(L("Clear"), action: self.onClear))
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else {
             List(selection: self.choice) {
@@ -513,7 +513,7 @@ private struct SettingsSidebarSettingResultRow: View {
                 // A pane's own entry is the pane; a setting names the pane it is on.
                 if self.entry.id != self.entry.pane.persistenceToken {
                     Text(self.entry.pane.title)
-                        .font(MacTextRole.caption.font)
+                        .font(IUTextRole.caption.font)
                         // Hierarchical, so it follows the row's selected text colour.
                         .foregroundStyle(.secondary)
                         .lineLimit(1)

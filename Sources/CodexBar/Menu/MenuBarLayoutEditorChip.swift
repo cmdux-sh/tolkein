@@ -23,7 +23,7 @@ struct MenuBarLayoutEditorChip: View {
     var remove: (() -> Void)?
 
     @Environment(\.isEnabled) private var isEnabled
-    @Environment(\.macControlSize) private var controlSize
+    @Environment(\.iuControlSize) private var controlSize
     @FocusState private var isFocused: Bool
 
     init(
@@ -69,7 +69,7 @@ struct MenuBarLayoutEditorChip: View {
             .focusable(self.isActive)
             .focused(self.$isFocused)
             .focusEffectDisabled()
-            .macFocusRing(self.isFocused, radius: MenuBarLayoutChipLabel.radius(in: self.controlSize))
+            .iuFocusRing(self.isFocused, radius: MenuBarLayoutChipLabel.radius(in: self.controlSize))
             .onKeyPress(keys: [.space, .return], phases: [.down]) { _ in
                 guard self.isActive else { return .ignored }
                 self.handleActivate()
@@ -94,7 +94,7 @@ struct MenuBarLayoutEditorChip: View {
 }
 
 /// A layout token drawn as an Internal UI chip, one step down the control ladder from the section's controls
-/// (24 pt beside 28 pt pop-ups), like `MacFilterChips`. Palette entries sit on the raised control fill; placed
+/// (24 pt beside 28 pt pop-ups), like `IUFilterChips`. Palette entries sit on the raised control fill; placed
 /// tokens take the token-field look (accent text on the soft accent); the selected placed token is solid accent.
 struct MenuBarLayoutChipLabel: View {
     enum Kind {
@@ -107,7 +107,7 @@ struct MenuBarLayoutChipLabel: View {
     let isSelected: Bool
     var kind: Kind = .palette
 
-    @Environment(\.macControlSize) private var controlSize
+    @Environment(\.iuControlSize) private var controlSize
     @Environment(\.colorSchemeContrast) private var contrast
 
     /// The chip's control size for the surrounding control size, as filter chips step down.
@@ -120,8 +120,8 @@ struct MenuBarLayoutChipLabel: View {
         }
     }
 
-    static func metrics(in size: ControlSize) -> MacControlMetrics {
-        MacControlMetrics.forSize(self.chipSize(for: size))
+    static func metrics(in size: ControlSize) -> IUControlMetrics {
+        IUControlMetrics.forSize(self.chipSize(for: size))
     }
 
     static func radius(in size: ControlSize) -> CGFloat {
@@ -131,9 +131,9 @@ struct MenuBarLayoutChipLabel: View {
     var body: some View {
         let metrics = Self.metrics(in: self.controlSize)
         let shape = RoundedRectangle(cornerRadius: metrics.radius, style: .circular)
-        HStack(spacing: MacSpace.unit) {
+        HStack(spacing: IUSpace.unit) {
             Image(systemName: self.systemImage)
-                .font(MacTextRole.caption.font.weight(.semibold))
+                .font(IUTextRole.caption.font.weight(.semibold))
                 .accessibilityHidden(true)
             Text(self.title)
                 .font(metrics.font)
@@ -145,22 +145,22 @@ struct MenuBarLayoutChipLabel: View {
         .background {
             switch (self.kind, self.isSelected) {
             case (_, true):
-                Color.clear.background(MacColor.accent, in: shape)
+                Color.clear.background(IUColor.accent, in: shape)
             case (.placed, false):
-                Color.clear.background(MacColor.accentSoft, in: shape)
+                Color.clear.background(IUColor.accentSoft, in: shape)
                     // Increase Contrast: an accent edge, so a placed token doesn't rest on a soft fill alone.
-                        .overlay(shape.strokeBorder(MacColor.accent, lineWidth: MacSize.border)
+                        .overlay(shape.strokeBorder(IUColor.accent, lineWidth: IUSize.border)
                             .opacity(self.contrast == .increased ? 1 : 0))
             case (.palette, false):
-                Color.clear.macSurface(radius: metrics.radius, fill: MacColor.raised, elevation: .raised)
+                Color.clear.iuSurface(radius: metrics.radius, fill: IUColor.raised, elevation: .raised)
             }
         }
         .fixedSize()
     }
 
     private var foreground: Color {
-        if self.isSelected { return MacColor.onAccent }
-        return self.kind == .placed ? MacColor.accent : MacColor.primary
+        if self.isSelected { return IUColor.onAccent }
+        return self.kind == .placed ? IUColor.accent : IUColor.primary
     }
 }
 
@@ -172,27 +172,27 @@ struct MenuBarLayoutLineWell<Content: View>: View {
     let onDrop: (MenuBarLayoutDragItem?) -> Bool
     @ViewBuilder let content: Content
 
-    @Environment(\.macControlSize) private var controlSize
+    @Environment(\.iuControlSize) private var controlSize
     @State private var isTargeted = false
 
     var body: some View {
         let chip = MenuBarLayoutChipLabel.metrics(in: self.controlSize)
-        let inset = MacSpace.unit
+        let inset = IUSpace.unit
         let radius = chip.radius + inset
-        MenuBarLayoutChipFlowLayout(spacing: MacSpace.chipGap) {
+        MenuBarLayoutChipFlowLayout(spacing: IUSpace.chipGap) {
             self.content
             if self.isEmpty {
                 Text(L("menu_bar_layout_empty_line"))
-                    .font(MacTextRole.caption.font)
-                    .foregroundStyle(MacColor.muted)
+                    .font(IUTextRole.caption.font)
+                    .foregroundStyle(IUColor.muted)
                     .padding(.horizontal, chip.paddingX)
                     .frame(height: chip.height)
             }
         }
         .padding(inset)
         .frame(maxWidth: .infinity, minHeight: chip.height + inset * 2, alignment: .leading)
-        .macWell(radius: radius)
-        .macFocusRing(self.isTargeted, radius: radius)
+        .iuWell(radius: radius)
+        .iuFocusRing(self.isTargeted, radius: radius)
         .dropDestination(for: MenuBarLayoutDragItem.self) { items, _ in
             self.onDrop(items.first)
         } isTargeted: { self.isTargeted = $0 }
@@ -209,18 +209,18 @@ struct MenuBarLayoutRemoveZone: View {
     let onDrop: (MenuBarLayoutDragItem?) -> Bool
 
     @State private var isTargeted = false
-    @Environment(\.macControlSize) private var controlSize
+    @Environment(\.iuControlSize) private var controlSize
 
     var body: some View {
-        let radius = MacControlMetrics.forSize(self.controlSize).radius
+        let radius = IUControlMetrics.forSize(self.controlSize).radius
         Button(action: self.removeSelection) {
             Label(
                 self.canRemoveSelection ? L("menu_bar_layout_remove_selected") : L("menu_bar_layout_drag_remove"),
                 systemImage: "trash")
                 .frame(maxWidth: .infinity)
         }
-        .buttonStyle(.mac(self.canRemoveSelection ? .destructive : .standard))
-        .macFocusRing(self.isTargeted, radius: radius)
+        .buttonStyle(.iu(self.canRemoveSelection ? .destructive : .standard))
+        .iuFocusRing(self.isTargeted, radius: radius)
         .dropDestination(for: MenuBarLayoutDragItem.self) { items, _ in
             self.onDrop(items.first)
         } isTargeted: { self.isTargeted = $0 }
@@ -244,11 +244,11 @@ private struct OptionalRemoveAccessibilityAction: ViewModifier {
 
 extension View {
     /// The padding and width of a settings row, for rows of the layout editor that are not a title and a
-    /// control (the strip, the palettes), so they line up with the `MacSettingsRow`s around them.
+    /// control (the strip, the palettes), so they line up with the `IUSettingsRow`s around them.
     func menuBarLayoutRowFrame() -> some View {
         self
-            .padding(.horizontal, MacSpace.settingsRowPaddingX)
-            .padding(.vertical, MacSpace.settingsRowPaddingY)
-            .frame(maxWidth: .infinity, minHeight: MacSize.settingsRow, alignment: .leading)
+            .padding(.horizontal, IUSpace.settingsRowPaddingX)
+            .padding(.vertical, IUSpace.settingsRowPaddingY)
+            .frame(maxWidth: .infinity, minHeight: IUSize.settingsRow, alignment: .leading)
     }
 }

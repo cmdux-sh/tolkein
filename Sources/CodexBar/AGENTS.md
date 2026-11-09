@@ -7,7 +7,7 @@ any UI change here, before writing code:
 1. **New screen:** start from `get_recipe` (`menu-bar-panel`, `settings-window`, `app-window`). **Restyling an
    existing screen:** restructure it to the closest recipe first; do not only swap colours onto its old layout.
 2. **Pieces:** `find_component` for each need, then `get_guide` on the page. Use library components and
-   `MacColor`/`MacSpace`/`MacSize`/`MacRadius`/`MacTextRole`/`MacSpring` tokens only. No app-local theme enums,
+   `IUColor`/`IUSpace`/`IUSize`/`IURadius`/`IUTextRole`/`IUSpring` tokens only. No app-local theme enums,
    no forced dark mode, no fixed AppKit layer colours.
 3. **Check:** `check_swiftui` every SwiftUI file you change, and fix every finding. In Claude Code, a hook in
    `.claude/settings.json` runs the same checker after every edit to a file that imports InternalUI and reports

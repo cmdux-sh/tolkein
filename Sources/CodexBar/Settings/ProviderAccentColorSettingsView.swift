@@ -11,7 +11,7 @@ import SwiftUI
 @MainActor
 struct ProviderAccentColorSettingsView: View {
     /// Wide enough for "#RRGGBB" in the field well.
-    private static let hexFieldWidth = MacSize.settingsField / 2
+    private static let hexFieldWidth = IUSize.settingsField / 2
 
     let provider: UsageProvider
     @Bindable var settings: SettingsStore
@@ -27,11 +27,11 @@ struct ProviderAccentColorSettingsView: View {
     }
 
     var body: some View {
-        MacSettingsRow(L("provider_accent_color_title"), subtitle: L("provider_accent_color_footer")) {
-            HStack(spacing: MacSpace.unit * 2) {
+        IUSettingsRow(L("provider_accent_color_title"), subtitle: L("provider_accent_color_footer")) {
+            HStack(spacing: IUSpace.unit * 2) {
                 if self.hasOverride {
                     Button(L("provider_accent_color_reset")) { self.reset() }
-                        .buttonStyle(.mac())
+                        .buttonStyle(.iu())
                 }
                 ProviderTextField(
                     L("provider_accent_color_hex_label"),
@@ -40,7 +40,7 @@ struct ProviderAccentColorSettingsView: View {
                     focus: self.$isHexFieldFocused)
                     .frame(width: Self.hexFieldWidth)
                     .onSubmit { self.commitHexText() }
-                MacColorWell(selection: self.colorBinding, swatches: [])
+                IUColorWell(selection: self.colorBinding, swatches: [])
             }
         }
         .onAppear { self.syncHexText() }

@@ -57,11 +57,11 @@ struct UsageBoardSnapshotTests {
         if let directory {
             try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         }
-        for appearance in [MacAppearance.light, .dark] {
+        for appearance in [IUAppearance.light, .dark] {
             for item in Self.cases {
                 let session = item.session()
                 session.select(item.selection)
-                let shot = MacSnapshot.render(
+                let shot = IUSnapshot.render(
                     UsageBoardView(session: session),
                     appearance: appearance,
                     width: Self.width,

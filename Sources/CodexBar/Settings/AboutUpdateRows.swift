@@ -13,37 +13,37 @@ struct AboutHomebrewUpdateStatusView: View {
         case .idle:
             EmptyView()
         case .checking:
-            MacSettingsRow(L("Checking for updates…")) {
+            IUSettingsRow(L("Checking for updates…")) {
                 ProgressView().controlSize(.small)
             }
         case .upToDate:
-            MacSettingsRow(L("Tolkein is up to date")) {
+            IUSettingsRow(L("Tolkein is up to date")) {
                 Image(systemName: "checkmark.circle.fill")
-                    .font(MacTextRole.body.font)
-                    .foregroundStyle(MacColor.positive)
+                    .font(IUTextRole.body.font)
+                    .foregroundStyle(IUColor.positive)
                     .accessibilityHidden(true)
             }
         case let .available(version):
-            MacSettingsRow(String(format: L("Tolkein %@ is available"), version)) {
+            IUSettingsRow(String(format: L("Tolkein %@ is available"), version)) {
                 Button(String(format: L("Update to %@"), version)) { self.updater.installUpdate() }
-                    .buttonStyle(.mac(.primary))
+                    .buttonStyle(.iu(.primary))
                     .accessibilityIdentifier("about-homebrew-install-update")
             }
         case .installing:
-            MacSettingsRow(L("Updating with Homebrew…")) {
+            IUSettingsRow(L("Updating with Homebrew…")) {
                 ProgressView().controlSize(.small)
             }
         case let .failed(message):
             AboutUpdatesUnavailableView(
                 reason: L("Managed by Homebrew") + "\n" + message,
                 command: self.updater.manualUpdateCommand)
-                .buttonStyle(.macIcon)
+                .buttonStyle(.iuIcon)
         }
     }
 }
 
 /// A settings row saying why the app can't update itself, with the command to run instead and a button that copies
-/// it. The copy button takes the button style its container sets (About uses `.macIcon`).
+/// it. The copy button takes the button style its container sets (About uses `.iuIcon`).
 @MainActor
 struct AboutUpdatesUnavailableView: View {
     typealias CopyAction = @MainActor @Sendable (String, @escaping @MainActor @Sendable (Bool) -> Void) -> Void
@@ -64,19 +64,19 @@ struct AboutUpdatesUnavailableView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: MacSpace.unit * 2) {
+        VStack(alignment: .leading, spacing: IUSpace.unit * 2) {
             Text(self.reason)
-                .font(MacTextRole.body.font)
-                .foregroundStyle(MacColor.muted)
+                .font(IUTextRole.body.font)
+                .foregroundStyle(IUColor.muted)
                 .textSelection(.enabled)
                 .fixedSize(horizontal: false, vertical: true)
             if let command {
                 self.commandWell(command)
             }
         }
-        .padding(.horizontal, MacSpace.settingsRowPaddingX)
-        .padding(.vertical, MacSpace.settingsRowPaddingY)
-        .frame(maxWidth: .infinity, minHeight: MacSize.settingsRow, alignment: .leading)
+        .padding(.horizontal, IUSpace.settingsRowPaddingX)
+        .padding(.vertical, IUSpace.settingsRowPaddingY)
+        .frame(maxWidth: .infinity, minHeight: IUSize.settingsRow, alignment: .leading)
         .task(id: self.didCopy) {
             guard self.didCopy else { return }
             do {
@@ -88,12 +88,12 @@ struct AboutUpdatesUnavailableView: View {
 
     private func commandWell(_ command: String) -> some View {
         let copyTitle = self.didCopy ? L("Copied") : L("Copy update command")
-        let side = MacControlMetrics.forSize(.large).height
-        return HStack(spacing: MacSpace.unit * 2) {
+        let side = IUControlMetrics.forSize(.large).height
+        return HStack(spacing: IUSpace.unit * 2) {
             Text(command)
-                .font(MacTextRole.caption.font)
+                .font(IUTextRole.caption.font)
                 .monospaced()
-                .foregroundStyle(MacColor.primary)
+                .foregroundStyle(IUColor.primary)
                 .textSelection(.enabled)
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -102,8 +102,8 @@ struct AboutUpdatesUnavailableView: View {
             } label: {
                 Label(copyTitle, systemImage: self.didCopy ? "checkmark" : "doc.on.doc")
                     .labelStyle(.iconOnly)
-                    .font(MacTextRole.body.font)
-                    .foregroundStyle(MacColor.primary)
+                    .font(IUTextRole.body.font)
+                    .foregroundStyle(IUColor.primary)
                     .frame(width: side, height: side)
             }
             .help(copyTitle)
@@ -111,10 +111,10 @@ struct AboutUpdatesUnavailableView: View {
         }
         // Commands read left to right in every language.
         .environment(\.layoutDirection, .leftToRight)
-        .padding(.leading, MacSpace.panelPadding)
-        .padding(.trailing, MacSpace.unit)
-        .padding(.vertical, MacSpace.unit)
-        .macWell(radius: MacRadius.row)
+        .padding(.leading, IUSpace.panelPadding)
+        .padding(.trailing, IUSpace.unit)
+        .padding(.vertical, IUSpace.unit)
+        .iuWell(radius: IURadius.row)
     }
 
     private static func copyCommand(_ text: String, completion: @escaping @MainActor @Sendable (Bool) -> Void) {

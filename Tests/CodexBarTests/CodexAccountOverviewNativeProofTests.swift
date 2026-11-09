@@ -20,10 +20,10 @@ extension CodexAccountScopedRefreshTests {
                     store.settings.hidePersonalInfo = width < 600
                     try CodexBarLocalizationOverride.$appLanguage.withValue(language) {
                         let overview = try #require(store.codexAccountUsageOverview(onRefresh: { _ in }))
-                        let content = VStack(alignment: .leading, spacing: MacSpace.settingsSectionGap) {
+                        let content = VStack(alignment: .leading, spacing: IUSpace.settingsSectionGap) {
                             Text("Synthetic Codex account data").font(.headline)
                             ProviderAccountOverviewSections(provider: .codex, overview: overview, isEnabled: true)
-                            MacSettingsSection(
+                            IUSettingsSection(
                                 L("This Mac"),
                                 footer: L("Local usage is shared across accounts on this Mac."))
                             {
@@ -37,7 +37,7 @@ extension CodexAccountScopedRefreshTests {
                                     provider: .codex))
                             }
                         }
-                        .padding(MacSpace.settingsPagePadding)
+                        .padding(IUSpace.settingsPagePadding)
                         .frame(width: width, height: 1080, alignment: .top)
                         .environment(\.colorScheme, .light)
                         try self.writeOverviewProof(content, to: output.appendingPathComponent(
@@ -58,13 +58,13 @@ extension CodexAccountScopedRefreshTests {
             try CodexBarLocalizationOverride.$appLanguage.withValue("en") {
                 let model = store.menuCardModel(for: .codex, context: .settings)
                 // The pre-overview settings layout uses these same shared components for one live model.
-                let content = VStack(alignment: .leading, spacing: MacSpace.settingsSectionGap) {
+                let content = VStack(alignment: .leading, spacing: IUSpace.settingsSectionGap) {
                     Text("Synthetic Codex account data — prior settings layout").font(.headline)
-                    MacSettingsSection(L("Status")) {
+                    IUSettingsSection(L("Status")) {
                         ProviderFactsRow(facts: ProviderStatusFacts.rows(
                             provider: .codex, store: store, model: model, showsAccountInfo: true))
                     }
-                    MacSettingsSection(L("Usage")) {
+                    IUSettingsSection(L("Usage")) {
                         ProviderUsageRows(rows: ProviderSettingsUsagePresentation.rows(
                             provider: .codex,
                             model: model,
@@ -73,7 +73,7 @@ extension CodexAccountScopedRefreshTests {
                             isRefreshing: false))
                     }
                 }
-                .padding(MacSpace.settingsPagePadding)
+                .padding(IUSpace.settingsPagePadding)
                 .frame(width: 860, height: 440, alignment: .top)
                 .environment(\.colorScheme, .light)
                 try self.writeOverviewProof(content, to: output.appendingPathComponent("before-en-860.png"))
@@ -85,11 +85,11 @@ extension CodexAccountScopedRefreshTests {
         guard let path = ProcessInfo.processInfo.environment["CODEXBAR_ACCOUNT_OVERVIEW_PROOF_DIR"] else { return }
         let output = URL(fileURLWithPath: path, isDirectory: true)
         try FileManager.default.createDirectory(at: output, withIntermediateDirectories: true)
-        let content = VStack(alignment: .leading, spacing: MacSpace.settingsSectionGap) {
+        let content = VStack(alignment: .leading, spacing: IUSpace.settingsSectionGap) {
             Text("Synthetic Codex accounts — credential rotation").font(.headline)
             ProviderAccountOverviewSections(provider: .codex, overview: overview, isEnabled: true)
         }
-        .padding(MacSpace.settingsPagePadding)
+        .padding(IUSpace.settingsPagePadding)
         .frame(width: 860, height: 780, alignment: .top)
         .environment(\.colorScheme, .light)
         try self.writeOverviewProof(content, to: output.appendingPathComponent("\(phase).png"))

@@ -13,7 +13,7 @@ struct KeyboardShortcutsBundleTests {
     }
 
     @Test func `open menu shortcut round trips between the recorder and KeyboardShortcuts`() {
-        let recorded = MacShortcut("K", code: UInt16(kVK_ANSI_K), modifiers: [.option, .command])
+        let recorded = IUShortcut("K", code: UInt16(kVK_ANSI_K), modifiers: [.option, .command])
         let stored = OpenMenuShortcutBridge.keyboardShortcut(recorded)
 
         #expect(stored.carbonKeyCode == kVK_ANSI_K)
@@ -22,9 +22,9 @@ struct KeyboardShortcutsBundleTests {
     }
 
     @Test func `every modifier crosses the bridge`() {
-        let all: MacShortcut.Modifiers = [.control, .option, .shift, .command]
+        let all: IUShortcut.Modifiers = [.control, .option, .shift, .command]
         let stored = OpenMenuShortcutBridge.keyboardShortcut(
-            MacShortcut("J", code: UInt16(kVK_ANSI_J), modifiers: all))
+            IUShortcut("J", code: UInt16(kVK_ANSI_J), modifiers: all))
 
         #expect(stored.modifiers == [.control, .option, .shift, .command])
         #expect(OpenMenuShortcutBridge.macShortcut(stored, character: { _ in "j" }).modifiers == all)
@@ -34,7 +34,7 @@ struct KeyboardShortcutsBundleTests {
         let f5 = OpenMenuShortcutBridge.macShortcut(
             KeyboardShortcuts.Shortcut(.f5, modifiers: [.command]),
             character: { _ in nil })
-        #expect(f5.key == MacShortcut.Key(code: UInt16(kVK_F5), name: "F5"))
+        #expect(f5.key == IUShortcut.Key(code: UInt16(kVK_F5), name: "F5"))
 
         let left = OpenMenuShortcutBridge.macShortcut(
             KeyboardShortcuts.Shortcut(.leftArrow, modifiers: [.control]),
@@ -55,7 +55,7 @@ struct KeyboardShortcutsBundleTests {
         let name = KeyboardShortcuts.Name("test.keyboardshortcuts.bridge")
         defer { KeyboardShortcuts.reset(name) }
         let stored = OpenMenuShortcutBridge.keyboardShortcut(
-            MacShortcut("M", code: UInt16(kVK_ANSI_M), modifiers: [.control, .option]))
+            IUShortcut("M", code: UInt16(kVK_ANSI_M), modifiers: [.control, .option]))
 
         KeyboardShortcuts.setShortcut(stored, for: name)
 

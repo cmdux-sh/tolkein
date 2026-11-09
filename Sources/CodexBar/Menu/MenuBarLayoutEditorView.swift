@@ -4,7 +4,7 @@ import SwiftUI
 
 /// The menu-bar layout editor, as Internal UI settings sections: the scope, preset and preview; the strip of
 /// placed tokens with its trash zone; one palette section per token group; the conditionals library; and the
-/// display options. It sits in the Menu Bar pane's column, so each part is a `MacSettingsSection`.
+/// display options. It sits in the Menu Bar pane's column, so each part is a `IUSettingsSection`.
 ///
 /// It edits only while the menu bar uses the Icon & percent style; otherwise every section is disabled and the
 /// scope row says why.
@@ -140,17 +140,17 @@ struct MenuBarLayoutEditor: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: MacSpace.settingsSectionGap) {
+        VStack(alignment: .leading, spacing: IUSpace.settingsSectionGap) {
             self.layoutSection
             self.stripSection
             ForEach(self.paletteGroups) { group in
-                MacSettingsSection(group.title) {
+                IUSettingsSection(group.title) {
                     self.palette(group)
                         .menuBarLayoutRowFrame()
                 }
             }
             self.conditionalsSection
-            MacSettingsSection(L("Display")) {
+            IUSettingsSection(L("Display")) {
                 self.displayOptions
             }
         }
@@ -176,19 +176,19 @@ struct MenuBarLayoutEditor: View {
     // MARK: - Scope, overrides, preset and preview
 
     private var layoutSection: some View {
-        MacSettingsSection(L("menu_bar_layout_title")) {
-            MacSettingsRow(
+        IUSettingsSection(L("menu_bar_layout_title")) {
+            IUSettingsRow(
                 L("Scope"),
                 subtitle: L("menu_bar_layout_scope_help"),
                 disabledReason: MenuBarSettingsPane.requiresIconAndPercentReason)
             {
-                MacPopUpButton(self.scopeOptions, selection: self.$scope)
+                IUPopUpButton(self.scopeOptions, selection: self.$scope)
                     .accessibilityLabel(L("Scope"))
             }
             .settingsAnchor(MenuBarSettingsPane.SearchID.layout)
 
             ForEach(self.overrideProviders, id: \.self) { provider in
-                MacSettingsRow(
+                IUSettingsRow(
                     L(self.store.metadata(for: provider).displayName),
                     subtitle: L("menu_bar_layout_override_subtitle"))
                 {
@@ -196,13 +196,13 @@ struct MenuBarLayoutEditor: View {
                 }
             }
 
-            MacSettingsRow(L("menu_bar_layout_preset")) {
-                MacPopUpButton(self.presetOptions, selection: self.presetBinding)
+            IUSettingsRow(L("menu_bar_layout_preset")) {
+                IUPopUpButton(self.presetOptions, selection: self.presetBinding)
                     .accessibilityLabel(L("menu_bar_layout_preset"))
             }
             .settingsAnchor(MenuBarSettingsPane.SearchID.layoutPreset)
 
-            MacSettingsRow(self.scope.previewLabel) {
+            IUSettingsRow(self.scope.previewLabel) {
                 self.preview
             }
         }
@@ -243,7 +243,7 @@ struct MenuBarLayoutEditor: View {
             MenuBarLayoutEditorPersistence.useAllProvidersLayout(for: provider, settings: self.settings)
             self.selectedPosition = nil
         }
-        .buttonStyle(.mac())
+        .buttonStyle(.iu())
         .accessibilityLabel(L(
             "menu_bar_layout_use_all_accessibility",
             L(self.store.metadata(for: provider).displayName)))
@@ -255,20 +255,20 @@ struct MenuBarLayoutEditor: View {
             provider: self.scopedProvider,
             settings: self.settings,
             store: self.store)
-            .padding(.horizontal, MacSpace.panelPadding)
-            .padding(.vertical, MacSpace.unit)
-            .frame(minHeight: MacSize.row)
-            .macWell(radius: MacRadius.row)
+            .padding(.horizontal, IUSpace.panelPadding)
+            .padding(.vertical, IUSpace.unit)
+            .frame(minHeight: IUSize.row)
+            .iuWell(radius: IURadius.row)
     }
 
     // MARK: - Strip
 
     private var stripSection: some View {
-        MacSettingsSection(
+        IUSettingsSection(
             L("menu_bar_layout_strip"),
             footer: MenuBarSettingsPane.layoutFooterText(for: self.settings.menuBarIconStyle))
         {
-            VStack(alignment: .leading, spacing: MacSpace.unit * 2) {
+            VStack(alignment: .leading, spacing: IUSpace.unit * 2) {
                 ForEach(Array(self.layout.lines.enumerated()), id: \.offset) { lineIndex, _ in
                     self.layoutLine(lineIndex)
                 }
@@ -276,11 +276,11 @@ struct MenuBarLayoutEditor: View {
             .menuBarLayoutRowFrame()
 
             if self.layout.lines.count == 2 {
-                MacSettingsRow(L("menu_bar_layout_token_line_break")) {
+                IUSettingsRow(L("menu_bar_layout_token_line_break")) {
                     Button(L("menu_bar_layout_remove_line_break")) {
                         self.write(MenuBarLayoutEditorMutations.removeLineBreak(from: self.layout))
                     }
-                    .buttonStyle(.mac())
+                    .buttonStyle(.iu())
                 }
             }
 
@@ -348,7 +348,7 @@ struct MenuBarLayoutEditor: View {
 
     /// One palette group's chips, wrapping at the section's width. Clicking a chip appends it; dragging places it.
     func palette(_ group: MenuBarLayoutPaletteGroup) -> some View {
-        MenuBarLayoutChipFlowLayout(spacing: MacSpace.chipGap) {
+        MenuBarLayoutChipFlowLayout(spacing: IUSpace.chipGap) {
             ForEach(group.tokens, id: \.self) { token in
                 MenuBarLayoutEditorChip(
                     title: token.editorLabel(
@@ -386,13 +386,13 @@ struct MenuBarLayoutEditor: View {
     // MARK: - Conditionals
 
     private var conditionalsSection: some View {
-        MacSettingsSection(L("menu_bar_layout_group_conditionals")) {
-            HStack(alignment: .top, spacing: MacSpace.settingsRowPaddingX) {
+        IUSettingsSection(L("menu_bar_layout_group_conditionals")) {
+            HStack(alignment: .top, spacing: IUSpace.settingsRowPaddingX) {
                 if self.settings.menuBarLayoutConditionals.isEmpty {
-                    MacText(L("menu_bar_layout_conditional_none"), role: .caption, muted: true)
-                        .frame(minHeight: MacControlMetrics.forSize(.large).height)
+                    IUText(L("menu_bar_layout_conditional_none"), role: .caption, muted: true)
+                        .frame(minHeight: IUControlMetrics.forSize(.large).height)
                 } else {
-                    MenuBarLayoutChipFlowLayout(spacing: MacSpace.chipGap) {
+                    MenuBarLayoutChipFlowLayout(spacing: IUSpace.chipGap) {
                         ForEach(self.settings.menuBarLayoutConditionals, id: \.id) { conditional in
                             self.conditionalPaletteChip(conditional: conditional)
                         }
@@ -404,7 +404,7 @@ struct MenuBarLayoutEditor: View {
                         mode: .create,
                         conditional: .makeDefault())
                 }
-                .buttonStyle(.mac())
+                .buttonStyle(.iu())
                 .help(L("menu_bar_layout_conditional_add"))
             }
             .menuBarLayoutRowFrame()
@@ -527,7 +527,7 @@ struct MenuBarLayoutEditor: View {
 }
 
 /// Size, gap and vertical-offset controls, and the two text options, as settings rows. The body is a list of
-/// rows with no container, so a `MacSettingsSection` draws a hairline between each.
+/// rows with no container, so a `IUSettingsSection` draws a hairline between each.
 struct MenuBarLayoutDisplayOptions: View {
     @Binding var size: MenuBarLayoutSize
     @Binding var gap: MenuBarLayoutGap
@@ -538,26 +538,26 @@ struct MenuBarLayoutDisplayOptions: View {
     static let verticalAdjustmentRange = -20...20
 
     var body: some View {
-        MacSettingsRow(L("menu_bar_layout_size")) {
-            MacSegmentedControl(MenuBarLayoutSize.allCases.map { ($0, $0.label) }, selection: self.$size)
+        IUSettingsRow(L("menu_bar_layout_size")) {
+            IUSegmentedControl(MenuBarLayoutSize.allCases.map { ($0, $0.label) }, selection: self.$size)
                 .accessibilityLabel(L("menu_bar_layout_size"))
                 .accessibilityValue(self.size.label)
         }
         .settingsAnchor(MenuBarSettingsPane.SearchID.layoutSize)
-        MacSettingsRow(L("menu_bar_layout_gap")) {
-            MacSegmentedControl(MenuBarLayoutGap.allCases.map { ($0, $0.label) }, selection: self.$gap)
+        IUSettingsRow(L("menu_bar_layout_gap")) {
+            IUSegmentedControl(MenuBarLayoutGap.allCases.map { ($0, $0.label) }, selection: self.$gap)
                 .accessibilityLabel(L("menu_bar_layout_gap"))
                 .accessibilityValue(self.gap.label)
         }
         .settingsAnchor(MenuBarSettingsPane.SearchID.layoutGap)
-        MacSettingsRow(L("menu_bar_layout_vertical_adjustment")) {
-            MacStepper(value: self.$verticalAdjustment, in: Self.verticalAdjustmentRange)
+        IUSettingsRow(L("menu_bar_layout_vertical_adjustment")) {
+            IUStepper(value: self.$verticalAdjustment, in: Self.verticalAdjustmentRange)
                 .accessibilityLabel(L("menu_bar_layout_vertical_adjustment"))
         }
         .settingsAnchor(MenuBarSettingsPane.SearchID.layoutVertical)
-        MacSettingsToggleRow(L("menu_bar_layout_monospaced_digits"), isOn: self.$monospacedDigits)
+        IUSettingsToggleRow(L("menu_bar_layout_monospaced_digits"), isOn: self.$monospacedDigits)
             .settingsAnchor(MenuBarSettingsPane.SearchID.layoutMonospacedDigits)
-        MacSettingsToggleRow(L("menu_bar_layout_show_window_labels"), isOn: self.$showWindowLabels)
+        IUSettingsToggleRow(L("menu_bar_layout_show_window_labels"), isOn: self.$showWindowLabels)
             .settingsAnchor(MenuBarSettingsPane.SearchID.layoutWindowLabels)
     }
 }

@@ -44,11 +44,11 @@ struct SettingsShellSnapshotTests {
         if let directory {
             try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         }
-        for appearance in [MacAppearance.light, .dark] {
+        for appearance in [IUAppearance.light, .dark] {
             for item in Self.cases {
                 let fixture = Fixture()
                 let shot = CodexBarLocalizationOverride.$appLanguage.withValue("en") {
-                    MacSnapshot.render(
+                    IUSnapshot.render(
                         item.view(fixture),
                         appearance: appearance,
                         width: item.width,
@@ -129,18 +129,18 @@ private struct PlaceholderPane: View {
     @State private var refreshOnOpen = false
 
     var body: some View {
-        MacSettingsPage("General", subtitle: "Placeholder pane for the window shell snapshot") {
-            MacSettingsSection("System") {
-                MacSettingsToggleRow(
+        IUSettingsPage("General", subtitle: "Placeholder pane for the window shell snapshot") {
+            IUSettingsSection("System") {
+                IUSettingsToggleRow(
                     "Start at login",
                     subtitle: "Opens in the menu bar when you log in.",
                     isOn: self.$launchAtLogin)
-                MacSettingsRow("Language") {
+                IUSettingsRow("Language") {
                     Text("System")
                 }
             }
-            MacSettingsSection("Refreshing", footer: "Usage refreshes in the background while the app is open.") {
-                MacSettingsToggleRow("Refresh when the menu opens", isOn: self.$refreshOnOpen)
+            IUSettingsSection("Refreshing", footer: "Usage refreshes in the background while the app is open.") {
+                IUSettingsToggleRow("Refresh when the menu opens", isOn: self.$refreshOnOpen)
             }
         }
     }

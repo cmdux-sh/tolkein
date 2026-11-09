@@ -52,7 +52,7 @@ enum AboutRoute: Hashable {
 @MainActor
 struct AboutSettingsPage: View {
     /// The app icon's side in the hero.
-    private static let iconSide = MacSize.gaugeRegular
+    private static let iconSide = IUSize.gaugeRegular
 
     let updater: UpdaterProviding
     @AppStorage("autoUpdateEnabled") private var autoUpdateEnabled: Bool = true
@@ -63,23 +63,23 @@ struct AboutSettingsPage: View {
     @State private var showsAcknowledgements = false
 
     var body: some View {
-        MacSettingsPage(L("tab_about")) {
+        IUSettingsPage(L("tab_about")) {
             self.hero
             self.updatesSection
-            MacSettingsSection(L("section_links")) {
-                MacSettingsLinkRow(L("link_github"), systemImage: "chevron.left.slash.chevron.right") {
+            IUSettingsSection(L("section_links")) {
+                IUSettingsLinkRow(L("link_github"), systemImage: "chevron.left.slash.chevron.right") {
                     self.openProjectHome()
                 }
                 .settingsAnchor("about/github")
-                MacSettingsLinkRow(L("link_acknowledgements"), systemImage: "heart.text.square") {
+                IUSettingsLinkRow(L("link_acknowledgements"), systemImage: "heart.text.square") {
                     self.showsAcknowledgements = true
                 }
                 .settingsAnchor("about/acknowledgements")
             }
             Text(AboutSettingsPane.creditText() + AttributedString("\n" + L("copyright")))
-                .font(MacTextRole.caption.font)
-                .foregroundStyle(MacColor.muted)
-                .tint(MacColor.accent)
+                .font(IUTextRole.caption.font)
+                .foregroundStyle(IUColor.muted)
+                .tint(IUColor.accent)
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: .infinity)
         }
@@ -98,7 +98,7 @@ struct AboutSettingsPage: View {
     }
 
     private var hero: some View {
-        VStack(spacing: MacSpace.unit * 2) {
+        VStack(spacing: IUSpace.unit * 2) {
             if let image = NSApplication.shared.applicationIconImage {
                 Button(action: self.openProjectHome) {
                     Image(nsImage: image)
@@ -110,34 +110,34 @@ struct AboutSettingsPage: View {
                 .help(L("link_github"))
                 .accessibilityLabel(L("link_github"))
             }
-            VStack(spacing: MacSpace.unit) {
+            VStack(spacing: IUSpace.unit) {
                 Text(verbatim: AboutSettingsPane.appName)
-                    .font(MacTextRole.display.font)
-                    .foregroundStyle(MacColor.primary)
-                MacText(String(format: L("version_format"), AppVersion.displayString), muted: true)
+                    .font(IUTextRole.display.font)
+                    .foregroundStyle(IUColor.primary)
+                IUText(String(format: L("version_format"), AppVersion.displayString), muted: true)
                     .monospacedDigit()
                     .textSelection(.enabled)
                 if let buildTimestamp = Self.buildTimestamp {
-                    MacText(String(format: L("built_format"), buildTimestamp), role: .caption, muted: true)
+                    IUText(String(format: L("built_format"), buildTimestamp), role: .caption, muted: true)
                 }
-                MacText(L("about_tagline"), role: .caption, muted: true)
+                IUText(L("about_tagline"), role: .caption, muted: true)
                     .multilineTextAlignment(.center)
             }
         }
         .frame(maxWidth: .infinity)
-        .padding(.vertical, MacSpace.unit * 2)
+        .padding(.vertical, IUSpace.unit * 2)
         .accessibilityElement(children: .contain)
     }
 
     private var updatesSection: some View {
-        MacSettingsSection(L("section_updates")) {
+        IUSettingsSection(L("section_updates")) {
             if self.offersUpdates {
-                MacSettingsToggleRow(L("check_updates_auto"), isOn: self.$autoUpdateEnabled)
+                IUSettingsToggleRow(L("check_updates_auto"), isOn: self.$autoUpdateEnabled)
                     .settingsAnchor("about/automaticChecks")
             }
             if self.updater.isAvailable {
                 // Sparkle only: Homebrew installs are upgraded through `brew`, never silently.
-                MacSettingsToggleRow(
+                IUSettingsToggleRow(
                     L("install_updates_auto"),
                     subtitle: L("install_updates_auto_subtitle"),
                     disabledReason: L("install_updates_needs_checks"),
@@ -147,17 +147,17 @@ struct AboutSettingsPage: View {
                     // Installs need a background check to find the update, so the choice is moot while checks are off.
                         .disabled(!self.autoUpdateEnabled)
                         .settingsAnchor("about/automaticInstall")
-                MacSettingsRow(L("update_channel"), subtitle: self.updateChannel.description) {
-                    MacPopUpButton(
+                IUSettingsRow(L("update_channel"), subtitle: self.updateChannel.description) {
+                    IUPopUpButton(
                         UpdateChannel.allCases.map { ($0, $0.displayName) },
                         selection: self.updateChannelBinding)
                 }
                 .settingsAnchor("about/updateChannel")
             }
             if self.offersUpdates {
-                MacSettingsRow(L("update_check_title"), disabledReason: L("update_check_busy")) {
+                IUSettingsRow(L("update_check_title"), disabledReason: L("update_check_busy")) {
                     Button(L("check_for_updates")) { self.updater.checkForUpdates(nil) }
-                        .buttonStyle(.mac())
+                        .buttonStyle(.iu())
                 }
                 .disabled(self.isHomebrewBusy)
                 .settingsAnchor("about/checkForUpdates")
@@ -166,7 +166,7 @@ struct AboutSettingsPage: View {
                 AboutHomebrewUpdateStatusView(updater: homebrewUpdater)
             } else if !self.updater.isAvailable {
                 AboutUpdatesUnavailableView(reason: self.updater.unavailableReason ?? L("updates_unavailable"))
-                    .buttonStyle(.macIcon)
+                    .buttonStyle(.iuIcon)
             }
         }
     }

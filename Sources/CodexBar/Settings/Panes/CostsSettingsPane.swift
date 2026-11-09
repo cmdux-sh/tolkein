@@ -58,7 +58,7 @@ struct CostsSettingsPane: View {
     }
 
     var body: some View {
-        MacSettingsPage(
+        IUSettingsPage(
             SettingsPane.costs.title,
             subtitle: L("Local estimated cost history across supported providers."))
         {
@@ -83,12 +83,12 @@ struct CostsSettingsPane: View {
     // MARK: - Sections
 
     private var offSection: some View {
-        MacSettingsSection {
-            MacEmptyState.firstUse(
+        IUSettingsSection {
+            IUEmptyState.firstUse(
                 L("Cost tracking is off"),
                 systemImage: "chart.bar.xaxis",
                 message: L("Turn on Track costs to build local estimates."),
-                primary: MacEmptyStateAction(L("Turn On")) {
+                primary: IUEmptyStateAction(L("Turn On")) {
                     self.settings.costUsageEnabled = true
                 })
         }
@@ -96,14 +96,14 @@ struct CostsSettingsPane: View {
     }
 
     private var trackingSection: some View {
-        MacSettingsSection(L("Tracking")) {
-            MacSettingsToggleRow(L("Track costs"), isOn: self.$settings.costUsageEnabled)
+        IUSettingsSection(L("Tracking")) {
+            IUSettingsToggleRow(L("Track costs"), isOn: self.$settings.costUsageEnabled)
                 .settingsAnchor(Anchor.trackCosts)
-            MacSettingsToggleRow(
+            IUSettingsToggleRow(
                 L("Include OpenCodex usage logs"),
                 isOn: self.$settings.openCodexUsageLogsEnabled)
                 .settingsAnchor(Anchor.openCodexLogs)
-            MacSettingsToggleRow(
+            IUSettingsToggleRow(
                 L("Hide native Codex when OpenCodex is present"),
                 disabledReason: self.hideNativeCodexDisabledReason,
                 isOn: self.$settings.hideNativeCodexCostWhenOpenCodexPresent)
@@ -118,8 +118,8 @@ struct CostsSettingsPane: View {
     }
 
     private var spendSection: some View {
-        MacSettingsSection(L("Spend")) {
-            MacSettingsLinkRow(
+        IUSettingsSection(L("Spend")) {
+            IUSettingsLinkRow(
                 L("Open Spend window"),
                 subtitle: L("Local estimated cost history"),
                 systemImage: "chart.bar.xaxis")
@@ -127,12 +127,12 @@ struct CostsSettingsPane: View {
                 self.openSpendWindowFromLink()
             }
             .settingsAnchor(Anchor.spendWindow)
-            MacKeyValueList(Self.summaryRows(
+            IUKeyValueList(Self.summaryRows(
                 model: self.controller.model,
                 period: self.controller.selectedPeriod,
                 isRefreshing: self.controller.isRefreshing))
-                .padding(.horizontal, MacSpace.settingsRowPaddingX)
-                .padding(.vertical, MacSpace.settingsRowPaddingY)
+                .padding(.horizontal, IUSpace.settingsRowPaddingX)
+                .padding(.vertical, IUSpace.settingsRowPaddingY)
         }
     }
 
@@ -143,15 +143,15 @@ struct CostsSettingsPane: View {
 
     private var sourcesSection: some View {
         let sources = self.controller.model.availableSources
-        return MacSettingsSection(L("Sources")) {
+        return IUSettingsSection(L("Sources")) {
             if sources.isEmpty {
                 let emptyState = SpendDashboardEmptyState.make(isRefreshing: self.controller.isRefreshing)
-                MacSettingsRow(emptyState.title, subtitle: emptyState.message) {
+                IUSettingsRow(emptyState.title, subtitle: emptyState.message) {
                     EmptyView()
                 }
             } else {
                 ForEach(sources) { source in
-                    MacSettingsRow(source.displayName) {
+                    IUSettingsRow(source.displayName) {
                         Toggle(source.displayName, isOn: self.sourceVisibility(source.id))
                             .toggleStyle(.checkbox)
                             .labelsHidden()
@@ -164,18 +164,18 @@ struct CostsSettingsPane: View {
     }
 
     private var timeZoneSection: some View {
-        MacSettingsSection(L("Time zone")) {
+        IUSettingsSection(L("Time zone")) {
             SpendTimeZoneControls(settings: self.settings)
         }
     }
 
     private var exportSection: some View {
-        MacSettingsSection(L("Export"), footer: L("List-price equivalent — not a billing receipt.")) {
-            MacSettingsRow(
+        IUSettingsSection(L("Export"), footer: L("List-price equivalent — not a billing receipt.")) {
+            IUSettingsRow(
                 L("Estimated spend"),
                 subtitle: spendDashboardPeriodText(self.controller.selectedPeriod))
             {
-                HStack(spacing: MacSpace.chromeGap) {
+                HStack(spacing: IUSpace.chromeGap) {
                     Button {
                         self.copyJSON()
                     } label: {
@@ -199,7 +199,7 @@ struct CostsSettingsPane: View {
                     .disabled(self.sharePayload == nil)
                     .settingsAnchor(Anchor.shareStats)
                 }
-                .buttonStyle(.mac())
+                .buttonStyle(.iu())
             }
         }
     }
@@ -214,9 +214,9 @@ struct CostsSettingsPane: View {
     static func summaryRows(
         model: SpendDashboardModel,
         period: CostReportingPeriod,
-        isRefreshing: Bool) -> [MacKeyValueList.Row]
+        isRefreshing: Bool) -> [IUKeyValueList.Row]
     {
-        var rows = [MacKeyValueList.Row(L("Time range"), spendDashboardPeriodText(period))]
+        var rows = [IUKeyValueList.Row(L("Time range"), spendDashboardPeriodText(period))]
         guard !model.groups.isEmpty else {
             let emptyState = SpendDashboardEmptyState.make(isRefreshing: isRefreshing)
             rows.append(.init(L("Estimated spend"), emptyState.title))

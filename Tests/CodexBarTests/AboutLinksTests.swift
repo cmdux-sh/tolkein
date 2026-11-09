@@ -45,15 +45,15 @@ struct AboutLinksTests {
         guard let directory = ProcessInfo.processInfo.environment["CODEXBAR_ABOUT_WEBSITE_PROOF_DIR"] else { return }
         try CodexBarLocalizationOverride.$appLanguage.withValue("en") {
             let url = AboutSettingsPane.projectHomeURL
-            let png = try #require(MacSnapshot.png(
-                VStack(alignment: .leading, spacing: MacSpace.settingsSectionGap) {
-                    MacSettingsSection(L("section_links")) {
-                        MacSettingsLinkRow(L("link_github"), systemImage: "chevron.left.slash.chevron.right") {}
+            let png = try #require(IUSnapshot.png(
+                VStack(alignment: .leading, spacing: IUSpace.settingsSectionGap) {
+                    IUSettingsSection(L("section_links")) {
+                        IUSettingsLinkRow(L("link_github"), systemImage: "chevron.left.slash.chevron.right") {}
                     }
-                    Text(verbatim: "Configured destination (proof annotation)").font(MacTextRole.caption.font)
-                    Text(url).font(MacTextRole.body.font).monospaced()
+                    Text(verbatim: "Configured destination (proof annotation)").font(IUTextRole.caption.font)
+                    Text(url).font(IUTextRole.body.font).monospaced()
                 }
-                .padding(MacSpace.settingsPagePadding),
+                .padding(IUSpace.settingsPagePadding),
                 appearance: .light,
                 width: 530))
             let output = URL(fileURLWithPath: directory, isDirectory: true)

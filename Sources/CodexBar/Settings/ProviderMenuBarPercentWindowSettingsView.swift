@@ -85,8 +85,8 @@ struct ProviderMenuBarPercentWindowPicker: View {
 
     var body: some View {
         if self.isVisible {
-            MacSettingsRow(L("menu_bar_metric_title"), subtitle: L("menu_bar_metric_subtitle")) {
-                MacPopUpButton(self.options, selection: self.selectionBinding)
+            IUSettingsRow(L("menu_bar_metric_title"), subtitle: L("menu_bar_metric_subtitle")) {
+                IUPopUpButton(self.options, selection: self.selectionBinding)
             }
         }
     }

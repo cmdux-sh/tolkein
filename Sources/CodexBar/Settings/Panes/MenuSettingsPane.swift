@@ -19,8 +19,8 @@ struct MenuSettingsPane: View {
     }
 
     var body: some View {
-        MacSettingsPage(L("tab_menu"), subtitle: L("settings_menu_subtitle")) {
-            VStack(alignment: .leading, spacing: MacSpace.settingsSectionGap) {
+        IUSettingsPage(L("tab_menu"), subtitle: L("settings_menu_subtitle")) {
+            VStack(alignment: .leading, spacing: IUSpace.settingsSectionGap) {
                 self.usageSection
                 self.contentSection
                 CostSummarySettingsSection(settings: self.settings, store: self.store)
@@ -35,26 +35,26 @@ struct MenuSettingsPane: View {
     // MARK: - Usage
 
     private var usageSection: some View {
-        MacSettingsSection(L("section_usage")) {
-            MacSettingsRow(L("usage_bars_fill_title")) {
-                MacPopUpButton(
+        IUSettingsSection(L("section_usage")) {
+            IUSettingsRow(L("usage_bars_fill_title")) {
+                IUPopUpButton(
                     MenuSettingsMenuOptions.usageBarsFill.map { ($0, $0.label) },
                     selection: self.$settings.usageBarsFillOption)
                     .accessibilityLabel(L("usage_bars_fill_title"))
             }
             .settingsAnchor(SearchID.usageBarsFill)
 
-            MacSettingsToggleRow(
+            IUSettingsToggleRow(
                 L("show_pace_title"),
                 subtitle: L("show_pace_subtitle"),
                 isOn: self.$settings.paceVisible)
                 .settingsAnchor(SearchID.pace)
 
-            MacSettingsRow(
+            IUSettingsRow(
                 L("weekly_progress_work_days_title"),
                 subtitle: L("weekly_progress_work_days_subtitle"))
             {
-                MacPopUpButton(
+                IUPopUpButton(
                     MenuSettingsPopUpOptions.options(
                         MenuSettingsMenuOptions.weeklyProgressWorkDays,
                         selection: self.settings.weeklyProgressWorkDays,
@@ -64,12 +64,12 @@ struct MenuSettingsPane: View {
             }
             .settingsAnchor(SearchID.workDays)
 
-            MacSettingsRow(
+            IUSettingsRow(
                 L("workday_tick_appearance_title"),
                 subtitle: L("workday_tick_appearance_subtitle"),
                 disabledReason: L("settings_reason_work_days_automatic"))
             {
-                MacPopUpButton(
+                IUPopUpButton(
                     MenuSettingsMenuOptions.workdayTickAppearances.map { ($0, $0.label) },
                     selection: self.$settings.workdayTickAppearance)
                     .accessibilityLabel(L("workday_tick_appearance_title"))
@@ -78,8 +78,8 @@ struct MenuSettingsPane: View {
             .disabled(self.settings.weeklyProgressWorkDays == nil)
             .settingsAnchor(SearchID.workdayTicks)
 
-            MacSettingsRow(L("reset_times_title")) {
-                MacPopUpButton(
+            IUSettingsRow(L("reset_times_title")) {
+                IUPopUpButton(
                     MenuSettingsMenuOptions.resetTimes.map { ($0, $0.label) },
                     selection: self.$settings.resetTimesOption)
                     .accessibilityLabel(L("reset_times_title"))
@@ -91,26 +91,26 @@ struct MenuSettingsPane: View {
     // MARK: - Content
 
     private var contentSection: some View {
-        MacSettingsSection(L("section_content")) {
-            MacSettingsToggleRow(
+        IUSettingsSection(L("section_content")) {
+            IUSettingsToggleRow(
                 L("show_provider_changelog_links_title"),
                 subtitle: L("show_provider_changelog_links_subtitle"),
                 isOn: self.$settings.providerChangelogLinksEnabled)
                 .settingsAnchor(SearchID.changelogLinks)
 
-            MacSettingsToggleRow(
+            IUSettingsToggleRow(
                 L("highlight_menu_cards_on_hover_title"),
                 isOn: self.$settings.highlightMenuCardsOnHover)
                 .settingsAnchor(SearchID.hoverHighlight)
 
-            MacSettingsToggleRow(
+            IUSettingsToggleRow(
                 L("show_credits_extra_usage_title"),
                 subtitle: L("show_credits_extra_usage_subtitle"),
                 isOn: self.$settings.showOptionalCreditsAndExtraUsage)
                 .settingsAnchor(SearchID.creditsExtraUsage)
 
-            MacSettingsRow(L("multi_account_layout_title")) {
-                MacPopUpButton(
+            IUSettingsRow(L("multi_account_layout_title")) {
+                IUPopUpButton(
                     MenuSettingsMenuOptions.multiAccountLayouts.map { ($0, $0.label) },
                     selection: self.$settings.multiAccountMenuLayout)
                     .accessibilityLabel(L("multi_account_layout_title"))
@@ -122,8 +122,8 @@ struct MenuSettingsPane: View {
     // MARK: - Widgets
 
     private var widgetsSection: some View {
-        MacSettingsSection(L("section_widgets")) {
-            MacSettingsToggleRow(
+        IUSettingsSection(L("section_widgets")) {
+            IUSettingsToggleRow(
                 L("account_widgets_title"),
                 subtitle: L("account_widgets_description"),
                 isOn: self.$settings.accountWidgetsEnabled)
@@ -171,22 +171,22 @@ struct MenuSettingsNumberField<Format: ParseableFormatStyle>: View where Format.
     @Binding var value: Format.FormatInput
     let format: Format
 
-    @Environment(\.macControlSize) private var controlSize
+    @Environment(\.iuControlSize) private var controlSize
     @FocusState private var isFocused: Bool
 
     var body: some View {
-        let metrics = MacControlMetrics.forSize(self.controlSize)
+        let metrics = IUControlMetrics.forSize(self.controlSize)
         TextField(self.title, value: self.$value, format: self.format)
             .labelsHidden()
             .textFieldStyle(.plain)
             .multilineTextAlignment(.trailing)
             .monospacedDigit()
-            .font(MacTextRole.body.font)
+            .font(IUTextRole.body.font)
             .focused(self.$isFocused)
             .padding(.horizontal, metrics.paddingX)
-            .frame(width: MacSize.control * 2, height: metrics.height)
-            .macWell(radius: metrics.radius)
-            .macFocusRing(self.isFocused, radius: metrics.radius)
+            .frame(width: IUSize.control * 2, height: metrics.height)
+            .iuWell(radius: metrics.radius)
+            .iuFocusRing(self.isFocused, radius: metrics.radius)
             .accessibilityLabel(self.title)
     }
 }

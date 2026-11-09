@@ -6,13 +6,13 @@ import SwiftUI
 // MARK: - Row frame
 
 extension View {
-    /// Pads a free-form row (a meter, a list of facts, a note) like a `MacSettingsRow`, so it lines up with the
-    /// titled rows in the same `MacSettingsSection`.
+    /// Pads a free-form row (a meter, a list of facts, a note) like a `IUSettingsRow`, so it lines up with the
+    /// titled rows in the same `IUSettingsSection`.
     func providerSettingsRow() -> some View {
         self
-            .padding(.horizontal, MacSpace.settingsRowPaddingX)
-            .padding(.vertical, MacSpace.settingsRowPaddingY)
-            .frame(maxWidth: .infinity, minHeight: MacSize.settingsRow, alignment: .leading)
+            .padding(.horizontal, IUSpace.settingsRowPaddingX)
+            .padding(.vertical, IUSpace.settingsRowPaddingY)
+            .frame(maxWidth: .infinity, minHeight: IUSize.settingsRow, alignment: .leading)
     }
 }
 
@@ -27,7 +27,7 @@ struct ProviderSettingsCaptionRow: View {
     }
 
     var body: some View {
-        MacText(self.text, role: .caption, muted: true)
+        IUText(self.text, role: .caption, muted: true)
             .lineLimit(self.lineLimit)
             .fixedSize(horizontal: false, vertical: true)
             .textSelection(.enabled)
@@ -40,7 +40,7 @@ struct ProviderSettingsTrailingButtonsRow<Content: View>: View {
     @ViewBuilder let content: Content
 
     var body: some View {
-        HStack(spacing: MacSpace.unit * 2) {
+        HStack(spacing: IUSpace.unit * 2) {
             Spacer(minLength: 0)
             self.content
         }
@@ -50,7 +50,7 @@ struct ProviderSettingsTrailingButtonsRow<Content: View>: View {
 
 // MARK: - Text field
 
-/// A plain or secure text field in the library's field well, the same size as `MacTextField`. Internal UI 0.11 has
+/// A plain or secure text field in the library's field well, the same size as `IUTextField`. Internal UI 0.11 has
 /// no secure field and no way to observe a field's focus, which the accent colour needs to commit on focus loss.
 struct ProviderTextField: View {
     let placeholder: String
@@ -59,7 +59,7 @@ struct ProviderTextField: View {
     var isMonospaced = false
     var focus: FocusState<Bool>.Binding?
     @FocusState private var ownFocus: Bool
-    @Environment(\.macControlSize) private var controlSize
+    @Environment(\.iuControlSize) private var controlSize
 
     init(
         _ placeholder: String,
@@ -76,7 +76,7 @@ struct ProviderTextField: View {
     }
 
     var body: some View {
-        let metrics = MacControlMetrics.forSize(self.controlSize)
+        let metrics = IUControlMetrics.forSize(self.controlSize)
         let focusBinding = self.focus ?? self.$ownFocus
         Group {
             if self.isSecure {
@@ -87,11 +87,11 @@ struct ProviderTextField: View {
         }
         .textFieldStyle(.plain)
         .focused(focusBinding)
-        .font(self.isMonospaced ? MacTextRole.body.font.monospaced() : MacTextRole.body.font)
+        .font(self.isMonospaced ? IUTextRole.body.font.monospaced() : IUTextRole.body.font)
         .padding(.horizontal, metrics.paddingX)
         .frame(height: metrics.height)
-        .macWell(radius: metrics.radius)
-        .macFocusRing(focusBinding.wrappedValue, radius: metrics.radius)
+        .iuWell(radius: metrics.radius)
+        .iuFocusRing(focusBinding.wrappedValue, radius: metrics.radius)
         .accessibilityLabel(self.placeholder)
     }
 }
@@ -110,14 +110,14 @@ struct ProviderSettingsActionButtons: View {
     var body: some View {
         let visible = self.visible
         if !visible.isEmpty {
-            HStack(spacing: MacSpace.unit * 2) {
+            HStack(spacing: IUSpace.unit * 2) {
                 ForEach(visible) { action in
                     Button(L(action.title)) {
                         Task { @MainActor in
                             await action.perform()
                         }
                     }
-                    .buttonStyle(.mac(action.style == .link ? .plain : .standard))
+                    .buttonStyle(.iu(action.style == .link ? .plain : .standard))
                 }
             }
         }
@@ -131,7 +131,7 @@ struct ProviderSettingsActionsRow: View {
 
     var body: some View {
         let subtitle = self.descriptor.subtitle.trimmingCharacters(in: .whitespacesAndNewlines)
-        MacSettingsRow(L(self.descriptor.title), subtitle: subtitle.isEmpty ? nil : L(subtitle)) {
+        IUSettingsRow(L(self.descriptor.title), subtitle: subtitle.isEmpty ? nil : L(subtitle)) {
             ProviderSettingsActionButtons(actions: self.descriptor.actions)
         }
     }
@@ -149,14 +149,14 @@ struct ProviderSettingsPickerRow: View {
         let isEnabled = self.picker.isEnabled?() ?? true
         let subtitle = (self.picker.dynamicSubtitle?() ?? self.picker.subtitle)
             .trimmingCharacters(in: .whitespacesAndNewlines)
-        MacSettingsRow(L(self.picker.title), subtitle: subtitle.isEmpty ? nil : L(subtitle)) {
-            HStack(spacing: MacSpace.unit * 2) {
+        IUSettingsRow(L(self.picker.title), subtitle: subtitle.isEmpty ? nil : L(subtitle)) {
+            HStack(spacing: IUSpace.unit * 2) {
                 if let trailingText = self.picker.trailingText?(), !trailingText.isEmpty {
-                    MacText(trailingText, role: .caption, muted: true)
+                    IUText(trailingText, role: .caption, muted: true)
                         .lineLimit(1)
                 }
                 ProviderSettingsActionButtons(actions: self.picker.trailingActions)
-                MacPopUpButton(
+                IUPopUpButton(
                     self.picker.options.map { ($0.id, $0.displayTitle) },
                     selection: self.picker.binding)
             }
@@ -197,19 +197,19 @@ struct ProviderSettingsFieldRow: View {
 
     var body: some View {
         if self.title.isEmpty {
-            VStack(alignment: .leading, spacing: MacSpace.unit * 2) {
+            VStack(alignment: .leading, spacing: IUSpace.unit * 2) {
                 self.input
                 ProviderSettingsActionButtons(actions: self.field.actions)
                 if let subtitle {
-                    MacText(subtitle, role: .caption, muted: true)
+                    IUText(subtitle, role: .caption, muted: true)
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }
             .providerSettingsRow()
         } else {
-            MacSettingsRow(L(self.title), subtitle: self.subtitle) {
-                VStack(alignment: .trailing, spacing: MacSpace.unit * 2) {
-                    self.input.frame(width: MacSize.settingsField)
+            IUSettingsRow(L(self.title), subtitle: self.subtitle) {
+                VStack(alignment: .trailing, spacing: IUSpace.unit * 2) {
+                    self.input.frame(width: IUSize.settingsField)
                     ProviderSettingsActionButtons(actions: self.field.actions)
                 }
             }
@@ -231,7 +231,7 @@ struct ProviderSettingsToggleRows: View {
     var body: some View {
         let isEnabled = self.toggle.isEnabled?() ?? true
         let subtitle = self.toggle.subtitle.trimmingCharacters(in: .whitespacesAndNewlines)
-        MacSettingsToggleRow(
+        IUSettingsToggleRow(
             L(self.toggle.title),
             subtitle: subtitle.isEmpty ? nil : L(subtitle),
             isOn: self.toggle.binding)

@@ -52,7 +52,7 @@ struct ProviderSettingsPageContent {
     /// Codex's per-account overview, which replaces the single usage section.
     let accountUsageOverview: ProviderAccountUsageOverview?
     let usageItems: [ProviderUsageItemDescriptor]
-    let statusFacts: [MacKeyValueList.Row]
+    let statusFacts: [IUKeyValueList.Row]
     let errorDisplay: ProviderErrorDisplay?
     let openAIWebDiagnostic: String?
     let pickers: [ProviderSettingsPickerDescriptor]
@@ -120,9 +120,9 @@ enum ProviderStatusFacts {
         provider: UsageProvider,
         store: UsageStore,
         model: UsageMenuCardView.Model,
-        showsAccountInfo: Bool) -> [MacKeyValueList.Row]
+        showsAccountInfo: Bool) -> [IUKeyValueList.Row]
     {
-        var rows: [MacKeyValueList.Row] = []
+        var rows: [IUKeyValueList.Row] = []
         if showsAccountInfo {
             rows.append(.init(L("Source"), store.sourceLabel(for: provider), id: "source"))
         }
@@ -250,7 +250,7 @@ enum ProviderSettingsUsagePresentation {
     /// One usage row: the meters and facts it shows, then the token usage and notes.
     struct Rows {
         let meters: [UsageBoardMetric]
-        let facts: [MacKeyValueList.Row]
+        let facts: [IUKeyValueList.Row]
         let tokenUsage: TokenUsage?
         let diagnostic: String?
         let notes: [String]
@@ -326,9 +326,9 @@ enum ProviderSettingsUsagePresentation {
         }
 
         var meters = model.metrics.map { self.meter(for: $0, provider: provider) }
-        var facts: [MacKeyValueList.Row] = infoRows
+        var facts: [IUKeyValueList.Row] = infoRows
             .filter { $0.id == .credits }
-            .map { MacKeyValueList.Row($0.label, $0.value, id: "credits") }
+            .map { IUKeyValueList.Row($0.label, $0.value, id: "credits") }
         if let resetCredits = model.limitResetCredits {
             facts.append(.init(
                 L("Limit Reset Credits"),
@@ -343,7 +343,7 @@ enum ProviderSettingsUsagePresentation {
         var detailLines: [UsageBoardDetailLine] = []
         UsageBoardCardProjection.appendDetails(model.providerDetails, metrics: &detailMeters, lines: &detailLines)
         meters += detailMeters
-        facts += detailLines.map { MacKeyValueList.Row($0.label, $0.value, id: $0.id) }
+        facts += detailLines.map { IUKeyValueList.Row($0.label, $0.value, id: $0.id) }
 
         return Rows(
             meters: meters,
@@ -406,7 +406,7 @@ enum ProviderSettingsUsagePresentation {
         _ cost: UsageMenuCardView.Model.ProviderCostSection?,
         id: String,
         meters: inout [UsageBoardMetric],
-        facts: inout [MacKeyValueList.Row])
+        facts: inout [IUKeyValueList.Row])
     {
         guard let cost else { return }
         guard let consumed = cost.percentUsed else {

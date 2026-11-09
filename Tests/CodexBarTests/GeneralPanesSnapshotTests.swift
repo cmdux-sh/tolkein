@@ -33,10 +33,10 @@ struct GeneralPanesSnapshotTests {
         let homebrew = Fixture.failingHomebrewUpdater()
         await homebrew.performCheck()
         let fixture = Fixture(homebrew: homebrew)
-        for appearance in [MacAppearance.light, .dark] {
+        for appearance in [IUAppearance.light, .dark] {
             for item in fixture.cases {
                 let shot = CodexBarLocalizationOverride.$appLanguage.withValue(item.language) {
-                    MacSnapshot.render(
+                    IUSnapshot.render(
                         item.view(),
                         appearance: appearance,
                         width: item.width,
@@ -109,7 +109,7 @@ struct GeneralPanesSnapshotTests {
                 },
                 Case(
                     name: "acknowledgements",
-                    width: MacSize.settingsContentWidth,
+                    width: IUSize.settingsContentWidth,
                     height: SettingsPane.windowMinHeight)
                 {
                     let acknowledgements = Acknowledgement.load()

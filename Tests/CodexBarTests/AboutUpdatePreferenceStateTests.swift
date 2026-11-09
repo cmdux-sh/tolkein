@@ -7,7 +7,7 @@ import XCTest
 final class AboutUpdatePreferenceStateTests: XCTestCase {
     /// The install switch reads Sparkle's saved choice (`SUAutomaticallyUpdate`), so opening About with checks off
     /// must leave that choice alone, and later changes from Settings or Sparkle's dialog must land in it. The switch
-    /// is Internal UI's drawn `.macSwitch`, not an `NSSwitch`, so its look is covered by `GeneralPanesSnapshotTests`.
+    /// is Internal UI's drawn `.iuSwitch`, not an `NSSwitch`, so its look is covered by `GeneralPanesSnapshotTests`.
     func test_installChoiceSurvivesOpeningAboutWhileChecksAreOffAndFollowsTheDialog() throws {
         let updater = try SparklePreferenceFixture(install: true, checks: false)
         defer { updater.cleanup() }

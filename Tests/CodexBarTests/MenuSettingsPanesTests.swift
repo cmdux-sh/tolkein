@@ -206,17 +206,17 @@ struct MenuSettingsPanesTests {
                 eligibleProviders: [.codex, .claude],
                 preferredTop: nil,
                 preferredBottom: nil)
-            let view = VStack(alignment: .leading, spacing: MacSpace.settingsSectionGap) {
-                MacSettingsSection(L("section_combined_icon")) {
-                    MacSettingsToggleRow(L("merge_icons_title"), isOn: .constant(merged))
-                    MacSettingsRow(
+            let view = VStack(alignment: .leading, spacing: IUSpace.settingsSectionGap) {
+                IUSettingsSection(L("section_combined_icon")) {
+                    IUSettingsToggleRow(L("merge_icons_title"), isOn: .constant(merged))
+                    IUSettingsRow(
                         L("merged_icon_style_title"),
                         disabledReason: MenuBarSettingsPane.mergedIconStyleDisabledReason(
                             mergeIcons: merged,
                             iconStyle: .iconAndPercent,
                             eligibleProviderCount: presentation.eligibleProviders.count))
                     {
-                        MacPopUpButton(
+                        IUPopUpButton(
                             MenuBarSettingsMenuOptions.mergedIconStyles.map { ($0, $0.label) },
                             selection: .constant(presentation.effectiveStyle))
                     }
@@ -228,7 +228,7 @@ struct MenuSettingsPanesTests {
                             effectiveStyle: presentation.effectiveStyle))
                         .disabled(!merged || presentation.effectiveStyle == .stacked)
                 }
-                MacSettingsSection(L("Display")) {
+                IUSettingsSection(L("Display")) {
                     MenuBarLayoutDisplayOptions(
                         size: .constant(.small),
                         gap: .constant(.tight),
@@ -237,10 +237,10 @@ struct MenuSettingsPanesTests {
                         showWindowLabels: .constant(true))
                 }
             }
-            .padding(MacSpace.settingsPagePadding)
-            .frame(width: MacSize.settingsContentWidth)
+            .padding(IUSpace.settingsPagePadding)
+            .frame(width: IUSize.settingsContentWidth)
             .environment(\.accessibilityEnabled, true)
-            .background(MacColor.window)
+            .background(IUColor.window)
             let hosting = NSHostingView(rootView: view)
             hosting.frame = CGRect(origin: .zero, size: hosting.fittingSize)
             hosting.layoutSubtreeIfNeeded()

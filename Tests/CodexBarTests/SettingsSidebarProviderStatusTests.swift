@@ -54,7 +54,7 @@ struct SettingsSidebarProviderStatusTests {
     }
 
     @Test(arguments: [
-        (ProviderStatusIndicator.none, MacStatusTone?.none),
+        (ProviderStatusIndicator.none, IUStatusTone?.none),
         (.unknown, nil),
         (.minor, .warning),
         (.major, .error),
@@ -63,7 +63,7 @@ struct SettingsSidebarProviderStatusTests {
     ])
     func `service incidents show a tone and healthy or unknown status stays quiet`(
         indicator: ProviderStatusIndicator,
-        tone: MacStatusTone?)
+        tone: IUStatusTone?)
     {
         #expect(SettingsSidebarProviderStatus.tone(for: indicator) == tone)
     }

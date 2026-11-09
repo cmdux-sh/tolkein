@@ -22,12 +22,12 @@ struct UnifiedIconSourcePicker: View {
     var disabledReason: String?
 
     var body: some View {
-        MacSettingsRow(
+        IUSettingsRow(
             L("merged_icon_source_title"),
             subtitle: L("merged_icon_source_subtitle"),
             disabledReason: self.disabledReason)
         {
-            MacPopUpButton(
+            IUPopUpButton(
                 MenuBarSettingsMenuOptions.unifiedIconSources.map { ($0, $0.label) },
                 selection: self.$selection)
                 .accessibilityLabel(L("merged_icon_source_title"))

@@ -27,10 +27,10 @@ struct ProviderSettingsPageSnapshotTests {
             try CodexBarLocalizationOverride.$appLanguage.withValue("en") {
                 for provider in Self.providers {
                     let page = Self.makePage(provider)
-                    for appearance in [MacAppearance.light, .dark] {
+                    for appearance in [IUAppearance.light, .dark] {
                         let name = "provider-\(provider.rawValue)-\(appearance.rawValue)"
                         let short = try #require(
-                            MacSnapshot.render(
+                            IUSnapshot.render(
                                 ProviderSettingsPage(model: page),
                                 appearance: appearance,
                                 width: Self.width,
@@ -38,7 +38,7 @@ struct ProviderSettingsPageSnapshotTests {
                             "\(name) did not render")
                         #expect(short.size == CGSize(width: Self.width, height: Self.shortHeight))
                         let full = try #require(
-                            MacSnapshot.render(
+                            IUSnapshot.render(
                                 Self.fullLength(page),
                                 appearance: appearance,
                                 width: Self.width),
@@ -56,10 +56,10 @@ struct ProviderSettingsPageSnapshotTests {
 
     /// Every section at its natural height, as it reads when scrolled through.
     private static func fullLength(_ page: ProviderSettingsPageModel) -> some View {
-        VStack(alignment: .leading, spacing: MacSpace.settingsSectionGap) {
+        VStack(alignment: .leading, spacing: IUSpace.settingsSectionGap) {
             ProviderSettingsPageSections(model: page, content: page.pageContent())
         }
-        .padding(MacSpace.settingsPagePadding)
+        .padding(IUSpace.settingsPagePadding)
         .frame(width: self.width, alignment: .topLeading)
         .fixedSize(horizontal: false, vertical: true)
     }

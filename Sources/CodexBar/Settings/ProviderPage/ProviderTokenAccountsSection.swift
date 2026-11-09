@@ -51,15 +51,15 @@ struct ProviderTokenAccountTeamRows: View {
     @Binding var draft: ProviderTokenAccountTeamDraft
 
     var body: some View {
-        MacSettingsToggleRow(L("Team mode"), isOn: self.$draft.teamMode)
+        IUSettingsToggleRow(L("Team mode"), isOn: self.$draft.teamMode)
         if self.draft.teamMode {
-            MacSettingsRow(L("Organization ID")) {
+            IUSettingsRow(L("Organization ID")) {
                 ProviderTextField(L("Organization ID"), text: self.$draft.organizationID)
-                    .frame(width: MacSize.settingsField)
+                    .frame(width: IUSize.settingsField)
             }
-            MacSettingsRow(L("Project ID")) {
+            IUSettingsRow(L("Project ID")) {
                 ProviderTextField(L("Project ID"), text: self.$draft.projectID)
-                    .frame(width: MacSize.settingsField)
+                    .frame(width: IUSize.settingsField)
             }
         }
     }
@@ -89,13 +89,13 @@ struct ProviderTokenAccountsSection: View {
     var body: some View {
         let accounts = self.descriptor.accounts()
         let subtitle = self.descriptor.subtitle.trimmingCharacters(in: .whitespacesAndNewlines)
-        MacSettingsSection(L(self.descriptor.title), footer: subtitle.isEmpty ? nil : L(subtitle)) {
+        IUSettingsSection(L(self.descriptor.title), footer: subtitle.isEmpty ? nil : L(subtitle)) {
             if accounts.isEmpty {
                 ProviderSettingsCaptionRow(L("No token accounts yet."))
             } else {
                 if accounts.count > 1 {
-                    MacSettingsRow(L("Active")) {
-                        MacPopUpButton(
+                    IUSettingsRow(L("Active")) {
+                        IUPopUpButton(
                             accounts.enumerated().map { ($0.offset, $0.element.displayName) },
                             selection: Binding(
                                 get: { Self.activeIndex(self.descriptor.activeIndex(), accountCount: accounts.count) },
@@ -117,11 +117,11 @@ struct ProviderTokenAccountsSection: View {
                 self.addFormRows
             }
 
-            HStack(spacing: MacSpace.unit * 2) {
+            HStack(spacing: IUSpace.unit * 2) {
                 Button(L("Open token file")) { self.descriptor.openConfigFile() }
-                    .buttonStyle(.mac(.plain))
+                    .buttonStyle(.iu(.plain))
                 Button(L("Reload")) { self.descriptor.reloadFromDisk() }
-                    .buttonStyle(.mac(.plain))
+                    .buttonStyle(.iu(.plain))
                 Spacer(minLength: 0)
                 if let title = self.descriptor.primaryAddActionTitle,
                    let action = self.descriptor.primaryAddAction
@@ -131,7 +131,7 @@ struct ProviderTokenAccountsSection: View {
                             await action()
                         }
                     }
-                    .buttonStyle(.mac(.primary))
+                    .buttonStyle(.iu(.primary))
                 }
             }
             .providerSettingsRow()
@@ -145,11 +145,11 @@ struct ProviderTokenAccountsSection: View {
     }
 
     private func accountRow(_ account: ProviderTokenAccount, index: Int, count: Int) -> some View {
-        MacSettingsRow(account.displayName, subtitle: self.accountSubtitle(account)) {
-            HStack(spacing: MacSpace.unit * 2) {
+        IUSettingsRow(account.displayName, subtitle: self.accountSubtitle(account)) {
+            HStack(spacing: IUSpace.unit * 2) {
                 if self.canEditCredentials || self.descriptor.showsTeamModeControls {
                     Button(L("Edit")) { self.beginEditing(account) }
-                        .buttonStyle(.mac())
+                        .buttonStyle(.iu())
                         .disabled(self.editingAccountID == account.id)
                 }
                 if let move = self.descriptor.moveAccount {
@@ -158,7 +158,7 @@ struct ProviderTokenAccountsSection: View {
                     } label: {
                         Image(systemName: "chevron.up")
                     }
-                    .buttonStyle(.mac())
+                    .buttonStyle(.iu())
                     .help(L("Move up"))
                     .accessibilityLabel(L("Move up"))
                     .disabled(index == 0)
@@ -167,13 +167,13 @@ struct ProviderTokenAccountsSection: View {
                     } label: {
                         Image(systemName: "chevron.down")
                     }
-                    .buttonStyle(.mac())
+                    .buttonStyle(.iu())
                     .help(L("Move down"))
                     .accessibilityLabel(L("Move down"))
                     .disabled(index == count - 1)
                 }
                 Button(L("Remove")) { self.requestRemoval(account) }
-                    .buttonStyle(.mac())
+                    .buttonStyle(.iu())
             }
         }
     }
@@ -196,13 +196,13 @@ struct ProviderTokenAccountsSection: View {
     @ViewBuilder
     private func editorRows(_ account: ProviderTokenAccount) -> some View {
         if self.canEditCredentials {
-            MacSettingsRow(L("Label")) {
+            IUSettingsRow(L("Label")) {
                 ProviderTextField(L("Label"), text: self.$editLabel)
-                    .frame(width: MacSize.settingsField)
+                    .frame(width: IUSize.settingsField)
             }
-            MacSettingsRow(L("Token"), subtitle: L("Leave blank to keep the saved credential.")) {
+            IUSettingsRow(L("Token"), subtitle: L("Leave blank to keep the saved credential.")) {
                 ProviderTextField(L(self.descriptor.placeholder), text: self.$editToken, isSecure: true)
-                    .frame(width: MacSize.settingsField)
+                    .frame(width: IUSize.settingsField)
             }
         }
         if self.descriptor.showsTeamModeControls {
@@ -210,10 +210,10 @@ struct ProviderTokenAccountsSection: View {
         }
         ProviderSettingsTrailingButtonsRow {
             Button(L("Cancel")) { self.endEditing() }
-                .buttonStyle(.mac())
+                .buttonStyle(.iu())
                 .keyboardShortcut(.cancelAction)
             Button(L("Save")) { self.saveEdits(account) }
-                .buttonStyle(.mac(.primary))
+                .buttonStyle(.iu(.primary))
                 .disabled(self.isSaveDisabled(account))
         }
     }
@@ -262,21 +262,21 @@ struct ProviderTokenAccountsSection: View {
 
     @ViewBuilder
     private var addFormRows: some View {
-        MacSettingsRow(L("Label")) {
+        IUSettingsRow(L("Label")) {
             ProviderTextField(L("Label"), text: self.$newAccount.label)
-                .frame(width: MacSize.settingsField)
+                .frame(width: IUSize.settingsField)
         }
-        MacSettingsRow(L("Token")) {
+        IUSettingsRow(L("Token")) {
             ProviderTextField(L(self.descriptor.placeholder), text: self.$newAccount.token, isSecure: true)
-                .frame(width: MacSize.settingsField)
+                .frame(width: IUSize.settingsField)
         }
         if self.descriptor.showsOrganizationField {
-            MacSettingsRow(
+            IUSettingsRow(
                 L("Org ID (optional)"),
                 subtitle: L("Optional organization ID for accounts linked to multiple Anthropic organizations."))
             {
                 ProviderTextField(L("Org ID (optional)"), text: self.$newAccount.organizationID)
-                    .frame(width: MacSize.settingsField)
+                    .frame(width: IUSize.settingsField)
             }
         }
         if self.descriptor.showsTeamModeControls {
@@ -287,7 +287,7 @@ struct ProviderTokenAccountsSection: View {
         }
         ProviderSettingsTrailingButtonsRow {
             Button(L("Add")) { self.addAccount() }
-                .buttonStyle(.mac(.primary))
+                .buttonStyle(.iu(.primary))
                 .disabled(Self.isAddDisabled(
                     label: self.newAccount.label,
                     token: self.newAccount.token,

@@ -10,13 +10,13 @@ struct HooksSections: View {
     let requestDelete: (HookRule) -> Void
 
     var body: some View {
-        MacSettingsSection(L("tab_hooks"), footer: L("hooks_trust_warning")) {
-            MacSettingsToggleRow(
+        IUSettingsSection(L("tab_hooks"), footer: L("hooks_trust_warning")) {
+            IUSettingsToggleRow(
                 L("hooks_enable_title"),
                 subtitle: L("hooks_enable_subtitle"),
                 isOn: self.enabledBinding)
                 .settingsAnchor(IntegrationsSettingsPane.anchor(.hooks))
-            MacSettingsRow(
+            IUSettingsRow(
                 L("hooks_rules_header"),
                 disabledReason: L("At most %d rules.", HooksConfig.maximumRuleCount))
             {
@@ -25,15 +25,15 @@ struct HooksSections: View {
                 } label: {
                     Label(L("hooks_add_rule"), systemImage: "plus")
                 }
-                .buttonStyle(.mac())
+                .buttonStyle(.iu())
             }
             .disabled(!HookEditorValidation.canAddRule(count: self.settings.hookRules.count))
             .settingsAnchor(IntegrationsSettingsPane.anchor(.hookRules))
         }
 
         if self.settings.hookRules.isEmpty {
-            MacSettingsSection {
-                MacEmptyState(
+            IUSettingsSection {
+                IUEmptyState(
                     L("hooks_empty"),
                     systemImage: "terminal",
                     message: L("Add a rule to run a command when a quota or provider event happens."),
@@ -79,16 +79,16 @@ struct HookRuleCard: View {
     }
 
     var body: some View {
-        MacSettingsSection(L("Rule %d", self.number)) {
-            MacSettingsToggleRow(L("hooks_rule_enabled"), isOn: self.$rule.enabled)
-            MacSettingsRow(L("hooks_event")) {
-                MacPopUpButton(HookEventType.allCases.map { ($0, $0.rawValue) }, selection: self.$rule.event)
+        IUSettingsSection(L("Rule %d", self.number)) {
+            IUSettingsToggleRow(L("hooks_rule_enabled"), isOn: self.$rule.enabled)
+            IUSettingsRow(L("hooks_event")) {
+                IUPopUpButton(HookEventType.allCases.map { ($0, $0.rawValue) }, selection: self.$rule.event)
             }
-            MacSettingsRow(L("hooks_provider")) {
-                MacPopUpButton(Self.providerOptions, selection: self.providerBinding)
+            IUSettingsRow(L("hooks_provider")) {
+                IUPopUpButton(Self.providerOptions, selection: self.providerBinding)
             }
             if self.rule.event == .quotaLow {
-                MacSettingsRow(L("hooks_threshold")) {
+                IUSettingsRow(L("hooks_threshold")) {
                     SettingsFieldWell { focus in
                         TextField(
                             L("hooks_threshold"),
@@ -99,15 +99,15 @@ struct HookRuleCard: View {
                     } trailing: {
                         SettingsFieldUnit(unit: "%")
                     }
-                    .frame(width: MacSize.settingsField)
+                    .frame(width: IUSize.settingsField)
                 }
             }
-            MacSettingsRow(L("hooks_executable")) {
-                MacTextField(L("hooks_executable_placeholder"), text: self.$rule.executable)
-                    .frame(width: MacSize.settingsField)
+            IUSettingsRow(L("hooks_executable")) {
+                IUTextField(L("hooks_executable_placeholder"), text: self.$rule.executable)
+                    .frame(width: IUSize.settingsField)
                     .help(self.rule.executable)
             }
-            MacSettingsRow(
+            IUSettingsRow(
                 L("hooks_arguments_placeholder"),
                 disabledReason: L("At most %d arguments.", HookRule.maximumArgumentCount))
             {
@@ -116,30 +116,30 @@ struct HookRuleCard: View {
                 } label: {
                     Label(L("hooks_add_argument"), systemImage: "plus")
                 }
-                .buttonStyle(.mac())
+                .buttonStyle(.iu())
             }
             .disabled(!HookEditorValidation.canAddArgument(count: self.argumentRows.count))
             ForEach(Array(self.argumentRows.enumerated()), id: \.element.id) { index, argument in
-                MacSettingsRow(L("Argument %d", index + 1)) {
-                    HStack(spacing: MacSpace.unit * 2) {
+                IUSettingsRow(L("Argument %d", index + 1)) {
+                    HStack(spacing: IUSpace.unit * 2) {
                         Button {
                             self.argumentRows.removeAll(where: { $0.id == argument.id })
                         } label: {
                             Image(systemName: "minus.circle")
-                                .foregroundStyle(MacColor.muted)
+                                .foregroundStyle(IUColor.muted)
                         }
-                        .buttonStyle(.macIcon)
+                        .buttonStyle(.iuIcon)
                         .help(L("hooks_delete_argument"))
                         .accessibilityLabel(L("hooks_delete_argument"))
-                        MacTextField(L("hooks_argument_placeholder"), text: self.argumentBinding(argument.id))
-                            .frame(width: MacSize.settingsField)
+                        IUTextField(L("hooks_argument_placeholder"), text: self.argumentBinding(argument.id))
+                            .frame(width: IUSize.settingsField)
                             .help(argument.value)
                     }
                 }
             }
-            MacSettingsRow(L("hooks_delete_rule")) {
+            IUSettingsRow(L("hooks_delete_rule")) {
                 Button(L("Delete…"), action: self.onDelete)
-                    .buttonStyle(.mac())
+                    .buttonStyle(.iu())
             }
         }
         .onChange(of: self.argumentRows.map(\.value)) { _, arguments in

@@ -146,8 +146,8 @@ struct IntegrationsSettingsSnapshotTests {
             try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         }
         try CodexBarLocalizationOverride.$appLanguage.withValue("en") {
-            for appearance in [MacAppearance.light, .dark] {
-                let shot = MacSnapshot.render(view(), appearance: appearance, width: width, height: height)
+            for appearance in [IUAppearance.light, .dark] {
+                let shot = IUSnapshot.render(view(), appearance: appearance, width: width, height: height)
                 let rendered = try #require(shot, "\(name) \(appearance.rawValue) did not render")
                 if let height {
                     #expect(rendered.size == CGSize(width: width, height: height))

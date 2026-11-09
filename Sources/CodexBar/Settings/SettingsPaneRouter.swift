@@ -51,7 +51,7 @@ struct SettingsPaneRouter: View {
 }
 
 /// Carries a search jump into the routed pane: sets `settingsSearchTarget`, scrolls the anchored row into view,
-/// and ends the jump after `MacHighlight.searchHold`, once the row's tint has faded.
+/// and ends the jump after `IUHighlight.searchHold`, once the row's tint has faded.
 @MainActor
 private struct SettingsSearchJump: ViewModifier {
     let selection: PreferencesSelection
@@ -65,7 +65,7 @@ private struct SettingsSearchJump: ViewModifier {
                     // The pane may have been swapped in by the same change; let it lay out its rows first.
                     await Task.yield()
                     proxy.scrollTo(target, anchor: .center)
-                    try? await Task.sleep(for: .seconds(MacHighlight.searchHold))
+                    try? await Task.sleep(for: .seconds(IUHighlight.searchHold))
                     guard !Task.isCancelled else { return }
                     self.selection.clearSearchTarget(matching: target)
                 }

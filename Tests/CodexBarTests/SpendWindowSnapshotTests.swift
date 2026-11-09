@@ -18,7 +18,7 @@ struct SpendWindowSnapshotTests {
     @Test
     func `the Costs pane renders with tracking on and off`() async throws {
         let directory = try Self.outputDirectory()
-        for appearance in [MacAppearance.light, .dark] {
+        for appearance in [IUAppearance.light, .dark] {
             for (name, enabled, height) in [
                 ("costs-on", true, CGFloat(1180)),
                 ("costs-on-short", true, CGFloat(420)),
@@ -43,7 +43,7 @@ struct SpendWindowSnapshotTests {
         let directory = try Self.outputDirectory()
         let full = Self.windowSize
         let smallest = SpendWindowIdentity.minimumSize
-        for appearance in [MacAppearance.light, .dark] {
+        for appearance in [IUAppearance.light, .dark] {
             for item in [
                 WindowCase(name: "spend-stress", size: CGSize(width: full.width, height: 3400)),
                 WindowCase(name: "spend-stress-short", size: smallest),
@@ -97,11 +97,11 @@ struct SpendWindowSnapshotTests {
     private static func render(
         _ view: some View,
         name: String,
-        appearance: MacAppearance,
+        appearance: IUAppearance,
         size: CGSize,
         directory: URL?) throws
     {
-        let shot = MacSnapshot.render(
+        let shot = IUSnapshot.render(
             view.environment(\.locale, Locale(identifier: "en_US")),
             appearance: appearance,
             width: size.width,

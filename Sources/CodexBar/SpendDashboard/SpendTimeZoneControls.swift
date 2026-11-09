@@ -9,21 +9,21 @@ struct SpendTimeZoneControls: View {
     @Bindable var settings: SettingsStore
 
     var body: some View {
-        MacSettingsRow(
+        IUSettingsRow(
             L("Statistics time zone"),
             subtitle: L("Daily usage uses a fixed time zone. Changing it may move usage to a different day."))
         {
-            MacPopUpButton(self.timeZoneIdentifiers.map { ($0, $0) }, selection: self.timeZoneBinding)
+            IUPopUpButton(self.timeZoneIdentifiers.map { ($0, $0) }, selection: self.timeZoneBinding)
                 .help(self.selectedIdentifier)
                 .accessibilityLabel(L("Statistics time zone"))
                 .accessibilityIdentifier("spend-time-zone-picker")
         }
         .settingsAnchor(CostsSettingsPane.Anchor.timeZone)
-        MacSettingsRow(L("Use Mac's current time zone"), subtitle: TimeZone.current.identifier) {
+        IUSettingsRow(L("Use Mac's current time zone"), subtitle: TimeZone.current.identifier) {
             Button(L("apply")) {
                 self.useCurrentTimeZone()
             }
-            .buttonStyle(.mac())
+            .buttonStyle(.iu())
             .help(TimeZone.current.identifier)
             .accessibilityIdentifier("spend-use-current-time-zone")
         }

@@ -71,26 +71,26 @@ struct MenuBarLayoutConditionalEditorSheet: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: MacSpace.settingsSectionGap) {
-            MacText(self.title, role: .title)
+        VStack(alignment: .leading, spacing: IUSpace.settingsSectionGap) {
+            IUText(self.title, role: .title)
                 .accessibilityAddTraits(.isHeader)
 
-            MacSettingsSection {
-                MacSettingsRow(L("menu_bar_layout_conditional_name")) {
-                    VStack(alignment: .trailing, spacing: MacSpace.unit) {
-                        MacTextField(L("menu_bar_layout_conditional_name_placeholder"), text: self.$conditional.name)
-                            .frame(width: MacSize.settingsField)
+            IUSettingsSection {
+                IUSettingsRow(L("menu_bar_layout_conditional_name")) {
+                    VStack(alignment: .trailing, spacing: IUSpace.unit) {
+                        IUTextField(L("menu_bar_layout_conditional_name_placeholder"), text: self.$conditional.name)
+                            .frame(width: IUSize.settingsField)
                             .accessibilityLabel(L("menu_bar_layout_conditional_name"))
                         if !self.nameIsValid {
                             Text(L("menu_bar_layout_conditional_name_error"))
-                                .font(MacTextRole.caption.font)
-                                .foregroundStyle(MacColor.destructive)
+                                .font(IUTextRole.caption.font)
+                                .foregroundStyle(IUColor.destructive)
                         }
                     }
                 }
             }
 
-            MacSettingsSection(L("menu_bar_layout_conditional_if")) {
+            IUSettingsSection(L("menu_bar_layout_conditional_if")) {
                 ForEach(self.conditional.clauses.indices, id: \.self) { index in
                     self.clauseRow(index: index)
                         .menuBarLayoutRowFrame()
@@ -105,28 +105,28 @@ struct MenuBarLayoutConditionalEditorSheet: View {
                                     comparison: .greaterThan,
                                     threshold: 0)))
                     }
-                    .buttonStyle(.mac())
+                    .buttonStyle(.iu())
                     .disabled(self.conditional.clauses.count >= Self.maxClauses)
                     Spacer(minLength: 0)
                 }
                 .menuBarLayoutRowFrame()
             }
 
-            MacSettingsSection(footer: self.conditional.editorSummary(provider: self.provider)) {
-                MacSettingsRow(L("menu_bar_layout_conditional_then")) {
+            IUSettingsSection(footer: self.conditional.editorSummary(provider: self.provider)) {
+                IUSettingsRow(L("menu_bar_layout_conditional_then")) {
                     self.tokenPopUp(selection: self.thenBinding)
                 }
-                MacSettingsRow(L("menu_bar_layout_conditional_else")) {
+                IUSettingsRow(L("menu_bar_layout_conditional_else")) {
                     self.tokenPopUp(selection: self.elseBinding)
                 }
             }
 
-            HStack(spacing: MacSpace.unit * 2) {
+            HStack(spacing: IUSpace.unit * 2) {
                 Spacer()
                 Button(L("Cancel"), role: .cancel) {
                     self.dismiss()
                 }
-                .buttonStyle(.mac())
+                .buttonStyle(.iu())
                 .keyboardShortcut(.cancelAction)
                 Button(L("menu_bar_layout_conditional_save")) {
                     self.onSave(
@@ -135,15 +135,15 @@ struct MenuBarLayoutConditionalEditorSheet: View {
                             conditional: self.conditional))
                     self.dismiss()
                 }
-                .buttonStyle(.mac(.primary))
+                .buttonStyle(.iu(.primary))
                 .keyboardShortcut(.defaultAction)
                 .disabled(!self.nameIsValid)
             }
         }
-        .padding(MacSpace.settingsPagePadding)
+        .padding(IUSpace.settingsPagePadding)
         // Wide enough for a clause's combinator, metric and direction on one line, and its test on the next.
-        .frame(width: MacSize.settingsContentWidth)
-        .background(MacColor.window)
+        .frame(width: IUSize.settingsContentWidth)
+        .background(IUColor.window)
     }
 
     /// One clause on two lines: what it measures (and how it joins the clause before), then the test.
@@ -151,21 +151,21 @@ struct MenuBarLayoutConditionalEditorSheet: View {
         let metric = self.conditional.clauses.indices.contains(index)
             ? self.conditional.clauses[index].predicate.metric
             : MenuBarConditionalMetric.session
-        return VStack(alignment: .leading, spacing: MacSpace.unit * 2) {
-            HStack(spacing: MacSpace.unit * 2) {
+        return VStack(alignment: .leading, spacing: IUSpace.unit * 2) {
+            HStack(spacing: IUSpace.unit * 2) {
                 if index > 0 {
-                    MacPopUpButton(
+                    IUPopUpButton(
                         [
                             (MenuBarConditionalCombinator.and, L("menu_bar_layout_conditional_and")),
                             (MenuBarConditionalCombinator.or, L("menu_bar_layout_conditional_or")),
                         ],
                         selection: self.combinatorBinding(index))
                 }
-                MacPopUpButton(
+                IUPopUpButton(
                     MenuBarConditionalMetric.allCases.map { ($0, $0.editorLabel(provider: self.provider)) },
                     selection: self.metricBinding(index))
                 if metric.supportsDirection {
-                    MacPopUpButton(
+                    IUPopUpButton(
                         [
                             (MenuBarConditionalDirection.used, L("menu_bar_layout_conditional_used")),
                             (MenuBarConditionalDirection.remaining, L("menu_bar_layout_conditional_remaining")),
@@ -178,14 +178,14 @@ struct MenuBarLayoutConditionalEditorSheet: View {
                         self.conditional.clauses.remove(at: index)
                     } label: {
                         Image(systemName: "minus.circle")
-                            .frame(width: MacSize.iconTile, height: MacSize.iconTile)
+                            .frame(width: IUSize.iconTile, height: IUSize.iconTile)
                     }
-                    .buttonStyle(.macIcon)
+                    .buttonStyle(.iuIcon)
                     .accessibilityLabel(L("Remove"))
                 }
             }
-            HStack(spacing: MacSpace.unit * 2) {
-                MacPopUpButton(
+            HStack(spacing: IUSpace.unit * 2) {
+                IUPopUpButton(
                     MenuBarConditionalComparison.allCases.map { ($0, $0.symbol) },
                     selection: self.comparisonBinding(index))
                 MenuBarConditionalThresholdField(
@@ -193,7 +193,7 @@ struct MenuBarLayoutConditionalEditorSheet: View {
                     range: metric.thresholdRange,
                     step: metric.thresholdStep,
                     accessibilityLabel: metric.editorLabel(provider: self.provider))
-                MacText(metric.thresholdUnit, role: .body, muted: true)
+                IUText(metric.thresholdUnit, role: .body, muted: true)
             }
         }
     }
@@ -276,7 +276,7 @@ struct MenuBarLayoutConditionalEditorSheet: View {
     }
 
     private func tokenPopUp(selection: Binding<MenuBarLayoutToken>) -> some View {
-        MacPopUpButton(
+        IUPopUpButton(
             MenuSettingsPopUpOptions.options(
                 MenuBarLayoutPaletteTokens.conditionalBranch,
                 selection: selection.wrappedValue,
@@ -288,18 +288,18 @@ struct MenuBarLayoutConditionalEditorSheet: View {
 
 /// A clause's threshold: a number field in the library's control well, with a stepper for the metric's step.
 /// The value can be fractional (half hours) and spans wide ranges (up to a year of hours, a million dollars), so
-/// it is typed rather than only stepped; `MacStepper` covers whole numbers only.
+/// it is typed rather than only stepped; `IUStepper` covers whole numbers only.
 private struct MenuBarConditionalThresholdField: View {
     @Binding var value: Double
     let range: ClosedRange<Double>
     let step: Double
     let accessibilityLabel: String
 
-    @Environment(\.macControlSize) private var controlSize
+    @Environment(\.iuControlSize) private var controlSize
 
     var body: some View {
-        let metrics = MacControlMetrics.forSize(self.controlSize)
-        HStack(spacing: MacSpace.unit) {
+        let metrics = IUControlMetrics.forSize(self.controlSize)
+        HStack(spacing: IUSpace.unit) {
             TextField(self.accessibilityLabel, value: self.$value, format: .number)
                 .labelsHidden()
                 .textFieldStyle(.plain)
@@ -307,8 +307,8 @@ private struct MenuBarConditionalThresholdField: View {
                 .monospacedDigit()
                 .font(metrics.font)
                 .padding(.horizontal, metrics.paddingX)
-                .frame(width: MacSize.control * 2, height: metrics.height)
-                .macWell(radius: metrics.radius)
+                .frame(width: IUSize.control * 2, height: metrics.height)
+                .iuWell(radius: metrics.radius)
             Stepper(value: self.$value, in: self.range, step: self.step) {
                 EmptyView()
             }

@@ -56,10 +56,10 @@ private struct GeneralSettingsPage: View {
     @State private var confirmation: SettingsConfirmation?
 
     var body: some View {
-        MacSettingsPage(L("tab_general")) {
+        IUSettingsPage(L("tab_general")) {
             self.systemSection
             self.refreshingSection
-            MacSettingsSection(L("section_keyboard_shortcut")) {
+            IUSettingsSection(L("section_keyboard_shortcut")) {
                 OpenMenuShortcutRow(confirmation: self.$confirmation)
                     .settingsAnchor("general/openMenuShortcut")
             }
@@ -70,17 +70,17 @@ private struct GeneralSettingsPage: View {
     }
 
     private var systemSection: some View {
-        MacSettingsSection(L("section_system")) {
-            MacSettingsRow(L("language_title"), subtitle: L("language_subtitle")) {
-                MacPopUpButton(self.languageOptions, selection: self.$settings.appLanguage)
-                    .frame(width: MacSize.settingsField)
+        IUSettingsSection(L("section_system")) {
+            IUSettingsRow(L("language_title"), subtitle: L("language_subtitle")) {
+                IUPopUpButton(self.languageOptions, selection: self.$settings.appLanguage)
+                    .frame(width: IUSize.settingsField)
                     .lineLimit(1)
             }
             .settingsAnchor("general/language")
 
-            MacSettingsRow(L("currency_title"), subtitle: L("currency_subtitle")) {
-                MacPopUpButton(self.currencyOptions, selection: self.$settings.preferredCurrencyCode)
-                    .frame(width: MacSize.settingsField)
+            IUSettingsRow(L("currency_title"), subtitle: L("currency_subtitle")) {
+                IUPopUpButton(self.currencyOptions, selection: self.$settings.preferredCurrencyCode)
+                    .frame(width: IUSize.settingsField)
                     .lineLimit(1)
             }
             .settingsAnchor("general/currency")
@@ -91,47 +91,47 @@ private struct GeneralSettingsPage: View {
                 }
             }
 
-            MacSettingsRow(L("terminal_app_title"), subtitle: L("terminal_app_subtitle")) {
-                MacPopUpButton(
+            IUSettingsRow(L("terminal_app_title"), subtitle: L("terminal_app_subtitle")) {
+                IUPopUpButton(
                     GeneralSettingsMenuOptions.terminalApps(selected: self.settings.terminalApp).map { ($0, $0.label) },
                     selection: self.$settings.terminalApp)
             }
             .settingsAnchor("general/terminal")
 
-            MacSettingsToggleRow(L("start_at_login_title"), isOn: self.$settings.launchAtLogin)
+            IUSettingsToggleRow(L("start_at_login_title"), isOn: self.$settings.launchAtLogin)
                 .settingsAnchor("general/launchAtLogin")
         }
     }
 
     private var refreshingSection: some View {
-        MacSettingsSection(
+        IUSettingsSection(
             L("section_refreshing"),
             footer: self.settings.refreshFrequency == .manual ? L("manual_refresh_hint") : nil)
         {
-            MacSettingsRow(L("refresh_interval_title")) {
-                MacPopUpButton(
+            IUSettingsRow(L("refresh_interval_title")) {
+                IUPopUpButton(
                     GeneralSettingsMenuOptions.refreshFrequencies.map { ($0, $0.label) },
                     selection: self.$settings.refreshFrequency)
             }
             .settingsAnchor("general/refreshInterval")
 
-            MacSettingsToggleRow(L("refresh_on_open_title"), isOn: self.$settings.refreshAllProvidersOnMenuOpen)
+            IUSettingsToggleRow(L("refresh_on_open_title"), isOn: self.$settings.refreshAllProvidersOnMenuOpen)
                 .settingsAnchor("general/refreshOnOpen")
 
-            MacSettingsRow(
+            IUSettingsRow(
                 L("Low Power Mode"),
                 subtitle: L(
                     "When on, runs automatic provider, local usage, and storage refreshes no more " +
                         "often than every 30 minutes. Manual refresh remains available. Automatic " +
                         "follows the system Low Power Mode setting."))
             {
-                MacPopUpButton(
+                IUPopUpButton(
                     GeneralSettingsMenuOptions.lowPowerModePreferences.map { ($0, $0.label) },
                     selection: self.$settings.backgroundWorkLowPowerModePreference)
             }
             .settingsAnchor("general/lowPowerMode")
 
-            MacSettingsToggleRow(
+            IUSettingsToggleRow(
                 L("check_provider_status_title"),
                 subtitle: L("check_provider_status_subtitle"),
                 isOn: self.$settings.statusChecksEnabled)
@@ -140,16 +140,16 @@ private struct GeneralSettingsPage: View {
     }
 
     private var footer: some View {
-        HStack(alignment: .center, spacing: MacSpace.panelPadding) {
-            MacText(String(format: L("version_format"), AppVersion.displayString), role: .caption, muted: true)
+        HStack(alignment: .center, spacing: IUSpace.panelPadding) {
+            IUText(String(format: L("version_format"), AppVersion.displayString), role: .caption, muted: true)
                 .textSelection(.enabled)
-            Spacer(minLength: MacSpace.panelPadding)
+            Spacer(minLength: IUSpace.panelPadding)
             Button(L("quit_app")) { NSApp.terminate(nil) }
-                .buttonStyle(.mac())
-                .macControlSize(.large)
+                .buttonStyle(.iu())
+                .iuControlSize(.large)
                 .settingsAnchor("general/quit")
         }
-        .padding(.horizontal, MacSpace.settingsRowPaddingX)
+        .padding(.horizontal, IUSpace.settingsRowPaddingX)
     }
 
     /// Every language by its own name; a stored code the list doesn't know stays visible.
@@ -172,15 +172,15 @@ private struct GeneralSettingsPage: View {
 @MainActor
 private struct ShortcutRecorderControl: View {
     let label: String
-    @Binding var shortcut: MacShortcut?
+    @Binding var shortcut: IUShortcut?
     let issue: String?
 
     var body: some View {
-        VStack(alignment: .trailing, spacing: MacSpace.unit) {
+        VStack(alignment: .trailing, spacing: IUSpace.unit) {
             // Rules come from the bridges, which name the menu and app shortcuts already taken.
-            MacShortcutRecorder(self.label, shortcut: self.$shortcut, reserved: [])
+            IUShortcutRecorder(self.label, shortcut: self.$shortcut, reserved: [])
             if let issue {
-                MacStatusLabel(issue, tone: .warning)
+                IUStatusLabel(issue, tone: .warning)
             }
         }
     }
@@ -194,11 +194,11 @@ private struct OpenMenuShortcutRow: View {
     private static let shortcutDidChange = Notification.Name("KeyboardShortcuts_shortcutByNameDidChange")
 
     @Binding var confirmation: SettingsConfirmation?
-    @State private var shortcut: MacShortcut? = Self.storedShortcut()
+    @State private var shortcut: IUShortcut? = Self.storedShortcut()
     @State private var issue: String?
 
     var body: some View {
-        MacSettingsRow(L("open_menu_shortcut_title")) {
+        IUSettingsRow(L("open_menu_shortcut_title")) {
             ShortcutRecorderControl(
                 label: L("open_menu_shortcut_title"),
                 shortcut: Binding(get: { self.shortcut }, set: { self.record($0) }),
@@ -209,11 +209,11 @@ private struct OpenMenuShortcutRow: View {
         }
     }
 
-    private static func storedShortcut() -> MacShortcut? {
+    private static func storedShortcut() -> IUShortcut? {
         KeyboardShortcuts.getShortcut(for: .openMenu).map { OpenMenuShortcutBridge.macShortcut($0) }
     }
 
-    private func record(_ newValue: MacShortcut?) {
+    private func record(_ newValue: IUShortcut?) {
         self.issue = nil
         guard let newValue else {
             self.save(nil)
@@ -249,10 +249,10 @@ private struct ProviderSwitcherShortcutsSection: View {
     @State private var issues: [String: String] = [:]
 
     var body: some View {
-        MacSettingsSection(L("section_provider_switcher"), footer: L("provider_switcher_shortcuts_footer")) {
+        IUSettingsSection(L("section_provider_switcher"), footer: L("provider_switcher_shortcuts_footer")) {
             ForEach(ProviderSwitcherShortcuts.actions, id: \.self) { action in
                 let label = ProviderSwitcherShortcutBridge.label(for: action)
-                MacSettingsRow(label) {
+                IUSettingsRow(label) {
                     ShortcutRecorderControl(
                         label: label,
                         shortcut: self.binding(for: action),
@@ -264,19 +264,19 @@ private struct ProviderSwitcherShortcutsSection: View {
                     : "general/switcherShortcuts/\(action)")
             }
 
-            MacSettingsRow(
+            IUSettingsRow(
                 L("provider_switcher_default_shortcuts"),
                 disabledReason: L("provider_switcher_defaults_in_use"))
             {
                 Button(L("Restore Defaults")) { self.save(ProviderSwitcherShortcuts.defaults, action: nil) }
-                    .buttonStyle(.mac())
+                    .buttonStyle(.iu())
             }
             .disabled(self.settings.providerSwitcherShortcuts == ProviderSwitcherShortcuts.defaults)
             .settingsAnchor("general/switcherDefaults")
         }
     }
 
-    private func binding(for action: String) -> Binding<MacShortcut?> {
+    private func binding(for action: String) -> Binding<IUShortcut?> {
         Binding(
             get: {
                 let stored = self.settings.providerSwitcherShortcuts[action] ?? ""

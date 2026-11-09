@@ -10,12 +10,12 @@ struct CostSummarySettingsSection: View {
     @Bindable var store: UsageStore
 
     var body: some View {
-        MacSettingsSection(
+        IUSettingsSection(
             L("section_cost_summary"),
             footer: self.settings.costUsageEnabled ? self.footer(now: Date()) : nil)
         {
-            MacSettingsRow(L("cost_summary_title"), subtitle: L("show_cost_summary_subtitle")) {
-                MacPopUpButton(
+            IUSettingsRow(L("cost_summary_title"), subtitle: L("show_cost_summary_subtitle")) {
+                IUPopUpButton(
                     MenuSettingsMenuOptions.costSummaries.map { ($0, $0.label) },
                     selection: self.$settings.costSummaryOption)
                     .accessibilityLabel(L("cost_summary_title"))
@@ -25,7 +25,7 @@ struct CostSummarySettingsSection: View {
             if self.settings.costUsageEnabled {
                 CostHistoryDaysEditor(settings: self.settings)
 
-                MacSettingsToggleRow(
+                IUSettingsToggleRow(
                     L("cost_comparison_periods_title"),
                     subtitle: L("cost_comparison_periods_subtitle"),
                     isOn: self.$settings.costComparisonPeriodsEnabled)
@@ -127,8 +127,8 @@ struct CostHistoryDaysEditor: View {
     }
 
     var body: some View {
-        MacSettingsRow(L("cost_history_window_title"), subtitle: L("cost_history_window_help")) {
-            MacPopUpButton(
+        IUSettingsRow(L("cost_history_window_title"), subtitle: L("cost_history_window_help")) {
+            IUPopUpButton(
                 Self.periodOptions(selection: self.settings.costReportingPeriod),
                 selection: self.$settings.costReportingPeriod)
                 .accessibilityLabel(L("cost_history_window_title"))
@@ -136,7 +136,7 @@ struct CostHistoryDaysEditor: View {
         .settingsAnchor(MenuSettingsPane.SearchID.costHistoryWindow)
 
         if case .rolling = self.settings.costReportingPeriod {
-            MacSettingsRow(L("cost_history_rolling_days_title")) {
+            IUSettingsRow(L("cost_history_rolling_days_title")) {
                 MenuSettingsNumberField(
                     title: L("cost_history_rolling_days_title"),
                     value: self.$settings.costUsageHistoryDays,
