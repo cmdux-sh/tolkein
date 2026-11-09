@@ -74,10 +74,10 @@ final class SpendDashboardNativeProofTests: XCTestCase {
             styleMask: [.titled, .closable, .resizable],
             backing: .buffered,
             defer: false)
-        window.title = "CodexBar — Synthetic Usage & Spend"
+        window.title = "Tolkein — Synthetic Spend"
         window.isReleasedWhenClosed = false
         window.contentView = NSHostingView(rootView: VStack(spacing: 0) {
-            SpendDashboardPane(settings: settings, store: store)
+            SpendWindowView(settings: settings, store: store)
             HStack {
                 Text("Synthetic data only").foregroundStyle(.secondary)
                 Spacer()

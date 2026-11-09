@@ -97,6 +97,11 @@ final class PreferencesSelection {
     private(set) var backStack: [Destination] = []
     private(set) var forwardStack: [Destination] = []
 
+    /// The `SettingsSearchEntry.id` that search is jumping to, if any. `SettingsPaneRouter` hands it to the pane as
+    /// `settingsSearchTarget`, scrolls its row into view, and clears it after `MacHighlight.searchHold`. Any other
+    /// navigation clears it, so going back to a pane does not tint its row again.
+    private(set) var searchTarget: String?
+
     var canGoBack: Bool {
         !self.backStack.isEmpty
     }
@@ -107,21 +112,37 @@ final class PreferencesSelection {
 
     func goBack() {
         guard let previous = self.backStack.popLast() else { return }
+        self.searchTarget = nil
         self.forwardStack.append(self.destination)
         self.destination = previous
     }
 
     func goForward() {
         guard let next = self.forwardStack.popLast() else { return }
+        self.searchTarget = nil
         self.backStack.append(self.destination)
         self.destination = next
     }
 
     private func select(_ destination: Destination) {
+        self.searchTarget = nil
         guard self.destination != destination else { return }
         self.backStack.append(self.destination)
         self.forwardStack.removeAll()
         self.destination = destination
+    }
+
+    /// Opens the pane that holds a search result and points the detail at its row. A result on the current pane
+    /// only scrolls; About results open About's root page, where every About setting lives.
+    func reveal(_ entry: SettingsSearchEntry) {
+        self.select(Destination(pane: entry.pane))
+        self.searchTarget = entry.id
+    }
+
+    /// Ends a search jump, unless a newer one has replaced it.
+    func clearSearchTarget(matching id: String) {
+        guard self.searchTarget == id else { return }
+        self.searchTarget = nil
     }
 
     /// Drops panes that are no longer reachable so Back/Forward cannot restore them.

@@ -1,166 +1,200 @@
 import AppKit
 import CodexBarCore
+import InternalUI
 import SwiftUI
 
-/// System Settings-style sidebar: fixed app panes on top, one row per provider below.
+/// The provider list's filter chips: every provider, or only the enabled ones (stored as `providersEnabledOnly`).
+enum SettingsSidebarProviderFilter: Hashable, CaseIterable {
+    case all
+    case enabled
+
+    init(enabledOnly: Bool) {
+        self = enabledOnly ? .enabled : .all
+    }
+
+    var enabledOnly: Bool {
+        self == .enabled
+    }
+
+    var title: String {
+        switch self {
+        case .all: L("All")
+        case .enabled: L("Enabled")
+        }
+    }
+
+    static var chips: [MacFilterChip<Self>] {
+        self.allCases.map { MacFilterChip($0.title, id: $0) }
+    }
+
+    /// Dragging a provider edits the custom order, so it works only while that order is showing in full:
+    /// not sorted A–Z and not filtered to the enabled providers.
+    static func allowsReordering(sortedAlphabetically: Bool, filter: Self) -> Bool {
+        !sortedAlphabetically && filter == .all
+    }
+}
+
+/// What a provider row shows after its name: a spinner while it refreshes, otherwise a status symbol for a failed
+/// refresh or a service incident, with its text as the tooltip. Healthy providers show nothing.
+struct SettingsSidebarProviderStatus: Equatable {
+    let tone: MacStatusTone
+    let text: String
+
+    static func resolve(
+        isEnabled: Bool,
+        isRefreshing: Bool,
+        error: String?,
+        statusChecksEnabled: Bool,
+        indicator: ProviderStatusIndicator?) -> SettingsSidebarProviderStatus?
+    {
+        if isRefreshing { return SettingsSidebarProviderStatus(tone: .busy, text: L("Refreshing")) }
+        guard isEnabled else { return nil }
+        if let error { return SettingsSidebarProviderStatus(tone: .error, text: error) }
+        guard statusChecksEnabled, let tone = self.tone(for: indicator) else { return nil }
+        return SettingsSidebarProviderStatus(
+            tone: tone,
+            text: SettingsSidebarProviderRow.statusDescription(for: indicator))
+    }
+
+    /// The tone for a service status. Operational and unknown statuses stay quiet.
+    static func tone(for indicator: ProviderStatusIndicator?) -> MacStatusTone? {
+        switch indicator ?? .unknown {
+        case .none, .unknown: nil
+        case .minor: .warning
+        case .major, .critical: .error
+        case .maintenance: .neutral
+        }
+    }
+}
+
+/// The Settings sidebar: a search field over the panes. The first section lists the app panes; the Providers
+/// section has the filter chips and sort menu, one row per provider, and Plugins last. While the field has text,
+/// the sidebar lists the matching settings and providers instead.
+///
+/// The lists are the system sidebar list, so selection, keyboard navigation, drag reordering and context menus stay
+/// native; the rows use Internal UI's sidebar metrics and status tones.
 @MainActor
 struct SettingsSidebarView: View {
     @Bindable var settings: SettingsStore
     @Bindable var store: UsageStore
     @Binding var selection: SettingsPane
-    var onSelectAbout: () -> Void = {}
-    var showsSortToolbar = true
-    @State private var searchText = ""
+    let onSelectAbout: () -> Void
+    let onReveal: (SettingsSearchEntry) -> Void
+    @State private var query: String
+    @State private var chosenResult: String?
     @Environment(\.undoManager) private var undoManager
 
+    /// - Parameters:
+    ///   - onSelectAbout: also runs when About is clicked while it is already selected, to leave its subpages.
+    ///   - onReveal: opens a chosen search result (`PreferencesSelection.reveal`).
+    ///   - query: the search text to start with (snapshots).
+    init(
+        settings: SettingsStore,
+        store: UsageStore,
+        selection: Binding<SettingsPane>,
+        onSelectAbout: @escaping () -> Void = {},
+        onReveal: @escaping (SettingsSearchEntry) -> Void = { _ in },
+        query: String = "")
+    {
+        self.settings = settings
+        self.store = store
+        self._selection = selection
+        self.onSelectAbout = onSelectAbout
+        self.onReveal = onReveal
+        self._query = State(initialValue: query)
+    }
+
     var body: some View {
-        if #available(macOS 26.0, *) {
-            self.content
-                .searchable(text: self.$searchText, placement: .sidebar, prompt: L("Search settings"))
-                .toolbar {
-                    SettingsSidebarSortToolbar(
-                        isOn: self.$settings.providersSortedAlphabetically,
-                        enabledOnly: self.$settings.providersEnabledOnly,
-                        canRestore: self.settings.canRestoreDefaultProviderOrder,
-                        onRestore: self.restoreProviderOrder)
-                        .hidden(!self.showsSortToolbar)
-                }
-        } else {
-            VStack(spacing: 0) {
-                HStack(spacing: 6) {
-                    SettingsSidebarSearchField(searchText: self.$searchText)
-                    SettingsSidebarSortToggle(
-                        isOn: self.$settings.providersSortedAlphabetically,
-                        enabledOnly: self.$settings.providersEnabledOnly,
-                        canRestore: self.settings.canRestoreDefaultProviderOrder,
-                        onRestore: self.restoreProviderOrder)
-                }
-                .padding(.horizontal, 8)
-                .padding(.top, 16)
-                .padding(.bottom, 8)
+        VStack(spacing: MacSpace.chromeGap) {
+            MacTextField(L("Search settings"), text: self.$query, systemImage: "magnifyingglass", clearable: true)
+                .macControlSize(.large)
+                .padding(.horizontal, MacSpace.panelPadding)
 
-                self.content
+            if self.isSearching {
+                SettingsSidebarSearchResultsList(
+                    results: self.searchResults,
+                    chosen: self.$chosenResult,
+                    onChoose: self.onReveal,
+                    onClear: { self.query = "" })
+            } else {
+                self.paneList
             }
-            .padding(.horizontal, 8)
+        }
+        .onChange(of: self.query) { _, _ in
+            self.chosenResult = nil
         }
     }
 
-    private var content: some View {
-        VStack(spacing: 0) {
-            List(selection: Binding(self.$selection)) {
-                self.appPanesSection
-                self.providersSection
-            }
-            .listStyle(.sidebar)
-            .scrollContentBackground(.hidden)
+    // MARK: Panes
 
-            if self.settings.canUndoProviderOrderChange, let undoID = self.settings.providerOrderUndo?.id {
-                // A new reorder gets a fresh banner identity, so its fade timer restarts.
-                SettingsSidebarProviderOrderBanner {
-                    self.settings.undoProviderOrderChange()
+    private var paneList: some View {
+        let providers = self.visibleProviders
+        return List(selection: self.paneSelection) {
+            Section {
+                ForEach(self.availableAppPanes, id: \.self) { pane in
+                    if pane == .about {
+                        SettingsSidebarAboutRow(onSelect: self.onSelectAbout)
+                            .tag(pane)
+                    } else {
+                        SettingsSidebarPaneRow(pane: pane)
+                            .tag(pane)
+                    }
                 }
-                .id(undoID)
+            }
+
+            Section {
+                SettingsSidebarProviderTools(
+                    settings: self.settings,
+                    filter: self.filter,
+                    onRestore: self.restoreProviderOrder)
+
+                ForEach(providers, id: \.self) { provider in
+                    SettingsSidebarProviderRow(
+                        provider: provider,
+                        store: self.store,
+                        isEnabled: self.enabledBinding(for: provider))
+                        .tag(SettingsPane.provider(provider.instanceID))
+                }
+                .onMove(perform: self.moveAction(for: providers))
+
+                if providers.isEmpty {
+                    MacEmptyState(
+                        L("No matching providers"),
+                        systemImage: "line.3.horizontal.decrease.circle",
+                        size: .compact,
+                        secondary: MacEmptyStateAction(L("Clear filters")) {
+                            self.settings.providersEnabledOnly = false
+                        })
+                }
+
+                SettingsSidebarPaneRow(pane: .plugins)
+                    .tag(SettingsPane.plugins)
+            } header: {
+                SettingsSidebarProvidersHeader(enabledCount: self.enabledProviderCount)
             }
         }
+        .listStyle(.sidebar)
     }
 
-    /// Chip colours for the fixed panes; the symbols come from `SettingsPane.systemImage`.
-    static func chipColor(for pane: SettingsPane) -> Color {
-        switch pane {
-        case .general: .gray
-        case .menuBar: .blue
-        case .menu: .teal
-        case .alerts: .red
-        case .costs: .green
-        case .sync: .cyan
-        case .integrations: .orange
-        case .privacy: .purple
-        case .about: .green
-        case .debug: .red
-        case .plugins: .indigo
-        case .provider: .gray
-        }
+    private var paneSelection: Binding<SettingsPane?> {
+        Binding(
+            get: { self.selection },
+            set: { newValue in
+                guard let newValue else { return }
+                self.selection = newValue
+            })
     }
 
     private var availableAppPanes: [SettingsPane] {
         SettingsPane.appPanes.filter { $0 != .debug || self.settings.debugMenuEnabled }
     }
 
-    private var filteredAppPanes: [SettingsPane] {
-        SettingsSearch.filteredPanes(self.availableAppPanes, query: self.searchText)
-    }
+    // MARK: Providers
 
-    /// Plugins is the last row of the Providers section; it follows the search but not the provider filters.
-    private var showsPluginsRow: Bool {
-        !SettingsSearch.filteredPanes([.plugins], query: self.searchText).isEmpty
-    }
-
-    private var appPanesSection: some View {
-        Section {
-            ForEach(self.filteredAppPanes, id: \.self) { pane in
-                if pane == .about {
-                    SettingsSidebarAboutRow(onSelect: self.onSelectAbout)
-                } else {
-                    SettingsSidebarPaneRow(pane: pane)
-                }
-            }
-        }
-    }
-
-    private var providersSection: some View {
-        let visibleProviders = self.filteredProviders
-        return Section {
-            ForEach(visibleProviders, id: \.self) { provider in
-                self.providerRow(provider)
-            }
-            .onMove { fromOffsets, toOffset in
-                guard self.canReorderProviders else { return }
-                if self.settings.moveVisibleProviders(
-                    visibleProviders.map(\.instanceID), fromOffsets: fromOffsets, toOffset: toOffset)
-                {
-                    self.settings.registerProviderOrderUndo(in: self.undoManager)
-                }
-            }
-
-            if self.showsPluginsRow {
-                SettingsSidebarPaneRow(pane: .plugins)
-            }
-
-            if visibleProviders.isEmpty,
-               (self.filteredAppPanes.isEmpty && !self.showsPluginsRow) || !self.hasSearchQuery
-            {
-                Text(self.hasSearchQuery ? L("No matching settings or providers") : L("No matching providers"))
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                Button(L("Clear filters")) {
-                    self.searchText = ""
-                    self.settings.providersEnabledOnly = false
-                }
-                .buttonStyle(.plain)
-            }
-        } header: {
-            HStack(spacing: 4) {
-                Text(L("tab_providers"))
-                Spacer()
-                Text(String(format: L("providers_on_count"), self.enabledProviderCount))
-                    .foregroundStyle(.tertiary)
-                    .monospacedDigit()
-                    .padding(.trailing, 10)
-            }
-        }
-    }
-
-    private func providerRow(_ provider: UsageProvider) -> some View {
-        SettingsSidebarProviderRow(
-            provider: provider,
-            store: self.store,
-            isEnabled: self.enabledBinding(for: provider))
-            .tag(SettingsPane.provider(provider.instanceID))
-            .moveDisabled(!self.canReorderProviders)
-    }
-
-    private func restoreProviderOrder() {
-        if self.settings.restoreDefaultProviderOrder() { self.settings.registerProviderOrderUndo(in: self.undoManager) }
+    private var filter: Binding<SettingsSidebarProviderFilter> {
+        Binding(
+            get: { SettingsSidebarProviderFilter(enabledOnly: self.settings.providersEnabledOnly) },
+            set: { self.settings.providersEnabledOnly = $0.enabledOnly })
     }
 
     private var orderedProviders: [UsageProvider] {
@@ -168,33 +202,21 @@ struct SettingsSidebarView: View {
             return self.settings.orderedProviders().compactMap(\.firstPartyProvider)
         }
         return CodexBarConfig.alphabeticalProviderOrder(enablement: { provider in
-            self.settings.isProviderEnabled(provider: provider, metadata: self.store.metadata(for: provider))
+            self.isEnabled(provider)
         })
     }
 
-    private var filteredProviders: [UsageProvider] {
-        let providers = self.orderedProviders.filter { provider in
-            !self.settings.providersEnabledOnly
-                || self.settings.isProviderEnabled(provider: provider, metadata: self.store.metadata(for: provider))
-        }
-        return ProvidersPane.filteredProviders(
-            providers,
-            query: self.searchText,
-            displayName: { self.store.metadata(for: $0).displayName })
+    private var visibleProviders: [UsageProvider] {
+        guard self.settings.providersEnabledOnly else { return self.orderedProviders }
+        return self.orderedProviders.filter(self.isEnabled)
     }
 
     private var enabledProviderCount: Int {
-        self.orderedProviders.count(where: { provider in
-            self.settings.isProviderEnabled(provider: provider, metadata: self.store.metadata(for: provider))
-        })
+        self.orderedProviders.count(where: self.isEnabled)
     }
 
-    private var hasSearchQuery: Bool {
-        !self.searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-    }
-
-    private var canReorderProviders: Bool {
-        !self.settings.providersSortedAlphabetically && !self.settings.providersEnabledOnly && !self.hasSearchQuery
+    private func isEnabled(_ provider: UsageProvider) -> Bool {
+        self.settings.isProviderEnabled(provider: provider, metadata: self.store.metadata(for: provider))
     }
 
     private func enabledBinding(for provider: UsageProvider) -> Binding<Bool> {
@@ -205,18 +227,51 @@ struct SettingsSidebarView: View {
                 self.settings.setProviderEnabled(provider: provider, metadata: meta, enabled: newValue)
             })
     }
+
+    /// The drag-to-reorder action, or nil (no dragging) while the list is sorted or filtered.
+    private func moveAction(for visibleProviders: [UsageProvider]) -> ((IndexSet, Int) -> Void)? {
+        guard SettingsSidebarProviderFilter.allowsReordering(
+            sortedAlphabetically: self.settings.providersSortedAlphabetically,
+            filter: self.filter.wrappedValue)
+        else { return nil }
+        return { fromOffsets, toOffset in
+            if self.settings.moveVisibleProviders(
+                visibleProviders.map(\.instanceID), fromOffsets: fromOffsets, toOffset: toOffset)
+            {
+                self.settings.registerProviderOrderUndo(in: self.undoManager)
+            }
+        }
+    }
+
+    private func restoreProviderOrder() {
+        if self.settings.restoreDefaultProviderOrder() { self.settings.registerProviderOrderUndo(in: self.undoManager) }
+    }
+
+    // MARK: Search
+
+    private var isSearching: Bool {
+        !SettingsSearch.words(in: self.query).isEmpty
+    }
+
+    private var searchResults: SettingsSearchResults {
+        SettingsSearchResults.results(
+            for: self.query,
+            entries: SettingsSearchIndex.entries(includingDebug: self.settings.debugMenuEnabled),
+            providers: self.orderedProviders.map { provider in
+                SettingsSearchEntry.provider(provider, displayName: self.store.metadata(for: provider).displayName)
+            })
+    }
 }
+
+// MARK: - Rows
 
 @MainActor
 private struct SettingsSidebarPaneRow: View {
     let pane: SettingsPane
 
     var body: some View {
-        HStack(spacing: 8) {
-            SettingsIconChip(systemImage: self.pane.systemImage, color: SettingsSidebarView.chipColor(for: self.pane))
-            Text(self.pane.title)
-        }
-        .tag(self.pane)
+        Label(self.pane.title, systemImage: self.pane.systemImage)
+            .lineLimit(1)
     }
 }
 
@@ -225,84 +280,134 @@ private struct SettingsSidebarAboutRow: View {
     let onSelect: () -> Void
 
     var body: some View {
-        HStack(spacing: 8) {
-            if let icon = NSApplication.shared.applicationIconImage {
-                Image(nsImage: icon)
+        SettingsSidebarPaneRow(pane: .about)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(Rectangle())
+            // List selection ignores clicks on the already-selected row; this also returns a pushed subpage to About.
+            .simultaneousGesture(TapGesture().onEnded { self.onSelect() })
+    }
+}
+
+@MainActor
+private struct SettingsSidebarProvidersHeader: View {
+    let enabledCount: Int
+
+    var body: some View {
+        HStack(spacing: MacSpace.unit) {
+            Text(L("tab_providers"))
+            Spacer(minLength: MacSpace.unit)
+            Text(String(format: L("providers_on_count"), self.enabledCount))
+                .monospacedDigit()
+        }
+    }
+}
+
+/// The row above the providers: All / Enabled chips, and the sort menu.
+@MainActor
+private struct SettingsSidebarProviderTools: View {
+    @Bindable var settings: SettingsStore
+    @Binding var filter: SettingsSidebarProviderFilter
+    let onRestore: () -> Void
+
+    var body: some View {
+        HStack(spacing: MacSpace.chromeGap) {
+            MacFilterChips(SettingsSidebarProviderFilter.chips, selection: self.$filter, label: L("tab_providers"))
+            Spacer(minLength: 0)
+            MacToolMenu(L("Provider sorting"), systemImage: "arrow.up.arrow.down") {
+                Toggle(
+                    L("Sort providers alphabetically (enabled first)"),
+                    isOn: self.$settings.providersSortedAlphabetically)
+                Divider()
+                Button(L("Restore default order"), action: self.onRestore)
+                    .disabled(!self.settings.canRestoreDefaultProviderOrder)
+                    .help(L("Also restores the provider order in the menu bar. Can be undone."))
+                Button(L("Undo")) {
+                    self.settings.undoProviderOrderChange()
+                }
+                .disabled(!self.settings.canUndoProviderOrderChange)
+            }
+        }
+    }
+}
+
+/// A provider's logo at the sidebar symbol size.
+@MainActor
+private struct SettingsSidebarProviderIcon: View {
+    let provider: UsageProvider
+
+    var body: some View {
+        Group {
+            if let brand = ProviderBrandIcon.image(for: self.provider) {
+                Image(nsImage: brand)
                     .resizable()
                     .scaledToFit()
-                    .frame(width: SettingsIconChip.side, height: SettingsIconChip.side)
-                    .accessibilityHidden(true)
             } else {
-                SettingsIconChip(
-                    systemImage: SettingsPane.about.systemImage,
-                    color: SettingsSidebarView.chipColor(for: .about))
+                Image(systemName: "circle.dotted")
+                    .resizable()
+                    .scaledToFit()
             }
-            Text(SettingsPane.about.title)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .contentShape(Rectangle())
-        // List selection ignores clicks on the already-selected row; this also returns a pushed subpage to About.
-        .simultaneousGesture(TapGesture().onEnded { self.onSelect() })
-        .tag(SettingsPane.about)
+        .frame(width: MacSize.sidebarIcon, height: MacSize.sidebarIcon)
+        .accessibilityHidden(true)
     }
 }
 
 @MainActor
 struct SettingsSidebarProviderRow: View {
+    /// How far a disabled provider's row fades.
+    static let disabledOpacity = 0.55
+
     let provider: UsageProvider
     @Bindable var store: UsageStore
     @Binding var isEnabled: Bool
 
     var body: some View {
-        HStack(spacing: 8) {
-            Group {
-                if let brand = ProviderBrandIcon.image(for: self.provider) {
-                    Image(nsImage: brand)
-                        .resizable()
-                        .scaledToFit()
-                } else {
-                    Image(systemName: "circle.dotted")
-                        .resizable()
-                        .scaledToFit()
+        let status = self.status
+        Label {
+            HStack(spacing: MacSpace.unit) {
+                Text(self.name)
+                    .lineLimit(1)
+                Spacer(minLength: MacSpace.unit)
+                if let status {
+                    SettingsSidebarStatusSymbol(status: status)
                 }
             }
-            .frame(width: 16, height: 16)
-            .foregroundStyle(self.isEnabled ? .primary : .secondary)
-            .accessibilityHidden(true)
-
-            Text(self.store.metadata(for: self.provider).displayName)
-                .foregroundStyle(self.isEnabled ? .primary : .secondary)
-
-            Spacer(minLength: 4)
-
-            if self.store.refreshingProviders.contains(self.provider.instanceID) {
-                ProgressView()
-                    .controlSize(.mini)
-            }
-
-            if self.isEnabled, self.store.statusChecksEnabled {
-                Circle()
-                    .fill(Self.statusColor(for: self.store.status(for: self.provider)?.indicator))
-                    .frame(width: 6, height: 6)
-                    .help(Self.statusDescription(for: self.store.status(for: self.provider)?.indicator))
-                    .accessibilityHidden(true)
-            }
+        } icon: {
+            SettingsSidebarProviderIcon(provider: self.provider)
         }
-        .opacity(self.isEnabled ? 1 : 0.62)
+        .opacity(self.isEnabled ? 1 : Self.disabledOpacity)
         .contextMenu {
             Button(self.isEnabled ? L("Disable") : L("Enable")) {
                 self.isEnabled.toggle()
             }
         }
-        .accessibilityLabel(self.accessibilityLabel)
-    }
-
-    private var accessibilityLabel: String {
-        Self.accessibilityLabel(
-            name: self.store.metadata(for: self.provider).displayName,
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Self.accessibilityLabel(
+            name: self.name,
             isEnabled: self.isEnabled,
             statusChecksEnabled: self.store.statusChecksEnabled,
+            indicator: self.store.status(for: self.provider)?.indicator))
+        .accessibilityValue(self.fetchStateDescription(status) ?? "")
+    }
+
+    private var name: String {
+        self.store.metadata(for: self.provider).displayName
+    }
+
+    private var status: SettingsSidebarProviderStatus? {
+        let hasError = self.store.error(for: self.provider) != nil
+        return SettingsSidebarProviderStatus.resolve(
+            isEnabled: self.isEnabled,
+            isRefreshing: self.store.refreshingProviders.contains(self.provider.instanceID),
+            error: hasError ? self.store.userFacingErrorPresentation(for: self.provider)?.message : nil,
+            statusChecksEnabled: self.store.statusChecksEnabled,
             indicator: self.store.status(for: self.provider)?.indicator)
+    }
+
+    /// Refreshing and refresh errors, which the label (service status) does not cover.
+    private func fetchStateDescription(_ status: SettingsSidebarProviderStatus?) -> String? {
+        guard let status, status.tone == .busy || self.store.error(for: self.provider) != nil else { return nil }
+        return status.text
     }
 
     nonisolated static func accessibilityLabel(
@@ -319,177 +424,120 @@ struct SettingsSidebarProviderRow: View {
     nonisolated static func statusDescription(for indicator: ProviderStatusIndicator?) -> String {
         L("Provider service status: %@", (indicator ?? .unknown).label)
     }
-
-    nonisolated static func statusColor(for indicator: ProviderStatusIndicator?) -> Color {
-        switch indicator ?? .unknown {
-        case .none: .green
-        case .minor: .yellow
-        case .major: .orange
-        case .critical: .red
-        case .maintenance, .unknown: .gray
-        }
-    }
 }
 
-private struct SettingsSidebarProviderOrderBanner: View {
-    private enum AccessibilityElement: Hashable {
-        case banner
-        case message
-        case undo
-    }
-
-    static let visibleDuration: Duration = .seconds(4)
-
-    let onUndo: () -> Void
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var isVisible = true
-    @State private var isHovering = false
-    @FocusState private var isUndoFocused: Bool
-    @AccessibilityFocusState private var accessibilityFocus: AccessibilityElement?
-
-    private var isInteracting: Bool {
-        self.isHovering || self.isUndoFocused || self.accessibilityFocus != nil
-    }
+/// A status tone as its symbol (a spinner for busy), with the status text as its tooltip.
+@MainActor
+private struct SettingsSidebarStatusSymbol: View {
+    let status: SettingsSidebarProviderStatus
 
     var body: some View {
-        ZStack {
-            if self.isVisible {
-                HStack {
-                    Text(L("Provider order updated"))
-                        .accessibilityFocused(self.$accessibilityFocus, equals: .message)
-                    Spacer(minLength: 4)
-                    Button(L("Undo"), action: self.onUndo)
-                        .buttonStyle(.plain)
-                        .foregroundStyle(Color.accentColor)
-                        .focused(self.$isUndoFocused)
-                        .accessibilityFocused(self.$accessibilityFocus, equals: .undo)
-                }
-                .font(.caption)
-                .padding(8)
-                .contentShape(Rectangle())
-                .onHover { self.isHovering = $0 }
-                .accessibilityElement(children: .contain)
-                .accessibilityFocused(self.$accessibilityFocus, equals: .banner)
-                .transition(.opacity)
+        Group {
+            if self.status.tone == .busy {
+                ProgressView()
+                    .controlSize(.mini)
+            } else {
+                Image(systemName: self.status.tone.systemImage)
+                    .font(MacTextRole.caption.font)
+                    .foregroundStyle(self.status.tone.color)
             }
         }
-        .task(id: self.isInteracting) {
-            guard !self.isInteracting else { return }
-            try? await Task.sleep(for: Self.visibleDuration)
-            guard !Task.isCancelled, !self.isInteracting else { return }
-            withAnimation(self.reduceMotion ? nil : .easeOut(duration: 0.4)) { self.isVisible = false }
-        }
+        .help(self.status.text)
     }
 }
 
-private struct SettingsSidebarSearchField: View {
-    @Binding var searchText: String
+// MARK: - Search results
+
+/// The sidebar while searching: matching settings, each with its pane, then matching providers. Choosing one opens
+/// its pane and points the detail at the setting.
+@MainActor
+private struct SettingsSidebarSearchResultsList: View {
+    let results: SettingsSearchResults
+    @Binding var chosen: String?
+    let onChoose: (SettingsSearchEntry) -> Void
+    let onClear: () -> Void
 
     var body: some View {
-        HStack(spacing: 5) {
-            Image(systemName: "magnifyingglass")
-                .foregroundStyle(.secondary)
-                .accessibilityHidden(true)
+        if self.results.isEmpty {
+            MacEmptyState(
+                L("No matching settings or providers"),
+                systemImage: "magnifyingglass",
+                size: .compact,
+                secondary: MacEmptyStateAction(L("Clear"), action: self.onClear))
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        } else {
+            List(selection: self.choice) {
+                if !self.results.settings.isEmpty {
+                    Section {
+                        ForEach(self.results.settings) { entry in
+                            SettingsSidebarSettingResultRow(entry: entry)
+                                .tag(entry.id)
+                        }
+                    }
+                }
+                if !self.results.providers.isEmpty {
+                    Section(L("tab_providers")) {
+                        ForEach(self.results.providers) { entry in
+                            SettingsSidebarProviderResultRow(entry: entry)
+                                .tag(entry.id)
+                        }
+                    }
+                }
+            }
+            .listStyle(.sidebar)
+        }
+    }
 
-            TextField(L("Search settings"), text: self.$searchText)
-                .textFieldStyle(.plain)
+    private var choice: Binding<String?> {
+        Binding(
+            get: { self.chosen },
+            set: { id in
+                self.chosen = id
+                guard let id,
+                      let entry = (self.results.settings + self.results.providers).first(where: { $0.id == id })
+                else { return }
+                self.onChoose(entry)
+            })
+    }
+}
 
-            if !self.searchText.isEmpty {
-                Button {
-                    self.searchText = ""
-                } label: {
-                    Image(systemName: "xmark.circle.fill")
+@MainActor
+private struct SettingsSidebarSettingResultRow: View {
+    let entry: SettingsSearchEntry
+
+    var body: some View {
+        Label {
+            VStack(alignment: .leading) {
+                Text(self.entry.title)
+                    .lineLimit(2)
+                // A pane's own entry is the pane; a setting names the pane it is on.
+                if self.entry.id != self.entry.pane.persistenceToken {
+                    Text(self.entry.pane.title)
+                        .font(MacTextRole.caption.font)
+                        // Hierarchical, so it follows the row's selected text colour.
                         .foregroundStyle(.secondary)
-                        .accessibilityLabel(L("Clear"))
+                        .lineLimit(1)
                 }
-                .buttonStyle(.plain)
             }
+        } icon: {
+            Image(systemName: self.entry.pane.systemImage)
         }
-        .font(.callout)
-        .padding(.horizontal, 7)
-        .padding(.vertical, 4)
-        .background(
-            RoundedRectangle(cornerRadius: 6, style: .continuous)
-                .fill(Color(nsColor: .textBackgroundColor).opacity(0.6)))
-        .overlay(
-            RoundedRectangle(cornerRadius: 6, style: .continuous)
-                .stroke(Color(nsColor: .separatorColor).opacity(0.6), lineWidth: 1))
+        .accessibilityElement(children: .combine)
     }
 }
 
-/// macOS 26+ sidebar toolbar group: a standard toolbar toggle (which shows its own on state) and a
-/// sorting menu, so the toolbar supplies their shared Liquid Glass.
-private struct SettingsSidebarSortToolbar: ToolbarContent {
-    @Binding var isOn: Bool
-    @Binding var enabledOnly: Bool
-    let canRestore: Bool
-    let onRestore: () -> Void
-
-    var body: some ToolbarContent {
-        ToolbarItemGroup {
-            Toggle(isOn: self.$isOn) {
-                Label(L("Sort providers alphabetically"), systemImage: "arrow.up.arrow.down")
-            }
-            .help(self.isOn
-                ? L("Sorted alphabetically (enabled first) — click to use your custom order")
-                : L("Sort providers alphabetically (enabled first)"))
-
-            Menu {
-                Toggle(L("Only show enabled providers"), isOn: self.$enabledOnly)
-                Divider()
-                Button(L("Restore default order"), action: self.onRestore)
-                    .disabled(!self.canRestore)
-                    .help(L("Also restores the provider order in the menu bar. Can be undone."))
-            } label: {
-                Label(L("Provider sorting"), systemImage: "chevron.down")
-            }
-            .menuIndicator(.hidden)
-            .help(L("Provider sorting"))
-        }
-    }
-}
-
-private struct SettingsSidebarSortToggle: View {
-    @Binding var isOn: Bool
-    @Binding var enabledOnly: Bool
-    let canRestore: Bool
-    let onRestore: () -> Void
+@MainActor
+private struct SettingsSidebarProviderResultRow: View {
+    let entry: SettingsSearchEntry
 
     var body: some View {
-        HStack(spacing: 0) {
-            Button {
-                self.isOn.toggle()
-            } label: {
-                Image(systemName: "arrow.up.arrow.down")
-                    .font(.callout)
-                    .foregroundStyle(self.isOn ? Color.accentColor : Color.secondary)
-                    .frame(width: 24, height: 24)
-                    .contentShape(Rectangle())
+        Label {
+            Text(self.entry.title)
+                .lineLimit(1)
+        } icon: {
+            if case let .provider(instanceID) = self.entry.pane, let provider = instanceID.firstPartyProvider {
+                SettingsSidebarProviderIcon(provider: provider)
             }
-            .buttonStyle(.plain)
-            .help(self.isOn
-                ? L("Sorted alphabetically (enabled first) — click to use your custom order")
-                : L("Sort providers alphabetically (enabled first)"))
-            .accessibilityLabel(L("Sort providers alphabetically"))
-            .accessibilityAddTraits(self.isOn ? .isSelected : [])
-
-            Menu {
-                Toggle(L("Only show enabled providers"), isOn: self.$enabledOnly)
-                Divider()
-                Button(L("Restore default order"), action: self.onRestore)
-                    .disabled(!self.canRestore)
-                    .help(L("Also restores the provider order in the menu bar. Can be undone."))
-            } label: {
-                Image(systemName: "chevron.down")
-                    .font(.caption2)
-                    .foregroundStyle(self.enabledOnly ? Color.accentColor : Color.secondary)
-                    .frame(width: 14, height: 24)
-            }
-            .menuStyle(.borderlessButton)
-            .menuIndicator(.hidden)
-            .fixedSize()
-            .help(L("Provider sorting"))
-            .accessibilityLabel(L("Provider sorting"))
         }
     }
 }

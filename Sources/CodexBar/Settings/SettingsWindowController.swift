@@ -7,6 +7,14 @@ enum SettingsWindowIdentity {
     static let frameAutosaveName = "CodexBar.SettingsWindow"
 }
 
+extension SettingsPane {
+    /// The Settings window's default and minimum content size, in AppKit points.
+    static let windowWidth: CGFloat = 880
+    static let windowHeight: CGFloat = 620
+    static let windowMinWidth: CGFloat = 800
+    static let windowMinHeight: CGFloat = 540
+}
+
 @MainActor
 final class SettingsWindowController: NSWindowController, NSWindowDelegate {
     enum Outcome: Equatable {
@@ -78,6 +86,9 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate {
                 codexAccountPromotionCoordinator: codexAccountPromotionCoordinator,
                 runProviderLoginFlow: runProviderLoginFlow)
             let hostingController = NSHostingController(rootView: rootView)
+            // SwiftUI owns the toolbar (back and forward, the sidebar toggle) and sets the window title from the
+            // pane's navigation title, on macOS 15 and 26 alike.
+            hostingController.sceneBridgingOptions = [.toolbars, .title]
             let window = NSWindow(
                 contentRect: NSRect(
                     x: 0,
@@ -89,7 +100,6 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate {
                 defer: false)
             window.contentViewController = hostingController
             window.title = selection.title
-            SettingsWindowToolbar.configure(window)
             SettingsWindowSizing.enforceMinimumSize(window)
             if !window.setFrameUsingName(SettingsWindowIdentity.frameAutosaveName) {
                 window.center()
