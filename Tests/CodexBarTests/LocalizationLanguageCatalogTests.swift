@@ -738,6 +738,10 @@ struct LocalizationLanguageCatalogTests {
 
         // Brands, protocol examples, pure format strings and accepted Italian cognates.
         let intentionallyUnchanged: Set = [
+            "quota_warning_percent_unit",
+            "quota_warning_percent_value",
+            "quota_warning_threshold_named",
+            "settings_alerts_section_quota",
             "/Applications/TcrBar.app/Contents/MacOS/tcr",
             "<1%% %@",
             "%.0f%% %@",
