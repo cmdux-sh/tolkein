@@ -1,5 +1,6 @@
 import AppKit
 import CodexBarCore
+import InternalUI
 import SwiftUI
 import XCTest
 @testable import CodexBar
@@ -78,19 +79,13 @@ private struct HooksProofForm: View {
     }
 
     var body: some View {
-        Form {
-            Section {
-                Text("Synthetic rules only. No commands can run from this fixture.")
-                    .font(.caption)
-            } header: {
-                Text("Hooks settings — populated and empty fields")
+        MacSettingsPage("Hooks settings — populated and empty fields") {
+            MacSettingsSection(footer: "Synthetic rules only. No commands can run from this fixture.") {
+                EmptyView()
             }
-            Section {
-                ForEach(self.$rules) { $rule in
-                    HookRuleRow(rule: $rule, onDelete: {})
-                }
+            ForEach(Array(self.$rules.enumerated()), id: \.element.id) { index, $rule in
+                HookRuleCard(number: index + 1, rule: $rule, onDelete: {})
             }
         }
-        .formStyle(.grouped)
     }
 }

@@ -114,10 +114,10 @@ struct UserFacingLocalizationCoverageTests {
             "Sources/CodexBar/SpendDashboard/SpendDashboardFormatting.swift": [
                 "Text(\"Partial estimate\")",
             ],
-            "Sources/CodexBar/Settings/PreferencesMenuPane.swift": [
+            "Sources/CodexBar/Settings/Panes/MenuSettingsPane+AgentSessions.swift": [
                 "title: \"Stay Awake\",",
             ],
-            "Sources/CodexBar/Settings/PreferencesTransferSection.swift": [
+            "Sources/CodexBar/Settings/Panes/PrivacySettingsPane.swift": [
                 "Text(\"Portable Preferences\")",
                 "Button(\"Export…\")",
                 "Button(\"Import…\")",
@@ -130,7 +130,7 @@ struct UserFacingLocalizationCoverageTests {
             "Sources/CodexBarWidget/WidgetTiles.swift": [
                 "String(describing: Text(reset, style: .relative))",
             ],
-            "Sources/CodexBar/Settings/PreferencesNotificationsPane.swift": [
+            "Sources/CodexBar/Settings/Panes/AlertsSettingsPane.swift": [
                 "\"Credential expiry\"",
                 "\"Notify once when a provider account needs you to sign in again.\"",
             ],
