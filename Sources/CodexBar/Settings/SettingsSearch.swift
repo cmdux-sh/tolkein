@@ -27,8 +27,8 @@ struct SettingsSearchResults: Equatable {
     }
 
     /// - Parameters:
-    ///   - entries: the searchable settings (`SettingsSearchIndex.entries(includingDebug:)`). Their provider entries
-    ///     are left out: `providers` covers every provider the sidebar lists, by more of its names.
+    ///   - entries: the searchable settings (`SettingsSearchIndex.entries(includingDebug:)`). A provider page's own
+    ///     entry is left out, since `providers` covers it by more of its names; its section entries stay.
     ///   - providers: the providers in sidebar order. The chip filter does not apply: search looks everywhere.
     static func results(
         for query: String,
@@ -36,7 +36,8 @@ struct SettingsSearchResults: Equatable {
         providers: [SettingsSearchEntry]) -> SettingsSearchResults
     {
         let settings = entries.filter { entry in
-            if case .provider = entry.pane { return false }
+            // A provider page's own entry is left out (`providers` finds it by more names); its sections stay.
+            if case .provider = entry.pane { return entry.id != entry.pane.persistenceToken }
             return true
         }
         return SettingsSearchResults(
