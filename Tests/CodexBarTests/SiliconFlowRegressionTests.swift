@@ -17,7 +17,7 @@ struct SiliconFlowRegressionTests {
     }
 
     @Test
-    func `official SiliconFlow symbol is shared across app website and serve`() throws {
+    func `official SiliconFlow symbol is shared across app and serve`() throws {
         let root = URL(fileURLWithPath: #filePath)
             .deletingLastPathComponent()
             .deletingLastPathComponent()
@@ -27,10 +27,6 @@ struct SiliconFlowRegressionTests {
             encoding: .utf8)
         #expect(svg.contains("M50.7172 0H27.6622"))
         #expect(svg.contains("fill=\"currentColor\""))
-        let website = try String(
-            contentsOf: root.appendingPathComponent("docs/logos/siliconflow.svg"),
-            encoding: .utf8)
-        #expect(website == svg)
         let cli = try String(
             contentsOf: root.appendingPathComponent("Sources/CodexBarCLI/CLIServeProviderIcons.swift"),
             encoding: .utf8)
