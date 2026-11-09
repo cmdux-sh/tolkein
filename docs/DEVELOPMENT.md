@@ -227,8 +227,14 @@ verified before installation. TypeScript 7 installs its native package for the r
 (including Rosetta). Plugin typechecking uses only its declared libraries and source declarations, so unrelated
 ancestor `node_modules/@types` packages do not affect the result. SwiftFormat targets the package's Swift 6.2 floor.
 
-`make check` and `make lint` use the portable `lint-linux` checks on Linux. On macOS, they run the full
-`lint` checks, including app localization, the AppleScript installer regression, and SwiftFormat.
+`make check` and `make lint` use the portable `lint-linux` checks on Linux. On macOS, they run the everyday `lint`
+checks: English strings, provider manifests, plugin JavaScript, shell syntax, SwiftFormat and SwiftLint (about half a
+minute). `make check-all` adds the packaging, signing, Sparkle, CI, website and AppleScript installer self-tests
+(about three minutes); CI always runs them.
+
+On pull requests, the macOS test job runs only the suites the change touches
+(`Scripts/ci_select_test_suites.py`), falling back to the complete inventory for build, runner or shared test-helper
+changes. Every push to main runs the complete inventory.
 
 ```bash
 make test

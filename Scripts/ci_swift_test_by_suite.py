@@ -86,6 +86,11 @@ def parse_args() -> argparse.Namespace:
         help="fail immediately when a group exits without timing out",
     )
     parser.add_argument("--list-only", action="store_true")
+    parser.add_argument(
+        "--suites-file",
+        type=Path,
+        help="run only the suites named in this file, one per line (from ci_select_test_suites.py)",
+    )
     parser.add_argument("--direct-workers", type=int, help="opt-in macOS direct test groups (1-8 workers; required on CI when requested)")
     parser.add_argument("--swift-command", default="swift")
     parser.add_argument("--swift-command-arg", action="append", default=[])
@@ -723,6 +728,12 @@ def prioritized_suites(suites: list[TestSelection]) -> list[TestSelection]:
     return ordered
 
 
+def selected_suites(suites: list[TestSelection], names: str) -> list[TestSelection]:
+    """The suites whose type name (the part after the module) is listed, one per line."""
+    wanted = {line.strip() for line in names.splitlines() if line.strip()}
+    return [suite for suite in suites if (suite.suite_name or suite.name).split(".")[-1] in wanted]
+
+
 def filter_for(suites: list[TestSelection]) -> str:
     return rf"({'|'.join(suite.filter_pattern for suite in suites)})"
 
@@ -783,6 +794,8 @@ def main() -> int:
             inventory: list[str] = []
             discovered = swift_test_list(swift_command, inventory) if args.direct_workers is not None else swift_test_list(swift_command)
             suites = prioritized_suites(discovered)
+            if args.suites_file is not None:
+                suites = selected_suites(suites, args.suites_file.read_text())
         finally:
             stats.discovery_seconds = time.monotonic() - discovery_started
         stats.discovered_selections = len(suites)
