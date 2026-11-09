@@ -2843,3 +2843,24 @@
 "agent_sessions_hosts_help" = "エージェントのセッションを確認する追加の SSH ホスト。user@host の形式でカンマ区切りで入力します。";
 "menu_bar_layout_override_subtitle" = "独自に保存したレイアウトを使用";
 "cost_history_rolling_days_title" = "ローリング日数";
+/* Settings: Alerts, Sync */
+"settings_alerts_subtitle" = "サインイン、クォータ、リセットの通知";
+"settings_alerts_section_sign_in" = "サインインとクレジット";
+"settings_alerts_section_quota" = "クォータ";
+"settings_alerts_section_delivery" = "通知方法";
+"settings_alerts_delivery_disabled" = "通知方法を選ぶには、しきい値警告またはペース警告をオンにしてください。";
+"settings_alerts_section_menu_markers" = "メニューのマーカー";
+"settings_alerts_overrides_title" = "プロバイダごとの設定";
+"settings_alerts_overrides_footer" = "「プロバイダ」の各プロバイダのページで、セッションと週間の独自のしきい値を設定したり、警告をオフにしたりできます。";
+"quota_warning_percent_unit" = "%";
+"quota_warning_percent_value" = "%d%%";
+"quota_warning_threshold_named" = "%1$@ %2$@";
+"settings_sync_subtitle" = "すべてのMacで設定、プロバイダ、使用状況を同期";
+"settings_sync_update_needed" = "アップデートが必要";
+"settings_sync_secrets_confirm_title" = "APIキー、Cookie、トークンを同期しますか？";
+"settings_sync_secrets_confirm_message" = "iCloudアカウントにサインインしているすべてのMacにコピーされ、iCloudのエンドツーエンド暗号化で保護されます。";
+"settings_sync_secrets_confirm_action" = "シークレットを含める";
+"settings_sync_remove_mac_title" = "“%@”を削除しますか？";
+"settings_sync_remove_mac_message" = "このMacの記録と同期された使用状況がiCloudから削除されます。そのMacがまだ同期している場合は、次回の同期時に再び表示されます。";
+"settings_sync_no_macs_title" = "同期しているMacはありません";
+"settings_sync_no_macs_message" = "iCloud同期をオンにしたMacがここに表示されます。";

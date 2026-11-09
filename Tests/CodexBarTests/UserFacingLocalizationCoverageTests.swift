@@ -130,7 +130,7 @@ struct UserFacingLocalizationCoverageTests {
             "Sources/CodexBarWidget/WidgetTiles.swift": [
                 "String(describing: Text(reset, style: .relative))",
             ],
-            "Sources/CodexBar/Settings/PreferencesNotificationsPane.swift": [
+            "Sources/CodexBar/Settings/Panes/AlertsSettingsPane.swift": [
                 "\"Credential expiry\"",
                 "\"Notify once when a provider account needs you to sign in again.\"",
             ],

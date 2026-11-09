@@ -2846,3 +2846,24 @@
 "agent_sessions_hosts_help" = "Ajan oturumları için denetlenecek ek SSH sunucuları; user@host biçiminde ve virgülle ayrılmış olarak yazın.";
 "menu_bar_layout_override_subtitle" = "Kendi kayıtlı düzenini kullanır";
 "cost_history_rolling_days_title" = "Kayan günler";
+/* Settings: Alerts, Sync */
+"settings_alerts_subtitle" = "Oturum açma, kota ve sıfırlama bildirimleri";
+"settings_alerts_section_sign_in" = "Oturum açma ve krediler";
+"settings_alerts_section_quota" = "Kota";
+"settings_alerts_section_delivery" = "İletim";
+"settings_alerts_delivery_disabled" = "Nasıl iletileceklerini seçmek için eşik veya tempo uyarılarını açın.";
+"settings_alerts_section_menu_markers" = "Menü işaretleri";
+"settings_alerts_overrides_title" = "Sağlayıcıya özel ayarlar";
+"settings_alerts_overrides_footer" = "Sağlayıcılar altındaki her sağlayıcının sayfası kendi oturum ve haftalık eşiklerini belirleyebilir veya uyarılarını kapatabilir.";
+"quota_warning_percent_unit" = "%";
+"quota_warning_percent_value" = "%%%d";
+"quota_warning_threshold_named" = "%1$@ %2$@";
+"settings_sync_subtitle" = "Tüm Mac'lerinizde ayarlar, sağlayıcılar ve kullanım";
+"settings_sync_update_needed" = "Güncelleme gerekli";
+"settings_sync_secrets_confirm_title" = "API anahtarları, çerezler ve tokenlar eşzamanlansın mı?";
+"settings_sync_secrets_confirm_message" = "iCloud hesabınızda oturum açmış her Mac'e kopyalanır ve iCloud uçtan uca şifrelemesiyle korunur.";
+"settings_sync_secrets_confirm_action" = "Gizli bilgileri dahil et";
+"settings_sync_remove_mac_title" = "“%@” kaldırılsın mı?";
+"settings_sync_remove_mac_message" = "Kaydı ve eşzamanlanan kullanımı iCloud'dan silinir. O Mac hâlâ eşzamanlama yapıyorsa bir sonraki eşzamanlamada yeniden görünür.";
+"settings_sync_no_macs_title" = "Eşzamanlanan Mac yok";
+"settings_sync_no_macs_message" = "iCloud eşzamanlamayı açan her Mac burada görünür.";

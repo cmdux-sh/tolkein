@@ -2811,3 +2811,24 @@
 "agent_sessions_hosts_help" = "에이전트 세션을 확인할 추가 SSH 호스트입니다. user@host 형식으로 쉼표로 구분해 입력하세요.";
 "menu_bar_layout_override_subtitle" = "자체 저장된 레이아웃 사용";
 "cost_history_rolling_days_title" = "롤링 일수";
+/* Settings: Alerts, Sync */
+"settings_alerts_subtitle" = "로그인, 할당량 및 재설정 알림";
+"settings_alerts_section_sign_in" = "로그인 및 크레딧";
+"settings_alerts_section_quota" = "할당량";
+"settings_alerts_section_delivery" = "전달 방식";
+"settings_alerts_delivery_disabled" = "전달 방식을 선택하려면 임곗값 경고 또는 속도 경고를 켜십시오.";
+"settings_alerts_section_menu_markers" = "메뉴 마커";
+"settings_alerts_overrides_title" = "공급자별 설정";
+"settings_alerts_overrides_footer" = "공급자 아래의 각 공급자 페이지에서 세션 및 주간 임곗값을 따로 설정하거나 경고를 끌 수 있습니다.";
+"quota_warning_percent_unit" = "%";
+"quota_warning_percent_value" = "%d%%";
+"quota_warning_threshold_named" = "%1$@ %2$@";
+"settings_sync_subtitle" = "모든 Mac에서 설정, 공급자 및 사용량 동기화";
+"settings_sync_update_needed" = "업데이트 필요";
+"settings_sync_secrets_confirm_title" = "API 키, 쿠키 및 토큰을 동기화하시겠습니까?";
+"settings_sync_secrets_confirm_message" = "iCloud 계정에 로그인된 모든 Mac에 복사되며 iCloud 종단 간 암호화로 보호됩니다.";
+"settings_sync_secrets_confirm_action" = "비밀 정보 포함";
+"settings_sync_remove_mac_title" = "“%@”을(를) 제거하시겠습니까?";
+"settings_sync_remove_mac_message" = "해당 기록과 동기화된 사용량이 iCloud에서 삭제됩니다. 그 Mac이 계속 동기화 중이면 다음 동기화 때 다시 나타납니다.";
+"settings_sync_no_macs_title" = "동기화된 Mac 없음";
+"settings_sync_no_macs_message" = "iCloud 동기화를 켠 Mac이 여기에 표시됩니다.";

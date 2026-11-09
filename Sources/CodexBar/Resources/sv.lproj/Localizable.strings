@@ -2842,3 +2842,24 @@
 "agent_sessions_hosts_help" = "Fler SSH-värdar att söka efter agentsessioner på, skrivna som user@host och åtskilda med kommatecken.";
 "menu_bar_layout_override_subtitle" = "Använder en egen sparad layout";
 "cost_history_rolling_days_title" = "Rullande dagar";
+/* Settings: Alerts, Sync */
+"settings_alerts_subtitle" = "Notiser om inloggning, kvot och återställningar";
+"settings_alerts_section_sign_in" = "Inloggning och krediter";
+"settings_alerts_section_quota" = "Kvot";
+"settings_alerts_section_delivery" = "Leverans";
+"settings_alerts_delivery_disabled" = "Slå på tröskel- eller taktvarningar för att välja hur de levereras.";
+"settings_alerts_section_menu_markers" = "Menymarkörer";
+"settings_alerts_overrides_title" = "Inställningar per leverantör";
+"settings_alerts_overrides_footer" = "Varje leverantörs sida under Leverantörer kan ange egna trösklar för session och vecka, eller stänga av varningarna.";
+"quota_warning_percent_unit" = "%";
+"quota_warning_percent_value" = "%d %%";
+"quota_warning_threshold_named" = "%1$@ %2$@";
+"settings_sync_subtitle" = "Inställningar, leverantörer och användning på alla dina Mac-datorer";
+"settings_sync_update_needed" = "Uppdatering krävs";
+"settings_sync_secrets_confirm_title" = "Synkronisera API-nycklar, cookies och token?";
+"settings_sync_secrets_confirm_message" = "De kopieras till alla Mac-datorer som är inloggade på ditt iCloud-konto och skyddas av totalsträckskryptering i iCloud.";
+"settings_sync_secrets_confirm_action" = "Inkludera hemligheter";
+"settings_sync_remove_mac_title" = "Ta bort ”%@”?";
+"settings_sync_remove_mac_message" = "Dess post och synkade användning raderas från iCloud. Om den Mac-datorn fortfarande synkar visas den igen nästa gång den synkar.";
+"settings_sync_no_macs_title" = "Inga synkade Mac-datorer";
+"settings_sync_no_macs_message" = "Varje Mac som slår på iCloud-synkronisering visas här.";

@@ -365,7 +365,9 @@ struct PreferencesPaneSmokeTests {
             #expect(L("quota_warning_warning") == "Предупреждение")
             #expect(L("quota_warning_critical") == "Критично")
 
-            _ = GlobalQuotaWarningSettingsView(settings: settings).body
+            _ = AlertsSettingsPage(settings: settings).body
+            _ = GlobalQuotaWarningWindowRow(window: .session, settings: settings).body
+            _ = GlobalQuotaWarningWindowRow(window: .weekly, settings: settings).body
         }
     }
 

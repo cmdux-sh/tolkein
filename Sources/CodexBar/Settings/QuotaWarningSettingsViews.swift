@@ -2,8 +2,12 @@ import CodexBarCore
 #if os(macOS)
 import AppKit
 #endif
+import InternalUI
 import SwiftUI
 
+/// Which quota-warning controls the Alerts pane offers. The Session and Weekly threshold rows appear under
+/// Threshold warnings while it is on; the delivery options (sound, on-screen alert) serve both threshold and pace
+/// warnings, so they are enabled while either is on.
 struct QuotaWarningSettingsVisibility: Equatable {
     let showsThresholdControls: Bool
     let showsDeliveryControls: Bool
@@ -14,70 +18,50 @@ struct QuotaWarningSettingsVisibility: Equatable {
     }
 }
 
+/// One window's row under Threshold warnings in the Alerts pane: the window's Warning and Critical fields and
+/// the switch that turns its warnings on.
 @MainActor
-struct GlobalQuotaWarningSettingsView: View {
+struct GlobalQuotaWarningWindowRow: View {
+    let window: QuotaWarningWindow
     @Bindable var settings: SettingsStore
-    let showsThresholdControls: Bool
-
-    init(settings: SettingsStore, showsThresholdControls: Bool = true) {
-        self.settings = settings
-        self.showsThresholdControls = showsThresholdControls
-    }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            if self.showsThresholdControls {
-                QuotaWarningWindowThresholdRows(settings: self.settings)
+        let isEnabled = self.settings.quotaWarningWindowEnabled(self.window)
+        MacSettingsRow(self.window.localizedCapitalizedDisplayName) {
+            HStack(spacing: MacSpace.settingsRowPaddingX) {
+                QuotaWarningThresholdFields(
+                    accessibilityContext: self.window.localizedCapitalizedDisplayName,
+                    thresholds: { self.settings.quotaWarningThresholds(self.window) },
+                    setThresholds: { self.settings.setQuotaWarningThresholds(self.window, thresholds: $0) })
+                    .disabled(!isEnabled)
 
-                Text(L("quota_warning_global_threshold_subtitle"))
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
+                Toggle(
+                    L("quota_warning_enable_warnings", self.window.localizedNotificationDisplayName),
+                    isOn: Binding(
+                        get: { self.settings.quotaWarningWindowEnabled(self.window) },
+                        set: { self.settings.setQuotaWarningWindowEnabled(self.window, enabled: $0) }))
+                    .toggleStyle(.macSwitch)
+                    .labelsHidden()
             }
-
-            Toggle(isOn: self.$settings.quotaWarningSoundEnabled) {
-                Text(L("quota_warning_sound"))
-                    .font(.footnote)
-            }
-            .toggleStyle(.checkbox)
-
-            Toggle(isOn: self.$settings.quotaWarningOnScreenAlertEnabled) {
-                Text(L("quota_warning_onscreen_alert"))
-                    .font(.footnote)
-            }
-            .toggleStyle(.checkbox)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.leading, 22)
-        .background(FocusResigningBackground())
-        .listRowSeparator(.hidden)
     }
 }
 
+/// A provider's own quota warnings, as a section of its Settings page: for each window, Global (inherit the
+/// Alerts pane's thresholds), Custom (this provider's own Warning and Critical) or Off.
 @MainActor
 struct ProviderQuotaWarningSettingsView: View {
-    private static let windowRowMinHeight: CGFloat = 26
-    private static let thresholdFieldWidth: CGFloat = 40
-
     let provider: UsageProvider
     @Bindable var settings: SettingsStore
 
     var body: some View {
-        Section {
-            Grid(alignment: .leading, horizontalSpacing: 12, verticalSpacing: 8) {
-                self.windowRow(.session)
-                self.windowRow(.weekly)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .listRowSeparator(.hidden)
-            .disabled(!self.controlsEnabled)
-            .opacity(self.controlsEnabled ? 1 : 0.45)
-        } header: {
-            Text(L("quota_warnings_title"))
-        } footer: {
-            SettingsSectionFooter(self.footerText)
+        MacSettingsSection(L("quota_warnings_title"), footer: self.footerText) {
+            self.modeRow(.session)
+            self.customThresholdRow(.session)
+            self.modeRow(.weekly)
+            self.customThresholdRow(.weekly)
         }
-        .background(FocusResigningBackground())
+        .disabled(!self.controlsEnabled)
     }
 
     var controlsEnabled: Bool {
@@ -94,64 +78,43 @@ struct ProviderQuotaWarningSettingsView: View {
         return L("quota_warning_provider_disabled")
     }
 
-    private func windowRow(_ window: QuotaWarningWindow) -> some View {
-        GridRow(alignment: .firstTextBaseline) {
-            Text(window.localizedCapitalizedDisplayName)
-                .font(.subheadline.weight(.semibold))
-                .fixedSize(horizontal: true, vertical: false)
-                .frame(minHeight: Self.windowRowMinHeight, alignment: .center)
-                .gridColumnAlignment(.leading)
-
-            Picker(window.localizedCapitalizedDisplayName, selection: self.overrideModeBinding(for: window)) {
-                Text(L("quota_warning_global")).tag(ProviderQuotaWarningOverrideMode.global)
-                Text(L("Custom")).tag(ProviderQuotaWarningOverrideMode.custom)
-                Text(L("quota_warning_off")).tag(ProviderQuotaWarningOverrideMode.off)
-            }
-            .labelsHidden()
-            .pickerStyle(.segmented)
-            .controlSize(.small)
-            .fixedSize()
-            .frame(minHeight: Self.windowRowMinHeight, alignment: .center)
-            .gridColumnAlignment(.leading)
-
-            self.windowDetail(window)
-                .frame(minHeight: Self.windowRowMinHeight, alignment: .leading)
-                .gridColumnAlignment(.leading)
+    /// The window's row: Global, Custom or Off, with the inherited thresholds as its subtitle while it is Global.
+    private func modeRow(_ window: QuotaWarningWindow) -> some View {
+        MacSettingsRow(window.localizedCapitalizedDisplayName, subtitle: self.inheritedSummary(for: window)) {
+            MacSegmentedControl(
+                ProviderQuotaWarningOverrideMode.allCases.map { ($0, $0.title) },
+                selection: self.overrideModeBinding(for: window))
         }
     }
 
+    /// The window's own Warning and Critical fields, under its row while it is Custom.
     @ViewBuilder
-    private func windowDetail(_ window: QuotaWarningWindow) -> some View {
-        switch self.overrideMode(for: window) {
-        case .custom:
-            QuotaWarningThresholdField(
-                title: "",
-                subtitle: "",
-                accessibilityContext: window.localizedCapitalizedDisplayName,
-                shouldCommitOnDisappear: {
-                    self.shouldCommitThresholdEditorOnDisappear(for: window)
-                },
-                thresholds: {
-                    self.settings.resolvedQuotaWarningThresholds(provider: self.provider.instanceID, window: window)
-                },
-                setThresholds: {
-                    self.settings.setQuotaWarningThresholdsIfOverridden(
-                        provider: self.provider,
-                        window: window,
-                        thresholds: $0)
-                },
-                fieldWidth: Self.thresholdFieldWidth,
-                controlFont: .subheadline)
-                .fixedSize(horizontal: true, vertical: false)
-        case .off:
-            EmptyView()
-        case .global:
-            Text(String(format: L("quota_warning_inherited"), Self.thresholdText(
-                self.settings.quotaWarningThresholds(window),
-                enabled: self.settings.quotaWarningWindowEnabled(window))))
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
+    private func customThresholdRow(_ window: QuotaWarningWindow) -> some View {
+        if self.overrideMode(for: window) == .custom {
+            MacSettingsRow(L("quota_warning_window_warn_at", window.localizedCapitalizedDisplayName)) {
+                QuotaWarningThresholdFields(
+                    accessibilityContext: window.localizedCapitalizedDisplayName,
+                    shouldCommitOnDisappear: {
+                        self.shouldCommitThresholdEditorOnDisappear(for: window)
+                    },
+                    thresholds: {
+                        self.settings.resolvedQuotaWarningThresholds(provider: self.provider.instanceID, window: window)
+                    },
+                    setThresholds: {
+                        self.settings.setQuotaWarningThresholdsIfOverridden(
+                            provider: self.provider,
+                            window: window,
+                            thresholds: $0)
+                    })
+            }
         }
+    }
+
+    func inheritedSummary(for window: QuotaWarningWindow) -> String? {
+        guard self.overrideMode(for: window) == .global else { return nil }
+        return L("quota_warning_inherited", Self.thresholdText(
+            self.settings.quotaWarningThresholds(window),
+            enabled: self.settings.quotaWarningWindowEnabled(window)))
     }
 
     func overrideModeBinding(for window: QuotaWarningWindow) -> Binding<ProviderQuotaWarningOverrideMode> {
@@ -202,6 +165,7 @@ struct ProviderQuotaWarningSettingsView: View {
         return mode == .custom || mode == .off
     }
 
+    /// The thresholds a window inherits, as the Global subtitle shows them: "Warning 80%, Critical 50%, 20%".
     static func thresholdText(_ thresholds: [Int], enabled: Bool) -> String {
         guard enabled else { return L("quota_warning_off") }
         let activeThresholds = QuotaWarningThresholds.active(thresholds)
@@ -210,19 +174,35 @@ struct ProviderQuotaWarningSettingsView: View {
         }
 
         var parts: [String] = []
-        parts.append("\(L("quota_warning_warning")) \(upperThreshold)%")
+        parts.append(L("quota_warning_threshold_named", L("quota_warning_warning"), self.percentText(upperThreshold)))
         if let lowerThreshold = activeThresholds.dropFirst().first {
-            parts.append("\(L("quota_warning_critical")) \(lowerThreshold)%")
+            parts.append(L(
+                "quota_warning_threshold_named",
+                L("quota_warning_critical"),
+                self.percentText(lowerThreshold)))
         }
-        parts.append(contentsOf: activeThresholds.dropFirst(2).map { "\($0)%" })
+        parts.append(contentsOf: activeThresholds.dropFirst(2).map(self.percentText))
         return parts.joined(separator: ", ")
+    }
+
+    /// A threshold as a localized percentage ("80%", "%80" in Turkish).
+    static func percentText(_ value: Int) -> String {
+        L("quota_warning_percent_value", value)
     }
 }
 
-enum ProviderQuotaWarningOverrideMode: Hashable {
+enum ProviderQuotaWarningOverrideMode: Hashable, CaseIterable {
     case global
     case custom
     case off
+
+    var title: String {
+        switch self {
+        case .global: L("quota_warning_global")
+        case .custom: L("Custom")
+        case .off: L("quota_warning_off")
+        }
+    }
 }
 
 struct FocusResigningBackground: View {
@@ -246,71 +226,26 @@ extension QuotaWarningWindow {
     }
 }
 
+/// A window's Warning and Critical thresholds as two short fields ("Warning [50] %  Critical [20] %"). Typing
+/// only edits a draft; the thresholds are saved on Return, when focus leaves the fields (a click elsewhere
+/// included) and when the fields go away, and only if the text changed.
 @MainActor
-private struct QuotaWarningWindowThresholdRows: View {
-    @Bindable var settings: SettingsStore
+private struct QuotaWarningThresholdFields: View {
+    /// Two digits and the field's own padding: a quarter of a settings text field.
+    private static let fieldWidth = MacSize.settingsField / 4
 
-    var body: some View {
-        Grid(alignment: .leading, horizontalSpacing: 12, verticalSpacing: 8) {
-            self.windowThresholdRow(.session)
-            self.windowThresholdRow(.weekly)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-    }
-
-    private func windowThresholdRow(_ window: QuotaWarningWindow) -> some View {
-        GridRow(alignment: .firstTextBaseline) {
-            Toggle(isOn: Binding(
-                get: { self.settings.quotaWarningWindowEnabled(window) },
-                set: { self.settings.setQuotaWarningWindowEnabled(window, enabled: $0) }))
-            {
-                Text(window.localizedCapitalizedDisplayName)
-                    .font(.footnote.weight(.semibold))
-                    .fixedSize(horizontal: true, vertical: false)
-            }
-            .toggleStyle(.checkbox)
-            .gridColumnAlignment(.leading)
-
-            QuotaWarningThresholdField(
-                title: "",
-                subtitle: "",
-                accessibilityContext: window.localizedCapitalizedDisplayName,
-                thresholds: { self.settings.quotaWarningThresholds(window) },
-                setThresholds: { self.settings.setQuotaWarningThresholds(window, thresholds: $0) })
-                .disabled(!self.settings.quotaWarningWindowEnabled(window))
-                .opacity(self.settings.quotaWarningWindowEnabled(window) ? 1 : 0.45)
-                .gridColumnAlignment(.leading)
-        }
-    }
-}
-
-@MainActor
-private struct QuotaWarningThresholdField: View {
-    private static let defaultFieldWidth: CGFloat = 44
-
-    let title: String
-    let subtitle: String
-    var accessibilityContext: String = ""
+    let accessibilityContext: String
     var shouldCommitOnDisappear: () -> Bool = { true }
     let thresholds: () -> [Int]
     let setThresholds: ([Int]) -> Void
-    var fieldWidth: CGFloat = Self.defaultFieldWidth
-    var controlFont: Font = .footnote
-    var titleFont: Font = .footnote.weight(.semibold)
 
     @State private var draft = QuotaWarningThresholdEditorText.Draft()
     @FocusState private var focusedField: QuotaWarningThresholdEditorText.Field?
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 7) {
-            self.horizontalEditor
-
-            if !self.subtitle.isEmpty {
-                Text(self.subtitle)
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
+        HStack(alignment: .firstTextBaseline, spacing: MacSpace.panelPadding) {
+            self.input(.upper)
+            self.input(.lower)
         }
         .onAppear { self.updateText(from: self.thresholds()) }
         .onChange(of: self.focusedField) { previous, current in
@@ -331,58 +266,18 @@ private struct QuotaWarningThresholdField: View {
         .background(self.focusMonitor)
     }
 
-    private var horizontalEditor: some View {
-        HStack(alignment: .firstTextBaseline, spacing: 10) {
-            self.titleView
-
-            self.upperField
-            self.lowerField
-        }
-        .fixedSize(horizontal: true, vertical: false)
-    }
-
-    @ViewBuilder
-    private var titleView: some View {
-        if !self.title.isEmpty {
-            Text(self.title)
-                .font(self.titleFont)
-                .frame(width: 110, alignment: .leading)
-        }
-    }
-
-    private var upperField: some View {
-        self.thresholdInput(
-            label: L("quota_warning_warning"),
-            placeholder: "50",
-            text: self.thresholdTextBinding(.upper),
-            field: .upper)
-    }
-
-    private var lowerField: some View {
-        self.thresholdInput(
-            label: L("quota_warning_critical"),
-            placeholder: "20",
-            text: self.thresholdTextBinding(.lower),
-            field: .lower)
-    }
-
-    private func thresholdInput(
-        label: String,
-        placeholder: String,
-        text: Binding<String>,
-        field: QuotaWarningThresholdEditorText.Field) -> some View
-    {
-        HStack(alignment: .firstTextBaseline, spacing: 5) {
+    private func input(_ field: QuotaWarningThresholdEditorText.Field) -> some View {
+        let label = field.label
+        return HStack(alignment: .firstTextBaseline, spacing: MacSpace.unit) {
             Text(label)
-                .font(self.controlFont)
-                .foregroundStyle(.secondary)
+                .font(MacTextRole.body.font)
+                .foregroundStyle(MacColor.muted)
+                .accessibilityHidden(true)
 
-            TextField(label, text: text, prompt: Text(verbatim: placeholder))
-                .labelsHidden()
-                .textFieldStyle(.roundedBorder)
-                .font(self.controlFont)
+            MacTextField(field.placeholder, text: self.textBinding(field))
                 .multilineTextAlignment(.trailing)
-                .frame(width: self.fieldWidth)
+                .monospacedDigit()
+                .frame(width: Self.fieldWidth)
                 .focused(self.$focusedField, equals: field)
                 .onSubmit {
                     self.commit()
@@ -390,13 +285,14 @@ private struct QuotaWarningThresholdField: View {
                 }
                 .accessibilityLabel(Text(self.accessibilityLabel(for: label)))
 
-            Text(verbatim: "%")
-                .font(self.controlFont)
-                .foregroundStyle(.secondary)
+            Text(L("quota_warning_percent_unit"))
+                .font(MacTextRole.body.font)
+                .foregroundStyle(MacColor.muted)
+                .accessibilityHidden(true)
         }
     }
 
-    private func thresholdTextBinding(_ field: QuotaWarningThresholdEditorText.Field) -> Binding<String> {
+    private func textBinding(_ field: QuotaWarningThresholdEditorText.Field) -> Binding<String> {
         Binding(
             get: { self.draft.text(for: field) },
             set: { self.draft.setText($0, for: field) })
@@ -413,9 +309,8 @@ private struct QuotaWarningThresholdField: View {
     }
 
     private func accessibilityLabel(for label: String) -> String {
-        let context = self.title.isEmpty ? self.accessibilityContext : self.title
-        guard !context.isEmpty else { return label }
-        return "\(context), \(label)"
+        guard !self.accessibilityContext.isEmpty else { return label }
+        return "\(self.accessibilityContext), \(label)"
     }
 
     @ViewBuilder
@@ -428,6 +323,24 @@ private struct QuotaWarningThresholdField: View {
         #else
         EmptyView()
         #endif
+    }
+}
+
+extension QuotaWarningThresholdEditorText.Field {
+    /// The field's label: Warning for the higher threshold, Critical for the lower.
+    var label: String {
+        switch self {
+        case .upper: L("quota_warning_warning")
+        case .lower: L("quota_warning_critical")
+        }
+    }
+
+    /// The default threshold, shown while the field is empty.
+    var placeholder: String {
+        switch self {
+        case .upper: String(QuotaWarningThresholds.defaults[0])
+        case .lower: String(QuotaWarningThresholds.defaults[1])
+        }
     }
 }
 

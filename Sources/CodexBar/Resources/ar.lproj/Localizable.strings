@@ -2847,3 +2847,24 @@
 "agent_sessions_hosts_help" = "مضيفو SSH إضافيون للبحث فيهم عن جلسات الوكلاء، بصيغة user@host ومفصولون بفواصل.";
 "menu_bar_layout_override_subtitle" = "يستخدم تخطيطه المحفوظ الخاص";
 "cost_history_rolling_days_title" = "الأيام المتداولة";
+/* Settings: Alerts, Sync */
+"settings_alerts_subtitle" = "إشعارات تسجيل الدخول والحصة وإعادة التعيين";
+"settings_alerts_section_sign_in" = "تسجيل الدخول والأرصدة";
+"settings_alerts_section_quota" = "الحصة";
+"settings_alerts_section_delivery" = "طريقة التنبيه";
+"settings_alerts_delivery_disabled" = "فعّل تحذيرات العتبة أو الوتيرة لاختيار طريقة وصولها.";
+"settings_alerts_section_menu_markers" = "علامات القائمة";
+"settings_alerts_overrides_title" = "تجاوزات لكل مقدم خدمة";
+"settings_alerts_overrides_footer" = "يمكن لصفحة كل مقدم خدمة ضمن مقدمي الخدمات تعيين عتبات خاصة للجلسة والأسبوع، أو إيقاف تحذيراته.";
+"quota_warning_percent_unit" = "٪";
+"quota_warning_percent_value" = "%d٪";
+"quota_warning_threshold_named" = "%1$@ %2$@";
+"settings_sync_subtitle" = "الإعدادات ومقدمو الخدمات والاستخدام عبر أجهزة Mac لديك";
+"settings_sync_update_needed" = "يلزم التحديث";
+"settings_sync_secrets_confirm_title" = "مزامنة مفاتيح API وملفات تعريف الارتباط والرموز؟";
+"settings_sync_secrets_confirm_message" = "تُنسخ إلى كل جهاز Mac مسجّل الدخول إلى حساب iCloud الخاص بك، وتحميها تعمية iCloud من طرف إلى طرف.";
+"settings_sync_secrets_confirm_action" = "تضمين البيانات السرية";
+"settings_sync_remove_mac_title" = "إزالة “%@”؟";
+"settings_sync_remove_mac_message" = "يُحذف سجله واستخدامه المتزامن من iCloud. إذا كان ذلك الـMac لا يزال يزامن، فسيظهر مجددًا عند المزامنة التالية.";
+"settings_sync_no_macs_title" = "لا توجد أجهزة Mac متزامنة";
+"settings_sync_no_macs_message" = "يظهر هنا كل جهاز Mac يفعّل مزامنة iCloud.";

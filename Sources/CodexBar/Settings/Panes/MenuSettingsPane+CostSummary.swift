@@ -102,7 +102,7 @@ struct CostSummarySettingsSection: View {
     }
 }
 
-/// The cost history window and, for a rolling window, its number of days. The days are typed or stepped.
+/// The cost history window and, for a rolling window, its number of days, typed into a field (1 to 365).
 @MainActor
 struct CostHistoryDaysEditor: View {
     @Bindable var settings: SettingsStore

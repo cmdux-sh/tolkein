@@ -2847,3 +2847,24 @@
 "agent_sessions_hosts_help" = "Altri host SSH in cui cercare sessioni degli agenti, scritti come user@host e separati da virgole.";
 "menu_bar_layout_override_subtitle" = "Usa una propria disposizione salvata";
 "cost_history_rolling_days_title" = "Giorni mobili";
+/* Settings: Alerts, Sync */
+"settings_alerts_subtitle" = "Notifiche per accesso, quota e azzeramenti";
+"settings_alerts_section_sign_in" = "Accesso e crediti";
+"settings_alerts_section_quota" = "Quota";
+"settings_alerts_section_delivery" = "Modalità di avviso";
+"settings_alerts_delivery_disabled" = "Attiva gli avvisi di soglia o di ritmo per scegliere come arrivano.";
+"settings_alerts_section_menu_markers" = "Indicatori del menu";
+"settings_alerts_overrides_title" = "Impostazioni per provider";
+"settings_alerts_overrides_footer" = "La pagina di ciascun provider, in Provider, può impostare soglie proprie per sessione e settimana, oppure disattivarne gli avvisi.";
+"quota_warning_percent_unit" = "%";
+"quota_warning_percent_value" = "%d%%";
+"quota_warning_threshold_named" = "%1$@ %2$@";
+"settings_sync_subtitle" = "Impostazioni, provider e utilizzo su tutti i tuoi Mac";
+"settings_sync_update_needed" = "Aggiornamento necessario";
+"settings_sync_secrets_confirm_title" = "Sincronizzare chiavi API, cookie e token?";
+"settings_sync_secrets_confirm_message" = "Vengono copiati su ogni Mac collegato al tuo account iCloud, protetti dalla crittografia end-to-end di iCloud.";
+"settings_sync_secrets_confirm_action" = "Includi segreti";
+"settings_sync_remove_mac_title" = "Rimuovere “%@”?";
+"settings_sync_remove_mac_message" = "Il suo record e l'utilizzo sincronizzato vengono eliminati da iCloud. Se quel Mac sta ancora sincronizzando, riapparirà alla sincronizzazione successiva.";
+"settings_sync_no_macs_title" = "Nessun Mac sincronizzato";
+"settings_sync_no_macs_message" = "Qui appare ogni Mac che attiva la sincronizzazione iCloud.";

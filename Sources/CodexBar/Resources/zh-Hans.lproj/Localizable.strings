@@ -2835,3 +2835,24 @@
 "agent_sessions_hosts_help" = "用于查找智能体会话的其他 SSH 主机，格式为 user@host，用逗号分隔。";
 "menu_bar_layout_override_subtitle" = "使用其自己保存的布局";
 "cost_history_rolling_days_title" = "滚动天数";
+/* Settings: Alerts, Sync */
+"settings_alerts_subtitle" = "登录、额度和重置的通知";
+"settings_alerts_section_sign_in" = "登录与积分";
+"settings_alerts_section_quota" = "额度";
+"settings_alerts_section_delivery" = "提醒方式";
+"settings_alerts_delivery_disabled" = "开启阈值预警或节奏预警后即可选择提醒方式。";
+"settings_alerts_section_menu_markers" = "菜单标记";
+"settings_alerts_overrides_title" = "按提供商覆盖";
+"settings_alerts_overrides_footer" = "“提供商”下的每个提供商页面都可以单独设置会话和每周阈值，或关闭其预警。";
+"quota_warning_percent_unit" = "%";
+"quota_warning_percent_value" = "%d%%";
+"quota_warning_threshold_named" = "%1$@ %2$@";
+"settings_sync_subtitle" = "在你的所有 Mac 上同步设置、提供商和用量";
+"settings_sync_update_needed" = "需要更新";
+"settings_sync_secrets_confirm_title" = "要同步 API 密钥、Cookie 和令牌吗？";
+"settings_sync_secrets_confirm_message" = "它们会复制到登录你的 iCloud 账户的每台 Mac 上，并受 iCloud 端到端加密保护。";
+"settings_sync_secrets_confirm_action" = "包含机密信息";
+"settings_sync_remove_mac_title" = "要移除“%@”吗？";
+"settings_sync_remove_mac_message" = "它的记录和已同步的用量将从 iCloud 删除。如果那台 Mac 仍在同步，下次同步时它会再次出现。";
+"settings_sync_no_macs_title" = "没有已同步的 Mac";
+"settings_sync_no_macs_message" = "开启 iCloud 同步的每台 Mac 都会显示在这里。";

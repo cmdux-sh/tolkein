@@ -2845,3 +2845,24 @@
 "agent_sessions_hosts_help" = "Altres amfitrions SSH on cercar sessions d'agents, escrits com a user@host i separats per comes.";
 "menu_bar_layout_override_subtitle" = "Fa servir la seva pròpia disposició desada";
 "cost_history_rolling_days_title" = "Dies mòbils";
+/* Settings: Alerts, Sync */
+"settings_alerts_subtitle" = "Notificacions d'inici de sessió, quota i restabliments";
+"settings_alerts_section_sign_in" = "Inici de sessió i crèdits";
+"settings_alerts_section_quota" = "Quota";
+"settings_alerts_section_delivery" = "Lliurament";
+"settings_alerts_delivery_disabled" = "Activeu els avisos de llindar o de ritme per triar com arriben.";
+"settings_alerts_section_menu_markers" = "Marques del menú";
+"settings_alerts_overrides_title" = "Excepcions per proveïdor";
+"settings_alerts_overrides_footer" = "La pàgina de cada proveïdor, a Proveïdors, pot definir els seus propis llindars de sessió i setmanals, o desactivar-ne els avisos.";
+"quota_warning_percent_unit" = "%";
+"quota_warning_percent_value" = "%d%%";
+"quota_warning_threshold_named" = "%1$@ %2$@";
+"settings_sync_subtitle" = "Configuració, proveïdors i ús a tots els vostres Mac";
+"settings_sync_update_needed" = "Cal actualitzar";
+"settings_sync_secrets_confirm_title" = "Voleu sincronitzar les claus d'API, les galetes i els tokens?";
+"settings_sync_secrets_confirm_message" = "Es copien a cada Mac que hagi iniciat sessió al vostre compte d'iCloud, protegits amb el xifratge d'extrem a extrem d'iCloud.";
+"settings_sync_secrets_confirm_action" = "Incloure els secrets";
+"settings_sync_remove_mac_title" = "Voleu eliminar “%@”?";
+"settings_sync_remove_mac_message" = "Se n'eliminen de l'iCloud el registre i l'ús sincronitzat. Si aquell Mac encara sincronitza, tornarà a aparèixer la propera vegada que ho faci.";
+"settings_sync_no_macs_title" = "No hi ha cap Mac sincronitzat";
+"settings_sync_no_macs_message" = "Aquí apareix cada Mac que activa la sincronització amb l'iCloud.";

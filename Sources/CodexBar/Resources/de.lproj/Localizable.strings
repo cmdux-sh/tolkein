@@ -2841,3 +2841,24 @@
 "agent_sessions_hosts_help" = "Weitere SSH-Hosts, auf denen nach Agent-Sitzungen gesucht wird, als user@host und durch Kommas getrennt.";
 "menu_bar_layout_override_subtitle" = "Verwendet ein eigenes gespeichertes Layout";
 "cost_history_rolling_days_title" = "Rollierende Tage";
+/* Settings: Alerts, Sync */
+"settings_alerts_subtitle" = "Mitteilungen zu Anmeldung, Kontingent und Zurücksetzungen";
+"settings_alerts_section_sign_in" = "Anmeldung & Guthaben";
+"settings_alerts_section_quota" = "Kontingent";
+"settings_alerts_section_delivery" = "Zustellung";
+"settings_alerts_delivery_disabled" = "Schwellenwert- oder Tempo-Warnungen aktivieren, um die Zustellung festzulegen.";
+"settings_alerts_section_menu_markers" = "Menümarkierungen";
+"settings_alerts_overrides_title" = "Abweichungen pro Anbieter";
+"settings_alerts_overrides_footer" = "Die Seite jedes Anbieters unter „Anbieter“ kann eigene Schwellenwerte für Sitzung und Woche festlegen oder die Warnungen ausschalten.";
+"quota_warning_percent_unit" = "%";
+"quota_warning_percent_value" = "%d %%";
+"quota_warning_threshold_named" = "%1$@ %2$@";
+"settings_sync_subtitle" = "Einstellungen, Anbieter und Nutzung auf all Ihren Macs";
+"settings_sync_update_needed" = "Update erforderlich";
+"settings_sync_secrets_confirm_title" = "API-Schlüssel, Cookies und Tokens synchronisieren?";
+"settings_sync_secrets_confirm_message" = "Sie werden auf jeden Mac kopiert, der bei Ihrem iCloud-Account angemeldet ist, geschützt durch die End-to-End-Verschlüsselung von iCloud.";
+"settings_sync_secrets_confirm_action" = "Geheimnisse einbeziehen";
+"settings_sync_remove_mac_title" = "„%@“ entfernen?";
+"settings_sync_remove_mac_message" = "Sein Eintrag und die synchronisierte Nutzung werden aus iCloud gelöscht. Synchronisiert dieser Mac noch, erscheint er bei der nächsten Synchronisierung wieder.";
+"settings_sync_no_macs_title" = "Keine synchronisierten Macs";
+"settings_sync_no_macs_message" = "Jeder Mac, der die iCloud-Synchronisierung aktiviert, erscheint hier.";

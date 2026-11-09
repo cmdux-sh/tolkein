@@ -2840,3 +2840,24 @@
 "agent_sessions_hosts_help" = "Extra SSH-hosts om op agentsessies te controleren, geschreven als user@host en gescheiden door komma’s.";
 "menu_bar_layout_override_subtitle" = "Gebruikt een eigen opgeslagen indeling";
 "cost_history_rolling_days_title" = "Voortschrijdende dagen";
+/* Settings: Alerts, Sync */
+"settings_alerts_subtitle" = "Meldingen voor inloggen, quotum en resets";
+"settings_alerts_section_sign_in" = "Inloggen en tegoed";
+"settings_alerts_section_quota" = "Quotum";
+"settings_alerts_section_delivery" = "Bezorging";
+"settings_alerts_delivery_disabled" = "Zet drempel- of tempowaarschuwingen aan om te kiezen hoe ze binnenkomen.";
+"settings_alerts_section_menu_markers" = "Menumarkeringen";
+"settings_alerts_overrides_title" = "Instellingen per aanbieder";
+"settings_alerts_overrides_footer" = "De pagina van elke aanbieder onder Aanbieders kan eigen drempels voor sessie en week instellen, of de waarschuwingen uitzetten.";
+"quota_warning_percent_unit" = "%";
+"quota_warning_percent_value" = "%d%%";
+"quota_warning_threshold_named" = "%1$@ %2$@";
+"settings_sync_subtitle" = "Instellingen, aanbieders en gebruik op al je Macs";
+"settings_sync_update_needed" = "Update nodig";
+"settings_sync_secrets_confirm_title" = "API-sleutels, cookies en tokens synchroniseren?";
+"settings_sync_secrets_confirm_message" = "Ze worden gekopieerd naar elke Mac die is ingelogd op je iCloud-account, beschermd met de end-to-end-versleuteling van iCloud.";
+"settings_sync_secrets_confirm_action" = "Geheimen opnemen";
+"settings_sync_remove_mac_title" = "“%@” verwijderen?";
+"settings_sync_remove_mac_message" = "Het record en het gesynchroniseerde gebruik worden uit iCloud verwijderd. Als die Mac nog synchroniseert, verschijnt hij bij de volgende synchronisatie weer.";
+"settings_sync_no_macs_title" = "Geen gesynchroniseerde Macs";
+"settings_sync_no_macs_message" = "Elke Mac die iCloud-synchronisatie aanzet, verschijnt hier.";
