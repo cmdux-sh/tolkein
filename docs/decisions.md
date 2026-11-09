@@ -179,3 +179,9 @@ Arturo approved two follow-ups to make changes faster, and declined cutting prov
 - **Brittle tests:** tests that only pin exact source text or file paths are deleted or rewritten to test behaviour, and tests already failing on main are marked as known failures with the reason.
 
 Why: Settings changes waited about 40 minutes per PR on the full macOS suite and three Linux builds, and moving files broke tests that read source code even when nothing was wrong.
+
+## 2026-11-09: No Homebrew updates until Tolkein has its own tap
+
+Arturo chose to hide the Homebrew update path for now. The app no longer picks `HomebrewUpdaterController` for Homebrew installs, so About shows no `brew upgrade` command.
+
+Why: the inherited cask is upstream's `steipete/tap/codexbar`, so the Homebrew upgrade would have replaced Tolkein with CodexBar, and Tolkein has no tap of its own yet. The updater code stays, ready to use again once a Tolkein cask exists.
