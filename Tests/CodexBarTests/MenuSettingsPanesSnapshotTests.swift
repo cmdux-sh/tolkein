@@ -13,7 +13,8 @@ struct MenuSettingsPanesSnapshotTests {
     /// The Settings window's default detail width: the 880 pt window less its 260 pt sidebar.
     private static let paneWidth = SettingsPane.windowWidth - SettingsPane.sidebarWidth
     /// The widest the detail column grows.
-    private static let wideWidth = SettingsPane.detailMaxWidth
+    /// The old cap on the detail column; it now fills the window, so this is just a wide case.
+    private static let wideWidth: CGFloat = 780
     /// The window's default height, which the panes must scroll in.
     private static let shortHeight = SettingsPane.windowHeight
 
