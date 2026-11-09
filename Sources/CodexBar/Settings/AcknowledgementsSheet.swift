@@ -64,13 +64,13 @@ struct AcknowledgementsSheet: View {
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
-        MacSettingsPage(L("link_acknowledgements"), subtitle: L("acknowledgements_footer")) {
+        IUSettingsPage(L("link_acknowledgements"), subtitle: L("acknowledgements_footer")) {
             Button(L("Done")) { self.dismiss() }
-                .buttonStyle(.mac(.primary))
-                .macControlSize(.large)
+                .buttonStyle(.iu(.primary))
+                .iuControlSize(.large)
                 .keyboardShortcut(.defaultAction)
         } content: {
-            MacSettingsSection {
+            IUSettingsSection {
                 ForEach(self.acknowledgements) { acknowledgement in
                     AcknowledgementRow(
                         acknowledgement: acknowledgement,
@@ -78,13 +78,13 @@ struct AcknowledgementsSheet: View {
                 }
             }
             Text(AboutSettingsPane.creditText())
-                .font(MacTextRole.caption.font)
-                .foregroundStyle(MacColor.muted)
-                .tint(MacColor.accent)
+                .font(IUTextRole.caption.font)
+                .foregroundStyle(IUColor.muted)
+                .tint(IUColor.accent)
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: .infinity)
         }
-        .frame(width: MacSize.settingsContentWidth, height: SettingsPane.windowMinHeight)
+        .frame(width: IUSize.settingsContentWidth, height: SettingsPane.windowMinHeight)
     }
 }
 
@@ -101,60 +101,60 @@ private struct AcknowledgementRow: View {
 
     var body: some View {
         DisclosureGroup(isExpanded: self.$isExpanded) {
-            VStack(alignment: .leading, spacing: MacSpace.settingsRowPaddingY * 2) {
+            VStack(alignment: .leading, spacing: IUSpace.settingsRowPaddingY * 2) {
                 self.detail(L(self.acknowledgement.authors.count == 1
                         ? "acknowledgements_author"
                         : "acknowledgements_authors"))
                 {
                     Text(self.acknowledgement.authors.joined(separator: "\n"))
-                        .font(MacTextRole.body.font)
-                        .foregroundStyle(MacColor.primary)
+                        .font(IUTextRole.body.font)
+                        .foregroundStyle(IUColor.primary)
                 }
                 if let url = URL(string: self.acknowledgement.url) {
                     self.detail(L("Website")) {
                         Link(self.acknowledgement.url, destination: url)
-                            .font(MacTextRole.body.font)
-                            .tint(MacColor.accent)
+                            .font(IUTextRole.body.font)
+                            .tint(IUColor.accent)
                     }
                 }
                 self.detail(L("acknowledgements_license")) {
                     Text(self.acknowledgement.text)
-                        .font(MacTextRole.caption.font)
+                        .font(IUTextRole.caption.font)
                         .monospaced()
-                        .foregroundStyle(MacColor.muted)
+                        .foregroundStyle(IUColor.muted)
                         .fixedSize(horizontal: false, vertical: true)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(MacSpace.panelPadding)
-                        .macWell(radius: MacRadius.row)
+                        .padding(IUSpace.panelPadding)
+                        .iuWell(radius: IURadius.row)
                         // License text is verbatim English, laid out left to right.
                         .environment(\.layoutDirection, .leftToRight)
                 }
             }
             .textSelection(.enabled)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.top, MacSpace.settingsRowPaddingY)
+            .padding(.top, IUSpace.settingsRowPaddingY)
         } label: {
-            HStack(alignment: .firstTextBaseline, spacing: MacSpace.unit * 2) {
-                MacText(self.acknowledgement.name)
+            HStack(alignment: .firstTextBaseline, spacing: IUSpace.unit * 2) {
+                IUText(self.acknowledgement.name)
                     .layoutPriority(1)
-                MacText(self.acknowledgement.authorSummary(), role: .caption, muted: true)
+                IUText(self.acknowledgement.authorSummary(), role: .caption, muted: true)
                     .lineLimit(1)
                     .truncationMode(.tail)
-                Spacer(minLength: MacSpace.unit * 2)
-                MacBadge(self.acknowledgement.license)
+                Spacer(minLength: IUSpace.unit * 2)
+                IUBadge(self.acknowledgement.license)
             }
             .contentShape(Rectangle())
             .onTapGesture { self.isExpanded.toggle() }
         }
-        .macAnimation(MacSpring.moderate, value: self.isExpanded)
-        .padding(.horizontal, MacSpace.settingsRowPaddingX)
-        .padding(.vertical, MacSpace.settingsRowPaddingY)
-        .frame(maxWidth: .infinity, minHeight: MacSize.settingsRow, alignment: .leading)
+        .iuAnimation(IUSpring.moderate, value: self.isExpanded)
+        .padding(.horizontal, IUSpace.settingsRowPaddingX)
+        .padding(.vertical, IUSpace.settingsRowPaddingY)
+        .frame(maxWidth: .infinity, minHeight: IUSize.settingsRow, alignment: .leading)
     }
 
     private func detail(_ title: String, @ViewBuilder content: () -> some View) -> some View {
-        VStack(alignment: .leading, spacing: MacSpace.unit) {
-            MacText(title, role: .subtitle)
+        VStack(alignment: .leading, spacing: IUSpace.unit) {
+            IUText(title, role: .subtitle)
             content()
         }
     }

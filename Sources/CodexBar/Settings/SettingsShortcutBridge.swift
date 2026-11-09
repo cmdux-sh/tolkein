@@ -6,13 +6,13 @@ import KeyboardShortcuts
 
 // MARK: - Open menu (global hotkey)
 
-/// Bridges Internal UI's `MacShortcut`, which `MacShortcutRecorder` edits, to KeyboardShortcuts' `Shortcut`, which
+/// Bridges Internal UI's `IUShortcut`, which `IUShortcutRecorder` edits, to KeyboardShortcuts' `Shortcut`, which
 /// stores and registers the global Open menu hotkey. The recorder only edits; KeyboardShortcuts keeps the stored value
 /// (`KeyboardShortcuts_openMenu`) and the hotkey registration, so the hotkey behaves as before.
 ///
 /// KeyboardShortcuts' own recorder also checked each new shortcut against the app's main menu, the macOS 15.0–15.1
 /// sandbox restriction and the system-wide shortcuts. `verdict(for:current:conflictingMenuItem:isDisallowed:
-/// isTakenBySystem:)` keeps those rules in the same order; `MacShortcutRecorder` already turns down a key without ⌘,
+/// isTakenBySystem:)` keeps those rules in the same order; `IUShortcutRecorder` already turns down a key without ⌘,
 /// ⌥ or ⌃ (function keys exempt), as that recorder did.
 @MainActor
 enum OpenMenuShortcutBridge {
@@ -29,22 +29,22 @@ enum OpenMenuShortcutBridge {
     /// keys (arrows, Return, function keys) are named by their code.
     static func macShortcut(
         _ shortcut: KeyboardShortcuts.Shortcut,
-        character: (KeyboardShortcuts.Shortcut) -> String? = { $0.nsMenuItemKeyEquivalent }) -> MacShortcut
+        character: (KeyboardShortcuts.Shortcut) -> String? = { $0.nsMenuItemKeyEquivalent }) -> IUShortcut
     {
         let code = UInt16(clamping: shortcut.carbonKeyCode)
-        let key = MacShortcut.Key(code: code, character: character(shortcut))
-            ?? MacShortcut.Key(code: code, name: self.fallbackName(shortcut))
-        return MacShortcut(key, modifiers: MacShortcut.Modifiers(shortcut.modifiers))
+        let key = IUShortcut.Key(code: code, character: character(shortcut))
+            ?? IUShortcut.Key(code: code, name: self.fallbackName(shortcut))
+        return IUShortcut(key, modifiers: IUShortcut.Modifiers(shortcut.modifiers))
     }
 
     /// The shortcut as KeyboardShortcuts stores it: the same key code and modifiers.
-    static func keyboardShortcut(_ shortcut: MacShortcut) -> KeyboardShortcuts.Shortcut {
+    static func keyboardShortcut(_ shortcut: IUShortcut) -> KeyboardShortcuts.Shortcut {
         KeyboardShortcuts.Shortcut(
             KeyboardShortcuts.Key(rawValue: Int(shortcut.key.code)),
             modifiers: self.modifierFlags(shortcut.modifiers))
     }
 
-    static func modifierFlags(_ modifiers: MacShortcut.Modifiers) -> NSEvent.ModifierFlags {
+    static func modifierFlags(_ modifiers: IUShortcut.Modifiers) -> NSEvent.ModifierFlags {
         var flags: NSEvent.ModifierFlags = []
         if modifiers.contains(.control) { flags.insert(.control) }
         if modifiers.contains(.option) { flags.insert(.option) }
@@ -129,7 +129,7 @@ enum OpenMenuShortcutBridge {
 
 // MARK: - Provider switcher (menu-local)
 
-/// Bridges `MacShortcut` to the stored provider-switcher format (`"alt+cmd+2"`, `"left"`, `"none"`), and checks a
+/// Bridges `IUShortcut` to the stored provider-switcher format (`"alt+cmd+2"`, `"left"`, `"none"`), and checks a
 /// newly recorded shortcut with `ProviderSwitcherShortcuts`' rules before it is stored.
 enum ProviderSwitcherShortcutBridge {
     /// Why a recorded shortcut can't be assigned to an action.
@@ -142,12 +142,12 @@ enum ProviderSwitcherShortcutBridge {
         case duplicate(action: String)
     }
 
-    private static let modifierNames: [(MacShortcut.Modifiers, String)] = [
+    private static let modifierNames: [(IUShortcut.Modifiers, String)] = [
         (.control, "ctrl"), (.option, "alt"), (.shift, "shift"), (.command, "cmd"),
     ]
 
-    private static let leftArrow = MacShortcut.Key(code: UInt16(kVK_LeftArrow), name: "←")
-    private static let rightArrow = MacShortcut.Key(code: UInt16(kVK_RightArrow), name: "→")
+    private static let leftArrow = IUShortcut.Key(code: UInt16(kVK_LeftArrow), name: "←")
+    private static let rightArrow = IUShortcut.Key(code: UInt16(kVK_RightArrow), name: "→")
 
     /// US-layout key codes for the keys the switcher accepts, so a stored shortcut can be shown as key caps.
     private static let keyCodes: [Character: Int] = [
@@ -161,15 +161,15 @@ enum ProviderSwitcherShortcutBridge {
     ]
 
     /// The recorder value for a stored shortcut; nil for `"none"` (the action is off) or a value it can't show.
-    static func shortcut(for value: String) -> MacShortcut? {
+    static func shortcut(for value: String) -> IUShortcut? {
         let parts = value.lowercased().split(separator: "+").map(String.init)
         guard let keyName = parts.last, keyName != "none" else { return nil }
-        var modifiers: MacShortcut.Modifiers = []
+        var modifiers: IUShortcut.Modifiers = []
         for part in parts.dropLast() {
             guard let modifier = self.modifierNames.first(where: { $0.1 == part })?.0 else { return nil }
             modifiers.insert(modifier)
         }
-        let key: MacShortcut.Key
+        let key: IUShortcut.Key
         switch keyName {
         case "left": key = self.leftArrow
         case "right": key = self.rightArrow
@@ -177,14 +177,14 @@ enum ProviderSwitcherShortcutBridge {
             guard keyName.count == 1, let character = keyName.first, let code = self.keyCodes[character] else {
                 return nil
             }
-            key = MacShortcut.Key(code: UInt16(code), name: keyName.uppercased())
+            key = IUShortcut.Key(code: UInt16(code), name: keyName.uppercased())
         }
-        return MacShortcut(key, modifiers: modifiers)
+        return IUShortcut(key, modifiers: modifiers)
     }
 
     /// The stored form of a recorded shortcut: `"none"` when cleared, nil when the key isn't one the switcher reads.
     /// Keys are named by the character they type, as the status menu matches them.
-    static func value(for shortcut: MacShortcut?) -> String? {
+    static func value(for shortcut: IUShortcut?) -> String? {
         guard let shortcut else { return "none" }
         let key: String
         switch Int(shortcut.key.code) {
@@ -204,7 +204,7 @@ enum ProviderSwitcherShortcutBridge {
     /// The full shortcut map with `shortcut` assigned to `action`, validated by `ProviderSwitcherShortcuts`; or why
     /// it can't be assigned. Clearing an action (`nil`) always succeeds.
     static func assigning(
-        _ shortcut: MacShortcut?,
+        _ shortcut: IUShortcut?,
         to action: String,
         in current: [String: String]) -> Result<[String: String], Issue>
     {

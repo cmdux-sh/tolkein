@@ -30,7 +30,7 @@ struct IntegrationsSettingsPane: View {
     }
 
     var body: some View {
-        MacSettingsPage(
+        IUSettingsPage(
             SettingsPane.integrations.title,
             subtitle: L("The local HTTP server, the command-line tool and hooks."))
         {
@@ -56,7 +56,7 @@ struct IntegrationsSettingsPane: View {
         case .none:
             EmptyView()
         case .unappliedHTTPServerChanges:
-            MacAlert(
+            IUAlert(
                 L("Apply HTTP server changes?"),
                 message: L("You left the HTTP server settings with changes that aren’t applied yet."),
                 systemImage: "exclamationmark.triangle.fill",
@@ -66,7 +66,7 @@ struct IntegrationsSettingsPane: View {
                 }),
                 secondary: (L("Keep Editing"), { self.model.dismissConfirmation() }))
         case .deleteHookRule:
-            MacAlert(
+            IUAlert(
                 L("Delete Rule?"),
                 message: L("This rule is removed from Hooks. This can’t be undone."),
                 systemImage: "trash.fill",

@@ -12,13 +12,13 @@ struct ProviderSettingsPage: View {
 
     var body: some View {
         let content = self.model.pageContent()
-        MacSettingsPage(content.displayName, subtitle: Self.headerSubtitle(content.subtitle)) {
-            HStack(spacing: MacSpace.unit * 2) {
-                MacToolButton(L("Refresh"), systemImage: "arrow.clockwise") {
+        IUSettingsPage(content.displayName, subtitle: Self.headerSubtitle(content.subtitle)) {
+            HStack(spacing: IUSpace.unit * 2) {
+                IUToolButton(L("Refresh"), systemImage: "arrow.clockwise") {
                     self.model.refresh()
                 }
                 Toggle(L("Enabled"), isOn: self.model.binding(for: self.model.provider))
-                    .toggleStyle(.macSwitch)
+                    .toggleStyle(.iuSwitch)
                     .labelsHidden()
                     .help(L("Enabled"))
             }
@@ -86,7 +86,7 @@ struct ProviderSettingsPageSections: View {
                 case .alerts:
                     ProviderQuotaWarningSettingsView(provider: provider, settings: self.model.settings)
                 case .options:
-                    MacSettingsSection(ProviderSettingsPageSection.options.title) {
+                    IUSettingsSection(ProviderSettingsPageSection.options.title) {
                         ForEach(self.content.toggles) { toggle in
                             ProviderSettingsToggleRows(toggle: toggle)
                         }
@@ -103,7 +103,7 @@ private struct ProviderSettingsSectionGroup<Content: View>: View {
     @ViewBuilder let content: Content
 
     var body: some View {
-        let group = VStack(alignment: .leading, spacing: MacSpace.settingsSectionGap) { self.content }
+        let group = VStack(alignment: .leading, spacing: IUSpace.settingsSectionGap) { self.content }
             .frame(maxWidth: .infinity, alignment: .leading)
         if let id {
             group.settingsAnchor(id)
@@ -121,7 +121,7 @@ struct ProviderDisplaySection: View {
     let store: UsageStore
 
     var body: some View {
-        MacSettingsSection(ProviderSettingsPageSection.display.title) {
+        IUSettingsSection(ProviderSettingsPageSection.display.title) {
             if self.content.showsMenuBarMetric {
                 ProviderMenuBarPercentWindowSettingsView(
                     provider: self.content.provider,
@@ -144,12 +144,12 @@ struct ProviderSettingsConfirmationOverlay: View {
 
     var body: some View {
         ZStack {
-            MacColor.scrim
+            IUColor.scrim
                 .ignoresSafeArea()
                 .contentShape(Rectangle())
                 .onTapGesture(perform: self.onCancel)
                 .accessibilityHidden(true)
-            MacAlert(
+            IUAlert(
                 self.confirmation.title,
                 message: self.confirmation.message,
                 primary: (self.confirmation.confirmTitle, self.onConfirm),

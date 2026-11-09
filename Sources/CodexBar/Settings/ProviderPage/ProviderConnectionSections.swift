@@ -18,7 +18,7 @@ struct ProviderConnectionSections: View {
     var body: some View {
         let pickers = self.content.connectionPickers
         if !pickers.isEmpty || !self.content.actions.isEmpty || !self.content.fields.isEmpty {
-            MacSettingsSection(ProviderSettingsPageSection.connection.title) {
+            IUSettingsSection(ProviderSettingsPageSection.connection.title) {
                 ForEach(pickers) { picker in
                     ProviderSettingsPickerRow(picker: picker)
                 }
@@ -84,7 +84,7 @@ struct ProviderConnectionSections: View {
         }
 
         if let diagnostic = self.content.connectionDiagnostic {
-            MacSettingsSection(L("OpenAI web extras")) {
+            IUSettingsSection(L("OpenAI web extras")) {
                 ProviderSettingsCaptionRow(diagnostic)
             }
         }
@@ -105,20 +105,20 @@ struct ProviderDirectoryListSection: View {
     }
 
     var body: some View {
-        MacSettingsSection(L(self.descriptor.title), footer: L(self.descriptor.subtitle)) {
+        IUSettingsSection(L(self.descriptor.title), footer: L(self.descriptor.subtitle)) {
             ForEach(Array(self.paths.enumerated()), id: \.offset) { _, path in
-                HStack(spacing: MacSpace.unit * 2) {
+                HStack(spacing: IUSpace.unit * 2) {
                     Text(path)
-                        .font(MacTextRole.body.font)
-                        .foregroundStyle(MacColor.primary)
+                        .font(IUTextRole.body.font)
+                        .foregroundStyle(IUColor.primary)
                         .lineLimit(1)
                         .truncationMode(.middle)
                         .help(path)
-                    Spacer(minLength: MacSpace.settingsRowPaddingX)
+                    Spacer(minLength: IUSpace.settingsRowPaddingX)
                     Button(L("Remove")) {
                         self.paths.removeAll { $0 == path }
                     }
-                    .buttonStyle(.mac())
+                    .buttonStyle(.iu())
                     .accessibilityLabel(Text("\(L("Remove")) \(path)"))
                 }
                 .providerSettingsRow()
@@ -140,7 +140,7 @@ struct ProviderDirectoryListSection: View {
                         self.paths = paths
                     }
                 }
-                .buttonStyle(.mac())
+                .buttonStyle(.iu())
             }
         }
     }
@@ -153,10 +153,10 @@ struct TokenAccountDirectoryRow: View {
     @Binding var path: String?
 
     var body: some View {
-        MacSettingsRow(L("Claude config directory"), subtitle: self.path) {
-            HStack(spacing: MacSpace.unit * 2) {
+        IUSettingsRow(L("Claude config directory"), subtitle: self.path) {
+            HStack(spacing: IUSpace.unit * 2) {
                 if let path, !Self.isAvailable(path) {
-                    MacStatusLabel(L("Unavailable"), tone: .warning)
+                    IUStatusLabel(L("Unavailable"), tone: .warning)
                 }
                 Button(L("Add folder…")) {
                     Task { @MainActor in
@@ -170,10 +170,10 @@ struct TokenAccountDirectoryRow: View {
                         self.path = url.path
                     }
                 }
-                .buttonStyle(.mac())
+                .buttonStyle(.iu())
                 if self.path != nil {
                     Button(L("Remove")) { self.path = nil }
-                        .buttonStyle(.mac())
+                        .buttonStyle(.iu())
                 }
             }
         }
@@ -199,13 +199,13 @@ struct ProviderOrganizationsSection: View {
     var body: some View {
         let entries = self.descriptor.entries()
         let subtitle = self.descriptor.subtitle?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-        MacSettingsSection(L(self.descriptor.title), footer: subtitle.isEmpty ? nil : L(subtitle)) {
+        IUSettingsSection(L(self.descriptor.title), footer: subtitle.isEmpty ? nil : L(subtitle)) {
             if entries.allSatisfy(\.isLocked) {
                 ProviderSettingsCaptionRow(L("No organizations loaded. Click Refresh after setting your API key."))
             } else {
                 ForEach(entries) { entry in
                     let entrySubtitle = entry.subtitle?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-                    MacSettingsToggleRow(
+                    IUSettingsToggleRow(
                         entry.localizesTitle ? L(entry.title) : entry.title,
                         subtitle: entrySubtitle.isEmpty ? nil
                             : (entry.localizesSubtitle ? L(entrySubtitle) : entrySubtitle),
@@ -218,9 +218,9 @@ struct ProviderOrganizationsSection: View {
                 }
             }
 
-            HStack(spacing: MacSpace.unit * 2) {
+            HStack(spacing: IUSpace.unit * 2) {
                 if let errorMessage, !errorMessage.isEmpty {
-                    MacStatusLabel(errorMessage, tone: .error)
+                    IUStatusLabel(errorMessage, tone: .error)
                         .help(errorMessage)
                 }
                 Spacer(minLength: 0)
@@ -232,7 +232,7 @@ struct ProviderOrganizationsSection: View {
                         self.errorMessage = result.success ? nil : result.errorMessage
                     }
                 }
-                .buttonStyle(.mac())
+                .buttonStyle(.iu())
                 .disabled(!self.descriptor.canRefresh() || self.isRefreshing)
             }
             .providerSettingsRow()

@@ -22,26 +22,26 @@ struct AgentSessionsSettingsSection: View {
         let remoteReason = Self.remoteHostsDisabledReason(
             agentSessionsEnabled: sessionsEnabled,
             remoteEnabled: self.settings.agentSessionsRemoteEnabled)
-        MacSettingsSection(L("section_agent_sessions"), footer: L("agent_sessions_footer")) {
-            MacSettingsToggleRow(
+        IUSettingsSection(L("section_agent_sessions"), footer: L("agent_sessions_footer")) {
+            IUSettingsToggleRow(
                 L("Stay Awake"),
                 subtitle: L("Prevent idle system sleep while a local agent process is running, even when idle. " +
                     "Uses battery power; does not prevent lid-close or display sleep."),
                 isOn: self.$settings.stayAwakeEnabled)
                 .settingsAnchor(MenuSettingsPane.SearchID.stayAwake)
 
-            MacSettingsToggleRow(
+            IUSettingsToggleRow(
                 L("agent_sessions_title"),
                 subtitle: L("agent_sessions_subtitle"),
                 isOn: self.$settings.agentSessionsEnabled)
                 .settingsAnchor(MenuSettingsPane.SearchID.agentSessions)
 
-            MacSettingsRow(
+            IUSettingsRow(
                 L("agent_session_labels_title"),
                 subtitle: L("agent_session_labels_subtitle"),
                 disabledReason: Self.requiresAgentSessionsReason)
             {
-                MacPopUpButton(
+                IUPopUpButton(
                     MenuSettingsMenuOptions.agentSessionLabelStyles.map { ($0, $0.label) },
                     selection: self.$settings.agentSessionLabelStyle)
                     .accessibilityLabel(L("agent_session_labels_title"))
@@ -49,7 +49,7 @@ struct AgentSessionsSettingsSection: View {
             .disabled(!sessionsEnabled)
             .settingsAnchor(MenuSettingsPane.SearchID.agentSessionLabels)
 
-            MacSettingsToggleRow(
+            IUSettingsToggleRow(
                 L("agent_sessions_remote_title"),
                 subtitle: L("agent_sessions_remote_subtitle"),
                 disabledReason: Self.requiresAgentSessionsReason,
@@ -57,7 +57,7 @@ struct AgentSessionsSettingsSection: View {
                 .disabled(!sessionsEnabled)
                 .settingsAnchor(MenuSettingsPane.SearchID.agentSessionsRemote)
 
-            MacSettingsToggleRow(
+            IUSettingsToggleRow(
                 L("agent_sessions_hide_unreachable_title"),
                 subtitle: L("agent_sessions_hide_unreachable_subtitle"),
                 disabledReason: remoteReason,
@@ -81,13 +81,13 @@ struct AgentSessionHostsEditor: View {
         let reason = AgentSessionsSettingsSection.remoteHostsDisabledReason(
             agentSessionsEnabled: self.settings.agentSessionsEnabled,
             remoteEnabled: self.settings.agentSessionsRemoteEnabled)
-        MacSettingsRow(
+        IUSettingsRow(
             L("agent_sessions_hosts_title"),
             subtitle: L("agent_sessions_hosts_help"),
             disabledReason: reason)
         {
-            MacTextField(Self.inputFormatHint, text: self.$settings.agentSessionsManualHosts)
-                .frame(width: MacSize.settingsField)
+            IUTextField(Self.inputFormatHint, text: self.$settings.agentSessionsManualHosts)
+                .frame(width: IUSize.settingsField)
                 .accessibilityLabel(L("agent_sessions_hosts_title"))
                 .help(L("agent_sessions_hosts_help"))
         }

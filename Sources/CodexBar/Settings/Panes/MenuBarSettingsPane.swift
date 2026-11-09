@@ -21,7 +21,7 @@ struct MenuBarSettingsPane: View {
     }
 
     var body: some View {
-        MacSettingsPage(L("tab_menu_bar"), subtitle: L("settings_menu_bar_subtitle")) {
+        IUSettingsPage(L("tab_menu_bar"), subtitle: L("settings_menu_bar_subtitle")) {
             self.iconSection
             MenuBarLayoutEditor(settings: self.settings, store: self.store)
             self.combinedIconSection
@@ -53,16 +53,16 @@ struct MenuBarSettingsPane: View {
     }
 
     private var iconSection: some View {
-        MacSettingsSection(L("section_icon")) {
-            MacSettingsRow(L("menu_bar_style_title")) {
-                MacPopUpButton(
+        IUSettingsSection(L("section_icon")) {
+            IUSettingsRow(L("menu_bar_style_title")) {
+                IUPopUpButton(
                     MenuBarSettingsMenuOptions.iconStyles.map { ($0, $0.label) },
                     selection: self.$settings.menuBarIconStyle)
                     .accessibilityLabel(L("menu_bar_style_title"))
             }
             .settingsAnchor(SearchID.iconStyle)
 
-            MacSettingsToggleRow(
+            IUSettingsToggleRow(
                 L("menu_bar_inactive_display_contrast_title"),
                 subtitle: L("menu_bar_inactive_display_contrast_subtitle"),
                 disabledReason: Self.requiresIconAndPercentReason,
@@ -70,7 +70,7 @@ struct MenuBarSettingsPane: View {
                 .disabled(!self.usesIconAndPercent)
                 .settingsAnchor(SearchID.inactiveDisplayContrast)
 
-            MacSettingsToggleRow(
+            IUSettingsToggleRow(
                 L("Color Pace Indicator"),
                 subtitle: L("settings_color_pace_subtitle"),
                 disabledReason: Self.requiresIconAndPercentReason,
@@ -78,8 +78,8 @@ struct MenuBarSettingsPane: View {
                 .disabled(!self.usesIconAndPercent)
                 .settingsAnchor(SearchID.colorPace)
 
-            MacSettingsRow(L("Pace sign"), disabledReason: Self.requiresIconAndPercentReason) {
-                MacPopUpButton(
+            IUSettingsRow(L("Pace sign"), disabledReason: Self.requiresIconAndPercentReason) {
+                IUPopUpButton(
                     [(false, L("Ahead of pace is +")), (true, L("Reserve is +"))],
                     selection: self.$settings.menuBarPaceReservePositive)
                     .accessibilityLabel(L("Pace sign"))
@@ -87,7 +87,7 @@ struct MenuBarSettingsPane: View {
             .disabled(!self.usesIconAndPercent)
             .settingsAnchor(SearchID.paceSign)
 
-            MacSettingsToggleRow(L("Color by provider"), isOn: self.$settings.menuBarColorByProvider)
+            IUSettingsToggleRow(L("Color by provider"), isOn: self.$settings.menuBarColorByProvider)
                 .settingsAnchor(SearchID.colorByProvider)
         }
     }
@@ -101,14 +101,14 @@ struct MenuBarSettingsPane: View {
     private var combinedIconSection: some View {
         let presentation = self.mergedIconPresentation
         let mergeIcons = self.settings.mergeIcons
-        return MacSettingsSection(L("section_combined_icon")) {
-            MacSettingsToggleRow(
+        return IUSettingsSection(L("section_combined_icon")) {
+            IUSettingsToggleRow(
                 L("merge_icons_title"),
                 subtitle: L("merge_icons_subtitle"),
                 isOn: self.$settings.mergeIcons)
                 .settingsAnchor(SearchID.mergeIcons)
 
-            MacSettingsRow(
+            IUSettingsRow(
                 L("merged_icon_style_title"),
                 subtitle: L("merged_icon_style_subtitle"),
                 disabledReason: Self.mergedIconStyleDisabledReason(
@@ -116,7 +116,7 @@ struct MenuBarSettingsPane: View {
                     iconStyle: self.settings.menuBarIconStyle,
                     eligibleProviderCount: presentation.eligibleProviders.count))
             {
-                MacPopUpButton(
+                IUPopUpButton(
                     MenuBarSettingsMenuOptions.mergedIconStyles.map { ($0, $0.label) },
                     selection: Binding(
                         get: { self.mergedIconPresentation.effectiveStyle },
@@ -145,8 +145,8 @@ struct MenuBarSettingsPane: View {
                     .settingsAnchor(SearchID.stackedBottomRow)
             }
 
-            MacSettingsRow(L("switcher_rows_title"), disabledReason: Self.mergeIconsReason) {
-                MacPopUpButton(
+            IUSettingsRow(L("switcher_rows_title"), disabledReason: Self.mergeIconsReason) {
+                IUPopUpButton(
                     MenuBarSettingsMenuOptions.switcherRows.map { ($0, $0.label) },
                     selection: self.$settings.switcherRowsOption)
                     .accessibilityLabel(L("switcher_rows_title"))
@@ -171,8 +171,8 @@ struct MenuBarSettingsPane: View {
         automaticProvider: UsageProvider) -> some View
     {
         let options: [UsageProvider?] = [nil] + self.mergedIconPresentation.eligibleProviders.filter { $0 != excluding }
-        return MacSettingsRow(title) {
-            MacPopUpButton(
+        return IUSettingsRow(title) {
+            IUPopUpButton(
                 options.map { provider in
                     (
                         provider,
@@ -188,8 +188,8 @@ struct MenuBarSettingsPane: View {
 
     private var overviewSection: some View {
         let mergeIcons = self.settings.mergeIcons
-        return MacSettingsSection(L("Overview")) {
-            MacSettingsRow(
+        return IUSettingsSection(L("Overview")) {
+            IUSettingsRow(
                 L("overview_tab_providers_title"),
                 subtitle: Self.overviewProviderSubtitle(
                     mergeIcons: mergeIcons,
@@ -200,7 +200,7 @@ struct MenuBarSettingsPane: View {
                 Button(L("configure")) {
                     self.isOverviewProviderPopoverPresented = true
                 }
-                .buttonStyle(.mac())
+                .buttonStyle(.iu())
                 .disabled(self.activeProvidersInOrder.isEmpty)
                 .popover(isPresented: self.$isOverviewProviderPopoverPresented, arrowEdge: .bottom) {
                     MenuBarOverviewProviderPicker(
@@ -214,7 +214,7 @@ struct MenuBarSettingsPane: View {
             .disabled(!mergeIcons)
             .settingsAnchor(SearchID.overviewProviders)
 
-            MacSettingsToggleRow(
+            IUSettingsToggleRow(
                 L("Show all accounts in Overview"),
                 subtitle: L("Expand cached account usage. The six-provider limit still applies."),
                 disabledReason: Self.mergeIconsReason,
@@ -222,12 +222,12 @@ struct MenuBarSettingsPane: View {
                 .disabled(!mergeIcons)
                 .settingsAnchor(SearchID.overviewAllAccounts)
 
-            MacSettingsRow(
+            IUSettingsRow(
                 L("overview_layout_title"),
                 subtitle: L("overview_layout_subtitle"),
                 disabledReason: Self.mergeIconsReason)
             {
-                MacPopUpButton(
+                IUPopUpButton(
                     MenuBarSettingsMenuOptions.mergedOverviewLayouts.map { ($0, $0.label) },
                     selection: self.$settings.mergedOverviewLayout)
                     .accessibilityLabel(L("overview_layout_title"))
@@ -273,8 +273,8 @@ struct MenuBarSettingsPane: View {
     // MARK: - Animation
 
     private var animationSection: some View {
-        MacSettingsSection(L("section_animation")) {
-            MacSettingsToggleRow(
+        IUSettingsSection(L("section_animation")) {
+            IUSettingsToggleRow(
                 L("surprise_me_title"),
                 subtitle: L("surprise_me_subtitle"),
                 disabledReason: Self.brandIconsReason,
@@ -358,14 +358,14 @@ struct MenuBarOverviewProviderPicker: View {
 
     var body: some View {
         let limitText = MenuBarSettingsPane.overviewProviderLimitText(limit: self.limit)
-        VStack(alignment: .leading, spacing: MacSpace.settingsHeaderGap) {
-            MacText(limitText, role: .subtitle)
-            MacText(L("overview_rows_follow_order"), role: .caption, muted: true)
+        VStack(alignment: .leading, spacing: IUSpace.settingsHeaderGap) {
+            IUText(limitText, role: .subtitle)
+            IUText(L("overview_rows_follow_order"), role: .caption, muted: true)
                 .fixedSize(horizontal: false, vertical: true)
             ScrollView(.vertical) {
-                MacSettingsSection {
+                IUSettingsSection {
                     ForEach(self.providers, id: \.self) { provider in
-                        MacSettingsToggleRow(
+                        IUSettingsToggleRow(
                             self.name(provider),
                             disabledReason: limitText,
                             isOn: Binding(
@@ -374,14 +374,14 @@ struct MenuBarOverviewProviderPicker: View {
                             .disabled(!self.selected.contains(provider) && self.selected.count >= self.limit)
                     }
                 }
-                .padding(.vertical, MacSpace.unit)
-                .macSlimScrollers()
+                .padding(.vertical, IUSpace.unit)
+                .iuSlimScrollers()
             }
             // About six rows, then it scrolls.
-            .frame(maxHeight: MacSize.settingsRow * 6)
+            .frame(maxHeight: IUSize.settingsRow * 6)
         }
-        .padding(MacSpace.settingsPagePadding)
-        .frame(width: MacSize.inspectorWidth + MacSpace.settingsPagePadding * 2)
+        .padding(IUSpace.settingsPagePadding)
+        .frame(width: IUSize.inspectorWidth + IUSpace.settingsPagePadding * 2)
     }
 }
 

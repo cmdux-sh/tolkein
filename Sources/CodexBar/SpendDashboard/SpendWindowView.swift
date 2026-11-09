@@ -11,7 +11,7 @@ import SwiftUI
 struct SpendWindowView: View {
     @Bindable var settings: SettingsStore
     @Bindable var store: UsageStore
-    let chrome: MacWindowChrome
+    let chrome: IUWindowChrome
     @State private var navigation: SessionUsageNavigation
     @State private var isVisible = false
     @State private var userSelectedBackground = false
@@ -25,7 +25,7 @@ struct SpendWindowView: View {
         settings: SettingsStore,
         store: UsageStore,
         navigation: SessionUsageNavigation = .shared,
-        chrome: MacWindowChrome = .system)
+        chrome: IUWindowChrome = .system)
     {
         self.settings = settings
         self.store = store
@@ -34,11 +34,11 @@ struct SpendWindowView: View {
     }
 
     var body: some View {
-        MacWindow(L("Spend"), subtitle: L("Local estimated cost history"), chrome: self.chrome) {
+        IUWindow(L("Spend"), subtitle: L("Local estimated cost history"), chrome: self.chrome) {
             self.refreshButton
         } content: {
             ScrollView {
-                VStack(alignment: .leading, spacing: MacSpace.chromeGap) {
+                VStack(alignment: .leading, spacing: IUSpace.chromeGap) {
                     if let request = self.navigation.request {
                         self.sessionBrowserHeader
                         SessionUsageBrowser(
@@ -47,7 +47,7 @@ struct SpendWindowView: View {
                             selectedSessionID: request.sessionID)
                             .id(request.id)
                             .frame(height: SpendDashboardPanelLayout.sessionBrowserHeight)
-                            .macCard(padding: 0)
+                            .iuCard(padding: 0)
                     } else {
                         if self.settings.costUsageEnabled {
                             self.rangeBar
@@ -57,9 +57,9 @@ struct SpendWindowView: View {
                         self.content
                     }
                 }
-                .padding(MacSpace.panelPadding)
+                .padding(IUSpace.panelPadding)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .macSlimScrollers()
+                .iuSlimScrollers()
             }
             .background(FocusResigningBackground())
         }
@@ -108,7 +108,7 @@ struct SpendWindowView: View {
     // MARK: - Chrome
 
     private var refreshButton: some View {
-        MacToolButton(L("Refresh"), systemImage: "arrow.clockwise", help: L("Refresh") + " (⌘R)") {
+        IUToolButton(L("Refresh"), systemImage: "arrow.clockwise", help: L("Refresh") + " (⌘R)") {
             self.refresh()
         }
         .keyboardShortcut("r")
@@ -126,30 +126,30 @@ struct SpendWindowView: View {
     }
 
     private var sessionBrowserHeader: some View {
-        HStack(spacing: MacSpace.tabContentGap) {
+        HStack(spacing: IUSpace.tabContentGap) {
             Button {
                 self.navigation.request = nil
             } label: {
                 Label(L("Spend"), systemImage: "chevron.backward")
             }
-            .buttonStyle(.mac())
+            .buttonStyle(.iu())
             .accessibilityIdentifier("spend-window-sessions-back")
-            MacText(L("Sessions"), role: .title)
+            IUText(L("Sessions"), role: .title)
             Spacer(minLength: 0)
         }
-        .padding(.horizontal, MacSpace.rowPaddingX)
+        .padding(.horizontal, IUSpace.rowPaddingX)
     }
 
     // MARK: - Range and status
 
     private var rangeBar: some View {
         ViewThatFits(in: .horizontal) {
-            HStack(spacing: MacSpace.tabContentGap) {
+            HStack(spacing: IUSpace.tabContentGap) {
                 self.rangePicker
                 Spacer(minLength: 0)
                 self.refreshingStatus
             }
-            VStack(alignment: .leading, spacing: MacSpace.chromeGap) {
+            VStack(alignment: .leading, spacing: IUSpace.chromeGap) {
                 self.rangePicker
                 self.refreshingStatus
             }
@@ -157,7 +157,7 @@ struct SpendWindowView: View {
     }
 
     private var rangePicker: some View {
-        MacSegmentedControl(Self.periodOptions(selected: self.controller.selectedPeriod), selection: self.periodBinding)
+        IUSegmentedControl(Self.periodOptions(selected: self.controller.selectedPeriod), selection: self.periodBinding)
             .fixedSize()
             .accessibilityLabel(L("Time range"))
             .accessibilityIdentifier("spend-dashboard-range-picker")
@@ -166,7 +166,7 @@ struct SpendWindowView: View {
     @ViewBuilder
     private var refreshingStatus: some View {
         if self.controller.isRefreshing {
-            MacStatusLabel(L("Refreshing"), tone: .busy)
+            IUStatusLabel(L("Refreshing"), tone: .busy)
         }
     }
 
@@ -188,10 +188,10 @@ struct SpendWindowView: View {
     @ViewBuilder
     private var refreshStatus: some View {
         if self.controller.failedSourceCount > 0 {
-            MacStatusLabel(
+            IUStatusLabel(
                 spendDashboardRefreshFailureText(self.controller.failedSourceCount),
                 tone: .warning)
-                .padding(.horizontal, MacSpace.rowPaddingX)
+                .padding(.horizontal, IUSpace.rowPaddingX)
         }
     }
 
@@ -203,17 +203,17 @@ struct SpendWindowView: View {
            activity.phase != .complete
         {
             SpendDashboardPanel {
-                VStack(alignment: .leading, spacing: MacSpace.panelPadding) {
-                    HStack(spacing: MacSpace.chromeGap) {
+                VStack(alignment: .leading, spacing: IUSpace.panelPadding) {
+                    HStack(spacing: IUSpace.chromeGap) {
                         Label(
                             self.codexCostCatchUpTitle(activity),
                             systemImage: activity.phase == .paused ? "pause.circle" : "externaldrive")
-                            .font(MacTextRole.subtitle.font)
-                            .foregroundStyle(MacColor.primary)
+                            .font(IUTextRole.subtitle.font)
+                            .foregroundStyle(IUColor.primary)
                         Spacer()
                         Text(codexCostCatchUpProgressText(activity))
-                            .font(MacTextRole.caption.font.monospacedDigit())
-                            .foregroundStyle(MacColor.muted)
+                            .font(IUTextRole.caption.font.monospacedDigit())
+                            .foregroundStyle(IUColor.muted)
                     }
 
                     if let progress = activity.fractionCompleted {
@@ -224,7 +224,7 @@ struct SpendWindowView: View {
                     }
 
                     if let staleSnapshotUpdatedAt = activity.staleSnapshotUpdatedAt {
-                        MacStatusLabel(
+                        IUStatusLabel(
                             L("stale data") + " · " + L(
                                 "Updated relative %@",
                                 staleSnapshotUpdatedAt.relativeDescription()),
@@ -232,9 +232,9 @@ struct SpendWindowView: View {
                             systemImage: "clock.badge.exclamationmark")
                     }
 
-                    MacText(self.codexCostCatchUpDetail(activity), role: .caption, muted: true)
+                    IUText(self.codexCostCatchUpDetail(activity), role: .caption, muted: true)
 
-                    HStack(spacing: MacSpace.chromeGap) {
+                    HStack(spacing: IUSpace.chromeGap) {
                         if activity.pauseReason == .user
                             || activity.pauseReason == .noProgress
                             || self.codexCostCatchUpHasError(activity)
@@ -262,8 +262,8 @@ struct SpendWindowView: View {
                             }
                         }
                     }
-                    .buttonStyle(.mac())
-                    .macControlSize(.regular)
+                    .buttonStyle(.iu())
+                    .iuControlSize(.regular)
                 }
             }
         }
@@ -351,18 +351,18 @@ struct SpendWindowView: View {
         }
         if !self.settings.costUsageEnabled {
             SpendDashboardPanel {
-                MacEmptyState.firstUse(
+                IUEmptyState.firstUse(
                     L("Cost tracking is off"),
                     systemImage: "chart.bar.xaxis",
                     message: L("Turn on Track costs to build local estimates."),
-                    primary: MacEmptyStateAction(L("Turn On")) {
+                    primary: IUEmptyStateAction(L("Turn On")) {
                         self.settings.costUsageEnabled = true
                     })
             }
         } else if self.controller.model.groups.isEmpty {
             let emptyState = SpendDashboardEmptyState.make(isRefreshing: self.controller.isRefreshing)
             SpendDashboardPanel {
-                MacEmptyState(emptyState.title, systemImage: "chart.bar.xaxis", message: emptyState.message)
+                IUEmptyState(emptyState.title, systemImage: "chart.bar.xaxis", message: emptyState.message)
             }
         } else {
             ForEach(self.controller.model.groups) { group in

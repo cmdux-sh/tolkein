@@ -23,6 +23,6 @@ private struct SettingsAnchorModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .id(self.id)
-            .macSettingsHighlight(self.target == self.id)
+            .iuSettingsHighlight(self.target == self.id)
     }
 }

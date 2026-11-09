@@ -7,13 +7,13 @@ import SwiftUI
 /// Source, version, updated, status, account, auth and plan, then the last fetch error if there is one.
 @MainActor
 struct ProviderStatusSection: View {
-    let facts: [MacKeyValueList.Row]
+    let facts: [IUKeyValueList.Row]
     let errorDisplay: ProviderErrorDisplay?
     @Binding var isErrorExpanded: Bool
     let onCopyError: (String) -> Void
 
     var body: some View {
-        MacSettingsSection(ProviderSettingsPageSection.status.title) {
+        IUSettingsSection(ProviderSettingsPageSection.status.title) {
             if !self.facts.isEmpty {
                 ProviderFactsRow(facts: self.facts)
             }
@@ -29,12 +29,12 @@ struct ProviderStatusSection: View {
 
 /// Read-only facts as one row of a section.
 struct ProviderFactsRow: View {
-    let facts: [MacKeyValueList.Row]
+    let facts: [IUKeyValueList.Row]
 
     var body: some View {
-        MacKeyValueList(self.facts)
-            .padding(.horizontal, MacSpace.settingsRowPaddingX)
-            .padding(.vertical, MacSpace.unit)
+        IUKeyValueList(self.facts)
+            .padding(.horizontal, IUSpace.settingsRowPaddingX)
+            .padding(.vertical, IUSpace.unit)
             .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
@@ -46,26 +46,26 @@ struct ProviderErrorRow: View {
     let onCopy: () -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: MacSpace.unit * 2) {
-            MacStatusLabel(self.display.title, tone: .error)
-            MacText(self.display.preview, role: .caption, muted: true)
+        VStack(alignment: .leading, spacing: IUSpace.unit * 2) {
+            IUStatusLabel(self.display.title, tone: .error)
+            IUText(self.display.preview, role: .caption, muted: true)
                 .lineLimit(3)
                 .fixedSize(horizontal: false, vertical: true)
                 .textSelection(.enabled)
             if self.isExpanded {
-                MacText(self.display.full, role: .caption)
+                IUText(self.display.full, role: .caption)
                     .fixedSize(horizontal: false, vertical: true)
                     .textSelection(.enabled)
             }
-            HStack(spacing: MacSpace.unit * 2) {
+            HStack(spacing: IUSpace.unit * 2) {
                 if self.display.preview != self.display.full {
                     Button(self.isExpanded ? L("Hide details") : L("Show details")) {
                         self.isExpanded.toggle()
                     }
-                    .buttonStyle(.mac())
+                    .buttonStyle(.iu())
                 }
                 Button(L("Copy error"), action: self.onCopy)
-                    .buttonStyle(.mac())
+                    .buttonStyle(.iu())
             }
         }
         .providerSettingsRow()
@@ -91,7 +91,7 @@ struct ProviderUsageSections: View {
                 isEnabled: self.isEnabled)
             if let tokenUsage = self.content.model.tokenUsage {
                 let ledger = self.settings.codexLocalSessionCostLedgerEnabled
-                MacSettingsSection(
+                IUSettingsSection(
                     L(ledger ? "This Mac" : "Local usage"),
                     footer: L(ledger
                         ? "Local usage is shared across accounts on this Mac."
@@ -104,7 +104,7 @@ struct ProviderUsageSections: View {
                 }
             }
         } else {
-            MacSettingsSection(ProviderSettingsPageSection.usage.title) {
+            IUSettingsSection(ProviderSettingsPageSection.usage.title) {
                 ProviderUsageRows(rows: ProviderSettingsUsagePresentation.rows(
                     provider: self.content.provider,
                     model: self.content.model,
@@ -116,11 +116,11 @@ struct ProviderUsageSections: View {
 
         // Provider-specific by design: this opt-in augments only the ambient Codex cost ledger.
         if self.content.provider == .codex {
-            MacSettingsSection(footer: L(
+            IUSettingsSection(footer: L(
                 // swiftlint:disable:next line_length
                 "Show this Mac's recorded OpenCode usage in Codex history. Off by default; scoped or alternate CODEX_HOME locations always stay excluded."))
             {
-                MacSettingsToggleRow(L("OpenCode local history"), isOn: self.$settings.openCodeLocalHistoryEnabled)
+                IUSettingsToggleRow(L("OpenCode local history"), isOn: self.$settings.openCodeLocalHistoryEnabled)
             }
         }
 
@@ -152,7 +152,7 @@ struct ProviderUsageRows: View {
             ProviderTokenUsageRow(usage: tokenUsage)
         }
         if let diagnostic = self.rows.diagnostic {
-            MacSettingsRow(L("OpenAI web extras"), subtitle: diagnostic) { EmptyView() }
+            IUSettingsRow(L("OpenAI web extras"), subtitle: diagnostic) { EmptyView() }
         }
         if !self.rows.notes.isEmpty {
             ProviderSettingsCaptionRow(self.rows.notes.joined(separator: "\n"))
@@ -166,19 +166,19 @@ struct ProviderUsageMeterRow: View {
     let metric: UsageBoardMetric
 
     var body: some View {
-        VStack(alignment: .leading, spacing: MacSpace.unit * 1.5) {
-            HStack(alignment: .firstTextBaseline, spacing: MacSpace.unit * 2) {
-                MacText(self.metric.title, role: .caption, muted: true)
+        VStack(alignment: .leading, spacing: IUSpace.unit * 1.5) {
+            HStack(alignment: .firstTextBaseline, spacing: IUSpace.unit * 2) {
+                IUText(self.metric.title, role: .caption, muted: true)
                     .lineLimit(1)
-                Spacer(minLength: MacSpace.unit)
+                Spacer(minLength: IUSpace.unit)
                 Text(self.metric.percentText)
-                    .font(MacTextRole.subtitle.font)
+                    .font(IUTextRole.subtitle.font)
                     .monospacedDigit()
-                    .foregroundStyle(MacColor.primary)
+                    .foregroundStyle(IUColor.primary)
                     .lineLimit(1)
             }
             if self.metric.showsBar, let left = self.metric.percentLeft {
-                MacMeter(
+                IUMeter(
                     self.metric.title,
                     fraction: left / 100,
                     tone: UsageBoardStatus.meterTone(percentLeft: left),
@@ -187,7 +187,7 @@ struct ProviderUsageMeterRow: View {
             }
             // One line each, so a long caption never breaks mid-phrase.
             ForEach([self.metric.resetText, self.metric.detailText].compactMap(\.self), id: \.self) { line in
-                MacText(line, role: .caption, muted: true)
+                IUText(line, role: .caption, muted: true)
                     .lineLimit(1)
                     .help(line)
             }
@@ -203,7 +203,7 @@ struct ProviderTokenUsageRow: View {
     let usage: ProviderSettingsUsagePresentation.TokenUsage
 
     var body: some View {
-        MacSettingsRow(
+        IUSettingsRow(
             self.usage.title,
             subtitle: self.usage.lines.isEmpty ? nil : self.usage.lines.joined(separator: "\n"))
         {
@@ -223,9 +223,9 @@ struct ProviderAccountOverviewSections: View {
     let isEnabled: Bool
 
     var body: some View {
-        MacSettingsSection(L("All accounts"), footer: self.footer) {
-            MacSettingsRow(L("Refresh all accounts")) {
-                MacToolButton(L("Refresh all accounts"), systemImage: "arrow.clockwise") {
+        IUSettingsSection(L("All accounts"), footer: self.footer) {
+            IUSettingsRow(L("Refresh all accounts")) {
+                IUToolButton(L("Refresh all accounts"), systemImage: "arrow.clockwise") {
                     self.overview.onRefresh(Set(self.overview.rows.map(\.id)))
                 }
                 .disabled(!self.overview.canRefresh)
@@ -233,9 +233,9 @@ struct ProviderAccountOverviewSections: View {
         }
 
         ForEach(self.overview.rows) { row in
-            MacSettingsSection {
-                MacSettingsRow(row.title, subtitle: Self.roles(row)) {
-                    MacToolButton(L("Refresh") + " " + row.title, systemImage: "arrow.clockwise", help: L("Refresh")) {
+            IUSettingsSection {
+                IUSettingsRow(row.title, subtitle: Self.roles(row)) {
+                    IUToolButton(L("Refresh") + " " + row.title, systemImage: "arrow.clockwise", help: L("Refresh")) {
                         self.overview.onRefresh([row.id])
                     }
                     .disabled(!self.overview.canRefresh)
@@ -248,9 +248,9 @@ struct ProviderAccountOverviewSections: View {
                     isEnabled: self.isEnabled,
                     isRefreshing: row.isRefreshing))
                 if let error = row.error {
-                    VStack(alignment: .leading, spacing: MacSpace.unit) {
-                        MacStatusLabel(L("Couldn't load usage"), tone: .error)
-                        MacText(error, role: .caption, muted: true)
+                    VStack(alignment: .leading, spacing: IUSpace.unit) {
+                        IUStatusLabel(L("Couldn't load usage"), tone: .error)
+                        IUText(error, role: .caption, muted: true)
                             .fixedSize(horizontal: false, vertical: true)
                             .textSelection(.enabled)
                     }
@@ -272,8 +272,8 @@ struct ProviderAccountOverviewSections: View {
         return roles.isEmpty ? nil : roles.joined(separator: " · ")
     }
 
-    static func facts(_ row: ProviderAccountUsageOverview.Row) -> [MacKeyValueList.Row] {
-        var facts: [MacKeyValueList.Row] = []
+    static func facts(_ row: ProviderAccountUsageOverview.Row) -> [IUKeyValueList.Row] {
+        var facts: [IUKeyValueList.Row] = []
         if let plan = row.model.planText, !plan.isEmpty {
             facts.append(.init(L("Plan"), plan, id: "plan"))
         }
@@ -299,12 +299,12 @@ struct ProviderUsageItemVisibilitySection: View {
     let items: [ProviderUsageItemDescriptor]
 
     var body: some View {
-        MacSettingsSection(
+        IUSettingsSection(
             L("Visible usage items"),
             footer: L("Choose which usage rows appear in this provider's menu, Settings preview, and Overview."))
         {
             ForEach(self.items) { item in
-                MacSettingsRow(item.title, subtitle: self.hint(for: item)) {
+                IUSettingsRow(item.title, subtitle: self.hint(for: item)) {
                     Toggle(item.title, isOn: Binding(
                         get: { self.settings.isUsageItemVisible(item.id, for: self.provider) },
                         set: { isVisible in
@@ -318,7 +318,7 @@ struct ProviderUsageItemVisibilitySection: View {
                 Button(L("Restore Defaults")) {
                     self.settings.restoreDefaultUsageItemVisibility(for: self.provider)
                 }
-                .buttonStyle(.mac())
+                .buttonStyle(.iu())
                 .disabled(!self.settings.hasCustomUsageItemVisibility(for: self.provider))
             }
         }

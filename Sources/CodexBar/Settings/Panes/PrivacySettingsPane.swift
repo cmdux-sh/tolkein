@@ -51,44 +51,44 @@ private struct PrivacySettingsPage: View {
     @State private var confirmation: SettingsConfirmation?
 
     var body: some View {
-        MacSettingsPage(L("tab_privacy")) {
-            MacSettingsSection(L("section_privacy"), footer: L("keychain_access_caption")) {
-                MacSettingsToggleRow(
+        IUSettingsPage(L("tab_privacy")) {
+            IUSettingsSection(L("section_privacy"), footer: L("keychain_access_caption")) {
+                IUSettingsToggleRow(
                     L("hide_personal_info_title"),
                     subtitle: L("hide_personal_info_subtitle") + " " + L("hide_cost_history_identity_subtitle"),
                     isOn: self.$settings.hidePersonalInfo)
                     .settingsAnchor("privacy/hidePersonalInfo")
-                MacSettingsToggleRow(
+                IUSettingsToggleRow(
                     L("disable_keychain_access_title"),
                     subtitle: L("disable_keychain_access_subtitle"),
                     isOn: self.$settings.debugDisableKeychainAccess)
                     .settingsAnchor("privacy/keychainAccess")
             }
 
-            MacSettingsSection(L("section_diagnostics")) {
-                MacSettingsToggleRow(
+            IUSettingsSection(L("section_diagnostics")) {
+                IUSettingsToggleRow(
                     L("show_provider_storage_usage_title"),
                     subtitle: L("show_provider_storage_usage_subtitle"),
                     isOn: self.$settings.providerStorageFootprintsEnabled)
                     .settingsAnchor("privacy/storageFootprints")
-                MacSettingsToggleRow(
+                IUSettingsToggleRow(
                     L("show_debug_settings_title"),
                     subtitle: L("show_debug_settings_subtitle"),
                     isOn: self.$settings.debugMenuEnabled)
                     .settingsAnchor("privacy/debugSettings")
             }
 
-            MacSettingsSection(
+            IUSettingsSection(
                 L("section_your_preferences"),
                 footer: L(
                     "Save display and notification preferences for your dotfiles. "
                         + "Accounts, credentials, login, local paths and consent stay on this Mac."))
             {
-                MacSettingsLinkRow(L("Export Preferences…"), systemImage: "square.and.arrow.up") {
+                IUSettingsLinkRow(L("Export Preferences…"), systemImage: "square.and.arrow.up") {
                     self.exportPreferences()
                 }
                 .settingsAnchor("privacy/exportPreferences")
-                MacSettingsLinkRow(L("Import Preferences…"), systemImage: "square.and.arrow.down") {
+                IUSettingsLinkRow(L("Import Preferences…"), systemImage: "square.and.arrow.down") {
                     self.chooseImport()
                 }
                 .settingsAnchor("privacy/importPreferences")

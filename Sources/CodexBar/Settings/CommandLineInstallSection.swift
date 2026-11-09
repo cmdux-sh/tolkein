@@ -29,7 +29,7 @@ struct CLIInstallResult: Equatable, Identifiable {
         }
     }
 
-    var tone: MacStatusTone {
+    var tone: IUStatusTone {
         switch self.outcome {
         case .installed: .neutral
         case .exists, .noWriteAccess: .warning
@@ -78,24 +78,24 @@ struct CommandLineInstallSection: View {
     }
 
     var body: some View {
-        MacSettingsSection(L("section_command_line")) {
-            MacSettingsRow(L("install_cli"), subtitle: L("install_cli_subtitle")) {
+        IUSettingsSection(L("section_command_line")) {
+            IUSettingsRow(L("install_cli"), subtitle: L("install_cli_subtitle")) {
                 Button {
                     Task { await self.install() }
                 } label: {
-                    HStack(spacing: MacSpace.unit * 2) {
+                    HStack(spacing: IUSpace.unit * 2) {
                         if self.isInstalling {
                             ProgressView().controlSize(.small)
                         }
                         Text(L("install_cli"))
                     }
                 }
-                .buttonStyle(.mac())
+                .buttonStyle(.iu())
                 .disabled(self.isInstalling)
             }
             .settingsAnchor(IntegrationsSettingsPane.anchor(.installCLI))
             self.reportRows
-            MacSettingsLinkRow(L("Tolkein Help"), systemImage: "questionmark.circle") {
+            IUSettingsLinkRow(L("Tolkein Help"), systemImage: "questionmark.circle") {
                 self.openURL(Self.helpURL)
             }
         }
@@ -107,17 +107,17 @@ struct CommandLineInstallSection: View {
         case .none:
             EmptyView()
         case .helperMissing:
-            MacSettingsRow(L("Status")) {
-                MacStatusLabel(L("cli_not_found"), tone: .error)
+            IUSettingsRow(L("Status")) {
+                IUStatusLabel(L("cli_not_found"), tone: .error)
             }
         case .noWritableDirectories:
-            MacSettingsRow(L("Status")) {
-                MacStatusLabel(L("no_writable_bin_dirs"), tone: .warning)
+            IUSettingsRow(L("Status")) {
+                IUStatusLabel(L("no_writable_bin_dirs"), tone: .warning)
             }
         case let .results(results):
             ForEach(results) { result in
-                MacSettingsRow(result.directory) {
-                    MacStatusLabel(result.label, tone: result.tone, systemImage: result.systemImage)
+                IUSettingsRow(result.directory) {
+                    IUStatusLabel(result.label, tone: result.tone, systemImage: result.systemImage)
                 }
                 .textSelection(.enabled)
             }

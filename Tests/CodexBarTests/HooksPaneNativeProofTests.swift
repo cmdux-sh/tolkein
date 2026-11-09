@@ -79,8 +79,8 @@ private struct HooksProofForm: View {
     }
 
     var body: some View {
-        MacSettingsPage("Hooks settings — populated and empty fields") {
-            MacSettingsSection(footer: "Synthetic rules only. No commands can run from this fixture.") {
+        IUSettingsPage("Hooks settings — populated and empty fields") {
+            IUSettingsSection(footer: "Synthetic rules only. No commands can run from this fixture.") {
                 EmptyView()
             }
             ForEach(Array(self.$rules.enumerated()), id: \.element.id) { index, $rule in

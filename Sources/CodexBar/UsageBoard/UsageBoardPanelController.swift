@@ -79,7 +79,7 @@ final class UsageBoardPanelController {
         // The board draws Internal UI's panel chrome (window background, glass rim, inset sidebar);
         // the layer only rounds and clips it to the window radius. The panel casts the shadow.
         container.layer?.backgroundColor = NSColor.clear.cgColor
-        container.layer?.cornerRadius = MacRadius.window
+        container.layer?.cornerRadius = IURadius.window
         container.layer?.masksToBounds = true
         container.addSubview(hosting)
         panel.contentView = container

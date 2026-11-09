@@ -30,7 +30,7 @@ struct ProviderModelLimitDraft: Identifiable, Equatable {
 @MainActor
 struct ProviderModelLimitsSection: View {
     /// The width of the two number columns: half a settings field each.
-    private static let numberColumnWidth = MacSize.settingsField / 2
+    private static let numberColumnWidth = IUSize.settingsField / 2
 
     let descriptor: ProviderSettingsModelLimitsDescriptor
     @State private var rows: [ProviderModelLimitDraft]
@@ -48,25 +48,25 @@ struct ProviderModelLimitsSection: View {
     }
 
     var body: some View {
-        MacSettingsSection(L(self.descriptor.title), footer: self.footer) {
+        IUSettingsSection(L(self.descriptor.title), footer: self.footer) {
             if !self.rows.isEmpty {
-                HStack(spacing: MacSpace.unit * 2) {
-                    MacText(L("Model"), role: .caption, muted: true)
+                HStack(spacing: IUSpace.unit * 2) {
+                    IUText(L("Model"), role: .caption, muted: true)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                    MacText("TPM", role: .caption, muted: true)
+                    IUText("TPM", role: .caption, muted: true)
                         .frame(width: Self.numberColumnWidth, alignment: .leading)
-                    MacText(L("RPM (optional)"), role: .caption, muted: true)
+                    IUText(L("RPM (optional)"), role: .caption, muted: true)
                         .frame(width: Self.numberColumnWidth, alignment: .leading)
-                    Color.clear.frame(width: MacSize.iconTile, height: MacSize.border)
+                    Color.clear.frame(width: IUSize.iconTile, height: IUSize.border)
                 }
                 .lineLimit(1)
-                .padding(.horizontal, MacSpace.settingsRowPaddingX)
-                .padding(.top, MacSpace.settingsRowPaddingY)
+                .padding(.horizontal, IUSpace.settingsRowPaddingX)
+                .padding(.top, IUSpace.settingsRowPaddingY)
                 .accessibilityHidden(true)
             }
             ForEach(self.$rows) { $row in
-                VStack(alignment: .leading, spacing: MacSpace.unit) {
-                    HStack(spacing: MacSpace.unit * 2) {
+                VStack(alignment: .leading, spacing: IUSpace.unit) {
+                    HStack(spacing: IUSpace.unit * 2) {
                         ProviderTextField(L("Model"), text: $row.model)
                         ProviderTextField(L("Tokens per minute"), text: $row.tpm)
                             .frame(width: Self.numberColumnWidth)
@@ -76,14 +76,14 @@ struct ProviderModelLimitsSection: View {
                             self.rows.removeAll { $0.id == row.id }
                         } label: {
                             Image(systemName: "minus.circle")
-                                .foregroundStyle(MacColor.muted)
-                                .frame(width: MacSize.iconTile, height: MacSize.iconTile)
+                                .foregroundStyle(IUColor.muted)
+                                .frame(width: IUSize.iconTile, height: IUSize.iconTile)
                         }
-                        .buttonStyle(.macIcon)
+                        .buttonStyle(.iuIcon)
                         .accessibilityLabel(L("Remove"))
                     }
                     if row.value == nil {
-                        MacText(
+                        IUText(
                             L("Enter a model and positive limits, such as 40M TPM and 15k RPM."),
                             role: .caption,
                             muted: true)
@@ -91,11 +91,11 @@ struct ProviderModelLimitsSection: View {
                 }
                 .providerSettingsRow()
             }
-            HStack(spacing: MacSpace.unit * 2) {
+            HStack(spacing: IUSpace.unit * 2) {
                 ProviderSettingsActionButtons(actions: self.descriptor.actions)
                 Spacer(minLength: 0)
                 Button(L("Add model")) { self.rows.append(.init()) }
-                    .buttonStyle(.mac())
+                    .buttonStyle(.iu())
             }
             .providerSettingsRow()
         }

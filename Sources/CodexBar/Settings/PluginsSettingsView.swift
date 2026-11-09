@@ -34,7 +34,7 @@ enum PluginStatus: Equatable {
         }
     }
 
-    var tone: MacStatusTone {
+    var tone: IUStatusTone {
         switch self {
         case .active, .disabled: .neutral
         case .needsApproval: .warning
@@ -244,29 +244,29 @@ struct PluginsSettingsView: View {
     @Bindable var model: PluginsSettingsModel
 
     var body: some View {
-        MacSettingsPage(
+        IUSettingsPage(
             SettingsPane.plugins.title,
             subtitle: L(
                 "Plugins are local JavaScript or TypeScript files. Network and cookie access require approval."))
         {
-            MacSettingsSection(L("Provider Plugins")) {
-                MacSettingsRow(
+            IUSettingsSection(L("Provider Plugins")) {
+                IUSettingsRow(
                     L("Install plugin"),
                     subtitle: L("Copies a JavaScript or TypeScript file into the plugins directory."))
                 {
                     Button(L("Install…")) { self.model.choosePlugin() }
-                        .buttonStyle(.mac())
+                        .buttonStyle(.iu())
                 }
                 .settingsAnchor(PluginsSettingsPane.anchor(.install))
-                MacSettingsRow(
+                IUSettingsRow(
                     L("Plugins directory"),
                     subtitle: Self.displayPath(UserProviderPluginLoader.defaultProvidersDirectory))
                 {
-                    HStack(spacing: MacSpace.unit * 2) {
+                    HStack(spacing: IUSpace.unit * 2) {
                         Button(L("Refresh")) { self.model.refresh() }
-                            .buttonStyle(.mac())
+                            .buttonStyle(.iu())
                         Button(L("Show in Finder")) { Self.revealPluginsDirectory() }
-                            .buttonStyle(.mac())
+                            .buttonStyle(.iu())
                     }
                 }
                 .textSelection(.enabled)
@@ -274,8 +274,8 @@ struct PluginsSettingsView: View {
             }
 
             if self.model.results.isEmpty {
-                MacSettingsSection {
-                    MacEmptyState(
+                IUSettingsSection {
+                    IUEmptyState(
                         L("No Plugins Installed"),
                         systemImage: "puzzlepiece.extension",
                         message: L("Drop a .js or .ts file into the plugins directory, or choose Install…"))
@@ -292,7 +292,7 @@ struct PluginsSettingsView: View {
         }
         .settingsAlertOverlay(isPresented: self.model.pendingDelete != nil || self.model.operationError != nil) {
             if self.model.pendingDelete != nil {
-                MacAlert(
+                IUAlert(
                     L("Delete Plugin?"),
                     message: L(
                         "This removes the plugin file, transpile cache, approval, " +
@@ -301,7 +301,7 @@ struct PluginsSettingsView: View {
                     primary: (L("Delete"), { self.model.confirmDelete() }),
                     secondary: (L("Cancel"), { self.model.cancelDelete() }))
             } else if let error = self.model.operationError {
-                MacAlert(
+                IUAlert(
                     L("Plugin Error"),
                     message: error,
                     primary: (L("OK"), { self.model.dismissError() }))
@@ -341,51 +341,51 @@ private struct PluginSection: View {
         let binding = self.model.approvalBinding(for: self.plugin)
         let approved = binding.map(self.model.store.pluginApprovalStore.isApproved) == true
         let status = PluginStatus(enabled: self.model.isEnabled(manifest.id), approved: approved)
-        MacSettingsSection(manifest.name) {
-            MacSettingsToggleRow(L("Enabled"), isOn: Binding(
+        IUSettingsSection(manifest.name) {
+            IUSettingsToggleRow(L("Enabled"), isOn: Binding(
                 get: { self.model.isEnabled(manifest.id) },
                 set: { self.model.setEnabled(manifest.id, $0) }))
-            MacSettingsRow(L("Status")) {
-                HStack(spacing: MacSpace.unit * 2) {
-                    MacStatusLabel(status.title, tone: status.tone, systemImage: status.systemImage)
+            IUSettingsRow(L("Status")) {
+                HStack(spacing: IUSpace.unit * 2) {
+                    IUStatusLabel(status.title, tone: status.tone, systemImage: status.systemImage)
                     if !approved {
                         Button(L("Approve…")) { self.model.requestApproval(plugin: self.plugin, sourceURL: nil) }
-                            .buttonStyle(.mac(.primary))
+                            .buttonStyle(.iu(.primary))
                     }
                     Button(L("Refresh")) {
                         Task { await self.model.store.refreshUserPlugin(manifest.id) }
                     }
-                    .buttonStyle(.mac())
+                    .buttonStyle(.iu())
                 }
             }
-            MacSettingsRow(L("File"), subtitle: PluginsSettingsView.displayPath(self.plugin.fileURL)) {
+            IUSettingsRow(L("File"), subtitle: PluginsSettingsView.displayPath(self.plugin.fileURL)) {
                 Button(L("Delete…")) {
                     self.model.requestDelete(fileURL: self.plugin.fileURL, plugin: self.plugin)
                 }
-                .buttonStyle(.mac())
+                .buttonStyle(.iu())
             }
             .textSelection(.enabled)
-            MacSettingsValueRow(
+            IUSettingsValueRow(
                 L("Origins"),
                 value: binding?.origins.joined(separator: ", ") ?? L("Configure endpoint settings"))
-            MacSettingsValueRow(
+            IUSettingsValueRow(
                 L("Capabilities"),
                 value: manifest.capabilities.map(\.rawValue).sorted().joined(separator: ", ").nilIfEmpty
                     ?? L("Network"))
             if !manifest.cookieDomains.isEmpty {
-                MacSettingsValueRow(L("Cookie domains"), value: manifest.cookieDomains.sorted().joined(separator: ", "))
+                IUSettingsValueRow(L("Cookie domains"), value: manifest.cookieDomains.sorted().joined(separator: ", "))
             }
             ForEach(manifest.settings, id: \.key) { setting in
-                MacSettingsRow(setting.title, subtitle: setting.subtitle) {
+                IUSettingsRow(setting.title, subtitle: setting.subtitle) {
                     if setting.kind == .secure {
                         SettingsSecureField(
                             placeholder: setting.title,
                             text: self.model.settingBinding(manifest.id, setting: setting),
                             isRevealed: self.revealBinding(setting.key))
-                            .frame(width: MacSize.settingsField)
+                            .frame(width: IUSize.settingsField)
                     } else {
-                        MacTextField(setting.title, text: self.model.settingBinding(manifest.id, setting: setting))
-                            .frame(width: MacSize.settingsField)
+                        IUTextField(setting.title, text: self.model.settingBinding(manifest.id, setting: setting))
+                            .frame(width: IUSize.settingsField)
                     }
                 }
             }
@@ -395,9 +395,9 @@ private struct PluginSection: View {
                 settings: self.model.settings,
                 snapshot: self.model.store.snapshot(for: manifest.id))
             if let error = self.model.store.errors[manifest.id] {
-                MacSettingsRow(L("Error"), subtitle: error) {
-                    Image(systemName: MacStatusTone.error.systemImage)
-                        .foregroundStyle(MacStatusTone.error.color)
+                IUSettingsRow(L("Error"), subtitle: error) {
+                    Image(systemName: IUStatusTone.error.systemImage)
+                        .foregroundStyle(IUStatusTone.error.color)
                         .accessibilityHidden(true)
                 }
                 .textSelection(.enabled)
@@ -425,16 +425,16 @@ private struct InvalidPluginSection: View {
     let result: UserProviderPluginLoadResult
 
     var body: some View {
-        MacSettingsSection(self.result.fileURL.deletingPathExtension().lastPathComponent) {
-            MacSettingsRow(L("Status"), subtitle: self.result.error ?? L("Unknown validation error")) {
-                MacStatusLabel(PluginStatus.error.title, tone: PluginStatus.error.tone)
+        IUSettingsSection(self.result.fileURL.deletingPathExtension().lastPathComponent) {
+            IUSettingsRow(L("Status"), subtitle: self.result.error ?? L("Unknown validation error")) {
+                IUStatusLabel(PluginStatus.error.title, tone: PluginStatus.error.tone)
             }
             .textSelection(.enabled)
-            MacSettingsRow(L("File"), subtitle: PluginsSettingsView.displayPath(self.result.fileURL)) {
+            IUSettingsRow(L("File"), subtitle: PluginsSettingsView.displayPath(self.result.fileURL)) {
                 Button(L("Delete…")) {
                     self.model.requestDelete(fileURL: self.result.fileURL, plugin: nil)
                 }
-                .buttonStyle(.mac())
+                .buttonStyle(.iu())
             }
             .textSelection(.enabled)
         }
@@ -469,47 +469,47 @@ struct PluginApprovalSheet: View {
         let plainSettings = self.pending.plugin.manifest.settings.filter { $0.kind == .plain }
         let binding = self.binding
         let missingEndpoints = L("Enter every endpoint setting to review the exact network origins.")
-        VStack(alignment: .leading, spacing: MacSpace.settingsSectionGap) {
-            VStack(alignment: .leading, spacing: MacSpace.unit) {
-                MacText(
+        VStack(alignment: .leading, spacing: IUSpace.settingsSectionGap) {
+            VStack(alignment: .leading, spacing: IUSpace.unit) {
+                IUText(
                     self.pending.sourceURL == nil ? L("Approve Plugin") : L("Install and Approve Plugin"),
                     role: .title)
-                MacText(self.pending.plugin.manifest.name, muted: true)
+                IUText(self.pending.plugin.manifest.name, muted: true)
             }
 
             if !plainSettings.isEmpty {
-                MacSettingsSection(footer: binding == nil ? missingEndpoints : nil) {
+                IUSettingsSection(footer: binding == nil ? missingEndpoints : nil) {
                     ForEach(plainSettings, id: \.key) { setting in
-                        MacSettingsRow(setting.title, subtitle: setting.subtitle) {
-                            MacTextField(setting.title, text: Binding(
+                        IUSettingsRow(setting.title, subtitle: setting.subtitle) {
+                            IUTextField(setting.title, text: Binding(
                                 get: { self.settings[setting.key] ?? "" },
                                 set: { self.settings[setting.key] = $0 }))
-                                .frame(width: MacSize.settingsField)
+                                .frame(width: IUSize.settingsField)
                         }
                     }
                 }
             } else if binding == nil {
-                MacText(missingEndpoints, role: .caption, muted: true)
+                IUText(missingEndpoints, role: .caption, muted: true)
                     .fixedSize(horizontal: false, vertical: true)
             }
 
             if let binding {
-                MacSettingsSection(L("Network authority")) {
+                IUSettingsSection(L("Network authority")) {
                     ForEach(binding.origins, id: \.self) { origin in
-                        MacSettingsRow(origin) { EmptyView() }
+                        IUSettingsRow(origin) { EmptyView() }
                     }
                     if let dashboardURL = binding.dashboardURL {
-                        MacSettingsRow(L("Usage Dashboard"), subtitle: dashboardURL) { EmptyView() }
+                        IUSettingsRow(L("Usage Dashboard"), subtitle: dashboardURL) { EmptyView() }
                     }
-                    MacSettingsRow(L("Auth: %@", binding.authMode)) { EmptyView() }
-                    MacSettingsRow(L(
+                    IUSettingsRow(L("Auth: %@", binding.authMode)) { EmptyView() }
+                    IUSettingsRow(L(
                         "Capabilities: %@",
                         binding.capabilities.joined(separator: ", ").nilIfEmpty ?? L("network"))) { EmptyView() }
-                    MacSettingsRow(L(
+                    IUSettingsRow(L(
                         "Secrets: %@",
                         binding.secretNames.joined(separator: ", ").nilIfEmpty ?? L("none"))) { EmptyView() }
                     if !binding.cookieDomains.isEmpty {
-                        MacSettingsRow(L("Cookie domains: %@", binding.cookieDomains.joined(separator: ", "))) {
+                        IUSettingsRow(L("Cookie domains: %@", binding.cookieDomains.joined(separator: ", "))) {
                             EmptyView()
                         }
                     }
@@ -517,40 +517,40 @@ struct PluginApprovalSheet: View {
                 .textSelection(.enabled)
 
                 if !binding.typedConfirmationOrigins.isEmpty {
-                    MacSettingsSection {
+                    IUSettingsSection {
                         ForEach(binding.typedConfirmationOrigins, id: \.self) { origin in
-                            MacSettingsRow(L("Type %@ to confirm", origin)) {
-                                MacTextField(origin, text: Binding(
+                            IUSettingsRow(L("Type %@ to confirm", origin)) {
+                                IUTextField(origin, text: Binding(
                                     get: { self.confirmations[origin] ?? "" },
                                     set: { self.confirmations[origin] = $0 }))
-                                    .frame(width: MacSize.settingsField)
+                                    .frame(width: IUSize.settingsField)
                             }
                         }
                     }
                 }
             }
 
-            HStack(spacing: MacSpace.unit * 2) {
+            HStack(spacing: IUSpace.unit * 2) {
                 Spacer()
                 Button(L("Cancel"), role: .cancel, action: self.onCancel)
-                    .buttonStyle(.mac())
+                    .buttonStyle(.iu())
                     .keyboardShortcut(.cancelAction)
                 Button(self.pending.sourceURL == nil ? L("Approve") : L("Install")) {
                     self.onApprove(self.confirmations, self.settings)
                 }
-                .buttonStyle(.mac(.primary))
+                .buttonStyle(.iu(.primary))
                 .keyboardShortcut(.defaultAction)
                 .disabled(!self.canApprove)
             }
-            .macControlSize(.large)
+            .iuControlSize(.large)
         }
-        .padding(MacSpace.settingsPagePadding)
+        .padding(IUSpace.settingsPagePadding)
         .frame(width: Self.width)
-        .background(MacColor.window)
+        .background(IUColor.window)
     }
 
     /// Wide enough for a settings field beside a typed-confirmation prompt.
-    static let width = MacSize.settingsContentWidth - MacSize.settingsField / 2
+    static let width = IUSize.settingsContentWidth - IUSize.settingsField / 2
 
     private var canApprove: Bool {
         guard let binding = self.binding else { return false }

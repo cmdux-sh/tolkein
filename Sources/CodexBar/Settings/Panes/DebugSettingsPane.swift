@@ -95,7 +95,7 @@ struct DebugSettingsPage: View {
     #endif
 
     var body: some View {
-        MacSettingsPage(L("tab_debug")) {
+        IUSettingsPage(L("tab_debug")) {
             self.loggingSection
             DebugLogsSection(settings: self.settings, store: self.store, logText: self.initialLogText)
                 .settingsAnchor("debug/probeLogs")
@@ -106,8 +106,8 @@ struct DebugSettingsPage: View {
             #endif
             self.cachesSection
             self.commandLineSection
-            MacSettingsSection(L("Provider Plugins")) {
-                MacSettingsToggleRow(
+            IUSettingsSection(L("Provider Plugins")) {
+                IUSettingsToggleRow(
                     L("use_javascriptcore_plugin_engine"),
                     subtitle: L("use_javascriptcore_plugin_engine_subtitle"),
                     isOn: self.$useJavaScriptCorePluginEngine)
@@ -124,8 +124,8 @@ struct DebugSettingsPage: View {
     // MARK: Sections
 
     private var loggingSection: some View {
-        MacSettingsSection(L("section_logging")) {
-            MacSettingsToggleRow(
+        IUSettingsSection(L("section_logging")) {
+            IUSettingsToggleRow(
                 L("enable_file_logging"),
                 subtitle: String(format: L("enable_file_logging_subtitle"), CodexBarLog.fileLogURL.path),
                 isOn: self.$debugFileLoggingEnabled)
@@ -135,13 +135,13 @@ struct DebugSettingsPage: View {
                         self.settings.debugFileLoggingEnabled = newValue
                     }
                 }
-            MacSettingsRow(L("verbosity_title"), subtitle: L("verbosity_subtitle")) {
-                MacPopUpButton(
+            IUSettingsRow(L("verbosity_title"), subtitle: L("verbosity_subtitle")) {
+                IUPopUpButton(
                     CodexBarLog.Level.allCases.map { ($0, $0.displayName) },
                     selection: self.$settings.debugLogLevel)
             }
             .settingsAnchor("debug/verbosity")
-            MacSettingsLinkRow(L("open_log_file"), systemImage: "doc.text.magnifyingglass") {
+            IUSettingsLinkRow(L("open_log_file"), systemImage: "doc.text.magnifyingglass") {
                 NSWorkspace.shared.open(CodexBarLog.fileLogURL)
             }
             .settingsAnchor("debug/openLogFile")
@@ -149,26 +149,26 @@ struct DebugSettingsPage: View {
     }
 
     private var fetchStrategySection: some View {
-        MacSettingsSection(L("section_fetch_strategy"), footer: L("fetch_strategy_caption")) {
-            MacSettingsRow(L("Provider")) {
-                MacPopUpButton(
+        IUSettingsSection(L("section_fetch_strategy"), footer: L("fetch_strategy_caption")) {
+            IUSettingsRow(L("Provider")) {
+                IUPopUpButton(
                     UsageProvider.allCases.map { ($0, $0.rawValue.capitalized) },
                     selection: self.$fetchProvider)
             }
-            DebugTextRow(text: self.fetchAttemptsText(for: self.fetchProvider), height: MacSize.settingsRow * 3)
+            DebugTextRow(text: self.fetchAttemptsText(for: self.fetchProvider), height: IUSize.settingsRow * 3)
         }
         .settingsAnchor("debug/fetchStrategy")
     }
 
     private var simulationsSection: some View {
-        MacSettingsSection(L("section_simulations"), footer: L("loading_animations_caption")) {
-            MacSettingsToggleRow(
+        IUSettingsSection(L("section_simulations"), footer: L("loading_animations_caption")) {
+            IUSettingsToggleRow(
                 L("force_animation_next_refresh"),
                 subtitle: L("force_animation_next_refresh_subtitle"),
                 isOn: self.$store.debugForceAnimation)
                 .settingsAnchor("debug/forceAnimation")
-            MacSettingsRow(L("Animation pattern")) {
-                MacPopUpButton(
+            IUSettingsRow(L("Animation pattern")) {
+                IUPopUpButton(
                     [(LoadingPattern?.none, L("animation_random_default"))]
                         + LoadingPattern.allCases.map { (Optional($0), $0.displayName) },
                     selection: self.$settings.debugLoadingPattern)
@@ -183,8 +183,8 @@ struct DebugSettingsPage: View {
                     Label(L("blink_now"), systemImage: "eyes")
                 }
             }
-            MacSettingsRow(L("section_notifications"), subtitle: L("notifications_caption")) {
-                MacSegmentedControl(
+            IUSettingsRow(L("section_notifications"), subtitle: L("notifications_caption")) {
+                IUSegmentedControl(
                     Self.notificationSimulationProviders.map { ($0, Self.displayName(of: $0)) },
                     selection: self.$notificationProvider)
             }
@@ -208,24 +208,24 @@ struct DebugSettingsPage: View {
     private var errorSimulationSection: some View {
         // Provider-specific by design: only Codex/Claude expose scanner-owned token errors here.
         let supportsTokenError = self.errorProvider == .codex || self.errorProvider == .claude
-        return MacSettingsSection(L("section_error_simulation"), footer: L("error_simulation_caption")) {
-            MacSettingsRow(L("Provider")) {
-                MacPopUpButton(
+        return IUSettingsSection(L("section_error_simulation"), footer: L("error_simulation_caption")) {
+            IUSettingsRow(L("Provider")) {
+                IUPopUpButton(
                     Self.errorSimulationProviders.map { ($0, Self.displayName(of: $0)) },
                     selection: self.$errorProvider)
             }
             .settingsAnchor("debug/errorSimulation")
-            MacSettingsRow(L("Simulated error text")) {
+            IUSettingsRow(L("Simulated error text")) {
                 TextField(L("Simulated error text"), text: self.$simulatedErrorText, axis: .vertical)
                     .textFieldStyle(.plain)
-                    .font(MacTextRole.body.font)
+                    .font(IUTextRole.body.font)
                     .lineLimit(4, reservesSpace: true)
-                    .padding(MacSpace.unit * 2)
-                    .frame(width: MacSize.settingsField)
-                    .macWell(radius: MacRadius.row)
+                    .padding(IUSpace.unit * 2)
+                    .frame(width: IUSize.settingsField)
+                    .iuWell(radius: IURadius.row)
             }
-            MacSettingsRow(L("debug_menu_error_title")) {
-                HStack(spacing: MacSpace.unit * 2) {
+            IUSettingsRow(L("debug_menu_error_title")) {
+                HStack(spacing: IUSpace.unit * 2) {
                     Button(L("set_menu_error")) {
                         self.store._setErrorForTesting(self.simulatedErrorText, provider: self.errorProvider)
                     }
@@ -233,10 +233,10 @@ struct DebugSettingsPage: View {
                         self.store._setErrorForTesting(nil, provider: self.errorProvider)
                     }
                 }
-                .buttonStyle(.mac())
+                .buttonStyle(.iu())
             }
-            MacSettingsRow(L("debug_cost_error_title"), disabledReason: L("debug_cost_error_unsupported")) {
-                HStack(spacing: MacSpace.unit * 2) {
+            IUSettingsRow(L("debug_cost_error_title"), disabledReason: L("debug_cost_error_unsupported")) {
+                HStack(spacing: IUSpace.unit * 2) {
                     Button(L("set_cost_error")) {
                         self.store._setTokenErrorForTesting(self.simulatedErrorText, provider: self.errorProvider)
                     }
@@ -244,7 +244,7 @@ struct DebugSettingsPage: View {
                         self.store._setTokenErrorForTesting(nil, provider: self.errorProvider)
                     }
                 }
-                .buttonStyle(.mac())
+                .buttonStyle(.iu())
             }
             .disabled(!supportsTokenError)
         }
@@ -255,8 +255,8 @@ struct DebugSettingsPage: View {
         // Provider-specific by design: cache activity currently tracks the Codex/Claude scanners.
         let isTokenRefreshActive = self.store.isTokenRefreshInFlight(for: .codex)
             || self.store.isTokenRefreshInFlight(for: .claude)
-        return MacSettingsSection(L("section_caches"), footer: L("caches_caption")) {
-            MacSettingsRow(
+        return IUSettingsSection(L("section_caches"), footer: L("caches_caption")) {
+            IUSettingsRow(
                 L("clear_cost_cache"),
                 subtitle: self.costCacheStatus,
                 disabledReason: L("debug_cost_cache_busy"))
@@ -265,14 +265,14 @@ struct DebugSettingsPage: View {
                     ProgressView().controlSize(.small)
                 } else {
                     Button(L("Clear")) { self.confirmClearCostCache() }
-                        .buttonStyle(.mac())
+                        .buttonStyle(.iu())
                 }
             }
             .disabled(isTokenRefreshActive)
             .settingsAnchor("debug/clearCostCache")
-            MacSettingsRow(L("clear_cookie_cache"), subtitle: self.cookieCacheStatus) {
+            IUSettingsRow(L("clear_cookie_cache"), subtitle: self.cookieCacheStatus) {
                 Button(L("Clear")) { self.confirmClearCookieCache() }
-                    .buttonStyle(.mac())
+                    .buttonStyle(.iu())
             }
             .settingsAnchor("debug/clearCookieCache")
         }
@@ -281,23 +281,23 @@ struct DebugSettingsPage: View {
     private var commandLineSection: some View {
         // Provider-specific by design: PathDebugInfo only records the Codex and Claude binaries.
         let paths = self.store.pathDebugInfo
-        return MacSettingsSection(
+        return IUSettingsSection(
             L("section_command_line"),
             footer: L("cli_sessions_caption") + " " + L("cli_paths_caption"))
         {
-            MacSettingsToggleRow(
+            IUSettingsToggleRow(
                 L("keep_cli_sessions_alive"),
                 subtitle: L("keep_cli_sessions_alive_subtitle"),
                 isOn: self.$settings.debugKeepCLISessionsAlive)
                 .settingsAnchor("debug/cliSessions")
-            MacSettingsRow(L("reset_cli_sessions")) {
+            IUSettingsRow(L("reset_cli_sessions")) {
                 Button(L("debug_reset_action")) { self.confirmResetCLISessions() }
-                    .buttonStyle(.mac())
+                    .buttonStyle(.iu())
             }
             .settingsAnchor("debug/resetCLISessions")
-            MacSettingsValueRow(L("codex_binary"), value: paths.codexBinary ?? L("not_found"))
+            IUSettingsValueRow(L("codex_binary"), value: paths.codexBinary ?? L("not_found"))
                 .settingsAnchor("debug/cliPaths")
-            MacSettingsValueRow(L("claude_binary"), value: paths.claudeBinary ?? L("not_found"))
+            IUSettingsValueRow(L("claude_binary"), value: paths.claudeBinary ?? L("not_found"))
             DebugTextRow(
                 title: L("effective_path"),
                 text: paths.effectivePATH.isEmpty ? L("unavailable") : paths.effectivePATH)

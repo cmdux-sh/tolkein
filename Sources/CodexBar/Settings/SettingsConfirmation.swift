@@ -2,7 +2,7 @@ import InternalUI
 import SwiftUI
 
 /// A question a settings pane asks before an action that can't be undone, or a message it must show (an
-/// import that failed). The pane shows it as a `MacAlert` over a scrim with `.settingsConfirmation(_:)`.
+/// import that failed). The pane shows it as a `IUAlert` over a scrim with `.settingsConfirmation(_:)`.
 struct SettingsConfirmation: Identifiable {
     let id = UUID()
     let title: String
@@ -60,12 +60,12 @@ private struct SettingsConfirmationModifier: ViewModifier {
             .overlay {
                 if let confirmation {
                     ZStack {
-                        MacColor.scrim
+                        IUColor.scrim
                             .ignoresSafeArea()
                             .contentShape(Rectangle())
                             .onTapGesture {}
                             .accessibilityHidden(true)
-                        MacAlert(
+                        IUAlert(
                             confirmation.title,
                             message: confirmation.message,
                             systemImage: confirmation.systemImage,
@@ -81,6 +81,6 @@ private struct SettingsConfirmationModifier: ViewModifier {
                     .transition(.opacity)
                 }
             }
-            .macAnimation(MacSpring.moderate, value: self.confirmation?.id)
+            .iuAnimation(IUSpring.moderate, value: self.confirmation?.id)
     }
 }

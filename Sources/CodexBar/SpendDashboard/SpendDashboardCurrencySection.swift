@@ -38,16 +38,16 @@ struct SpendDashboardCurrencySection: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: MacSpace.chromeGap) {
-            VStack(alignment: .leading, spacing: MacSpace.unit / 2) {
-                MacText(self.group.currencyCode, role: .subtitle)
-                MacText(
+        VStack(alignment: .leading, spacing: IUSpace.chromeGap) {
+            VStack(alignment: .leading, spacing: IUSpace.unit / 2) {
+                IUText(self.group.currencyCode, role: .subtitle)
+                IUText(
                     spendDashboardHistoryCaption(self.group, requestedDays: self.requestedDays),
                     role: .caption,
                     muted: true)
             }
-            .padding(.horizontal, MacSpace.rowPaddingX)
-            .padding(.top, MacSpace.chromeGap)
+            .padding(.horizontal, IUSpace.rowPaddingX)
+            .padding(.top, IUSpace.chromeGap)
 
             SpendDashboardSummary(
                 group: self.group,
@@ -103,7 +103,7 @@ private struct SpendDashboardDetailPanel: View {
 
     var body: some View {
         SpendDashboardPanel {
-            VStack(alignment: .leading, spacing: MacSpace.panelPadding) {
+            VStack(alignment: .leading, spacing: IUSpace.panelPadding) {
                 if self.availableSections.count > 1 {
                     Picker(L("Usage & Spend"), selection: self.normalizedSelection) {
                         ForEach(self.availableSections) { section in
@@ -113,7 +113,7 @@ private struct SpendDashboardDetailPanel: View {
                     .labelsHidden()
                     .pickerStyle(.segmented)
                     .controlSize(.small)
-                    .frame(maxWidth: MacSize.settingsWidth, alignment: .leading)
+                    .frame(maxWidth: IUSize.settingsWidth, alignment: .leading)
                     .accessibilityIdentifier("spend-dashboard-detail-picker")
                 }
 
@@ -121,17 +121,17 @@ private struct SpendDashboardDetailPanel: View {
                 if self.activeSection != .providers {
                     if self.group.projects.isEmpty, self.group.sessions.isEmpty {
                         Text(L("No usage breakdown data available."))
-                            .font(MacTextRole.caption.font).foregroundStyle(MacColor.muted)
+                            .font(IUTextRole.caption.font).foregroundStyle(IUColor.muted)
                     }
                     if self.group.detailsExcludedFromTotals {
                         Text(L("Local Codex details; excluded from combined totals."))
-                            .font(MacTextRole.caption.font).foregroundStyle(MacColor.muted)
+                            .font(IUTextRole.caption.font).foregroundStyle(IUColor.muted)
                     }
                     if let updatedAt = self.group.retainedDetailUpdatedAt {
                         Text(L("Incomplete") + " · " + L(
                             "Updated %@",
                             spendDashboardLedgerDateText(updatedAt, timeZone: self.group.timeZone)))
-                            .font(MacTextRole.caption.font).foregroundStyle(MacColor.muted)
+                            .font(IUTextRole.caption.font).foregroundStyle(IUColor.muted)
                     }
                 }
             }
@@ -184,29 +184,29 @@ private struct SpendProjectRows: View {
             ForEach(self.visibleRows) { row in
                 let identity = row.displayIdentity(hidePersonalInfo: self.hidePersonalInfo)
                 if row.rank > 1 {
-                    MacDivider()
+                    IUDivider()
                 }
-                HStack(spacing: MacSpace.panelPadding) {
+                HStack(spacing: IUSpace.panelPadding) {
                     Text(spendDashboardRankText(row.rank))
-                        .font(MacTextRole.caption.font.monospacedDigit())
-                        .foregroundStyle(MacColor.muted)
+                        .font(IUTextRole.caption.font.monospacedDigit())
+                        .foregroundStyle(IUColor.muted)
                         .frame(width: SpendDashboardRowLayout.rankWidth, alignment: .leading)
                     Image(systemName: row.isProjectless ? "bubble.left.and.bubble.right" : "folder")
-                        .font(MacTextRole.caption.font)
-                        .foregroundStyle(MacColor.muted)
-                    VStack(alignment: .leading, spacing: MacSpace.keyCapGap) {
+                        .font(IUTextRole.caption.font)
+                        .foregroundStyle(IUColor.muted)
+                    VStack(alignment: .leading, spacing: IUSpace.keyCapGap) {
                         Text(identity.name)
                             .lineLimit(1)
                             .help(identity.path ?? identity.name)
                         Text(row.providerName)
-                            .font(MacTextRole.caption.font)
-                            .foregroundStyle(MacColor.muted)
+                            .font(IUTextRole.caption.font)
+                            .foregroundStyle(IUColor.muted)
                         if let path = identity.path,
                            row.needsPathDisambiguation(in: self.rows)
                         {
                             Text(path)
-                                .font(MacTextRole.caption.font)
-                                .foregroundStyle(MacColor.muted)
+                                .font(IUTextRole.caption.font)
+                                .foregroundStyle(IUColor.muted)
                                 .lineLimit(1)
                                 .truncationMode(.middle)
                                 .help(path)
@@ -251,32 +251,32 @@ private struct SpendPanelExpandButton: View {
                     self.showsAllRows
                         ? L("Show less")
                         : L("Show all (%d)", self.rowCount))
-                    .font(MacTextRole.caption.font)
+                    .font(IUTextRole.caption.font)
             }
             .buttonStyle(.borderless)
-            .padding(.top, MacSpace.dividerInset)
+            .padding(.top, IUSpace.dividerInset)
         }
     }
 }
 
 /// Ranked project and chat rows: the rank column and the row's vertical padding, on the 4 pt grid.
 private enum SpendDashboardRowLayout {
-    static let rankWidth = MacSpace.unit * 7
-    static let rowPaddingY = MacSpace.unit * 2
+    static let rankWidth = IUSpace.unit * 7
+    static let rowPaddingY = IUSpace.unit * 2
 }
 
 /// The ledger's columns, on the 4 pt grid. The table scrolls sideways below `minimumTableWidth`.
 private enum SpendDailyLedgerLayout {
-    static let dayWidth = MacSpace.unit * 28
-    static let providerMinimumWidth = MacSpace.unit * 24
-    static let trackedTokensWidth = MacSpace.unit * 23
-    static let requestsWidth = MacSpace.unit * 18
-    static let estimatedSpendWidth = MacSpace.unit * 29
-    static let columnSpacing = MacSpace.tabContentGap
-    static let horizontalPadding = MacSpace.rowPaddingX
-    static let headerPaddingY = MacSpace.dividerInset
-    static let rowPaddingY = MacSpace.panelPadding
-    static let providerIconGap = MacSpace.unit
+    static let dayWidth = IUSpace.unit * 28
+    static let providerMinimumWidth = IUSpace.unit * 24
+    static let trackedTokensWidth = IUSpace.unit * 23
+    static let requestsWidth = IUSpace.unit * 18
+    static let estimatedSpendWidth = IUSpace.unit * 29
+    static let columnSpacing = IUSpace.tabContentGap
+    static let horizontalPadding = IUSpace.rowPaddingX
+    static let headerPaddingY = IUSpace.dividerInset
+    static let rowPaddingY = IUSpace.panelPadding
+    static let providerIconGap = IUSpace.unit
     static let minimumTableWidth: CGFloat =
         dayWidth
             + providerMinimumWidth
@@ -303,20 +303,20 @@ private struct SpendDailyLedger: View {
     var body: some View {
         SpendDashboardPanel {
             VStack(alignment: .leading, spacing: 0) {
-                MacText(L("Daily estimated spend"), role: .subtitle)
-                    .padding(.bottom, MacSpace.panelPadding)
+                IUText(L("Daily estimated spend"), role: .subtitle)
+                    .padding(.bottom, IUSpace.panelPadding)
 
                 if self.group.dailySummaries.isEmpty {
-                    MacEmptyState(L("Spend unavailable"), systemImage: "calendar.badge.exclamationmark", size: .compact)
+                    IUEmptyState(L("Spend unavailable"), systemImage: "calendar.badge.exclamationmark", size: .compact)
                 } else {
                     ScrollView(.horizontal, showsIndicators: true) {
                         VStack(alignment: .leading, spacing: 0) {
                             self.header
-                            MacDivider()
+                            IUDivider()
                             VStack(spacing: 0) {
                                 ForEach(Array(self.visibleSummaries.enumerated()), id: \.element.id) { index, summary in
                                     if index > 0 {
-                                        MacDivider()
+                                        IUDivider()
                                     }
                                     SpendDailyLedgerRow(
                                         summary: summary,
@@ -353,8 +353,8 @@ private struct SpendDailyLedger: View {
                 width: SpendDailyLedgerLayout.estimatedSpendWidth,
                 alignment: .trailing)
         }
-        .font(MacTextRole.caption.font)
-        .foregroundStyle(MacColor.muted)
+        .font(IUTextRole.caption.font)
+        .foregroundStyle(IUColor.muted)
         .padding(.horizontal, SpendDailyLedgerLayout.horizontalPadding)
         .padding(.vertical, SpendDailyLedgerLayout.headerPaddingY)
     }
@@ -393,8 +393,8 @@ private struct SpendDailyLedgerRow: View {
     private var providerMix: some View {
         if self.activeProviders.isEmpty {
             Text(L("No usage yet"))
-                .font(MacTextRole.caption.font)
-                .foregroundStyle(MacColor.muted)
+                .font(IUTextRole.caption.font)
+                .foregroundStyle(IUColor.muted)
         } else {
             HStack(spacing: SpendDailyLedgerLayout.providerIconGap) {
                 ForEach(self.activeProviders.prefix(4)) { row in
@@ -402,8 +402,8 @@ private struct SpendDailyLedgerRow: View {
                 }
                 if self.activeProviders.count > 4 {
                     Text("+\(codexBarLocalizedInteger(self.activeProviders.count - 4))")
-                        .font(MacTextRole.caption.font)
-                        .foregroundStyle(MacColor.muted)
+                        .font(IUTextRole.caption.font)
+                        .foregroundStyle(IUColor.muted)
                 }
             }
             .help(self.activeProviders.map(\.displayName).joined(separator: ", "))
@@ -447,7 +447,7 @@ struct SpendSessionRows: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: MacSpace.tabContentGap) {
+        VStack(alignment: .leading, spacing: IUSpace.tabContentGap) {
             if self.sourceIDs.count > 1 {
                 Picker(L("Sources"), selection: Binding(
                     get: { self.sourceID ?? "" }, set: { self.selectedSourceID = $0 }))
@@ -462,7 +462,7 @@ struct SpendSessionRows: View {
                     .id(id)
                     .frame(height: SpendDashboardPanelLayout.sessionBrowserHeight)
             } else {
-                MacText(L("No data available"), role: .body, muted: true)
+                IUText(L("No data available"), role: .body, muted: true)
             }
         }
     }
@@ -519,7 +519,7 @@ struct SpendSessionRows: View {
 /// Shared sizes for the Spend window's cards.
 enum SpendDashboardPanelLayout {
     /// The session browser's fixed height inside a card or the Spend window.
-    static let sessionBrowserHeight = MacSize.chart * 3
+    static let sessionBrowserHeight = IUSize.chart * 3
 }
 
 /// One card of the Spend window: an Internal UI content card across the column's full width.
@@ -529,6 +529,6 @@ struct SpendDashboardPanel<Content: View>: View {
     var body: some View {
         self.content
             .frame(maxWidth: .infinity, alignment: .leading)
-            .macCard()
+            .iuCard()
     }
 }

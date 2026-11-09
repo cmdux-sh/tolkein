@@ -33,13 +33,13 @@ struct DebugLogsSection: View {
     static let probeLogProviders = DebugSettingsPage.providers { $0.probeLogOrder }
 
     var body: some View {
-        MacSettingsSection(
+        IUSettingsSection(
             L("section_logs"),
             footer: self.shownSource == .probe ? L("probe_logs_caption") : L("openai_cookies_caption"))
         {
             if self.cookiesAvailable {
-                MacSettingsRow(L("debug_log_source")) {
-                    MacSegmentedControl(
+                IUSettingsRow(L("debug_log_source")) {
+                    IUSegmentedControl(
                         [
                             (DebugLogSource.probe, L("section_probe_logs")),
                             (.openAICookies, L("section_openai_cookies")),
@@ -48,15 +48,15 @@ struct DebugLogsSection: View {
                 }
             }
             if self.shownSource == .probe {
-                MacSettingsRow(L("Provider")) {
-                    MacPopUpButton(
+                IUSettingsRow(L("Provider")) {
+                    IUPopUpButton(
                         Self.probeLogProviders.map { ($0, DebugSettingsPage.displayName(of: $0)) },
                         selection: self.$provider)
                 }
             }
             DebugTextRow(
                 text: self.displayedText,
-                height: MacSize.settingsRow * 4,
+                height: IUSize.settingsRow * 4,
                 isLoading: self.shownSource == .probe && self.isLoadingLog)
             DebugActionsRow {
                 self.actions
@@ -190,9 +190,9 @@ struct DebugTextRow: View {
     var isLoading = false
 
     var body: some View {
-        VStack(alignment: .leading, spacing: MacSpace.unit * 2) {
+        VStack(alignment: .leading, spacing: IUSpace.unit * 2) {
             if let title {
-                MacText(title)
+                IUText(title)
             }
             Group {
                 if let height {
@@ -200,32 +200,32 @@ struct DebugTextRow: View {
                         self.textBody
                     }
                     .frame(height: height)
-                    .macSlimScrollers()
+                    .iuSlimScrollers()
                 } else {
                     self.textBody
                 }
             }
-            .macWell(radius: MacRadius.row)
+            .iuWell(radius: IURadius.row)
             .overlay {
                 if self.isLoading {
                     ProgressView().controlSize(.small)
                 }
             }
         }
-        .padding(.horizontal, MacSpace.settingsRowPaddingX)
-        .padding(.vertical, MacSpace.settingsRowPaddingY)
+        .padding(.horizontal, IUSpace.settingsRowPaddingX)
+        .padding(.vertical, IUSpace.settingsRowPaddingY)
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     private var textBody: some View {
         Text(self.text)
-            .font(MacTextRole.caption.font)
+            .font(IUTextRole.caption.font)
             .monospaced()
-            .foregroundStyle(MacColor.primary)
+            .foregroundStyle(IUColor.primary)
             .textSelection(.enabled)
             .fixedSize(horizontal: false, vertical: true)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(MacSpace.panelPadding)
+            .padding(IUSpace.panelPadding)
             // Logs and paths read left to right in every language.
             .environment(\.layoutDirection, .leftToRight)
     }
@@ -238,16 +238,16 @@ struct DebugActionsRow<Content: View>: View {
 
     var body: some View {
         ViewThatFits(in: .horizontal) {
-            HStack(spacing: MacSpace.unit * 2) {
+            HStack(spacing: IUSpace.unit * 2) {
                 self.content
             }
-            VStack(alignment: .leading, spacing: MacSpace.unit * 2) {
+            VStack(alignment: .leading, spacing: IUSpace.unit * 2) {
                 self.content
             }
         }
-        .buttonStyle(.mac())
-        .padding(.horizontal, MacSpace.settingsRowPaddingX)
-        .padding(.vertical, MacSpace.settingsRowPaddingY)
-        .frame(maxWidth: .infinity, minHeight: MacSize.settingsRow, alignment: .leading)
+        .buttonStyle(.iu())
+        .padding(.horizontal, IUSpace.settingsRowPaddingX)
+        .padding(.vertical, IUSpace.settingsRowPaddingY)
+        .frame(maxWidth: .infinity, minHeight: IUSize.settingsRow, alignment: .leading)
     }
 }

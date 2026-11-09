@@ -91,10 +91,10 @@ struct AlertsSyncSnapshotTests {
         if let directory {
             try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         }
-        for appearance in [MacAppearance.light, .dark] {
+        for appearance in [IUAppearance.light, .dark] {
             for item in Self.cases {
                 try CodexBarLocalizationOverride.$appLanguage.withValue(item.language) {
-                    let shot = MacSnapshot.render(
+                    let shot = IUSnapshot.render(
                         item.view(),
                         appearance: appearance,
                         width: Self.width,
@@ -148,7 +148,7 @@ struct AlertsSyncSnapshotTests {
         }
         return AnyView(
             ProviderQuotaWarningSettingsView(provider: .codex, settings: settings)
-                .padding(MacSpace.settingsPagePadding))
+                .padding(IUSpace.settingsPagePadding))
     }
 
     private static func syncSettings(enabled: Bool, includeSecrets: Bool = true) -> SettingsStore {

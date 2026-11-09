@@ -46,11 +46,11 @@ final class HTTPServerDraftStore {
     }
 }
 
-/// The server status as a `MacStatusLabel`: the controller's lifecycle states in the app language, and
+/// The server status as a `IUStatusLabel`: the controller's lifecycle states in the app language, and
 /// its error messages as they are.
 struct HTTPServerStatusPresentation: Equatable {
     let text: String
-    let tone: MacStatusTone
+    let tone: IUStatusTone
     let systemImage: String?
 
     /// - Parameter validationErrors: messages that come from the settings themselves; they show as warnings
@@ -71,7 +71,7 @@ struct HTTPServerStatusPresentation: Equatable {
         }
     }
 
-    private init(text: String, tone: MacStatusTone, systemImage: String?) {
+    private init(text: String, tone: IUStatusTone, systemImage: String?) {
         self.text = text
         self.tone = tone
         self.systemImage = systemImage
@@ -93,8 +93,8 @@ struct HTTPServerSection: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: MacSpace.settingsHeaderGap) {
-            MacSettingsSection(L("http_server_title"), footer: L("http_server_footer")) {
+        VStack(alignment: .leading, spacing: IUSpace.settingsHeaderGap) {
+            IUSettingsSection(L("http_server_title"), footer: L("http_server_footer")) {
                 self.settingRows
                 self.exposureRows
                 self.statusRows
@@ -105,56 +105,56 @@ struct HTTPServerSection: View {
 
     @ViewBuilder
     private var settingRows: some View {
-        MacSettingsToggleRow(L("http_server_enable"), isOn: self.$draft.enabled)
+        IUSettingsToggleRow(L("http_server_enable"), isOn: self.$draft.enabled)
             .settingsAnchor(IntegrationsSettingsPane.anchor(.httpServer))
-        MacSettingsRow(L("http_server_bind")) {
-            MacTextField(L("http_server_bind"), text: self.$draft.host)
-                .frame(width: MacSize.settingsField)
+        IUSettingsRow(L("http_server_bind")) {
+            IUTextField(L("http_server_bind"), text: self.$draft.host)
+                .frame(width: IUSize.settingsField)
         }
         .settingsAnchor(IntegrationsSettingsPane.anchor(.httpServerBind))
-        MacSettingsRow(L("http_server_port")) {
+        IUSettingsRow(L("http_server_port")) {
             SettingsFieldWell { focus in
                 TextField(L("http_server_port"), value: self.$draft.port, format: .number.grouping(.never))
                     .focused(focus)
             }
-            .frame(width: MacSize.settingsField)
+            .frame(width: IUSize.settingsField)
         }
         .settingsAnchor(IntegrationsSettingsPane.anchor(.httpServerPort))
-        MacSettingsRow(L("http_server_token")) {
-            HStack(spacing: MacSpace.unit * 2) {
+        IUSettingsRow(L("http_server_token")) {
+            HStack(spacing: IUSpace.unit * 2) {
                 SettingsSecureField(
                     placeholder: L("http_server_token"),
                     text: self.$draft.token,
                     isRevealed: self.$showsToken)
-                    .frame(width: MacSize.settingsField)
+                    .frame(width: IUSize.settingsField)
                 Button(L("http_server_generate")) { self.draft.token = HTTPServerConfiguration.generateToken() }
-                    .buttonStyle(.mac())
+                    .buttonStyle(.iu())
                 Button(L("copy")) { Self.copy(self.draft.token) }
-                    .buttonStyle(.mac())
+                    .buttonStyle(.iu())
                     .disabled(self.draft.token.isEmpty)
             }
         }
         .settingsAnchor(IntegrationsSettingsPane.anchor(.httpServerToken))
-        MacSettingsRow(L("http_server_cache")) {
+        IUSettingsRow(L("http_server_cache")) {
             SettingsFieldWell { focus in
                 TextField(L("http_server_cache"), value: self.$draft.refreshInterval, format: .number)
                     .focused(focus)
             }
-            .frame(width: MacSize.settingsField)
+            .frame(width: IUSize.settingsField)
         }
         .settingsAnchor(IntegrationsSettingsPane.anchor(.httpServerCache))
-        MacSettingsRow(L("http_server_timeout")) {
+        IUSettingsRow(L("http_server_timeout")) {
             SettingsFieldWell { focus in
                 TextField(L("http_server_timeout"), value: self.$draft.requestTimeout, format: .number)
                     .focused(focus)
             }
-            .frame(width: MacSize.settingsField)
+            .frame(width: IUSize.settingsField)
         }
         .settingsAnchor(IntegrationsSettingsPane.anchor(.httpServerTimeout))
-        MacSettingsToggleRow(L("http_server_all_accounts"), isOn: self.$draft.allAccounts)
+        IUSettingsToggleRow(L("http_server_all_accounts"), isOn: self.$draft.allAccounts)
             .settingsAnchor(IntegrationsSettingsPane.anchor(.httpServerAllAccounts))
-        MacSettingsRow(L("http_server_identity")) {
-            MacPopUpButton(
+        IUSettingsRow(L("http_server_identity")) {
+            IUPopUpButton(
                 [("redacted", L("http_server_redacted")), ("full", L("full").localizedCapitalized)],
                 selection: self.$draft.identity)
         }
@@ -165,10 +165,10 @@ struct HTTPServerSection: View {
     @ViewBuilder
     private var exposureRows: some View {
         if !self.draft.isLoopback {
-            MacSettingsRow(L("Network access"), subtitle: L("http_server_warning")) {
-                MacStatusLabel(L("Other devices can connect"), tone: .warning)
+            IUSettingsRow(L("Network access"), subtitle: L("http_server_warning")) {
+                IUStatusLabel(L("Other devices can connect"), tone: .warning)
             }
-            MacSettingsToggleRow(L("http_server_plain_http"), isOn: self.$draft.allowPlainHTTP)
+            IUSettingsToggleRow(L("http_server_plain_http"), isOn: self.$draft.allowPlainHTTP)
         }
     }
 
@@ -177,17 +177,17 @@ struct HTTPServerSection: View {
         let status = HTTPServerStatusPresentation(
             status: self.server.status,
             validationErrors: [self.draft.validationError, self.server.configuration.validationError])
-        MacSettingsRow(L("Status")) {
-            MacStatusLabel(status.text, tone: status.tone, systemImage: status.systemImage)
+        IUSettingsRow(L("Status")) {
+            IUStatusLabel(status.text, tone: status.tone, systemImage: status.systemImage)
         }
         if let url = self.server.runningURL {
             let isWildcard = self.server.configuration.bindHost == "0.0.0.0"
-            MacSettingsRow(L("http_server_dashboard"), subtitle: isWildcard ? L("http_server_wildcard") : nil) {
-                HStack(spacing: MacSpace.unit * 2) {
-                    MacText(url, muted: true)
+            IUSettingsRow(L("http_server_dashboard"), subtitle: isWildcard ? L("http_server_wildcard") : nil) {
+                HStack(spacing: IUSpace.unit * 2) {
+                    IUText(url, muted: true)
                         .textSelection(.enabled)
                     Button(L("copy")) { Self.copy(url) }
-                        .buttonStyle(.mac())
+                        .buttonStyle(.iu())
                 }
             }
         }
@@ -195,21 +195,21 @@ struct HTTPServerSection: View {
 
     /// Apply saves the draft and restarts the server; it stays available without edits, to restart it.
     private var applyBar: some View {
-        HStack(spacing: MacSpace.unit * 2) {
+        HStack(spacing: IUSpace.unit * 2) {
             if self.hasUnappliedChanges {
-                MacStatusLabel(L("Unapplied changes"), tone: .warning)
+                IUStatusLabel(L("Unapplied changes"), tone: .warning)
             }
-            Spacer(minLength: MacSpace.panelPadding)
+            Spacer(minLength: IUSpace.panelPadding)
             if self.hasUnappliedChanges {
                 Button(L("Discard"), action: self.onDiscard)
-                    .buttonStyle(.mac())
+                    .buttonStyle(.iu())
             }
             Button(L("apply"), action: self.onApply)
-                .buttonStyle(.mac(self.hasUnappliedChanges ? .primary : .standard))
+                .buttonStyle(.iu(self.hasUnappliedChanges ? .primary : .standard))
                 .disabled(self.server.isTransitioning)
         }
-        .macControlSize(.large)
-        .padding(.horizontal, MacSpace.settingsRowPaddingX)
+        .iuControlSize(.large)
+        .padding(.horizontal, IUSpace.settingsRowPaddingX)
     }
 
     private static func copy(_ value: String) {

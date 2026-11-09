@@ -72,28 +72,28 @@ struct MenuSettingsPanesSnapshotTests {
                 Case(name: "menu-short", width: Self.paneWidth, height: Self.shortHeight) {
                     pane({ MenuSettingsPane(settings: $0, store: $1) }, settings: Self.menuStressSettings())
                 },
-                Case(name: "conditional-sheet-stress", width: MacSize.settingsContentWidth, height: 760) {
+                Case(name: "conditional-sheet-stress", width: IUSize.settingsContentWidth, height: 760) {
                     AnyView(Self.sheet(Self.stressConditional, existingNames: ["session resets soon"]))
                 },
-                Case(name: "conditional-sheet-new", width: MacSize.settingsContentWidth, height: 470) {
+                Case(name: "conditional-sheet-new", width: IUSize.settingsContentWidth, height: 470) {
                     AnyView(Self.sheet(.makeDefault(), existingNames: [], mode: .create))
                 },
                 Case(
                     name: "overview-picker",
-                    width: MacSize.inspectorWidth + MacSpace.settingsPagePadding * 2,
+                    width: IUSize.inspectorWidth + IUSpace.settingsPagePadding * 2,
                     height: 420)
                 {
                     AnyView(Self.overviewPicker)
                 },
             ]
-            for appearance in [MacAppearance.light, .dark] {
+            for appearance in [IUAppearance.light, .dark] {
                 for item in cases {
-                    let shot = MacSnapshot.render(
+                    let shot = IUSnapshot.render(
                         item.view(),
                         appearance: appearance,
                         width: item.width,
                         height: item.height,
-                        background: MacColor.window)
+                        background: IUColor.window)
                     let rendered = try #require(shot, "\(item.name) \(appearance.rawValue) did not render")
                     #expect(rendered.size == CGSize(width: item.width, height: item.height))
                     if let directory {

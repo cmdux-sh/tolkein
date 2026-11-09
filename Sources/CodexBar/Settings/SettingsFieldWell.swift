@@ -1,9 +1,9 @@
 import InternalUI
 import SwiftUI
 
-/// The `MacTextField` well (height, side padding, text size and accent focus ring from the native control
-/// ladder) around a native field that `MacTextField` cannot hold yet: a secure entry, or a number edited
-/// through a format. Give it `.frame(width: MacSize.settingsField)` in a settings row, like any text field.
+/// The `IUTextField` well (height, side padding, text size and accent focus ring from the native control
+/// ladder) around a native field that `IUTextField` cannot hold yet: a secure entry, or a number edited
+/// through a format. Give it `.frame(width: IUSize.settingsField)` in a settings row, like any text field.
 ///
 /// `field` receives the well's focus binding; attach it with `.focused(_:)` so the ring follows the field.
 @MainActor
@@ -11,7 +11,7 @@ struct SettingsFieldWell<Field: View, Trailing: View>: View {
     private let field: (FocusState<Bool>.Binding) -> Field
     private let trailing: Trailing
     @FocusState private var focused: Bool
-    @Environment(\.macControlSize) private var controlSize
+    @Environment(\.iuControlSize) private var controlSize
 
     init(
         @ViewBuilder field: @escaping (FocusState<Bool>.Binding) -> Field,
@@ -22,18 +22,18 @@ struct SettingsFieldWell<Field: View, Trailing: View>: View {
     }
 
     var body: some View {
-        let metrics = MacControlMetrics.forSize(self.controlSize)
-        HStack(spacing: MacSpace.unit) {
+        let metrics = IUControlMetrics.forSize(self.controlSize)
+        HStack(spacing: IUSpace.unit) {
             self.field(self.$focused)
                 .textFieldStyle(.plain)
             self.trailing
         }
         // Body text is the field text size from the large size up, which every settings section uses.
-        .font(MacTextRole.body.font)
+        .font(IUTextRole.body.font)
         .padding(.horizontal, metrics.paddingX)
         .frame(height: metrics.height)
-        .macWell(radius: metrics.radius)
-        .macFocusRing(self.focused, radius: metrics.radius)
+        .iuWell(radius: metrics.radius)
+        .iuFocusRing(self.focused, radius: metrics.radius)
     }
 }
 
@@ -63,7 +63,7 @@ struct SettingsSecureField: View {
                 self.isRevealed.toggle()
             } label: {
                 Image(systemName: self.isRevealed ? "eye.slash" : "eye")
-                    .foregroundStyle(MacColor.muted)
+                    .foregroundStyle(IUColor.muted)
             }
             .buttonStyle(.plain)
             .help(self.isRevealed ? L("menu_bar_layout_conditional_hide") : L("http_server_show"))
@@ -79,7 +79,7 @@ struct SettingsFieldUnit: View {
 
     var body: some View {
         Text(verbatim: self.unit)
-            .foregroundStyle(MacColor.muted)
+            .foregroundStyle(IUColor.muted)
             .accessibilityHidden(true)
     }
 }

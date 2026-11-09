@@ -100,12 +100,12 @@ struct AntigravitySettingsPresentationTests {
                     let title = before ? "Before · reconstructed synthetic baseline" : "After · synthetic settings"
                     let renderer = ImageRenderer(content: VStack(alignment: .leading, spacing: 18) {
                         Text(title).font(.caption).foregroundStyle(.secondary)
-                        MacText(metadata.displayName, role: .title)
-                        MacText(
+                        IUText(metadata.displayName, role: .title)
+                        IUText(
                             ProviderSettingsPage.headerSubtitle(before ? beforeSubtitle : afterSubtitle),
                             role: .caption,
                             muted: true)
-                        MacSettingsSection(L("Status")) {
+                        IUSettingsSection(L("Status")) {
                             ProviderFactsRow(facts: Self.facts(store: store, model: model, before: before))
                         }
                     }
@@ -128,12 +128,12 @@ struct AntigravitySettingsPresentationTests {
     private static func facts(
         store: UsageStore,
         model: UsageMenuCardView.Model,
-        before: Bool) -> [MacKeyValueList.Row]
+        before: Bool) -> [IUKeyValueList.Row]
     {
         var facts = ProviderStatusFacts.rows(provider: .antigravity, store: store, model: model, showsAccountInfo: true)
             .filter { !before || $0.id != "version" }
         if before {
-            facts.insert(MacKeyValueList.Row(L("Version"), L("not detected"), id: "version"), at: min(1, facts.count))
+            facts.insert(IUKeyValueList.Row(L("Version"), L("not detected"), id: "version"), at: min(1, facts.count))
         }
         return facts
     }

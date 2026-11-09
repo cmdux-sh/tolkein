@@ -202,7 +202,7 @@ struct SettingsWindowLayout<Sidebar: View, Detail: View>: View {
         } detail: {
             self.detail
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                .background(MacColor.window)
+                .background(IUColor.window)
                 .navigationTitle(self.selection.title)
                 .toolbar(removing: .title)
                 .toolbar {

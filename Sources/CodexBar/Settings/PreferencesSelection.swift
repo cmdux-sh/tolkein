@@ -98,7 +98,7 @@ final class PreferencesSelection {
     private(set) var forwardStack: [Destination] = []
 
     /// The `SettingsSearchEntry.id` that search is jumping to, if any. `SettingsPaneRouter` hands it to the pane as
-    /// `settingsSearchTarget`, scrolls its row into view, and clears it after `MacHighlight.searchHold`. Any other
+    /// `settingsSearchTarget`, scrolls its row into view, and clears it after `IUHighlight.searchHold`. Any other
     /// navigation clears it, so going back to a pane does not tint its row again.
     private(set) var searchTarget: String?
 

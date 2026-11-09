@@ -34,55 +34,55 @@ struct SyncSettingsPage: View {
     }
 
     var body: some View {
-        MacSettingsPage(SettingsPane.sync.title, subtitle: L("settings_sync_subtitle")) {
+        IUSettingsPage(SettingsPane.sync.title, subtitle: L("settings_sync_subtitle")) {
             if self.state.status.needsAppUpdate {
-                MacSettingsSection {
-                    MacSettingsRow(L(Self.pausedMessage)) {
-                        MacStatusLabel(L("settings_sync_update_needed"), tone: .warning)
+                IUSettingsSection {
+                    IUSettingsRow(L(Self.pausedMessage)) {
+                        IUStatusLabel(L("settings_sync_update_needed"), tone: .warning)
                     }
                 }
             }
 
-            MacSettingsSection(L("iCloud Sync")) {
-                MacSettingsToggleRow(
+            IUSettingsSection(L("iCloud Sync")) {
+                IUSettingsToggleRow(
                     L("Sync settings and providers across your Macs via iCloud"),
                     disabledReason: Self.availabilityMessage(for: self.state.availability),
                     isOn: self.primarySyncBinding)
                     .disabled(!self.syncCanBeEnabled)
                     .settingsAnchor(SyncSettingsPane.Setting.enabled.id)
-                MacSettingsToggleRow(L("Include API keys, cookies, and tokens"), isOn: self.includeSecretsBinding)
+                IUSettingsToggleRow(L("Include API keys, cookies, and tokens"), isOn: self.includeSecretsBinding)
                     .disabled(!self.optionsEnabled)
                     .settingsAnchor(SyncSettingsPane.Setting.secrets.id)
-                MacSettingsToggleRow(L("Sync usage snapshots"), isOn: self.snapshotsBinding)
+                IUSettingsToggleRow(L("Sync usage snapshots"), isOn: self.snapshotsBinding)
                     .disabled(!self.optionsEnabled)
                     .settingsAnchor(SyncSettingsPane.Setting.snapshots.id)
-                MacSettingsToggleRow(L("Show accounts from other Macs"), isOn: self.showFleetAccountsBinding)
+                IUSettingsToggleRow(L("Show accounts from other Macs"), isOn: self.showFleetAccountsBinding)
                     .disabled(!self.optionsEnabled)
                     .settingsAnchor(SyncSettingsPane.Setting.fleetAccounts.id)
             }
 
-            MacSettingsSection(L("Status")) {
-                MacKeyValueList([
+            IUSettingsSection(L("Status")) {
+                IUKeyValueList([
                     .init(L("Last successful fetch"), Self.relativeTime(self.state.status.lastSuccessfulFetchAt)),
                     .init(L("Last successful push"), Self.relativeTime(self.state.status.lastSuccessfulPushAt)),
                 ])
-                .padding(.horizontal, MacSpace.settingsRowPaddingX)
-                .padding(.vertical, MacSpace.unit)
+                .padding(.horizontal, IUSpace.settingsRowPaddingX)
+                .padding(.vertical, IUSpace.unit)
             }
             .settingsAnchor(SyncSettingsPane.Setting.status.id)
 
-            MacSettingsSection(L("Macs"), footer: L(Self.securityFootnote)) {
+            IUSettingsSection(L("Macs"), footer: L(Self.securityFootnote)) {
                 let devices = Self.sortedDevices(
                     Array(self.state.fleetDevices.values),
                     currentDeviceID: self.settings.iCloudSyncDeviceID)
                 if devices.isEmpty {
-                    MacEmptyState(
+                    IUEmptyState(
                         L("settings_sync_no_macs_title"),
                         systemImage: "desktopcomputer",
                         message: L("settings_sync_no_macs_message"),
                         size: .compact)
                         .frame(maxWidth: .infinity)
-                        .padding(.vertical, MacSpace.cardPadding)
+                        .padding(.vertical, IUSpace.cardPadding)
                 } else {
                     ForEach(devices, id: \.deviceID) { device in
                         SyncDeviceRow(
@@ -182,12 +182,12 @@ private struct SyncDeviceRow: View {
     let remove: () -> Void
 
     var body: some View {
-        MacSettingsRow(self.device.hostName, subtitle: L("Last seen %@", self.device.lastSeen.relativeDescription())) {
+        IUSettingsRow(self.device.hostName, subtitle: L("Last seen %@", self.device.lastSeen.relativeDescription())) {
             if self.isCurrentDevice {
-                MacBadge(L("This Mac"), tone: .accent)
+                IUBadge(L("This Mac"), tone: .accent)
             } else {
                 Button(L("Remove"), role: .destructive, action: self.remove)
-                    .buttonStyle(.mac(.standard))
+                    .buttonStyle(.iu(.standard))
                     .disabled(!self.canRemove)
             }
         }
@@ -266,7 +266,7 @@ struct SyncSettingsActions {
     }
 }
 
-/// Shows a pending confirmation as a `MacAlert` over a dimmed page; the page takes no input meanwhile. Return
+/// Shows a pending confirmation as a `IUAlert` over a dimmed page; the page takes no input meanwhile. Return
 /// confirms and Escape cancels.
 private struct SyncConfirmationHost: ViewModifier {
     @Binding var confirmation: SyncSettingsConfirmation?
@@ -279,10 +279,10 @@ private struct SyncConfirmationHost: ViewModifier {
             .overlay {
                 if let confirmation = self.confirmation {
                     ZStack {
-                        MacColor.scrim
+                        IUColor.scrim
                             .contentShape(Rectangle())
                             .accessibilityHidden(true)
-                        MacAlert(
+                        IUAlert(
                             confirmation.title,
                             message: confirmation.message,
                             systemImage: confirmation.systemImage,
@@ -296,7 +296,7 @@ private struct SyncConfirmationHost: ViewModifier {
                     .transition(.opacity)
                 }
             }
-            .macAnimation(MacSpring.fast, value: self.confirmation)
+            .iuAnimation(IUSpring.fast, value: self.confirmation)
     }
 }
 
