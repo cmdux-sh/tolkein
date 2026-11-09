@@ -2831,6 +2831,46 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "Không thể đọc tổng quan thanh toán TypeSafe. Mở https://console.typesafe.ai/billing để kiểm tra quyền truy cập; nếu trang mở được, hãy báo cáo lỗi tích hợp.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "Không tìm thấy cookie phiên TypeSafe. Đăng nhập tại console.typesafe.ai/billing hoặc dán tiêu đề Cookie.";
 
+/* Settings: General, Privacy, About, Debug */
+"section_provider_switcher" = "Bộ chuyển nhà cung cấp";
+"provider_switcher_default_shortcuts" = "Phím tắt mặc định";
+"provider_switcher_defaults_in_use" = "Đang dùng phím tắt mặc định.";
+"provider_switcher_shortcuts_footer" = "Các phím tắt này hoạt động khi menu chuyển nhà cung cấp đang mở. Xóa một phím tắt để tắt hành động của nó. Làm mới (⌘R), Cài đặt (⌘,) và Thoát (⌘Q) được dành riêng.";
+"open_menu_shortcut_system_conflict_title" = "Dùng phím tắt của macOS?";
+"open_menu_shortcut_system_conflict_message" = "macOS đã dùng %@ làm phím tắt toàn hệ thống. Hầu hết có thể đổi trong Cài đặt hệ thống › Bàn phím › Phím tắt bàn phím.";
+"Use Anyway" = "Vẫn dùng";
+"open_menu_shortcut_menu_conflict" = "Đã được mục menu “%@” sử dụng.";
+"open_menu_shortcut_disallowed" = "Kết hợp Option với Command hoặc Control.";
+"shortcut_issue_unsupported_key" = "Dùng một chữ cái, một chữ số, ← hoặc →.";
+"shortcut_issue_reserved" = "%@ được dành riêng cho lệnh menu hoặc lệnh hệ thống.";
+"shortcut_issue_duplicate" = "Đã được “%@” sử dụng.";
+"section_your_preferences" = "Tùy chọn của bạn";
+"import_preferences_confirm_title" = "Thay thế tùy chọn của bạn?";
+"import_preferences_confirm_message" = "Nhập “%@” sẽ thay thế tùy chọn hiển thị và thông báo trên máy Mac này. Tài khoản, thông tin đăng nhập, đường dẫn cục bộ và sự đồng ý vẫn giữ nguyên.";
+"import_preferences_confirm_action" = "Nhập";
+"update_check_title" = "Tìm phiên bản mới";
+"update_check_busy" = "Đang có một lần kiểm tra hoặc cập nhật chạy.";
+"install_updates_needs_checks" = "Cần bật tự động kiểm tra bản cập nhật.";
+"section_simulations" = "Mô phỏng";
+"section_logs" = "Nhật ký";
+"debug_log_source" = "Nguồn";
+"debug_menu_error_title" = "Lỗi thẻ menu";
+"debug_cost_error_title" = "Lỗi chi phí";
+"debug_cost_error_unsupported" = "Chỉ Codex và Claude báo lỗi chi phí.";
+"debug_cost_cache_busy" = "Có sẵn khi lần quét chi phí hiện tại hoàn tất.";
+"debug_reset_action" = "Đặt lại";
+"debug_clear_cost_cache_confirm_title" = "Xóa bộ nhớ đệm chi phí?";
+"debug_clear_cost_cache_confirm_message" = "Kết quả quét chi phí trong bộ nhớ đệm sẽ bị xóa. Chi phí sẽ được quét lại từ nhật ký cục bộ ở lần làm mới tiếp theo.";
+"debug_clear_cookie_cache_confirm_title" = "Xóa bộ nhớ đệm cookie?";
+"debug_clear_cookie_cache_confirm_message" = "Cookie trình duyệt trong bộ nhớ đệm sẽ bị xóa cho mọi nhà cung cấp. Các nhà cung cấp dùng cookie sẽ nhập lại khi cần.";
+"debug_reset_cli_sessions_confirm_title" = "Đặt lại phiên CLI?";
+"debug_reset_cli_sessions_confirm_message" = "Các phiên thăm dò đang mở của Codex, Claude và Antigravity sẽ bị đóng. Lần làm mới tiếp theo sẽ bắt đầu phiên mới.";
+"debug_cache_failed" = "Thất bại: %@";
+"debug_cookie_cache_failed_one" = "Dọn bộ nhớ đệm cookie thất bại ở 1 thao tác.";
+"debug_cookie_cache_failed_other" = "Dọn bộ nhớ đệm cookie thất bại ở %d thao tác.";
+"debug_cookie_cache_cleared_one" = "Đã xóa 1 nhà cung cấp.";
+"debug_cookie_cache_cleared_other" = "Đã xóa %d nhà cung cấp.";
+"debug_cookie_cache_empty" = "Không tìm thấy cookie trong bộ nhớ đệm.";
 /* Settings: Integrations, Plugins */
 "The local HTTP server, the command-line tool and hooks." = "Máy chủ HTTP cục bộ, công cụ dòng lệnh và hook.";
 "Running" = "Đang chạy";

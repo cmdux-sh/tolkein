@@ -71,6 +71,18 @@ struct PreferencesPaneSmokeTests {
         _ = DebugSettingsPane(context: context).body
         _ = PluginsSettingsPane(context: context).body
         _ = ProviderSettingsPane(instanceID: UsageProvider.codex.instanceID, context: context).body
+        _ = DebugSettingsPage(settings: settings, store: store, loadsPathInfo: false, initialLogText: "probe").body
+        _ = DebugLogsSection(settings: settings, store: store, logText: "probe").body
+        for updater: UpdaterProviding in [
+            DisabledUpdaterController(),
+            HomebrewUpdaterController(savedAutoCheck: false, startScheduledChecks: false),
+        ] {
+            _ = AboutSettingsPage(updater: updater).body
+        }
+        let acknowledgements = Acknowledgement.load()
+        _ = AcknowledgementsSheet(
+            acknowledgements: acknowledgements,
+            initiallyExpanded: Set(acknowledgements.map(\.id))).body
     }
 
     @Test

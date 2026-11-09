@@ -2798,6 +2798,46 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "TypeSafe 청구 개요를 읽을 수 없습니다. https://console.typesafe.ai/billing 을 열어 접근할 수 있는지 확인하세요. 페이지가 열리면 연동 오류를 신고하세요.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "TypeSafe 세션 쿠키를 찾을 수 없습니다. console.typesafe.ai/billing 에 로그인하거나 Cookie 헤더를 붙여 넣으세요.";
 
+/* Settings: General, Privacy, About, Debug */
+"section_provider_switcher" = "공급자 전환기";
+"provider_switcher_default_shortcuts" = "기본 단축키";
+"provider_switcher_defaults_in_use" = "기본 단축키를 사용 중입니다.";
+"provider_switcher_shortcuts_footer" = "이 단축키는 공급자 전환 메뉴가 열려 있는 동안 작동합니다. 단축키를 지우면 해당 동작이 꺼집니다. 새로 고침(⌘R), 설정(⌘,), 종료(⌘Q)는 예약되어 있습니다.";
+"open_menu_shortcut_system_conflict_title" = "macOS 단축키를 사용하시겠습니까?";
+"open_menu_shortcut_system_conflict_message" = "macOS가 이미 %@을(를) 시스템 전체 단축키로 사용하고 있습니다. 대부분은 시스템 설정 › 키보드 › 키보드 단축키에서 변경할 수 있습니다.";
+"Use Anyway" = "그래도 사용";
+"open_menu_shortcut_menu_conflict" = "‘%@’ 메뉴 항목에서 이미 사용 중입니다.";
+"open_menu_shortcut_disallowed" = "Option은 Command 또는 Control과 함께 사용하십시오.";
+"shortcut_issue_unsupported_key" = "문자, 숫자, ← 또는 →를 사용하십시오.";
+"shortcut_issue_reserved" = "%@은(는) 메뉴 또는 시스템 명령용으로 예약되어 있습니다.";
+"shortcut_issue_duplicate" = "‘%@’에서 이미 사용 중입니다.";
+"section_your_preferences" = "나의 환경설정";
+"import_preferences_confirm_title" = "환경설정을 대체하시겠습니까?";
+"import_preferences_confirm_message" = "‘%@’을(를) 가져오면 이 Mac의 표시 및 알림 환경설정이 대체됩니다. 계정, 자격 증명, 로컬 경로 및 동의는 그대로 유지됩니다.";
+"import_preferences_confirm_action" = "가져오기";
+"update_check_title" = "새 버전 찾기";
+"update_check_busy" = "확인 또는 업데이트가 이미 진행 중입니다.";
+"install_updates_needs_checks" = "자동 업데이트 확인이 필요합니다.";
+"section_simulations" = "시뮬레이션";
+"section_logs" = "로그";
+"debug_log_source" = "소스";
+"debug_menu_error_title" = "메뉴 카드 오류";
+"debug_cost_error_title" = "비용 오류";
+"debug_cost_error_unsupported" = "비용 오류는 Codex와 Claude만 보고합니다.";
+"debug_cost_cache_busy" = "현재 비용 스캔이 끝나면 사용할 수 있습니다.";
+"debug_reset_action" = "재설정";
+"debug_clear_cost_cache_confirm_title" = "비용 캐시를 지우시겠습니까?";
+"debug_clear_cost_cache_confirm_message" = "캐시된 비용 스캔 결과가 제거됩니다. 다음 새로 고침 때 로컬 로그에서 비용을 다시 스캔합니다.";
+"debug_clear_cookie_cache_confirm_title" = "쿠키 캐시를 지우시겠습니까?";
+"debug_clear_cookie_cache_confirm_message" = "모든 공급자의 캐시된 브라우저 쿠키가 제거됩니다. 쿠키를 사용하는 공급자는 다음에 필요할 때 다시 가져옵니다.";
+"debug_reset_cli_sessions_confirm_title" = "CLI 세션을 재설정하시겠습니까?";
+"debug_reset_cli_sessions_confirm_message" = "열려 있는 Codex, Claude 및 Antigravity 프로브 세션이 닫힙니다. 다음 새로 고침 때 새 세션이 시작됩니다.";
+"debug_cache_failed" = "실패: %@";
+"debug_cookie_cache_failed_one" = "쿠키 캐시 정리 작업 1개가 실패했습니다.";
+"debug_cookie_cache_failed_other" = "쿠키 캐시 정리 작업 %d개가 실패했습니다.";
+"debug_cookie_cache_cleared_one" = "공급자 1개를 지웠습니다.";
+"debug_cookie_cache_cleared_other" = "공급자 %d개를 지웠습니다.";
+"debug_cookie_cache_empty" = "캐시된 쿠키가 없습니다.";
 /* Settings: Integrations, Plugins */
 "The local HTTP server, the command-line tool and hooks." = "로컬 HTTP 서버, 명령줄 도구 및 훅.";
 "Running" = "실행 중";

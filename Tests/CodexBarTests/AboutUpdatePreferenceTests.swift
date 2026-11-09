@@ -8,9 +8,7 @@ final class AboutUpdatePreferenceTests: XCTestCase {
     func test_openingAboutPreservesTheInstallChoice() throws {
         let defaults = InMemoryUserDefaults(values: ["autoUpdateEnabled": true, "SUAutomaticallyUpdate": false])
         let updater = RecordingUpdater()
-        let selection = PreferencesSelection(userDefaults: defaults)
-        selection.requestAboutRoot()
-        let hosting = NSHostingView(rootView: AboutPane(updater: updater, selection: selection)
+        let hosting = NSHostingView(rootView: AboutSettingsPage(updater: updater)
             .defaultAppStorage(defaults)
             .frame(width: 700, height: 680))
         _ = try XCTUnwrap(MenuLayoutScreenshotRenderTests.pngDataWithWindow(hosting: hosting))

@@ -2829,6 +2829,46 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "Det gick inte att läsa TypeSafes faktureringsöversikt. Öppna https://console.typesafe.ai/billing för att kontrollera åtkomsten. Om sidan öppnas, rapportera integrationsfelet.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "Inga sessionskakor för TypeSafe hittades. Logga in på console.typesafe.ai/billing eller klistra in ett Cookie-huvud.";
 
+/* Settings: General, Privacy, About, Debug */
+"section_provider_switcher" = "Leverantörsväxlare";
+"provider_switcher_default_shortcuts" = "Standardkortkommandon";
+"provider_switcher_defaults_in_use" = "Standardkortkommandona används.";
+"provider_switcher_shortcuts_footer" = "De här kortkommandona fungerar medan menyn för leverantörsbyte är öppen. Rensa ett för att stänga av dess åtgärd. Uppdatera (⌘R), Inställningar (⌘,) och Avsluta (⌘Q) är reserverade.";
+"open_menu_shortcut_system_conflict_title" = "Använda ett kortkommando från macOS?";
+"open_menu_shortcut_system_conflict_message" = "macOS använder redan %@ som ett kortkommando för hela systemet. De flesta kan ändras i Systeminställningar › Tangentbord › Kortkommandon.";
+"Use Anyway" = "Använd ändå";
+"open_menu_shortcut_menu_conflict" = "Används redan av menyalternativet ”%@”.";
+"open_menu_shortcut_disallowed" = "Kombinera Alternativ med Kommando eller Kontroll.";
+"shortcut_issue_unsupported_key" = "Använd en bokstav, en siffra, ← eller →.";
+"shortcut_issue_reserved" = "%@ är reserverat för ett meny- eller systemkommando.";
+"shortcut_issue_duplicate" = "Används redan av ”%@”.";
+"section_your_preferences" = "Dina inställningar";
+"import_preferences_confirm_title" = "Ersätta dina inställningar?";
+"import_preferences_confirm_message" = "Om du importerar ”%@” ersätts inställningarna för visning och notiser på den här Macen. Konton, inloggningsuppgifter, lokala sökvägar och samtycken förblir oförändrade.";
+"import_preferences_confirm_action" = "Importera";
+"update_check_title" = "Sök efter en ny version";
+"update_check_busy" = "En kontroll eller uppdatering pågår redan.";
+"install_updates_needs_checks" = "Kräver att uppdateringar söks automatiskt.";
+"section_simulations" = "Simuleringar";
+"section_logs" = "Loggar";
+"debug_log_source" = "Källa";
+"debug_menu_error_title" = "Fel i menykortet";
+"debug_cost_error_title" = "Kostnadsfel";
+"debug_cost_error_unsupported" = "Bara Codex och Claude rapporterar kostnadsfel.";
+"debug_cost_cache_busy" = "Tillgängligt när den pågående kostnadsskanningen är klar.";
+"debug_reset_action" = "Återställ";
+"debug_clear_cost_cache_confirm_title" = "Rensa kostnadscachen?";
+"debug_clear_cost_cache_confirm_message" = "Cachade resultat från kostnadsskanningen tas bort. Kostnaderna skannas igen från lokala loggar vid nästa uppdatering.";
+"debug_clear_cookie_cache_confirm_title" = "Rensa cookiecachen?";
+"debug_clear_cookie_cache_confirm_message" = "Cachade webbläsarcookies tas bort för alla leverantörer. Leverantörer som använder cookies importerar dem igen när de behöver dem.";
+"debug_reset_cli_sessions_confirm_title" = "Återställa CLI-sessioner?";
+"debug_reset_cli_sessions_confirm_message" = "Öppna probsessioner för Codex, Claude och Antigravity stängs. Nästa uppdatering startar nya.";
+"debug_cache_failed" = "Misslyckades: %@";
+"debug_cookie_cache_failed_one" = "Rensningen av cookiecachen misslyckades för 1 åtgärd.";
+"debug_cookie_cache_failed_other" = "Rensningen av cookiecachen misslyckades för %d åtgärder.";
+"debug_cookie_cache_cleared_one" = "Rensade 1 leverantör.";
+"debug_cookie_cache_cleared_other" = "Rensade %d leverantörer.";
+"debug_cookie_cache_empty" = "Inga cachade cookies hittades.";
 /* Settings: Integrations, Plugins */
 "The local HTTP server, the command-line tool and hooks." = "Den lokala HTTP-servern, kommandoradsverktyget och hooks.";
 "Running" = "Körs";

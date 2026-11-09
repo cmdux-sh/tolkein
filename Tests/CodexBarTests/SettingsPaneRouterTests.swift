@@ -42,21 +42,21 @@ struct SettingsPaneRouterTests {
     }
 
     @Test
-    func `privacy shows the privacy and diagnostics sections from Advanced with Transfer`() {
-        let names = Self.typeNames(in: PrivacySettingsPane(context: Self.makeContext()).body)
-        #expect(names.isSuperset(of: [
+    func `privacy and general are built from the settings form, without the old sections`() {
+        let context = Self.makeContext()
+        let privacy = Self.typeNames(in: PrivacySettingsPane(context: context).body)
+        #expect(privacy.contains("PrivacySettingsPage"))
+        #expect(privacy.isDisjoint(with: [
             "AdvancedPrivacySection",
             "AdvancedDiagnosticsSection",
             "PreferencesTransferSection",
+            "HTTPServerSection",
+            "CommandLineInstallSection",
+            "HooksSections",
         ]))
-        #expect(names.isDisjoint(with: ["HTTPServerSection", "CommandLineInstallSection", "HooksSections"]))
-    }
-
-    @Test
-    func `general no longer shows the Transfer section`() {
-        let context = Self.makeContext()
-        let names = Self.typeNames(in: GeneralPane(settings: context.settings).body)
-        #expect(!names.contains("PreferencesTransferSection"))
+        let general = Self.typeNames(in: GeneralSettingsPane(context: context).body)
+        #expect(general.contains("GeneralSettingsPage"))
+        #expect(!general.contains("PreferencesTransferSection"))
     }
 
     /// Type names of every value in a view tree. Generic wrappers such as `_ConditionalContent` hold only the

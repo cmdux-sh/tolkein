@@ -2832,6 +2832,46 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "Ringkasan penagihan TypeSafe tidak dapat dibaca. Buka https://console.typesafe.ai/billing untuk memeriksa akses; jika halaman terbuka, laporkan kegagalan integrasi.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "Cookie sesi TypeSafe tidak ditemukan. Masuk di console.typesafe.ai/billing atau tempel header Cookie.";
 
+/* Settings: General, Privacy, About, Debug */
+"section_provider_switcher" = "Pengalih penyedia";
+"provider_switcher_default_shortcuts" = "Pintasan default";
+"provider_switcher_defaults_in_use" = "Pintasan default sedang digunakan.";
+"provider_switcher_shortcuts_footer" = "Pintasan ini berfungsi saat menu pengalih penyedia terbuka. Hapus salah satunya untuk mematikan tindakannya. Segarkan (⌘R), Pengaturan (⌘,) dan Keluar (⌘Q) dicadangkan.";
+"open_menu_shortcut_system_conflict_title" = "Gunakan pintasan macOS?";
+"open_menu_shortcut_system_conflict_message" = "macOS sudah menggunakan %@ sebagai pintasan seluruh sistem. Sebagian besar dapat diubah di Pengaturan Sistem › Papan Ketik › Pintasan Papan Ketik.";
+"Use Anyway" = "Tetap Gunakan";
+"open_menu_shortcut_menu_conflict" = "Sudah digunakan oleh item menu “%@”.";
+"open_menu_shortcut_disallowed" = "Gabungkan Option dengan Command atau Control.";
+"shortcut_issue_unsupported_key" = "Gunakan huruf, angka, ← atau →.";
+"shortcut_issue_reserved" = "%@ dicadangkan untuk perintah menu atau sistem.";
+"shortcut_issue_duplicate" = "Sudah digunakan oleh “%@”.";
+"section_your_preferences" = "Preferensi Anda";
+"import_preferences_confirm_title" = "Ganti preferensi Anda?";
+"import_preferences_confirm_message" = "Mengimpor “%@” akan mengganti preferensi tampilan dan notifikasi di Mac ini. Akun, kredensial, jalur lokal, dan persetujuan tetap seperti semula.";
+"import_preferences_confirm_action" = "Impor";
+"update_check_title" = "Cari versi baru";
+"update_check_busy" = "Pemeriksaan atau pembaruan sedang berjalan.";
+"install_updates_needs_checks" = "Memerlukan pemeriksaan pembaruan otomatis.";
+"section_simulations" = "Simulasi";
+"section_logs" = "Log";
+"debug_log_source" = "Sumber";
+"debug_menu_error_title" = "Kesalahan kartu menu";
+"debug_cost_error_title" = "Kesalahan biaya";
+"debug_cost_error_unsupported" = "Hanya Codex dan Claude yang melaporkan kesalahan biaya.";
+"debug_cost_cache_busy" = "Tersedia setelah pemindaian biaya saat ini selesai.";
+"debug_reset_action" = "Atur Ulang";
+"debug_clear_cost_cache_confirm_title" = "Hapus cache biaya?";
+"debug_clear_cost_cache_confirm_message" = "Hasil pemindaian biaya dalam cache akan dihapus. Biaya akan dipindai ulang dari log lokal pada penyegaran berikutnya.";
+"debug_clear_cookie_cache_confirm_title" = "Hapus cache cookie?";
+"debug_clear_cookie_cache_confirm_message" = "Cookie browser dalam cache akan dihapus untuk semua penyedia. Penyedia yang memakai cookie akan mengimpornya lagi saat diperlukan.";
+"debug_reset_cli_sessions_confirm_title" = "Reset sesi CLI?";
+"debug_reset_cli_sessions_confirm_message" = "Sesi probe Codex, Claude, dan Antigravity yang terbuka akan ditutup. Penyegaran berikutnya memulai sesi baru.";
+"debug_cache_failed" = "Gagal: %@";
+"debug_cookie_cache_failed_one" = "Pembersihan cache cookie gagal untuk 1 operasi.";
+"debug_cookie_cache_failed_other" = "Pembersihan cache cookie gagal untuk %d operasi.";
+"debug_cookie_cache_cleared_one" = "1 penyedia dibersihkan.";
+"debug_cookie_cache_cleared_other" = "%d penyedia dibersihkan.";
+"debug_cookie_cache_empty" = "Tidak ada cookie dalam cache.";
 /* Settings: Integrations, Plugins */
 "The local HTTP server, the command-line tool and hooks." = "Server HTTP lokal, alat baris perintah, dan hook.";
 "Running" = "Berjalan";

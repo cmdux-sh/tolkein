@@ -2832,6 +2832,46 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "ไม่สามารถอ่านภาพรวมการเรียกเก็บเงินของ TypeSafe ได้ เปิด https://console.typesafe.ai/billing เพื่อตรวจสอบการเข้าถึง หากเปิดหน้าได้ ให้รายงานข้อผิดพลาดในการเชื่อมต่อระบบ";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "ไม่พบคุกกี้เซสชันของ TypeSafe ลงชื่อเข้าใช้ที่ console.typesafe.ai/billing หรือวางส่วนหัว Cookie";
 
+/* Settings: General, Privacy, About, Debug */
+"section_provider_switcher" = "ตัวสลับผู้ให้บริการ";
+"provider_switcher_default_shortcuts" = "ทางลัดเริ่มต้น";
+"provider_switcher_defaults_in_use" = "กำลังใช้ทางลัดเริ่มต้น";
+"provider_switcher_shortcuts_footer" = "ทางลัดเหล่านี้ใช้ได้ขณะที่เมนูตัวสลับผู้ให้บริการเปิดอยู่ ล้างทางลัดเพื่อปิดการทำงานนั้น รีเฟรช (⌘R) การตั้งค่า (⌘,) และออก (⌘Q) ถูกสงวนไว้";
+"open_menu_shortcut_system_conflict_title" = "ใช้ทางลัดของ macOS ไหม";
+"open_menu_shortcut_system_conflict_message" = "macOS ใช้ %@ เป็นทางลัดทั้งระบบอยู่แล้ว ส่วนใหญ่เปลี่ยนได้ในการตั้งค่าระบบ › แป้นพิมพ์ › ปุ่มลัดแป้นพิมพ์";
+"Use Anyway" = "ใช้ต่อไป";
+"open_menu_shortcut_menu_conflict" = "รายการเมนู “%@” ใช้อยู่แล้ว";
+"open_menu_shortcut_disallowed" = "ใช้ Option ร่วมกับ Command หรือ Control";
+"shortcut_issue_unsupported_key" = "ใช้ตัวอักษร ตัวเลข ← หรือ →";
+"shortcut_issue_reserved" = "%@ สงวนไว้สำหรับคำสั่งเมนูหรือคำสั่งระบบ";
+"shortcut_issue_duplicate" = "“%@” ใช้อยู่แล้ว";
+"section_your_preferences" = "การตั้งค่าของคุณ";
+"import_preferences_confirm_title" = "แทนที่การตั้งค่าของคุณไหม";
+"import_preferences_confirm_message" = "การนำเข้า “%@” จะแทนที่การตั้งค่าการแสดงผลและการแจ้งเตือนบน Mac เครื่องนี้ บัญชี ข้อมูลรับรอง เส้นทางในเครื่อง และความยินยอมจะไม่เปลี่ยนแปลง";
+"import_preferences_confirm_action" = "นำเข้า";
+"update_check_title" = "ค้นหาเวอร์ชันใหม่";
+"update_check_busy" = "มีการตรวจสอบหรือการอัปเดตทำงานอยู่แล้ว";
+"install_updates_needs_checks" = "ต้องเปิดการตรวจสอบการอัปเดตโดยอัตโนมัติ";
+"section_simulations" = "การจำลอง";
+"section_logs" = "บันทึก";
+"debug_log_source" = "แหล่งที่มา";
+"debug_menu_error_title" = "ข้อผิดพลาดของการ์ดเมนู";
+"debug_cost_error_title" = "ข้อผิดพลาดค่าใช้จ่าย";
+"debug_cost_error_unsupported" = "มีเพียง Codex และ Claude ที่รายงานข้อผิดพลาดค่าใช้จ่าย";
+"debug_cost_cache_busy" = "ใช้ได้เมื่อการสแกนค่าใช้จ่ายปัจจุบันเสร็จสิ้น";
+"debug_reset_action" = "รีเซ็ต";
+"debug_clear_cost_cache_confirm_title" = "ล้างแคชค่าใช้จ่ายไหม";
+"debug_clear_cost_cache_confirm_message" = "ผลการสแกนค่าใช้จ่ายที่แคชไว้จะถูกลบ ค่าใช้จ่ายจะถูกสแกนใหม่จากบันทึกในเครื่องในการรีเฟรชครั้งถัดไป";
+"debug_clear_cookie_cache_confirm_title" = "ล้างแคชคุกกี้ไหม";
+"debug_clear_cookie_cache_confirm_message" = "คุกกี้เบราว์เซอร์ที่แคชไว้จะถูกลบสำหรับผู้ให้บริการทั้งหมด ผู้ให้บริการที่ใช้คุกกี้จะนำเข้าอีกครั้งเมื่อต้องใช้";
+"debug_reset_cli_sessions_confirm_title" = "รีเซ็ตเซสชัน CLI ไหม";
+"debug_reset_cli_sessions_confirm_message" = "เซสชันโพรบของ Codex, Claude และ Antigravity ที่เปิดอยู่จะถูกปิด การรีเฟรชครั้งถัดไปจะเริ่มเซสชันใหม่";
+"debug_cache_failed" = "ล้มเหลว: %@";
+"debug_cookie_cache_failed_one" = "การล้างแคชคุกกี้ล้มเหลว 1 รายการ";
+"debug_cookie_cache_failed_other" = "การล้างแคชคุกกี้ล้มเหลว %d รายการ";
+"debug_cookie_cache_cleared_one" = "ล้างผู้ให้บริการแล้ว 1 ราย";
+"debug_cookie_cache_cleared_other" = "ล้างผู้ให้บริการแล้ว %d ราย";
+"debug_cookie_cache_empty" = "ไม่พบคุกกี้ที่แคชไว้";
 /* Settings: Integrations, Plugins */
 "The local HTTP server, the command-line tool and hooks." = "เซิร์ฟเวอร์ HTTP ในเครื่อง เครื่องมือบรรทัดคำสั่ง และฮุก";
 "Running" = "กำลังทำงาน";
