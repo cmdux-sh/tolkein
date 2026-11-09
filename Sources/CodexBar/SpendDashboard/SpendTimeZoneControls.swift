@@ -1,51 +1,33 @@
 import CodexBarCore
+import InternalUI
 import SwiftUI
 
+/// The statistics time zone, as two settings rows for Settings → Costs: the pinned zone, and a button that pins
+/// the Mac's current zone. Daily buckets use this zone, so changing it can move usage to a different day.
 @MainActor
 struct SpendTimeZoneControls: View {
     @Bindable var settings: SettingsStore
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text(L("Statistics time zone"))
-                .font(.subheadline.weight(.medium))
-            ViewThatFits(in: .horizontal) {
-                HStack(spacing: 12) {
-                    self.picker
-                    self.currentZoneButton
-                }
-                VStack(alignment: .leading, spacing: 6) {
-                    self.picker
-                    self.currentZoneButton
-                }
+        MacSettingsRow(
+            L("Statistics time zone"),
+            subtitle: L("Daily usage uses a fixed time zone. Changing it may move usage to a different day."))
+        {
+            MacPopUpButton(self.timeZoneIdentifiers.map { ($0, $0) }, selection: self.timeZoneBinding)
+                .help(self.selectedIdentifier)
+                .accessibilityLabel(L("Statistics time zone"))
+                .accessibilityIdentifier("spend-time-zone-picker")
+        }
+        .settingsAnchor(CostsSettingsPane.Anchor.timeZone)
+        MacSettingsRow(L("Use Mac's current time zone"), subtitle: TimeZone.current.identifier) {
+            Button(L("apply")) {
+                self.useCurrentTimeZone()
             }
-            Text(L("Daily usage uses a fixed time zone. Changing it may move usage to a different day."))
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .fixedSize(horizontal: false, vertical: true)
+            .buttonStyle(.mac())
+            .help(TimeZone.current.identifier)
+            .accessibilityIdentifier("spend-use-current-time-zone")
         }
-    }
-
-    private var picker: some View {
-        Picker(L("Statistics time zone"), selection: self.timeZoneBinding) {
-            ForEach(self.timeZoneIdentifiers, id: \.self) { identifier in
-                Text(verbatim: identifier).tag(identifier)
-            }
-        }
-        .labelsHidden()
-        .pickerStyle(.menu)
-        .frame(width: 260)
-        .help(self.selectedIdentifier)
-        .accessibilityIdentifier("spend-time-zone-picker")
-    }
-
-    private var currentZoneButton: some View {
-        Button(L("Use Mac's current time zone")) {
-            self.useCurrentTimeZone()
-        }
-        .fixedSize()
-        .help(TimeZone.current.identifier)
-        .accessibilityIdentifier("spend-use-current-time-zone")
+        .settingsAnchor(CostsSettingsPane.Anchor.useCurrentTimeZone)
     }
 
     var selectedIdentifier: String {

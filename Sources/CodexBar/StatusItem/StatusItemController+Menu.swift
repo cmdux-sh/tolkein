@@ -590,7 +590,11 @@ extension StatusItemController {
                     spendSummary.historyCoverageText,
                     spendSummary.pricingCoverageText,
                     spendSummary.provenanceText,
-                ].joined(separator: "|"))
+                ].joined(separator: "|"),
+                onClick: { [weak self] in self?.openSpendWindow(.dashboard) })
+            // Also wired as a menu action, for keyboard activation and accessibility presses.
+            summaryItem.target = self
+            summaryItem.action = #selector(self.showSpendWindow(_:))
             menu.addItem(summaryItem)
             if let shareItem = self.makeOverviewShareStatsMenuItem(model: spendModel) {
                 menu.addItem(shareItem)
