@@ -1,9 +1,9 @@
-import CodexBarCore
 import Foundation
 import InternalUI
 import SwiftUI
 import Testing
 @testable import CodexBar
+@testable import CodexBarCore
 
 /// The provider page's section composition and the token-account remove confirmation.
 @MainActor
