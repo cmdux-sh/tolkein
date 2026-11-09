@@ -111,7 +111,7 @@ private struct PiNativeProofView: View {
             }.padding(.horizontal, 16).padding(.bottom, 8)
             Divider()
             HStack(alignment: .top, spacing: 0) {
-                SpendDashboardPane(settings: self.session.settings, store: self.session.store)
+                SpendWindowView(settings: self.session.settings, store: self.session.store)
                 Divider()
                 VStack(alignment: .leading, spacing: 12) {
                     Text("Pi widget view").font(.headline)

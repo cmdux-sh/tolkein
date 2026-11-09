@@ -13,7 +13,7 @@ struct SessionUsageBrowserContext: Sendable {
     var activityRange: Range<Date>?
 }
 
-/// Menu navigation carries the exact account snapshot into the existing Usage & Spend pane.
+/// Menu navigation carries the exact account snapshot into the Spend window's session browser.
 @MainActor
 @Observable
 final class SessionUsageNavigation {

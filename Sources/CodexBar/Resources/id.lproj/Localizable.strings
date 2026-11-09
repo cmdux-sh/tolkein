@@ -2832,6 +2832,14 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "Ringkasan penagihan TypeSafe tidak dapat dibaca. Buka https://console.typesafe.ai/billing untuk memeriksa akses; jika halaman terbuka, laporkan kegagalan integrasi.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "Cookie sesi TypeSafe tidak ditemukan. Masuk di console.typesafe.ai/billing atau tempel header Cookie.";
 
+/* Settings: Costs, Spend window */
+"Local estimated cost history" = "Riwayat perkiraan biaya lokal";
+"Open Spend window" = "Buka jendela Pengeluaran";
+"Tracking" = "Pelacakan";
+"Time zone" = "Zona waktu";
+"Export" = "Ekspor";
+"Turn On" = "Nyalakan";
+"Requires OpenCodex usage logs." = "Memerlukan log penggunaan OpenCodex.";
 /* Settings: General, Privacy, About, Debug */
 "section_provider_switcher" = "Pengalih penyedia";
 "provider_switcher_default_shortcuts" = "Pintasan default";

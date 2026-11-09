@@ -111,7 +111,7 @@ struct UserFacingLocalizationCoverageTests {
             "Sources/CodexBar/Settings/PreferencesProviderErrorView.swift": [
                 ".help(\"Copy error\")",
             ],
-            "Sources/CodexBar/Settings/PreferencesSpendDashboardPane.swift": [
+            "Sources/CodexBar/SpendDashboard/SpendDashboardFormatting.swift": [
                 "Text(\"Partial estimate\")",
             ],
             "Sources/CodexBar/Settings/Panes/MenuSettingsPane+AgentSessions.swift": [

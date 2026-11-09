@@ -2833,6 +2833,14 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "TypeSafe faturalandırma özeti okunamadı. Erişimi kontrol etmek için https://console.typesafe.ai/billing adresini açın. Sayfa açılıyorsa entegrasyon hatasını bildirin.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "TypeSafe oturum çerezleri bulunamadı. console.typesafe.ai/billing adresinde oturum açın veya bir Cookie başlığı yapıştırın.";
 
+/* Settings: Costs, Spend window */
+"Local estimated cost history" = "Yerel tahmini maliyet geçmişi";
+"Open Spend window" = "Harcama penceresini aç";
+"Tracking" = "İzleme";
+"Time zone" = "Saat dilimi";
+"Export" = "Dışa aktar";
+"Turn On" = "Aç";
+"Requires OpenCodex usage logs." = "OpenCodex kullanım günlükleri gerekir.";
 /* Settings: General, Privacy, About, Debug */
 "section_provider_switcher" = "Sağlayıcı değiştirici";
 "provider_switcher_default_shortcuts" = "Varsayılan kısayollar";

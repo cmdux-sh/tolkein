@@ -2829,6 +2829,14 @@
 "TypeSafe billing overview could not be read. Open https://console.typesafe.ai/billing to check access; if the page opens, report the integration failure." = "Non se puido ler o resumo de facturación de TypeSafe. Abre https://console.typesafe.ai/billing para comprobar o acceso; se a páxina se abre, informa do fallo de integración.";
 "No TypeSafe session cookies found. Sign in at console.typesafe.ai/billing or paste a Cookie header." = "Non se atoparon cookies de sesión de TypeSafe. Inicia sesión en console.typesafe.ai/billing ou pega unha cabeceira Cookie.";
 
+/* Settings: Costs, Spend window */
+"Local estimated cost history" = "Historial local de custos estimados";
+"Open Spend window" = "Abrir a xanela de gasto";
+"Tracking" = "Rexistro";
+"Time zone" = "Zona horaria";
+"Export" = "Exportar";
+"Turn On" = "Activar";
+"Requires OpenCodex usage logs." = "Require os rexistros de uso de OpenCodex.";
 /* Settings: General, Privacy, About, Debug */
 "section_provider_switcher" = "Cambiador de provedores";
 "provider_switcher_default_shortcuts" = "Atallos predeterminados";
