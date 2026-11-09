@@ -185,3 +185,19 @@ Why: Settings changes waited about 40 minutes per PR on the full macOS suite and
 Arturo chose to hide the Homebrew update path for now. The app no longer picks `HomebrewUpdaterController` for Homebrew installs, so About shows no `brew upgrade` command.
 
 Why: the inherited cask is upstream's `steipete/tap/codexbar`, so the Homebrew upgrade would have replaced Tolkein with CodexBar, and Tolkein has no tap of its own yet. The updater code stays, ready to use again once a Tolkein cask exists.
+
+## 2026-11-09: Cleanup before the Spend window restyle
+
+Tolkein is a fork that no longer links to CodexBar beyond the MIT credit, so Arturo approved a cleanup before more UI work.
+- **Removed, in separate PRs:**
+  - the developer-only adaptive refresh replay tools (`AdaptiveReplayKit`, `AdaptiveReplayCLI`); `AdaptiveRefreshCore` stays, since the app uses it
+  - everything Linux: release workflows, Linux tests, `Integrations/Linux` and `Integrations/Omarchy`, and Linux-only code
+  - CodexBar's marketing website under `docs/`, keeping the developer docs and this log
+  - the ties to upstream: the upstream monitor workflow, upstream's appcast and changelog, and steipete/CodexBar links and names in the source
+- **Kept:**
+  - every provider and JavaScript provider plugins
+  - the command-line tool, in full; the companion collector calls `codexbar usage`
+  - the HTTP server, hooks and the desktop widgets
+- **Later, in its own PR:** the internal rename to Tolkein (bundle ID, module and target names), with a migration that carries existing settings and Keychain items to the new bundle ID.
+
+Why: removing what Tolkein doesn't ship or use makes builds, checks and future UI work smaller. The internal names wait because changing the bundle ID moves where macOS keeps the app's data.
