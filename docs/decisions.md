@@ -159,3 +159,23 @@ Arturo chose a single read-only Sonnet review of all seven Settings PRs (#15 to 
 - **Delete the emptied file:** `PreferencesAdvancedSections.swift` was deleted, since Integrations and General each moved out its other half.
 
 Why: hosted macOS checks take about 40 minutes per PR, so merging one at a time with fresh checks after each would take most of a day.
+
+## 2026-11-09: English only for now
+
+Arturo decided Tolkein focuses on English for now.
+- **New strings** go into `en.lproj` only; nothing new is translated.
+- **Existing translations stay** in the other 22 language files, and any key they lack falls back to English.
+- **Checks:** `Scripts/check-app-locales.mjs` treats every non-English language as warning-only, and `LocalizationLanguageCatalogTests` is disabled. To enforce a language again, add it back to the script's lists and re-enable the suite.
+
+Why: requiring every new string in 23 languages made each change slower and caused failed check runs, for languages nobody uses yet.
+
+## 2026-11-09: Faster checks and fewer brittle tests
+
+Arturo approved two follow-ups to make changes faster, and declined cutting providers or features for now.
+- **Faster checks:**
+  - Per PR, the macOS job runs the tests for what changed; the full suite runs on every push to main.
+  - `make check` keeps formatting, lint and English strings, and a new `make check-all` keeps the packaging, signing, Sparkle and website self-tests.
+  - The Linux command-line builds leave the PR and main checks, because Arturo doesn't ship the Linux CLI. Their code and the separate release workflow stay.
+- **Brittle tests:** tests that only pin exact source text or file paths are deleted or rewritten to test behaviour, and tests already failing on main are marked as known failures with the reason.
+
+Why: Settings changes waited about 40 minutes per PR on the full macOS suite and three Linux builds, and moving files broke tests that read source code even when nothing was wrong.
