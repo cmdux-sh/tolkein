@@ -12,11 +12,14 @@ struct SettingsSidebarSizingTests {
         try await self.settle(firstWindow)
         let firstContent = try #require(firstWindow.contentView)
         let firstSplit = try #require(self.splitView(in: firstContent))
-        #expect(firstSplit.subviews[0].frame.width == 320)
+        // The saved value is the sidebar content's width. On macOS 26 the split view's sidebar item is wider than
+        // its content by the floating sidebar's inset; before 26 the two match.
+        let inset = firstSplit.subviews[0].frame.width - 320
+        #expect(inset >= 0 && inset <= 16)
 
         firstSplit.setPosition(300, ofDividerAt: 0)
         try await self.settle(firstWindow)
-        #expect(width.value == 300)
+        #expect(abs(width.value - (300 - inset)) < 0.5)
 
         let secondWindow = self.makeWindow(width: width)
         try await self.settle(secondWindow)
@@ -30,10 +33,10 @@ struct SettingsSidebarSizingTests {
         sidebar.isCollapsed = true
         try await self.settle(firstWindow)
         #expect(sidebar.isCollapsed)
-        #expect(width.value == 300)
+        #expect(abs(width.value - (300 - inset)) < 0.5)
         sidebar.isCollapsed = false
         try await self.settle(firstWindow)
-        #expect(width.value == 300)
+        #expect(abs(width.value - (300 - inset)) < 0.5)
     }
 
     @Test
