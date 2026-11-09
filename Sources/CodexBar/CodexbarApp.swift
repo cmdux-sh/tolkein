@@ -349,11 +349,9 @@ private func makeUpdaterController() -> UpdaterProviding {
         return DisabledUpdaterController(unavailableReason: "Updates unavailable in this build.")
     }
 
-    if InstallOrigin.isHomebrewCask(appBundleURL: bundleURL) {
-        return HomebrewUpdaterController(
-            savedAutoCheck: (UserDefaults.standard.object(forKey: "autoUpdateEnabled") as? Bool) ?? true,
-            notifier: HomebrewUpdateNotifier(dependencies: .live))
-    }
+    // Tolkein has no Homebrew tap yet, and the inherited cask is upstream CodexBar's: `brew upgrade` would replace
+    // Tolkein with CodexBar. Bring back `HomebrewUpdaterController` here once a Tolkein cask exists
+    // (docs/decisions.md).
 
     guard isDeveloperIDSigned(bundleURL: bundleURL) else {
         return DisabledUpdaterController(unavailableReason: "Updates unavailable in this build.")
